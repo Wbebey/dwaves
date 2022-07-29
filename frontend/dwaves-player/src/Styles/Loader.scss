@@ -1,0 +1,30 @@
+$cliffs:  url("../Images/cliffs.png");
+$wave-ball: url("../Images/wave-ball.png");
+$dark : #3C4A68;
+
+#contain-loader{
+    background-attachment: fixed; 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: $cliffs;
+    height: 100vh;
+}
+
+#contain-loading-spin{
+    position: relative;
+    width: 400px;
+    height: 400px;
+    border-radius: 1000px;
+    background-image: $wave-ball;
+
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+#logo {
+    position: absolute;
+    top: 0;
+}
