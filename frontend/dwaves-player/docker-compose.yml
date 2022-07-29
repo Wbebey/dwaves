@@ -1,6 +1,6 @@
 version: "3.9"  
 services:
-  yakowverse:
+  dwaves:
     build: .
     ports:
       - "80:80"
