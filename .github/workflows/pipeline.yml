@@ -39,7 +39,6 @@ jobs:
 
     # Build npm
     - name: Use Node.js ${{ matrix.node-version }}
-      working-directory: ./frontend/dwaves-player
       uses: actions/setup-node@v3
       with:
           node-version: ${{ matrix.node-version }}
