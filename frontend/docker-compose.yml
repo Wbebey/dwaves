@@ -1,0 +1,6 @@
+version: "3.9"  
+services:
+  yakowverse:
+    build: .
+    ports:
+      - "80:80"
