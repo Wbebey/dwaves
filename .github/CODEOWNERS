@@ -1,15 +1,15 @@
 # These owners will be the default owners for everything in
 # the repo. Unless a later match takes precedence,
 # review when someone opens a pull request.
-*       @Wbebey @alexandre-pinon
+*       @Wbebey
 
 # owns any file in an specified directory
 # anywhere in your repository.
-backend/ @alexandre-pinon @Keisay
+backend/ @alexandre-pinon @Keisay @TharickABDUL
 
-frontent/ @FroggEater @BryanSeychelles @alexandre-pinon
+frontent/ @FroggEater @BryanSeychelles @Bolrung
 
-mobile/ @Bolrung
+mobile/ @Bolrung @BryanSeychelles @FroggEater
 
 # Order is important; the last matching pattern takes the most
 # precedence. When someone opens a pull request that only
