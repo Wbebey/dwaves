@@ -154,5 +154,38 @@ describe('DwavesToken', () => {
         .to.emit(dwavesToken, 'Approval')
         .withArgs(recipientAddress, ownerAddress, expectedAllowance)
     })
+
+    it('Allows burning own tokens', async () => {
+      const burnAmount = ethers.utils.parseUnits('1000', decimals)
+      const burn = dwavesToken.burn(burnAmount)
+      await expect(burn)
+        .to.changeTokenBalance(dwavesToken, ownerAddress, ethers.BigNumber.from(`-${burnAmount}`))
+        .and.to.emit(dwavesToken, 'Transfer')
+        .withArgs(ownerAddress, ethers.constants.AddressZero, burnAmount)
+    })
+
+    it('Prevents burning if insufficient funds', async () => {
+      const excessBurnAmount = ethers.utils.parseUnits('400000000', decimals)
+      const exceedsBalanceBurn = dwavesToken.burn(excessBurnAmount)
+      await expect(exceedsBalanceBurn).to.be.revertedWith('ERC20: burn amount exceeds balance')
+    })
+
+    it('Allows an approved spender to burn tokens', async () => {
+      const burnAmount = ethers.utils.parseUnits('1000', decimals)
+      await dwavesToken.transfer(recipientAddress, burnAmount)
+      await signerContract.approve(ownerAddress, burnAmount)
+
+      const burnFrom = dwavesToken.burnFrom(recipientAddress, burnAmount)
+      await expect(burnFrom)
+        .to.changeTokenBalance(dwavesToken, recipientAddress, ethers.BigNumber.from(`-${burnAmount}`))
+        .and.to.emit(dwavesToken, 'Transfer')
+        .withArgs(recipientAddress, ethers.constants.AddressZero, burnAmount)
+    })
+
+    it('Prevents spender to burn if unapproved', async () => {
+      const burnAmount = ethers.utils.parseUnits('1000', decimals)
+      const burn = dwavesToken.burnFrom(recipientAddress, burnAmount)
+      await expect(burn).to.be.revertedWith('ERC20: insufficient allowance')
+    })
   })
 })
