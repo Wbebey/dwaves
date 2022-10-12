@@ -8,7 +8,6 @@ import {
 
 import { Player } from './Pages/Player';
 import { Loader } from './Components/Loader';
-import { Divider } from '@mantine/core';
 
 
 function App() {
