@@ -1,4 +1,5 @@
-name: Test & Analysis & Deploy - Dwaves-app 🚀 
+name: Test & Analysis & Build - Dwaves-app 🚀 
+run-name: ${{ github.actor }} runs ${{ github.workflow }} on ${{ github.ref }}
 
 on:
   push:
