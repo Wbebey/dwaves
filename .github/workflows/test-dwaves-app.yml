@@ -1,5 +1,5 @@
-name: Test & Analysis & Build - Dwaves-app 🚀 
-run-name: ${{ github.actor }} runs ${{ github.workflow }} on ${{ github.ref }}
+name: TAB - Dwaves-app 🚀 
+run-name: ${{ github.actor }} - ${{ github.workflow }} - ${{ github.branch }}
 
 on:
   push:
@@ -15,6 +15,9 @@ on:
   #     - staging
   #   paths:
   #     - ${{ env.WORKING_DIRECTORY }}/**
+
+env:
+  WORKING_DIRECTORY: "frontend/dwaves-app"
 
 defaults:
   run:
@@ -84,6 +87,9 @@ jobs:
   code-analysis:
     name: Code Analysis
     runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      pull-requests: write
     needs: [integration-tests, unit-test]
     steps:
       - name: Checkout 😇
@@ -94,6 +100,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: frontend/dwaves-app/
+          args: >
+            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+            -Dsonar.pullrequest.branch=${{ github.head_ref }}
+            -Dsonar.pullrequest.base=${{ github.base_ref }}
+            -Dsonar.pullrequest.provider=GitHub
+            -Dsonar.pullrequest.github.repository=${{ github.repository }}
+            -Dsonar.pullrequest.github.endpoint=https://api.github.com/
 
   build:
     name: Build
