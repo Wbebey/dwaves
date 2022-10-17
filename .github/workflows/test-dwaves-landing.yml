@@ -7,7 +7,7 @@ on:
       - bugfix/*
       - hotfix/*
     paths:
-      - ${{ env.WORKING_DIRECTORY }}/**
+      - "frontend/dwaves-landing/**"
   # pull_request:
   #   types: [opened, synchronize, reopened]
   #   branches:
