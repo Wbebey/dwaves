@@ -1,0 +1,154 @@
+name: "Deploy data-sources"
+description: "Send a notification on Discord for each workflow"
+runs:
+  steps:
+    - name: Discord - Notify on success
+      # shell: bash
+      if: success()
+      run: |
+        if [[ "${{ github.base_ref }}" == "staging" && "${{ github.action }}" == "Clean" ]] || [[ "${{ github.base_ref }}" != "staging" && "${{ github.base_ref }}" != "main" && "${{ github.action }}" == "code-analysis" ]] || [[ "${{ github.action }}" == "deploy" ]]
+            then
+              ARRAY=("alexandre-pinon":"268353717860827136"
+                "Bolrung":"278229917467148299"
+                "BryanSeychelles":"511481065655894027"
+                "FroggEater":"219514509902086144"
+                "Keisay":"690340635341094993"
+                "TharickABDUL":"419147599212314636"
+                "Wbebey":"310530640082632715")
+
+              discord_user="github account"
+              finduser=false
+              worflow_url= "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+              if [[ ! -z ${{ github.actor }} ]]
+              then
+                if [[ "${{ github.actor }}" != "dwaves" ]]
+                then
+                  for user in "${ARRAY[@]}" ; do
+                    KEY=${user%%:*}
+                    if [[ "$KEY" == "${{ github.actor }}" ]]
+                    then
+                      discord_user=${user#*:}
+                      finduser=true
+                      break
+                    fi
+                  done
+                fi
+              if [[ -z ${{ github.base_ref }} ]]
+              then
+                target_name="${{ github.base_ref }}"
+                type="branch"
+              fi
+              if [[ "$discord_user" == "github account" || "$finduser" == false ]]
+              then
+                description="**[Build ${{ github.run_number }}](${worflow_url})** launched by **${discord_user}** on **${target_name}** ${type} was successfully executed."
+              else
+                description="**[Build ${{ github.run_number }}](${worflow_url})** launched by <@${discord_user}> on **${target_name}** ${type} was successfully executed."
+              fi
+              if [[ -f "error_output" ]]
+              then
+                error_message=""
+                error_message=$(cat error_output)
+                echo $error_message
+                if [[ ! -z "$error_message" ]]
+                then
+                  description_final="$description \n**Details**: \n ${error_message}"
+                else
+                  description_final="$description"
+                fi
+              else
+                description_final="$description"
+              fi
+              timestamp=`date +%Y-%m-%dT%H:%M:%SZ`
+              data='
+              {
+                "embeds": [
+                {
+                  "author": {
+                    "name": "[Dwaves] By Le Boss Senior DevOps - DataOps - CloudOps- LeadOps"
+                  },
+                  "description": "'${description_final}'",
+                  "url": "'${worflow_url}'",
+                  "color": 8311585,
+                  "timestamp": "'${timestamp}'",
+                  "inline": true
+                }
+                ]
+              }
+              '
+              curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} -d "$data"
+            fi
+    - name: Discord - Notify on fail
+      # shell: bash
+      if: failure()
+      run: |
+        ARRAY=("alexandre-pinon":"268353717860827136"
+                "Bolrung":"278229917467148299"
+                "BryanSeychelles":"511481065655894027"
+                "FroggEater":"219514509902086144"
+                "Keisay":"690340635341094993"
+                "TharickABDUL":"419147599212314636"
+                "Wbebey":"310530640082632715")
+
+        discord_user="github account"
+              finduser=false
+              worflow_url= "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+              if [[ ! -z ${{ github.actor }} ]]
+              then
+                if [[ "${{ github.actor }}" != "dwaves" ]]
+                then
+                  for user in "${ARRAY[@]}" ; do
+                    KEY=${user%%:*}
+                    if [[ "$KEY" == "${{ github.actor }}" ]]
+                    then
+                      discord_user=${user#*:}
+                      finduser=true
+                      break
+                    fi
+                  done
+                fi
+              if [[ -z ${{ github.base_ref }} ]]
+              then
+                target_name="${{ github.base_ref }}"
+                type="branch"
+              fi
+              if [[ "$discord_user" == "github account" || "$finduser" == false ]]
+              then
+                description="**[Build ${{ github.run_number }}](${worflow_url})** launched by **${discord_user}** on **${target_name}** ${type} was failed at step **${{ github.action }}**."
+              else
+                description="**[Build ${{ github.run_number }}](${worflow_url})** launched by <@${discord_user}> on **${target_name}** ${type} was failed at step **${{ github.action }}**."
+              fi
+              if [[ -f "error_output" ]]
+              then
+                error_message=""
+                error_message=$(cat error_output)
+                echo $error_message
+                if [[ ! -z "$error_message" ]]
+                then
+                  description_final="$description \n**Details**: \n ${error_message}"
+                else
+                  description_final="$description"
+                fi
+              else
+                description_final="$description"
+              fi
+              timestamp=`date +%Y-%m-%dT%H:%M:%SZ`
+              data='
+              {
+                "embeds": [
+                {
+                  "author": {
+                    "name": "[Dwaves] By Le Boss Senior DevOps - DataOps - CloudOps- LeadOps"
+                  },
+                  "description": "'${description_final}'",
+                  "url": "'${worflow_url}'",
+                  "color": 8311585,
+                  "timestamp": "'${timestamp}'",
+                  "inline": true
+                }
+                ]
+              }
+              '
+              curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} -d "$data"
+            fi
