@@ -17,7 +17,7 @@ on:
 
 defaults:
   run:
-    working-directory: "./frontend/dwaves-app"
+    working-directory: "frontend/dwaves-app"
 
 jobs:
   integration-tests:

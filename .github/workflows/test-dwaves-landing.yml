@@ -1,115 +1,113 @@
-# name: Test & Analysis & Deploy - Dwaves-landing 🚀 
+name: Test & Analysis & Deploy - Dwaves-landing 🚀 
 
-# on:
-#   push:
-#     branches: 
-#       - feature/*
-#       - bugfix/*
-#       - hotfix/*
-#     paths:
-#       - "frontend/dwaves-landing/**"
-#   # pull_request:
-#   #   types: [opened, synchronize, reopened]
-#   #   branches:
-#   #     - staging
-#   #   paths:
-#   #     - "frontend/dwaves-landing/**"
-
-
-# jobs:
-
-#   integration-tests:
-#     name: Integretion Tests
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         node-version: [16.x]
-#     steps:
-#       - name: Trigger Message 📥
-#         run: |-
-#           echo " The job was automatically triggered by a ${{ github.event_name }} event by {{ github.actor }}."
-#           echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-#           echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-
-#       - name: Checkout 😇
-#         uses: actions/checkout@v3
-
-#       - name: Use Node.js ${{ matrix.node-version }}
-#         uses: actions/setup-node@v3
-#         with:
-#             node-version: ${{ matrix.node-version }}
-
-#       - name: Environment variables 🧪
-#         working-directory: ./frontend/dwaves-landing
-#         run: |-
-#           sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
-
-#       - name: Integartion Tests 🏗
-#         working-directory: ./frontend/dwaves-landing
-#         run: |-
-#           npm install
-#           echo "Running  integration tests..."
-
-#   unit-test:
-#     name: Unit Test
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         node-version: [16.x]
-#     steps:
-
-#       - name: Checkout 😇
-#         uses: actions/checkout@v3
-
-#       - name: Use Node.js ${{ matrix.node-version }}
-#         uses: actions/setup-node@v3
-#         with:
-#             node-version: ${{ matrix.node-version }}
-
-#       - name: Environment variables 🧪
-#         working-directory: ./frontend/dwaves-landing
-#         run: |-
-#           sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
-
-#       - name: Unit Test 🧪
-#         working-directory: ./frontend/dwaves-landing
-#         run: |-
-#           npm install
-#           echo "Running  unit tests..."
+on:
+  push:
+    branches: 
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+    paths:
+      - "frontend/dwaves-landing/**"
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #   branches:
+  #     - staging
+  #   paths:
+  #     - "frontend/dwaves-landing/**"
 
 
-#   # code-analysis:
-#   #   name: Code Analysis
-#   #   runs-on: ubuntu-latest
-#   #   needs: [integration-tests, unit-test]
-#   #   steps:
-#   #     - name: Checkout 😇
-#   #       uses: actions/checkout@v3
+jobs:
 
-#   #     - name: SonarCloud Scan
-#   #       uses: SonarSource/sonarcloud-github-action@v1
-#   #       env:
-#   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-#   #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  integration-tests:
+    name: Integretion Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - name: Trigger Message 📥
+        run: |-
+          echo " The job was automatically triggered by a ${{ github.event_name }} event by {{ github.actor }}."
+          echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+          echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
 
-#   # build:
-#   #   name: Build
-#   #   runs-on: ubuntu-latest
-#   #   needs: [code-analysis]
-#   #   strategy:
-#   #     matrix:
-#   #       node-version: [16.x]
-#   #   steps:
-#   #     - name: Checkout 😇
-#   #       uses: actions/checkout@v3
+      - name: Checkout 😇
+        uses: actions/checkout@v3
 
-#   #     - name: Use Node.js ${{ matrix.node-version }}
-#   #       uses: actions/setup-node@v3
-#   #       with:
-#   #         node-version: ${{ matrix.node-version }}
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #       node-version: ${{ matrix.node-version }}
 
-#   #     - name: Build 🏗
-#   #       working-directory: ./frontend/dwaves-landing
-#   #       run: |-
-#   #         npm install
-#   #         CI='false' npm run build 
+      # - name: Environment variables 🧪
+      #   working-directory: ./frontend/dwaves-landing
+      #   run: |-
+      #     sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
+
+      - name: Integartion Tests 🏗
+        working-directory: ./frontend/dwaves-landing
+        run: |-
+          echo "Running  integration tests..."
+
+  unit-test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #       node-version: ${{ matrix.node-version }}
+
+      # - name: Environment variables 🧪
+      #   working-directory: ./frontend/dwaves-landing
+      #   run: |-
+      #     sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
+
+      - name: Unit Test 🧪
+        working-directory: ./frontend/dwaves-landing
+        run: |-
+          echo "Running  unit tests..."
+
+
+  # code-analysis:
+  #   name: Code Analysis
+  #   runs-on: ubuntu-latest
+  #   needs: [integration-tests, unit-test]
+  #   steps:
+  #     - name: Checkout 😇
+  #       uses: actions/checkout@v3
+
+  #     - name: SonarCloud Scan
+  #       uses: SonarSource/sonarcloud-github-action@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  # build:
+  #   name: Build
+  #   runs-on: ubuntu-latest
+  #   needs: [code-analysis]
+  #   strategy:
+  #     matrix:
+  #       node-version: [16.x]
+  #   steps:
+  #     - name: Checkout 😇
+  #       uses: actions/checkout@v3
+
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+
+  #     - name: Build 🏗
+  #       working-directory: ./frontend/dwaves-landing
+  #       run: |-
+  #         npm install
+  #         CI='false' npm run build 
