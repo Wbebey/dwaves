@@ -1,5 +1,5 @@
-name: TAB - Dwaves-app 🚀 
-run-name: ${{ github.actor }} - ${{ github.workflow }} - ${{ github.ref_name }}
+name: TAB - Dwaves-website 
+# run-name: ${{ github.actor }} - ${{ github.workflow }} - ${{ github.ref_name }}
 
 on:
   push:
@@ -8,20 +8,17 @@ on:
       - bugfix/*
       - hotfix/*
     paths:
-      - frontend/dwaves-app/**
+      - "frontend/dwaves-website/**"
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - staging
     paths:
-      - frontend/dwaves-app/**
-
-env:
-  WORKING_DIRECTORY: "frontend/dwaves-app"
+      - "frontend/dwaves-website/**"
 
 defaults:
   run:
-    working-directory: "frontend/dwaves-app"
+    working-directory: "frontend/dwaves-website"
 
 jobs:
   integration-tests:
@@ -34,18 +31,17 @@ jobs:
       - name: Checkout 😇
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-            node-version: ${{ matrix.node-version }}
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #       node-version: ${{ matrix.node-version }}
 
-      - name: Environment variables 🧪
-        run: |-
-          sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
+      # - name: Environment variables 🧪
+      #   run: |-
+      #     sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
 
       - name: Integartion Tests 🏗
         run: |-
-          npm install
           echo "Running  integration tests..."
 
   unit-test:
@@ -59,19 +55,19 @@ jobs:
       - name: Checkout 😇
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-            node-version: ${{ matrix.node-version }}
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #       node-version: ${{ matrix.node-version }}
 
-      - name: Environment variables 🧪
-        run: |-
-          sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
+      # - name: Environment variables 🧪
+      #   run: |-
+      #     sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
 
       - name: Unit Test 🧪
         run: |-
-          npm install
           echo "Running  unit tests..."
+
 
   code-analysis:
     name: Code Analysis
@@ -88,11 +84,11 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_APP }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_WEBSITE }}
         with:
-          projectBaseDir: frontend/dwaves-app/
+          projectBaseDir: frontend/dwaves-website/
           args: >
-            -Dsonar.projectKey=${{ secrets.DWAVES_APP_PROJECT_KEY }}
+            -Dsonar.projectKey=${{ secrets.DWAVES_WEBSITE_PROJECT_KEY }}
             -Dsonar.organization=wbebey
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
@@ -102,23 +98,23 @@ jobs:
             -Dsonar.pullrequest.github.repository=${{ github.repository }}
             -Dsonar.pullrequest.github.endpoint=https://api.github.com/
 
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    needs: [code-analysis]
-    strategy:
-      matrix:
-        node-version: [16.x]
-    steps:
-      - name: Checkout 😇
-        uses: actions/checkout@v3
+  # build:
+  #   name: Build
+  #   runs-on: ubuntu-latest
+  #   needs: [code-analysis]
+  #   strategy:
+  #     matrix:
+  #       node-version: [16.x]
+  #   steps:
+  #     - name: Checkout 😇
+  #       uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
 
-      - name: Build 🏗
-        run: |-
-          npm install
-          CI='false' npm run build 
+  #     - name: Build 🏗
+  #       run: |-
+  #         npm install
+  #         CI='false' npm run build 
