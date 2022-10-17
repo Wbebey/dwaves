@@ -10,7 +10,7 @@ on:
     paths:
       - frontend/dwaves-app/**
   pull_request:
-    types: [opened, reopened]
+    types: [opened, synchronize, reopened]
     branches:
       - staging
     paths:
