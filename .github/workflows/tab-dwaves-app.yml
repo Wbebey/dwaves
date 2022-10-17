@@ -44,6 +44,10 @@ jobs:
         run: |-
           echo "Running  integration tests..."
 
+      - name: Discord Notification
+        if: ${{ always() }}
+        uses: .github/actions/discord
+
   unit-test:
     name: Unit Test
     runs-on: ubuntu-latest
@@ -67,6 +71,10 @@ jobs:
       - name: Unit Test 🧪
         run: |-
           echo "Running  unit tests..."
+
+      - name: Discord Notification
+        if: ${{ always() }}
+        uses: .github/actions/discord
 
   code-analysis:
     name: Code Analysis
@@ -117,3 +125,7 @@ jobs:
         run: |-
           npm install
           CI='false' npm run build 
+
+      - name: Discord Notification
+        if: ${{ always() }}
+        uses: .github/actions/discord
