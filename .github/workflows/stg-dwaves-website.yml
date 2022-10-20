@@ -91,34 +91,34 @@ jobs:
             -Dsonar.pullrequest.github.repository=${{ github.repository }}
             -Dsonar.pullrequest.github.endpoint=https://api.github.com/
 
-  # build:
-  #   name: Build
-  #   runs-on: ubuntu-latest
-  #   needs: [code-analysis]
-  #   strategy:
-  #     matrix:
-  #       node-version: [16.x]
-  #   steps:
-  #     - name: Checkout 😇
-  #       uses: actions/checkout@v3
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [code-analysis]
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - name: Checkout 😇
+        uses: actions/checkout@v3
 
-  #     - name: Use Node.js ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-  #     - name: Build 🏗
-  #       run: |-
-  #         npm install
-  #         CI='false' npm run build 
+      - name: Build 🏗
+        run: |-
+          npm install
+          CI='false' npm run build 
 
   deploy:
     name: Deploy to Staging 
     runs-on: ubuntu-latest
     needs: [build]
     environment:
-      name: production-website
-      url:  
+      name: staging-website
+      url:  ${{ secrets.STAGING_ADDRESS }}
     steps:
       - name: Checkout 😇
         uses: actions/checkout@v3
