@@ -1,7 +1,24 @@
+// make extend for call properties like flex
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 $dark : #3C4A68;
+$primary : #33E0D6;
 
 .App {
     background-color: $dark;
     overflow-x: hidden;
 }
 
+.flex-row-nowrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.icon{
+    width: 58px;
+    height: 58px;
+}
