@@ -89,21 +89,26 @@ jobs:
         with:
             username: "Dwaves"
             severity: info
-            text: ceci est un test
-            description:  ${{ github.workflow }}  - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** 
+            text: "**Team:** <@&1016454304795730021>"
+            description:  "**${{ github.workflow }}**  - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** "
             details: |
-              - **Author :** ${{ github.actor }} trigger
-              - ${{ github.job }} Succeeded! 
+              - **Author :** ${{ github.actor }} <@${discord_user}> ou **${discord_user}* ou <@310530640082632715>
+              - ${{ github.job }} Failed! 
               - seconde ligne
-            footer: ${{ github.ref_name }}
+            footer: "WP tu sais enfin coder"
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
       - name: Test Failure
         uses: rjstone/discord-webhook-notify@v1
-        if: failure()
+        if:  failure()
         with:
+            text: "**Team:** <@&1016454304795730021>"
+            description:  "**${{ github.workflow }}**  - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** "
+            details: |
+              **Author :** ${{ github.actor }}
+              ${{ github.job }} Failed! 
+            footer: "On est large, tkt pas de l'erreur"
             severity: error
-            details: Test Failed!
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
       # - name: Discord Notification
