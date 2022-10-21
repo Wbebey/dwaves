@@ -1,16 +1,7 @@
 import "../Styles/Player.scss"
 import { useEffect, useState } from 'react'
 
-const dataSong = {
-    Artist: "Dinos",
-    likes: 190, //156 468
-    UsersLiked: [
-        { Name: "", Avatar: "https://via.placeholder.com/360x360" }
-    ],
-    Src: "http://localhost:3000/audiotest.mp3",
-    outDate: "",
-
-}
+import datasong from '../Musics/datasongs'
 
 const dwavesBubble = <div className="bulle" />
 const userBubble = <div  className="bulle-user"><img className="avatar-bulles" src="https://via.placeholder.com/360x360" alt="placeholder" /></div>
@@ -21,7 +12,7 @@ export const AnimateBulles = () => {
     const [dwavesBubbles, setDwavesBubbles] = useState<JSX.Element[]>([])
 
     useEffect(() => {
-        initBubbles(dataSong.likes)
+        initBubbles(datasong[0].likes)
     }, [])
 
     useEffect(() => {
