@@ -1,5 +1,4 @@
 name: TAB - Dwaves-app  
-# run-name: ${{ github.actor }} - ${{ github.workflow }} - ${{ github.ref_name }}
 
 on:
   push:
@@ -15,6 +14,10 @@ on:
       - staging
     paths:
       - frontend/dwaves-app/**
+
+
+env:
+  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
 defaults:
   run:
@@ -45,30 +48,9 @@ jobs:
           echo "Running  integration tests..."
 
       - name: Discord notification on failure
-        uses: rjstone/discord-webhook-notify@v1
         if: failure()
-        with:
-            username: "Dwaves"
-            severity: error
-            text: "**This Pull Request is Ready for Testing**"
-            description:  "**${{ github.workflow }}** - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** "
-            details: |
-              
-              **Team:** <@&1016454304795730021>
-              **Author :** ${{ github.actor }} 
-              **Commit:** [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
-              **Branch:** ${{ github.ref_name }}
-              **Job:** ${{ github.job }}
-              **Status:** ${{ github.action_status }}! or Failure!
-            footer: "Noob"
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: ./.github/actions/notification-on-failure
 
-      # - name: Discord notification
-      #   env:
-      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      #   uses: Ilshidur/action-discord@0.3.2
-      #   with:
-      #     args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
 
   unit-test:
     name: Unit Test
@@ -95,23 +77,8 @@ jobs:
           echo "Running  unit tests..."
 
       - name: Discord notification on failure
-        uses: rjstone/discord-webhook-notify@v1
         if: failure()
-        with:
-            username: "Dwaves"
-            severity: error
-            text: "**This Pull Request is Ready for Testing**"
-            description:  "**${{ github.workflow }}** - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** "
-            details: |
-              
-              **Team:** <@&1016454304795730021>
-              **Author :** ${{ github.actor }} 
-              **Commit:** [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
-              **Branch:** ${{ github.ref_name }}
-              **Job:** ${{ github.job }}
-              **Status:** ${{ github.action_status }}! or Failure!
-            footer: "Noob"
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: ./.github/actions/notification-on-failure
 
   code-analysis:
     name: Code Analysis
@@ -127,7 +94,7 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_APP }}
         with:
           projectBaseDir: frontend/dwaves-app/
@@ -144,23 +111,8 @@ jobs:
             -Dsonar.verbose=true
 
       - name: Discord notification on failure
-        uses: rjstone/discord-webhook-notify@v1
         if: failure()
-        with:
-            username: "Dwaves"
-            severity: error
-            text: "**This Pull Request is Ready for Testing**"
-            description:  "**${{ github.workflow }}** - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** "
-            details: |
-              
-              **Team:** <@&1016454304795730021>
-              **Author :** ${{ github.actor }} 
-              **Commit:** [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
-              **Branch:** ${{ github.ref_name }}
-              **Job:** ${{ github.job }}
-              **Status:** ${{ github.action_status }}! or Failure!
-            footer: "Noob"
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: ./.github/actions/notification-on-failure
 
   build:
     name: Build
@@ -181,42 +133,13 @@ jobs:
       - name: Build 🏗
         run: |-
           npm install
-          CI='false' npm run build 
+          CI='false' npm run build
 
       - name: Discord notification on success
-        uses: rjstone/discord-webhook-notify@v1
         if: success()
-        with:
-            username: "Dwaves"
-            severity: info
-            text: "**This Pull Request is Ready for Testing**"
-            description:  "**${{ github.workflow }}** - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** "
-            details: |
-              
-              **Team:** <@&1016454304795730021>
-              **Author :** ${{ github.actor }} 
-              **Commit:** [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
-              **Branch:** ${{ github.ref_name }}
-              **Job:** ${{ github.job }}
-              **Status:** ${{ github.action_status }}! or Success!
-            footer: "Well done"
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: ./.github/actions/notification-on-success
 
       - name: Discord notification on failure
-        uses: rjstone/discord-webhook-notify@v1
         if: failure()
-        with:
-            username: "Dwaves"
-            severity: error
-            text: "**This Pull Request is Ready for Testing**"
-            description:  "**${{ github.workflow }}** - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** "
-            details: |
-              
-              **Team:** <@&1016454304795730021>
-              **Author :** ${{ github.actor }} 
-              **Commit:** [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
-              **Branch:** ${{ github.ref_name }}
-              **Workflow:** ${{ github.job }}
-              **Status:** ${{ github.action_status }}! or Failure!
-            footer: "Noob"
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: ./.github/actions/notification-on-failure
+        # uses: Wbebey/dwaves/.github/actions/notification-on-failure@feature/pipeline
