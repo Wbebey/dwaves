@@ -1,8 +1,16 @@
 import { HardhatUserConfig } from 'hardhat/config'
 import '@nomicfoundation/hardhat-toolbox'
+import * as dotenv from 'dotenv'
 
-const ALCHEMY_API_KEY = 'XURZZkpzFTF3Ts0p0jgkNZzco3OEpmVH'
-const GOERLI_PRIVATE_KEY = '1aae3a6caa93df9651b3f3020741a6aec7721cefc70aae0b45097231d56ff54e'
+dotenv.config({ path: `${__dirname}/../.backend.env` })
+
+const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY
+const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY
+
+if (!GOERLI_PRIVATE_KEY || !ALCHEMY_API_KEY) {
+  console.error('💥 error loading env')
+  process.exit(1)
+}
 
 const config: HardhatUserConfig = {
   solidity: '0.8.17',
