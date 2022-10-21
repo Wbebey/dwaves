@@ -87,22 +87,20 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         if: success()
         with:
+            username: "Dwaves on est large"
             severity: info
-            details: Test Succeeded!
+            text: ceci est un test
+            description:  ${{ github.actor }} trigger  **[workflow ${{ github.run_number }}](${worflow_url})**
+            details: ${{ github.job }} Succeeded!
+            footer: ${{ github.ref_name }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
       - name: Test Failure
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
         with:
             severity: error
             details: Test Failed!
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: Test Cancelled
-        uses: rjstone/discord-webhook-notify@v1
-        if: cancelled()
-        with:
-            severity: warn
-            details: Test Cancelled!
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
       # - name: Discord Notification
