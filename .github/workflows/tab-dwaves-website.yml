@@ -9,12 +9,12 @@ on:
       - hotfix/*
     paths:
       - "frontend/dwaves-website/**"
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - staging
-    paths:
-      - "frontend/dwaves-website/**"
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #   branches:
+  #     - staging
+  #   paths:
+  #     - "frontend/dwaves-website/**"
 
 defaults:
   run:

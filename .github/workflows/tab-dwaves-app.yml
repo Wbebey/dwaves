@@ -87,11 +87,14 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         if: success()
         with:
-            username: "Dwaves on est large"
+            username: "Dwaves"
             severity: info
             text: ceci est un test
-            description:  ${{ github.actor }} trigger  **[workflow ${{ github.run_number }}](${worflow_url})**
-            details: ${{ github.job }} Succeeded!
+            description:  ${{ github.workflow }}  - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})** 
+            details: |
+              - **Author :** ${{ github.actor }} trigger
+              - ${{ github.job }} Succeeded! 
+              - seconde ligne
             footer: ${{ github.ref_name }}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
