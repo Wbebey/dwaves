@@ -1,0 +1,36 @@
+name: Daploy to Production
+description: Deploy to Production
+runs:
+  using: composite
+  steps:
+    - name: GCP authentification 🤑
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        service_account_key: ${{ env.GCP_SA_KEY }}
+        project_id: ${{ env.GCP_PROJECT_ID }}
+
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: NPM install
+      working-directory: ${{ env.PROJECT_DIRECTORY}}
+      shell: bash
+      run: npm install
+
+    - name: Build 🏗
+      shell: bash
+      working-directory: ${{ env.PROJECT_DIRECTORY }}
+      run: |-
+        CI='false' npm run build
+
+    - name: Deploy Production 🚀
+      shell: bash
+      working-directory: ${{ env.PROJECT_DIRECTORY }}
+      if: ${{ github.ref }} == 'refs/heads/main'
+      run: |-
+        export environment="${{ env.APP }}-production"
+        export deploy_url=${{ env.DWAVES_PRODUCTION_URL }}
+        gsutil rsync -R build/ gs://$deploy_url
+        echo "Deployed to $environment environment: $deploy_url"
