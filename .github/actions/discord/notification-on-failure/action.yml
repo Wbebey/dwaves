@@ -5,7 +5,6 @@ runs:
     steps:
     - name: Notification on failure
       uses: rjstone/discord-webhook-notify@v1
-      # if: failure()
       with:
         username: "Dwaves"
         severity: error
