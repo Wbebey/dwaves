@@ -35,14 +35,8 @@ jobs:
             - name: Checkout 😇
               uses: actions/checkout@v3
 
-            - name: Use Node.js ${{ env.NODE_VERSION }}
-              uses: actions/setup-node@v3
-              with:
-                node-version: ${{ env.NODE_VERSION }}
-
-            - name: Integartion Tests 🏗
-              run: |-
-                echo "Running  integration tests..."
+            - name: Integration Tests 🏗
+              uses: ./.github/actions/frontend/integration-test
 
             - name: Discord notification on failure
               if: failure()
