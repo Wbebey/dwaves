@@ -3,7 +3,7 @@ name: TAB - Dwaves-app
 on:
     push:
         branches: 
-            # - feature/*
+            - feature/*
             - bugfix/*
             - hotfix/*
             - release/*
