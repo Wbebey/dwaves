@@ -1,2 +1,9 @@
 .idea
 **.DS_Store
+libraries/
+dwaves.iml
+modules.xml
+vcs.xml
+.idea/
+.DS_Store
+.vscode
