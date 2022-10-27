@@ -1,23 +1,16 @@
-name: TAB - Dwaves-app  
+name : Deploy Dwaves-app to staging
 
 on:
     push:
-        branches: 
-            - feature/*
-            - bugfix/*
-            - hotfix/*
-            - release/*
-        paths:
-            - frontend/dwaves-app/**
-    pull_request:
-        types: [opened, synchronize, reopened]
         branches:
             - staging
+            - feature/*
         paths:
             - frontend/dwaves-app/**
 
-env:
+env: 
     APP: dwaves-app
+    ENVIRONMENT: staging
     PROJECT_DIRECTORY: frontend/dwaves-app
     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }} 
@@ -28,6 +21,7 @@ env:
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
+    DWAVES_STAGING_URL: ${{ secrets.STAGING_ADDRESS }}
 
 defaults:
     run:
@@ -89,6 +83,50 @@ jobs:
 
             - name: SonarCloud Scan
               uses: ./.github/actions/sonarcloud
+
+            - name: Discord notification on failure
+              if: failure()
+              uses: ./.github/actions/notification-on-failure
+
+    deploy:
+        name: Deploy to staging
+        needs: [code-analysis]
+        environment:
+            name: "${{ env.APP }}-${{ env.ENVIRONMENT }}"
+            url: ${{ env.DWAVES_STAGING_URL }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout 😇
+              uses: actions/checkout@v3
+
+            - name: Discord notification ${{ env.ENVIRONMENT }} Deployment started
+              uses: ./.github/actions/notification-on-start-deployment
+
+            - name: GCP authentification 🤑
+              uses: google-github-actions/setup-gcloud@v0
+              with:
+                service_account_key: ${{ env.GCP_SA_KEY }}
+                project_id: ${{ env.GCP_PROJECT_ID }}
+
+            - name: Use Node.js ${{ env.NODE_VERSION }}
+              uses: actions/setup-node@v3
+              with:
+                node-version: ${{ env.NODE_VERSION }}
+
+            - name: NPM install
+              run: npm install
+
+            - name: Build 🏗
+              run: |-
+                CI='false' npm run build
+
+            - name: Deploy Staging 🚀
+              if: ${{ github.ref }} == 'refs/heads/staging'
+              run: |-
+                export environment="${{ env.APP }}-${{ env.ENVIRONMENT }}"
+                export deploy_url=${{ env.DWAVES_STAGING_URL }}
+                gsutil rsync -R build/ gs://$deploy_url
+                echo "Deployed to $environment environment: $deploy_url"
 
             - name: Discord notification on success
               if: success()
