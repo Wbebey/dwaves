@@ -1,0 +1,18 @@
+name: "Notification on start deployment"
+description: "Send a notification on Discord When Deployment start"
+runs:
+    using: composite
+    steps:
+    - name: Notification on start deployment
+      uses: rjstone/discord-webhook-notify@v1
+      with:
+        username: "Dwaves"
+        severity: info
+        color: "#9408F0"
+        text: "Hello ${{ env.DISCORD_TEAM_ID }}, a new **${{ env.ENVIRONMENT }}** deployment is starting on **${{ env.APP }}** [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+        description:  "**${{ github.workflow }}** - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})**"
+        details: |
+            **Author :** ${{ github.actor }} 
+            **Commit:** [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+        footer: "Deploying..."
+        webhookUrl: ${{ env.DISCORD_WEBHOOK }}
