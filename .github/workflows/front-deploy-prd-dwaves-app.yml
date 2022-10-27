@@ -13,6 +13,10 @@ env:
     PROJECT_DIRECTORY: frontend/dwaves-app
     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }} 
+    SONAR_PROJECT_BASE_DIR: frontend/dwaves-app/
+    SONAR_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_APP }}
+    SONAR_PROJECT_KEY: ${{ secrets.DWAVES_APP_PROJECT_KEY }}
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
@@ -23,10 +27,58 @@ defaults:
         working-directory: "frontend/dwaves-app"
 
 jobs:
+    integration-test:
+        name: Integretion Test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout 😇
+              uses: actions/checkout@v3
+
+            - name: Integration Tests 🏗
+              uses: ./.github/actions/frontend/integration-test
+
+            - name: Discord notification on failure
+              if: failure()
+              uses: ./.github/actions/notification-on-failure
+
+    unit-test:
+        name: Unit Test
+        runs-on: ubuntu-latest
+        steps:
+
+            - name: Checkout 😇
+              uses: actions/checkout@v3
+
+            - name: Unit Test 🧪
+              uses: ./.github/actions/frontend/unit-test
+
+            - name: Discord notification on failure
+              if: failure()
+              uses: ./.github/actions/discord/notification-on-failure
+
+    code-analysis:
+        name: Code Analysis
+        runs-on: ubuntu-latest
+        permissions: 
+            contents: read
+            pull-requests: write
+        needs: [integration-test, unit-test]
+        steps:
+            - name: Checkout 😇
+              uses: actions/checkout@v3
+
+            - name: SonarCloud Scan
+              uses: ./.github/actions/sonarcloud
+
+            - name: Discord notification on failure
+              if: failure()
+              uses: ./.github/actions/discord/notification-on-failure
+
     deploy:
         name: Deploy to Production
+        needs: [code-analysis]
         environment:
-            name: "${{ env.APP }}-${{ env.ENVIRONMENT }}"
+            name: dwaves-app-production
             url: ${{ env.DWAVES_PRODUCTION_URL }}
         runs-on: ubuntu-latest
         steps:
@@ -34,7 +86,7 @@ jobs:
               uses: actions/checkout@v3
 
             - name: Discord notification ${{ env.ENVIRONMENT }} Deployment started
-              uses: ./.github/actions/notification-on-start-deployment
+              uses: ./.github/actions/discord/notification-on-start-deployment
 
             - name: GCP authentification 🤑
               uses: google-github-actions/setup-gcloud@v0
@@ -54,7 +106,7 @@ jobs:
               run: |-
                 CI='false' npm run build
 
-            - name: Deploy to production 🚀
+            - name: Deploy Production 🚀
               if: ${{ github.ref }} == 'refs/heads/main'
               run: |-
                 export environment="${{ env.APP }}-${{ env.ENVIRONMENT }}"
@@ -64,8 +116,8 @@ jobs:
 
             - name: Discord notification on success
               if: success()
-              uses: ./.github/actions/notification-on-success
+              uses: ./.github/actions/discord/notification-on-success
 
             - name: Discord notification on failure
               if: failure()
-              uses: ./.github/actions/notification-on-failure
+              uses: ./.github/actions/discord/notification-on-failure
