@@ -8,8 +8,8 @@ runs:
           with:
             node-version: ${{ env.NODE_VERSION }}
 
-        - name: Integartion Tests 🏗
-          working-directory:  ${{ env.PROJECT_DIRECTORY }}
+        - name: Unit Test 🧪
+          working-directory: ${{ env.PROJECT_DIRECTORY }}
           shell: bash
           run: |-
-            echo "Running  integration tests..."
+            echo "Running  unit tests..."
