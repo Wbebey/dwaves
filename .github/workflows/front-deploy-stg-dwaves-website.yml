@@ -26,7 +26,7 @@ env:
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
-    DWAVES_STAGING_URL: ${{ secrets.STAGING_ADDRESS }}
+    STAGING_URL: ${{ secrets.DWAVES_WEBSITE_STAGING_URL }}
 
 defaults:
     run:
@@ -85,7 +85,7 @@ jobs:
         needs: [code-analysis]
         environment:
             name: dwaves-website-staging
-            url: ${{ env.DWAVES_STAGING_URL }}
+            url: https://dwaves-staging.tonfrere.fr
         runs-on: ubuntu-latest
         steps:
             - name: Checkout 😇
@@ -116,7 +116,7 @@ jobs:
               if: ${{ github.ref }} == 'refs/heads/staging'
               run: |-
                 export environment="${{ env.APP }}-${{ env.ENVIRONMENT }}"
-                export deploy_url=${{ env.DWAVES_STAGING_URL }}
+                export deploy_url=${{ env.STAGING_URL }}
                 gsutil rsync -R build/ gs://$deploy_url
                 echo "Deployed to $environment environment: $deploy_url"
 
