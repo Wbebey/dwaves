@@ -69,6 +69,6 @@ model MonthlyListening {
 
   artist User @relation("ArtistMonthlyListening", fields: [artistId], references: [id])
 
-  date       DateTime
+  date       DateTime @default(now())
   listenings Int
 }
