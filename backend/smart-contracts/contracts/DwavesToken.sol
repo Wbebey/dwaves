@@ -10,11 +10,11 @@ contract DwavesToken is ERC20, ERC20Burnable, AccessControl {
     string constant SYMBOL = "VIBES";
     uint8 constant DECIMALS = 18;
     uint256 constant INITIAL_SUPPLY = 300_000_000 * 10**DECIMALS;
-    bytes32 constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    constructor(address minter) ERC20(NAME, SYMBOL) {
+    constructor() ERC20(NAME, SYMBOL) {
         _mint(msg.sender, INITIAL_SUPPLY);
-        _setupRole(MINTER_ROLE, minter);
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
     function batchMint(address[] calldata to_list, uint256[] calldata amounts)

@@ -10,7 +10,7 @@ const main = async () => {
 
   console.log(`Deploying ${tokenName}Token...`)
 
-  const token = await Token.deploy(contractOwner.address)
+  const token = await Token.deploy()
   await token.deployed()
 
   console.log(`${tokenName}Token deployed to: ${token.address}`)
