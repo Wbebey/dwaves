@@ -1,0 +1,56 @@
+name: Test & Analyse - Dwaves-smart-contracts
+
+on:
+  push:
+    branches: 
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+      - release/*
+    paths:
+      - backend/smart-contracts/**
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - staging
+    paths:
+      - backend/smart-contracts/**
+
+env:
+    APP: dwaves-smart-contracts
+    PROJECT_DIRECTORY: backend/smart-contracts
+    DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }} 
+    SONAR_PROJECT_BASE_DIR: backend/smart-contracts/
+    SONAR_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_SMART_CONTRACTS }}
+    SONAR_PROJECT_KEY: ${{ secrets.DWAVES_SMART_CONTRACTS_PROJECT_KEY }}
+    NODE_VERSION: 16.x
+    GCP_SA_KEY: ${{ secrets.TF_SA }}
+    GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
+
+defaults:
+  run:
+    working-directory: "backend/smart-contracts"
+
+jobs:
+  code-analysis:
+    name: Code Analysis
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      - name: SonarCloud Scan
+        uses: ./.github/actions/sonarcloud
+
+      - name: Discord notification on success
+        if: success()
+        uses: ./.github/actions/discord/notification-on-success
+
+      - name: Discord notification on failure
+        if: failure()
+        uses: ./.github/actions/discord/notification-on-failure

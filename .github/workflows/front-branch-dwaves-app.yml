@@ -1,4 +1,4 @@
-name: TAB - Dwaves-app  
+name: Test & Analyse - Dwaves-app  
 
 on:
     push:
