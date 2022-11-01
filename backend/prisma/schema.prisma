@@ -65,10 +65,11 @@ model Genre {
 }
 
 model MonthlyListening {
-  artistId Int @id
+  id Int @id @default(autoincrement())
 
   artist User @relation("ArtistMonthlyListening", fields: [artistId], references: [id])
 
+  artistId   Int
   date       DateTime @default(now())
   listenings Int
 }
