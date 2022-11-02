@@ -1,7 +1,7 @@
 import "../Styles/Player.scss"
 import logoDeep from '../Images/logo-deep.png'
 import {AnimateBulles} from "../Components/AnimationBulles"
-import {NavPlayerReact} from "../Components/NavPlayerReact";
+import {PlayerReact} from "../Components/PlayerReact";
 import { useEffect, useRef, useState } from "react";
 
 import datasong from '../Musics/datasongs'
@@ -38,7 +38,7 @@ export const Player = () => {
             <img className="logo-player" src={logoDeep} alt="" />
             <div className="blur-effect">
                 <audio src={currentSong.Src} ref={audioElmt} onTimeUpdate={onPlaying}/>
-                <NavPlayerReact 
+                <PlayerReact 
                     audioElmt={audioElmt}
                     isPlaying={isPlaying}
                     setIsPlaying={setIsPlaying}

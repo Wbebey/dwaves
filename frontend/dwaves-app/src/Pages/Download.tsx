@@ -1,11 +1,11 @@
 import "../Styles/Explorer.scss"
 
 import { Sidebar } from '../Components/Sidebar'
-import { ContentPlaylist } from '../Components/ContentPlaylist'
+import { Input } from '../Components/Download'
 
 
 
-export const Explorer = () => {
+export const Download = () => {
 
 
     return (
@@ -13,12 +13,9 @@ export const Explorer = () => {
             <section className="container-app">
                 <div className="contain-explorer">
                     <Sidebar />
-                    <ContentPlaylist />
+                    <Input />
                 </div>
             </section>
         </section>
     )
 }
-
-
-
