@@ -1,5 +1,5 @@
 import { HttpFunction } from '@google-cloud/functions-framework'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../../generated/client'
 
 export const payArtists: HttpFunction = async (req, res) => {
   const prisma = new PrismaClient()
