@@ -3,9 +3,8 @@
 .contain-download {
 
     background-color: azure;
-    margin: 0 15%;
+    margin: 0 0 0 10px;
     border-radius: 5px;
-
     .header{
 
         @extend .flex-row-nowrap;
@@ -41,7 +40,7 @@
         }
     }
     .content{
-        padding: 5% 5%;
+        /* padding: 5% 5%; */
         .form-file {
             display: flex;
             flex-direction: column;

@@ -1,0 +1,89 @@
+@import '../../App.scss';
+
+.contain-banner{
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    outline-style:  solid $dark;
+
+    .background-image{
+        z-index: 0;
+        background-image: url('http://localhost:3000/playlist1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 8px;
+    }
+
+    .background-blur{
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.55);
+        border-radius: 8px;
+        backdrop-filter: blur(8px);
+    }
+
+    > * {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .content-playlist{
+        @extend .flex-row-nowrap;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        color: black;
+        padding: 1% 2.5%;
+        .left{
+            width: 85%;
+            position: relative;
+            h1{
+                font-size: 3em;
+                font-weight: bold;
+            }
+        }
+        .right{
+            width: 15%;
+            height: 100%;
+            position: relative;
+            .img {
+                width : 150px;
+                position: absolute; 
+                border: 2px solid $dark;
+                &.two{
+                    left: 10%;
+                }
+                &.one{
+                    left: 20%;
+                }
+            }
+        }
+    }
+
+    .banner-pagination{
+        width: 95%;
+        height: 8px;
+        bottom: 30px;
+        left: 0;
+        background: #191A24;
+        border-radius: 8px;
+        margin: 0 2.5%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        .step{
+            border-radius: 8px;
+        }
+        .step:nth-child(2){
+                        background-color: blue;
+                        border-inline: 2px solid white;
+                        border-radius: 8px;
+                    }
+    }
+
+}
+

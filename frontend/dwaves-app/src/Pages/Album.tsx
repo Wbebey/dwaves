@@ -1,24 +1,19 @@
 import "../Styles/Explorer.scss"
 
 import { Sidebar } from '../Components/Sidebar'
-import { ContentPlaylist } from '../Components/ContentPlaylist'
+import { ContentAlbum } from "../Components/ContentAlbum";
 
-
-
-export const Explorer = () => {
-
+export const Album = () => {
 
     return (
-        <section style={{ color: 'black', height: '65%' }}>
+        <section style={{ color: 'black', height: window.innerHeight }}>
             <section className="container-app">
                 <div className="contain-explorer">
                     <Sidebar />
-                    <ContentPlaylist />
+                    <ContentAlbum/>
                 </div>
             </section>
         </section>
     )
 }
-
-
 

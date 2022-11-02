@@ -1,0 +1,46 @@
+@import '../../App.scss';
+
+.aside{
+    width: 15%;
+    height: 100%;
+    margin-left: 20px;
+    background-color: white;
+    padding: 8px;
+    border-radius: 8px;
+    h3 {
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+    .overflow-x {
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        height: 80%;
+        overflow-x: scroll;
+        -ms-overflow-style: none;
+        overflow: -moz-scrollbars-none;
+    }
+    .card-aside{
+        &:hover {
+            background-color: $dark;
+            color: white;
+        }
+        width: 100%;
+        height: 64px;
+        @extend .flex-row-nowrap;
+        padding: 8px;
+        border-radius: 4px;
+        img {
+            display: block;
+            width: 48px;
+            height: auto;
+            margin-right: 5px;
+        }
+        .text{
+            text-align: right;
+            p {
+                font-size: 0.5em;
+            }
+        }
+    }
+}
