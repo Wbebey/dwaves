@@ -1,12 +1,13 @@
 import { AddCircle, Home2, MusicFilter, Setting2 } from "iconsax-react"
-
+import { Link } from "react-router-dom"
+import datasongs from '../Musics/datasongs'
 
 export const Sidebar = () => {
     return (
-        <div className="sidebar">
-            <ul className="menu bg-white p-2">
+        <aside className="sidebar">
+            <ul style={{ height: '100%' }} className="menu bg-white p-2">
                 <li>
-                    <a className="py-0">
+                    <Link  to={""} className="py-0">
                         <div className="avatar">
                             <div className="w-10 rounded-full">
                                 <img src="https://placeimg.com/192/192/people" />
@@ -15,16 +16,16 @@ export const Sidebar = () => {
                         <p>
                             Item
                         </p>
-                    </a>
+                    </Link>
                 </li>
                 <div className="divider m-0" />
                 <li>
-                    <a>
+                    <Link  to={"/"}>
                         <Home2 className="w-10 h-10" />
                         <p>
                             Item
                         </p>
-                    </a>
+                    </Link>
                 </li>
                 <li>
                     <a>
@@ -35,96 +36,35 @@ export const Sidebar = () => {
                     </a>
                 </li>
                 <li>
-                    <a>
+                    <Link  to={"/download"}>
                         <AddCircle className="w-10 h-10" />
                         <p>
                             Item
                         </p>
-                    </a>
+                    </Link>
                 </li>
                 <div className="divider m-0" />
-                <li>
-                    <a>
-                        <div className="avatar">
-                            <div className="w-10 rounded">
-                                <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>
+                {datasongs.map(song =>
+                    <li>
+                        <Link to={"/album"}>
+                            <div className="avatar">
+                                <div className="w-10 rounded">
+                                    <img src={process.env.REACT_APP_URL + 'stamina1.jpg'} />
+                                </div>
                             </div>
-                        </div>
-                        <p>
-                            Item
-                        </p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <div className="avatar">
-                            <div className="w-10 rounded">
-                                <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>
-                            </div>
-                        </div>
-                        <p>
-                            Item
-                        </p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <div className="avatar">
-                            <div className="w-10 rounded">
-                                <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>
-                            </div>
-                        </div>
-                        <p>
-                            Item
-                        </p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <div className="avatar">
-                            <div className="w-10 rounded">
-                                <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>
-                            </div>
-                        </div>
-                        <p>
-                            Item
-                        </p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <div className="avatar">
-                            <div className="w-10 rounded">
-                                <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>
-                            </div>
-                        </div>
-                        <p>
-                            Item
-                        </p>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <div className="avatar">
-                            <div className="w-10 rounded">
-{/*                                 <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>*/}                            
-                            </div>
-                        </div>
-                        <p>
-                            Item
-                        </p>
-                    </a>
-                </li>
-                <div className="divider m-0" />
-                <li>
+                            <p>
+                                Item
+                            </p>
+                        </Link>
+                    </li>
+                )}
+                <li style={{position: 'absolute', bottom: '4%'}}>
                     <a>
                         <Setting2 className="w-10 h-10" />
-                        <p>
-                            Item
-                        </p>
                     </a>
                 </li>
             </ul>
-        </div>
+
+        </aside>
     )
 }

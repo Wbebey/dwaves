@@ -4,12 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
-$dark : #3C4A68;
+$dark : #191A24;
 $primary : #33E0D6;
 
 .App {
     background-color: $dark;
-    overflow-x: hidden;
 }
 
 .flex-row-nowrap {
@@ -22,3 +21,8 @@ $primary : #33E0D6;
     width: 58px;
     height: 58px;
 }
+
+img {
+    border-radius: 4px;
+}
+
