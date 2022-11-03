@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
-import { PrismaClient } from '../../generated/client'
+import { PrismaClient } from '../../db/generated/client'
 
 dotenv.config()
 
