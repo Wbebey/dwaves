@@ -1,2 +1,59 @@
-@import '../App.scss'
+@import '../App.scss';
+
+.content-album{
+    padding-right: 5px; 
+    border-radius: 4px; 
+    margin-left: 16px; 
+    background: white; 
+    width: 100%;
+    height: 100%;
+    .head {
+        @extend .flex-row-nowrap;
+        padding: 7px;
+        width: 100%;
+        height: 10%;
+        .title {
+            @extend .flex-row-nowrap;
+            width: 90%;
+            img {
+                width: 55px;
+                height: 55px;
+            }
+            h3 {
+                font-weight: bold;
+                font-size: 2.5em;
+                margin-left: 5px;
+            }
+        }
+    }
+    .list-song {
+        width: 100%;
+        height: 60%;
+        .song-li{
+            @extend .flex-row-nowrap;
+            margin-top: 10px; 
+            padding: 5px 0; 
+            width: 100%; 
+            height: 12%;
+            .song-li-info{
+                width: 85%;
+                height: 100%;
+                h4 {
+                    font-weight: bold;
+                    font-size: 1.5em;
+                }
+            }
+            .song-li-action{
+                @extend .flex-row-nowrap;
+                justify-content: space-around; 
+                width: 10%; 
+                margin: 10px;
+                > svg {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+        }
+    }
+}
 
