@@ -4,8 +4,11 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "rootDir": "jobs",
-    "outDir": "build"
+    "outDir": "build",
+    "resolveJsonModule": true,
+    "composite": true
   },
-  "exclude": ["smart-contracts"]
+  "include": [
+    "abi/*.json"
+  ]
 }
