@@ -7,6 +7,9 @@
     "strict": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "outDir": "build"
-  }
+    "rootDir": "src",
+    "outDir": "build",
+    "resolveJsonModule": true
+  },
+  "references": [{ "path": "../" }]
 }
