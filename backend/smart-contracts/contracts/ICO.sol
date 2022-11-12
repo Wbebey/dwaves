@@ -8,8 +8,9 @@ contract ICO {
     using SafeMath for uint256;
 
     DwavesToken token;
-    uint256 rate;
     address payable wallet;
+    uint256 rate;
+    uint256 cap;
     uint256 weiRaised;
 
     event TokenPurchase(
@@ -20,16 +21,19 @@ contract ICO {
     );
 
     constructor(
-        uint256 _rate,
+        DwavesToken _token,
         address payable _wallet,
-        DwavesToken _token
+        uint256 _rate,
+        uint256 _cap
     ) {
-        require(_rate > 0);
         require(_wallet != address(0));
+        require(_rate > 0);
+        require(_cap > 0);
 
-        rate = _rate;
-        wallet = _wallet;
         token = _token;
+        wallet = _wallet;
+        rate = _rate;
+        cap = _cap;
     }
 
     receive() external payable {
@@ -41,6 +45,7 @@ contract ICO {
 
         require(_investor != address(0));
         require(weiAmount != 0);
+        require(weiRaised.add(weiAmount) <= cap);
 
         uint256 tokens = weiAmount.mul(rate);
         weiRaised = weiRaised.add(weiAmount);
@@ -48,5 +53,9 @@ contract ICO {
         token.transfer(_investor, tokens);
         emit TokenPurchase(msg.sender, _investor, weiAmount, tokens);
         wallet.transfer(weiAmount);
+    }
+
+    function capReached() external view returns (bool) {
+        return weiRaised >= cap;
     }
 }
