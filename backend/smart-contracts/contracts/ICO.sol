@@ -2,10 +2,14 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import {DwavesToken} from "./DwavesToken.sol";
 
-contract ICO {
+contract ICO is Ownable {
     using SafeMath for uint256;
+
+    mapping(address => uint256) public contributions;
+    mapping(address => uint256) public caps;
 
     DwavesToken token;
     address payable wallet;
@@ -55,12 +59,34 @@ contract ICO {
         buyTokens(msg.sender);
     }
 
+    function capReached() external view returns (bool) {
+        return weiRaised >= cap;
+    }
+
+    function hasClosed() external view returns (bool) {
+        return block.timestamp > closingTime;
+    }
+
+    function setUserCap(address _investor, uint256 _cap) external onlyOwner {
+        caps[_investor] = _cap;
+    }
+
+    function setGroupCap(address[] calldata _investors, uint256 _cap)
+        external
+        onlyOwner
+    {
+        for (uint256 i = 0; i < _investors.length; i++) {
+            caps[_investors[i]] = _cap;
+        }
+    }
+
     function buyTokens(address _investor) public payable onlyWhileOpen {
         uint256 weiAmount = msg.value;
 
         require(_investor != address(0));
         require(weiAmount != 0);
         require(weiRaised.add(weiAmount) <= cap);
+        require(contributions[_investor].add(weiAmount) <= caps[_investor]);
 
         uint256 tokens = weiAmount.mul(rate);
         weiRaised = weiRaised.add(weiAmount);
@@ -68,13 +94,5 @@ contract ICO {
         token.transfer(_investor, tokens);
         emit TokenPurchase(msg.sender, _investor, weiAmount, tokens);
         wallet.transfer(weiAmount);
-    }
-
-    function capReached() external view returns (bool) {
-        return weiRaised >= cap;
-    }
-
-    function hasClosed() external view returns (bool) {
-        return block.timestamp > closingTime;
     }
 }
