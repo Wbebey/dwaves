@@ -8,19 +8,19 @@ import {
 
 import { Loader } from './Components/Loader'
 import { ExploPlayer } from './Components/ExploPlayer';
+import { Sidebar } from './Components/Sidebar';
 
 import { Player } from './Pages/Player'
 import { Explorer } from './Pages/Explorer'
 import { Album } from './Pages/Album'
 import { Download } from './Pages/Download'
-
+import { ModalLogin } from './Pages/Login'
 
 import datasong from './Musics/datasongs';
 
 function App() {
 
   const [loader, setLoader] = useState(true)
-
   const [songs, setSongs] = useState(datasong)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentSong, setCurrentSong] = useState(datasong[0])
@@ -53,7 +53,7 @@ function App() {
   })
 
   return loader ? (<Loader />) : (
-    <section style={{ color: 'black', height: window.innerHeight }}>
+    <section style={{ color: 'black', height: window.innerHeight}}>
       <audio src={currentSong.Src} ref={audioElmt} onTimeUpdate={onPlaying} />
       <ExploPlayer
         audioElmt={audioElmt}
@@ -65,18 +65,32 @@ function App() {
         setSongs={setSongs}
       />
 
+      <section style={{ color: 'black', height: '75%' }}>
+        <section className="container-app">
+          <div className="contain-explorer">
+            <Router>
+              <Sidebar />
+              {/* A <Routes> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+              <Routes>
+                <Route path="/" element={<Explorer />} />
+                <Route path="/album" element={<Album />} />
+                <Route path="/player" element={<Player />} />
+                <Route path="/download" element={<Download />} />
+                <Route path="/login" element={<Explorer />} />
+              </Routes>
+            </Router>
+          </div>
+        </section>
+      </section>
       <Router>
         {/* A <Routes> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Routes>
-          <Route path="/" element={<Explorer />} />
-          <Route path="/album" element={<Album />} />
-          <Route path="/player" element={<Player />} />
-          <Route path="/download" element={<Download />} />
-          {/* <Route path="/app/test" element={<Explorer/>} /> */}
-          {/* <Route path="/app/test" element={</>} /> */}
+          <Route path="/login" element={<ModalLogin />} />
         </Routes>
       </Router>
+
     </section>
   )
 }

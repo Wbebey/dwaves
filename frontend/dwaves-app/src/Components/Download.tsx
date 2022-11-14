@@ -56,7 +56,7 @@ export const Input = () => {
         },[]) */
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%', height: window.innerHeight }}>
+        <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%'}}>
             <section className="contain-download">
                 <div className="header">
                     <div id="contain-title" className="flex row nowrap">

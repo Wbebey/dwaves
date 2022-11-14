@@ -1,26 +1,37 @@
-import { AddCircle, Home2, MusicFilter, Setting2 } from "iconsax-react"
+import { useState } from 'react';
+import { AddCircle, Home2, MusicFilter, Setting2, User } from "iconsax-react"
 import { Link } from "react-router-dom"
 import datasongs from '../Musics/datasongs'
 
 export const Sidebar = () => {
+
+    // Temporary this value will be stored in the token
+    const [connected, setConnected] = useState(false)
+
     return (
         <aside className="sidebar">
             <ul style={{ height: '100%' }} className="menu bg-white p-2">
                 <li>
-                    <Link  to={""} className="py-0">
-                        <div className="avatar">
-                            <div className="w-10 rounded-full">
-                                <img src="https://placeimg.com/192/192/people" />
+                    {connected ?
+                        <Link to={""} className="py-0">
+                            <div className="avatar">
+                                <div className="w-10 rounded-full">
+                                    <img src="https://placeimg.com/192/192/people" />
+                                </div>
                             </div>
-                        </div>
-                        <p>
-                            Item
-                        </p>
-                    </Link>
+                            <p>
+                                Item
+                            </p>
+                        </Link>
+                        :
+                        <Link to={"login"} className="py-0">
+                            <User className='mx-auto' />
+                        </Link>
+                    }
                 </li>
                 <div className="divider m-0" />
                 <li>
-                    <Link  to={"/"}>
+                    <Link to={"/"}>
                         <Home2 className="w-10 h-10" />
                         <p>
                             Item
@@ -36,7 +47,7 @@ export const Sidebar = () => {
                     </a>
                 </li>
                 <li>
-                    <Link  to={"/download"}>
+                    <Link to={"/download"}>
                         <AddCircle className="w-10 h-10" />
                         <p>
                             Item
@@ -58,7 +69,7 @@ export const Sidebar = () => {
                         </Link>
                     </li>
                 )}
-                <li style={{position: 'absolute', bottom: '4%'}}>
+                <li style={{ position: 'absolute', bottom: '4%' }}>
                     <a>
                         <Setting2 className="w-10 h-10" />
                     </a>
