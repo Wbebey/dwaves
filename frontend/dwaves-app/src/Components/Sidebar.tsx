@@ -1,22 +1,24 @@
-import { useState } from 'react';
 import { AddCircle, Home2, MusicFilter, Setting2, User } from "iconsax-react"
 import { Link } from "react-router-dom"
 import datasongs from '../Musics/datasongs'
 
-export const Sidebar = () => {
+interface Props {
+    displayModal: (e: any) => void,
+    connected: boolean,
+    setConnected: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-    // Temporary this value will be stored in the token
-    const [connected, setConnected] = useState(false)
+export const Sidebar: React.FC<Props> = ({ displayModal, connected, setConnected }) => {
 
     return (
         <aside className="sidebar">
             <ul style={{ height: '100%' }} className="menu bg-white p-2">
                 <li>
                     {connected ?
-                        <Link to={""} className="py-0">
+                        <Link to={"/profil"} className="py-0">
                             <div className="avatar">
                                 <div className="w-10 rounded-full">
-                                    <img src="https://placeimg.com/192/192/people" />
+                                    <img src="https://placeimg.com/192/192/people" alt='' />
                                 </div>
                             </div>
                             <p>
@@ -24,43 +26,45 @@ export const Sidebar = () => {
                             </p>
                         </Link>
                         :
-                        <Link to={"login"} className="py-0">
+                        <div onClick={(e) => { displayModal(e) }} className="h-10 py-0">
                             <User className='mx-auto' />
-                        </Link>
+                        </div>
                     }
                 </li>
                 <div className="divider m-0" />
                 <li>
                     <Link to={"/"}>
-                        <Home2 className="w-10 h-10" />
+                        <Home2 className="w-10 h-10 mx-auto" />
                         <p>
                             Item
                         </p>
                     </Link>
                 </li>
                 <li>
-                    <a>
+                    <div>
                         <MusicFilter className="w-10 h-10" />
-                        <p>
-                            Item
-                        </p>
-                    </a>
+                    </div>
                 </li>
-                <li>
-                    <Link to={"/download"}>
-                        <AddCircle className="w-10 h-10" />
-                        <p>
-                            Item
-                        </p>
-                    </Link>
-                </li>
+                    {
+                        connected ?
+                            <li>
+                                <Link to={"/download"}>
+                                    <AddCircle className="w-10 h-10" />
+                                    <p>
+                                        Item
+                                    </p>
+                                </Link>
+                            </li>
+                            :
+                            <div />
+                    }
                 <div className="divider m-0" />
                 {datasongs.map(song =>
-                    <li>
+                    <li key={song.Title}>
                         <Link to={"/album"}>
-                            <div className="avatar">
-                                <div className="w-10 rounded">
-                                    <img src={process.env.REACT_APP_URL + 'stamina1.jpg'} />
+                            <div className="avatar mx-auto">
+                                <div className="w-12 rounded">
+                                    <img src={process.env.REACT_APP_URL + 'stamina1.jpg'} alt='' />
                                 </div>
                             </div>
                             <p>
@@ -70,9 +74,9 @@ export const Sidebar = () => {
                     </li>
                 )}
                 <li style={{ position: 'absolute', bottom: '4%' }}>
-                    <a>
+                    <div>
                         <Setting2 className="w-10 h-10" />
-                    </a>
+                    </div>
                 </li>
             </ul>
 

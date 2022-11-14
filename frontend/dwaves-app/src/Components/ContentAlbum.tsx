@@ -28,7 +28,7 @@ export const ContentAlbum = () => {
             <ul className='list-song'>
                 {
                     datasongs.map((song, i) =>
-                        <li className='song-li'>
+                        <li key={song.Title} className='song-li'>
                             <div className="avatar placeholder">
                                 <div className="text-neutral-content rounded-full w-10">
                                     <span className="text-xl">0{i + 1}</span>
