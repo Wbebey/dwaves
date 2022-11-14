@@ -3,20 +3,20 @@ import { ArrowSwapHorizontal, Previous, Play, Pause, Next, ArrowRotateLeft, Hear
 import { useRef } from "react"
 
 interface Props {
-    audioElmt: any,
+    audioElmt: React.RefObject<HTMLAudioElement>,
     isPlaying: boolean,
-    setIsPlaying: any,
+    setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>,
     currentSong: any,
-    setCurrentSong: any,
+    setCurrentSong: React.Dispatch<React.SetStateAction<any>>,
     songs: any,
-    setSongs: any,
+    setSongs: React.Dispatch<React.SetStateAction<any>>,
 }
 
 export const ExploPlayer: React.FC<Props> = ({ audioElmt, isPlaying, setIsPlaying, currentSong, setCurrentSong, songs, setSongs }) => {
 
     const PlayPause = () => {
         setIsPlaying(!isPlaying)
-        audioElmt.current.play()
+        audioElmt.current!.play()
     }
 
     let index = songs.findIndex((x: { Title: string }) => x.Title == currentSong.Title)
@@ -39,7 +39,7 @@ export const ExploPlayer: React.FC<Props> = ({ audioElmt, isPlaying, setIsPlayin
             setCurrentSong(songs[index - 1])
             index = index - 1
         }
-        audioElmt.current.currentTime = 0
+        audioElmt.current!.currentTime = 0
     }
 
     const handleNext = () => {
@@ -50,11 +50,11 @@ export const ExploPlayer: React.FC<Props> = ({ audioElmt, isPlaying, setIsPlayin
             setCurrentSong(songs[index + 1])
             index = index + 1
         }
-        audioElmt.current.currentTime = 0
+        audioElmt.current!.currentTime = 0
     }
 
     return (
-        <div hidden id="contain-top-player">
+        <div id="contain-top-player">
             <div className="player-bar">
                 <div id="contain-left-bar" className="flex row nowrap">
                     <img src={currentSong.Cover} alt={currentSong.Title} />
