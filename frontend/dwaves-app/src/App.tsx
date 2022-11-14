@@ -24,10 +24,16 @@ function App() {
   const [songs, setSongs] = useState(datasong)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentSong, setCurrentSong] = useState(datasong[0])
+  const [loginDisplay, setLoginDisplay] = useState(false)
+  // Temporary this value will be stored in the token
+  const [connected, setConnected] = useState(false)
 
   const audioElmt = useRef<HTMLAudioElement>(null) ?? someOtherData()
 
   useEffect(() => {
+    setTimeout(() => {
+      setLoader(false)
+    }, 3000)
 
     if (isPlaying) {
       audioElmt.current?.play()
@@ -46,14 +52,21 @@ function App() {
 
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoader(false)
-    }, 3000)
-  })
+  const displayModal = (e: any) => {
+    switch (loginDisplay) {
+      case true:
+        setLoginDisplay(false)
+        break
+      case false:
+        setLoginDisplay(true)
+        break
+      default:
+        break
+    }
+  }
 
   return loader ? (<Loader />) : (
-    <section style={{ color: 'black', height: window.innerHeight}}>
+    <section style={{ color: 'black', height: window.innerHeight }}>
       <audio src={currentSong.Src} ref={audioElmt} onTimeUpdate={onPlaying} />
       <ExploPlayer
         audioElmt={audioElmt}
@@ -69,7 +82,7 @@ function App() {
         <section className="container-app">
           <div className="contain-explorer">
             <Router>
-              <Sidebar />
+              <Sidebar displayModal={displayModal} connected={connected} setConnected={setConnected} />
               {/* A <Routes> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
               <Routes>
@@ -77,20 +90,18 @@ function App() {
                 <Route path="/album" element={<Album />} />
                 <Route path="/player" element={<Player />} />
                 <Route path="/download" element={<Download />} />
-                <Route path="/login" element={<Explorer />} />
+                <Route path="/user" element={<div />} />
               </Routes>
             </Router>
           </div>
         </section>
       </section>
-      <Router>
-        {/* A <Routes> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Routes>
-          <Route path="/login" element={<ModalLogin />} />
-        </Routes>
-      </Router>
-
+      {
+        loginDisplay ?
+          <ModalLogin displayModal={displayModal} />
+          :
+          <div />
+      }
     </section>
   )
 }
