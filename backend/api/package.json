@@ -4,7 +4,7 @@
   "description": "",
   "main": "build/server.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -b",
     "start": "node build/server.js",
     "dev": "tsnd --respawn --transpile-only src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
