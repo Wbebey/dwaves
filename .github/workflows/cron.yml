@@ -30,7 +30,7 @@ jobs:
         working-directory: ${{ env.DATABASE_DIRECTORY }}
 
       - name: Retrieve environment for jobs
-        run: echo "{{ env.JOBS_DIRECTORY }}" > .env
+        run: echo "{{ env.ULTIMATE_ENV }}" > .env
         working-directory: ${{ env.JOBS_DIRECTORY }}
 
       - name: Discord notification on failure
