@@ -1,0 +1,83 @@
+name: Script on a schedule
+
+on:
+  push:
+    paths:
+      - "backend/jobs/**"
+  schedule:
+    - cron: "0 0 1 * *" # Run at 00:00 on day-of-month 1
+
+env:
+  NODE_VERSION: 16.x
+  JOBS_DIRECTORY: backend/jobs
+  DATABASE_DIRECTORY: backend/db
+  ULTIMATE_ENV: ${{ secrets.ULTIMATE_ENV }}
+  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }}
+
+jobs:
+  environment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Retrieve environment for database
+        run: echo "{{ env.ULTIMATE_ENV }}" > .env
+        working-directory: ${{ env.DATABASE_DIRECTORY }}
+
+      - name: Retrieve environment for jobs
+        run: echo "{{ env.JOBS_DIRECTORY }}" > .env
+        working-directory: ${{ env.JOBS_DIRECTORY }}
+
+      - name: Discord notification on failure
+        if: failure()
+        uses: ./.github/actions/discord/notification-on-failure
+
+  database:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ${{ env.DATABASE_DIRECTORY }}
+
+      - name: Run script
+        run: npm run generate
+        working-directory: ${{ env.DATABASE_DIRECTORY }}
+
+      - name: Discord notification on failure
+        if: failure()
+        uses: ./.github/actions/discord/notification-on-failure
+
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ${{ env.JOBS_DIRECTORY }}
+
+      - name: Run script
+        run: npm start
+        working-directory: ${{ env.JOBS_DIRECTORY }}
+
+      - name: Discord notification on success
+        if: success()
+        uses: ./.github/actions/discord/notification-on-success
+
+      - name: Discord notification on failure
+        if: failure()
+        uses: ./.github/actions/discord/notification-on-failure
