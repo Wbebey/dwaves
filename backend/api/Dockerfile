@@ -1,26 +1,26 @@
 # --------------> The build image
-FROM node:16.18.1-bullseye-slim AS builder
+FROM node:16.18.1-bullseye-slim AS build
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends dumb-init
+    apt-get install -y --no-install-recommends \
+    dumb-init
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/api
 
-RUN cp -r ../db /usr/src/app/db
+COPY db /usr/src/app/db
+
+COPY api /usr/src/app/api/
 
 RUN npm ci --only=production --omit=dev --prefix /usr/src/app/db
 
-RUN npx prisma migrate deploy --prefix /usr/src/app/db
+RUN npm run deploy --prefix /usr/src/app/db
 
 RUN npm run generate --prefix /usr/src/app/db
 
-COPY . .
 
-RUN npm ci --only=production --omit=dev
+RUN npm install 
 
-RUN npm install -g typescript 
-
-RUN npm run build
+RUN npm run build 
 
 # --------------> The production image
 FROM node:16.17.0-bullseye-slim
@@ -29,15 +29,21 @@ ENV NODE_ENV production
 
 COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init
 
+WORKDIR /usr/src/app/api
+
+COPY api/package*.json /usr/src/app/api/
+
+RUN npm ci --only=production --omit=dev
+
 USER node
 
-WORKDIR /usr/src/app
+COPY --chown=node:node --from=build /usr/src/app/api/node_modules /usr/src/app/api/node_modules
 
-COPY --chown=node:node --from=build /usr/src/app/node_modules /usr/src/app/node_modules
+COPY --chown=node:node --from=build /usr/src/app/api/build /usr/src/app/api/build
 
-# COPY --chown=node:node . /usr/src/app
+COPY --chown=node:node --from=build /usr/src/app/api/client /usr/src/app/api/client
 
-COPY --chown=node:node --from=build build /usr/src/app
+COPY --chown=node:node --from=build /usr/src/app/api/.env /usr/src/app/api
 
 EXPOSE 8080
 
