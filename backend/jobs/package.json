@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "tsc -b",
-    "start": "functions-framework --source=build/payArtists.js --target=payArtists",
+    "build": "tsc",
+    "start": "node build/payArtists.js",
     "dev": "concurrently \"tsc -b -w\" \"nodemon --watch ./build/ --exec npm run start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
