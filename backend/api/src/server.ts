@@ -23,7 +23,7 @@ import fileUpload from 'express-fileupload'
 
 import {PrismaClient} from './../../db/generated/client'
 import {uploadCoverToIPFS, uploadMusicToIPFS} from './routes/postMusicToPinata';
-import {uploadMusicNFT} from "./routes/uploadMusicNFT";
+import {uploadMusicNFT, getMusicNFT} from "./routes/uploadMusicNFT";
 
 const prisma = new PrismaClient()
 
@@ -52,6 +52,14 @@ app.get('/uploadNFT', async (req: Request, res: Response) => {
 
     res.json("tkt tkt")
 })
+
+app.get('/getMusicNFT', async (req: Request, res: Response) => {
+
+    getMusicNFT()
+
+    res.json("tkt tkt get")
+})
+
 
 app.post('/postMusic', (req: any, res: Response) => {
 
