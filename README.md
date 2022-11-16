@@ -1,40 +1,43 @@
 # Dwaves 
-![staging](https://github.com/Wbebey/dwaves/workflows/tab-dwaves-app.yml/badge.svg?branch=feature/pipeline)
 
-## Dwaves-app
+## *Frontend*
+### Dwaves-app
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=coverage)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
 
-## Dwaves-website
+### Dwaves-website
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=coverage)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
 
-<p align="center">
-    <table>
-        <tr>
-            <td>Environment</td>
-            <td>Status</td>
-        </tr>
-        <tr>
-            <td>Staging</td>
-            <td><a href="https://github.com/Wbebey/dwaves/actions"><img src="https://github.com/Wbebey/dwaves/workflows/pipeline/badge.svg?branch=staging" /></td>
-        </tr>
-        <tr>
-            <td>Production</td>
-            <td><a href="https://github.com/Wbebey/dwaves/actions"><img src="https://github.com/Wbebey/dwaves/workflows/pipeline/badge.svg?branch=main" /></td>
-        </tr>
-    </table>
-</p>
+## *Backend*
+### Dwaves-api
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
 
-## About The Project
+### Dwaves-smart-contracts
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
+
+### Dwaves-jobs
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+
+# About The Project
 
 [DWAVES](https://dwaves.com) is a Web-3 streaming platform  built on top of a decentralized, distributed, scalable, and secure blockchain platform for the web, [ETHERUM](https://ethereum.org).
 
@@ -49,19 +52,37 @@ T-ESP-800-DWAVES-1
 
 ### Frontend
 
-- [ReatJS](https://fr.reactjs.org/) >= X.X.X
+- [NodeJs](https://nodejs.org/en/) >= 16.X
+- [ReatJS](https://fr.reactjs.org/) 
+- [NextJS](https://nextjs.org/)
+- [TailwindCSS](https://tailwindcss.com/)
 
 ### Backend
 
-- [XXX](https://www.XXX.net/) >= X.X.X
+- [NodeJs](https://nodejs.org/en/) >= 16.X
+- [ExpressJS](https://expressjs.com/fr/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Solidity](https://docs.soliditylang.org/en/v0.8.10/)
+- [Web3.js](https://web3js.readthedocs.io/en/v1.5.2/)
+- [Ethers.js](https://docs.ethers.io/v5/)
+- [OpenZeppelin](https://docs.openzeppelin.com/contracts/4.x/)
+- [Etherscan](https://etherscan.io/)
+- [Metamask](https://metamask.io/)
 
 ### Mobile
 
-- [XXX](https://www.XXX.net/) >= X.X.X
+- [Flutter](https://flutter.dev/)
+- [Dart](https://dart.dev/)
+- [Google Play](https://play.google.com/store/apps/details?id=com.dwaves.app)
+- [App Store](https://apps.apple.com/us/app/dwaves/id1581000000)
 
 ### Deployment
 
-- [XXX](https://www.XXX.com/) >= X.X.X
+- [Docker](https://www.docker.com/)
+- [Google Cloud](https://cloud.google.com/)
+- [Google Cloud Run](https://cloud.google.com/run)
+- [Google Cloud Storage](https://cloud.google.com/storage)
+- [Cloudflare](https://www.cloudflare.com/)
 
 
 
