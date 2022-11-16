@@ -4,9 +4,20 @@ import * as dotenv from 'dotenv'
 
 dotenv.config()
 
-const { ALCHEMY_API_KEY, DWAVES_DEPLOYER_PRIVATE_KEY } = process.env
+const {
+  ALCHEMY_API_KEY,
+  DWAVES_DEPLOYER_PRIVATE_KEY,
+  DWAVES_PAYER_PRIVATE_KEY,
+  DWAVES_BANK_PRIVATE_KEY,
+} = process.env
 
-if (!DWAVES_DEPLOYER_PRIVATE_KEY || !ALCHEMY_API_KEY) {
+const accounts = [
+  DWAVES_DEPLOYER_PRIVATE_KEY,
+  DWAVES_PAYER_PRIVATE_KEY,
+  DWAVES_BANK_PRIVATE_KEY,
+]
+
+if (!ALCHEMY_API_KEY || accounts.includes(undefined)) {
   console.error('💥 error loading env')
   process.exit(1)
 }
@@ -17,7 +28,7 @@ const config: HardhatUserConfig = {
   networks: {
     goerli: {
       url: `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
-      accounts: [DWAVES_DEPLOYER_PRIVATE_KEY],
+      accounts: accounts as string[],
     },
   },
 }
