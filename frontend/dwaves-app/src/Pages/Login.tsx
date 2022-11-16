@@ -6,7 +6,6 @@ interface Props {
     displayModal: (e: any) => void
 }
 
-
 export const ModalLogin: React.FC<Props> = ({ displayModal }) => {
     const [showLogin, setShowLogin] = useState(true)
 
@@ -14,7 +13,7 @@ export const ModalLogin: React.FC<Props> = ({ displayModal }) => {
         <div id='contain-modal'>
             <div id="modal">
                 <header>
-                    <img onClick={(e) => { displayModal(e) }} src={`${process.env.REACT_APP_URL}logo-dwaves.png`} alt="" />
+                    <img onClick={(e) => { displayModal(e) }} src={`http://localhost:3000/logo-dwaves.png`} alt="" />
                     <div className="tabs">
                         <div onClick={() => { setShowLogin(true) }} className={`tab tab-lg tab-lifted ${showLogin ? 'tab-active' : ''}`}>Login</div>
                         <div onClick={() => { setShowLogin(false) }} className={`tab tab-lg tab-lifted ${showLogin ? '' : 'tab-active'}`}>Register</div>

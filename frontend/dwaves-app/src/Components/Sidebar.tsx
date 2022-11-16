@@ -2,6 +2,8 @@ import { AddCircle, Home2, MusicFilter, Setting2, User } from "iconsax-react"
 import { Link } from "react-router-dom"
 import datasongs from '../Musics/datasongs'
 
+import { ConnectMetamask } from "./ConnectionMetamask"
+
 interface Props {
     displayModal: (e: any) => void,
     connected: boolean,
@@ -16,8 +18,8 @@ export const Sidebar: React.FC<Props> = ({ displayModal, connected, setConnected
                 <li>
                     {connected ?
                         <Link to={"/profil"} className="py-0">
-                            <div className="avatar">
-                                <div className="w-10 rounded-full">
+                            <div className="avatar mx-auto">
+                                <div className="w-12 rounded-full">
                                     <img src="https://placeimg.com/192/192/people" alt='' />
                                 </div>
                             </div>
@@ -45,26 +47,25 @@ export const Sidebar: React.FC<Props> = ({ displayModal, connected, setConnected
                         <MusicFilter className="w-10 h-10" />
                     </div>
                 </li>
-                    {
-                        connected ?
-                            <li>
-                                <Link to={"/download"}>
-                                    <AddCircle className="w-10 h-10" />
-                                    <p>
-                                        Item
-                                    </p>
-                                </Link>
-                            </li>
-                            :
-                            <div />
-                    }
+                {connected ?
+                    <li>
+                        <Link to={"/download"}>
+                            <AddCircle className="w-10 h-10 mx-auto" />
+                            <p>
+                                Item
+                            </p>
+                        </Link>
+                    </li>
+                    :
+                    <div />
+                }
                 <div className="divider m-0" />
                 {datasongs.map(song =>
                     <li key={song.Title}>
                         <Link to={"/album"}>
                             <div className="avatar mx-auto">
                                 <div className="w-12 rounded">
-                                    <img src={process.env.REACT_APP_URL + 'stamina1.jpg'} alt='' />
+                                    <img src={`${import.meta.env.VITE_APP_URL}stamina1.jpg`} alt='' />
                                 </div>
                             </div>
                             <p>
