@@ -1,20 +1,20 @@
 name: Test & Analyse - Dwaves-api
 
 on:
-  # push:
-  #   branches: 
-  #     - feature/*
-  #     - bugfix/*
-  #     - hotfix/*
-  #     - release/*
-  #   paths:
-  #     - backend/api/**
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - staging
+  push:
+    branches: 
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+      - release/*
     paths:
       - backend/api/**
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #   branches:
+  #     - staging
+  #   paths:
+  #     - backend/api/**
 
 env:
     APP: dwaves-api
@@ -34,7 +34,7 @@ defaults:
     working-directory: "backend/api"
 
 jobs:
-  ntegration-test:
+  integration-test:
     name: Integretion Test
     runs-on: ubuntu-latest
     steps:
