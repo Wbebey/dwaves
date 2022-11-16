@@ -16,7 +16,7 @@ async function main() {
     }
 
     // Writes the ABI and address to the Marketplace.json
-    fs.writeFileSync('./../abi/NFTMusic.json', JSON.stringify(data))
+    fs.writeFileSync('./../abi/NFTMusic2.json', JSON.stringify(data))
 }
 
 main()
