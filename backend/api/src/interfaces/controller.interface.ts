@@ -8,4 +8,5 @@ export interface IAppController extends IController {
 
 export interface IUserController extends IController {
   get: RequestHandler
+  getMonthlyListenings: RequestHandler
 }
