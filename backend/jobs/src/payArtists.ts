@@ -1,4 +1,3 @@
-// import { HttpFunction } from '@google-cloud/functions-framework'
 import { PrismaClient } from '../client'
 import ArtistPayer from './abi/ArtistPayer.json'
 import { Alchemy, Network } from 'alchemy-sdk'
@@ -94,7 +93,7 @@ const main = async () => {
     return
   }
 
-  const transaction = await artistPayer.payArtists(artistAddresses, listenings)
+  await artistPayer.payArtists(artistAddresses, listenings)
 }
 
 main()
