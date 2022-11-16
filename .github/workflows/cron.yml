@@ -74,7 +74,8 @@ jobs:
         run: echo "prisma client not found" && exit 1
 
       - name: Retrieve environment for jobs
-        run: echo "${{ env.ULTIMATE_ENV }}" > .env
+        run:  |
+          echo "${{ env.ULTIMATE_ENV }}" > .env
 
       - name: Retrieve prisma client
         run: mv ${{ GITHUB.WORKSPACE }}/${{ env.DATABASE_DIRECTORY }}/client ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}
@@ -91,6 +92,8 @@ jobs:
       - run: ls -al
 
       - run: cat .env
+
+      - run: echo "${{ env.ULTIMATE_ENV }}" | sed -e 's/\(.\)/\1 /g'
 
       - run: ls build/
 
