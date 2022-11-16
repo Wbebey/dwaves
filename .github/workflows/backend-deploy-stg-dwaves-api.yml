@@ -1,0 +1,129 @@
+name: Deploy - Dwaves-api
+
+on:
+  push:
+    branches: 
+      - staging
+    paths:
+      - backend/api/**
+
+env:
+    APP: dwaves-api
+
+    ENVIRONMENT: staging
+    NODE_VERSION: 16.x
+    BACKEND_DIRECTORY: backend
+    PROJECT_DIRECTORY: backend/api
+    DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }} 
+    SONAR_PROJECT_BASE_DIR: backend/api/
+    SONAR_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_API }}
+    SONAR_PROJECT_KEY: ${{ secrets.DWAVES_API_PROJECT_KEY }}
+    GCP_SA_KEY: ${{ secrets.TF_SA }}
+    GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
+    DOCKER_TAG: gcr.io/${{ secrets.DWAVES_PROJECT_ID }}/${{ env.APP }}:${{ github.sha }}
+
+defaults:
+  run:
+    working-directory: "backend/api"
+
+jobs:
+  integration-test:
+    name: Integretion Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      - name: Integration Tests 🏗
+        uses: ./.github/actions/frontend/integration-test
+
+      - name: Discord notification on failure
+        if: failure()
+        uses: ./.github/actions/discord/notification-on-failure
+
+  unit-test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      - name: Unit Test 🧪
+        uses: ./.github/actions/frontend/unit-test
+
+      - name: Discord notification on failure
+        if: failure()
+        uses: ./.github/actions/discord/notification-on-failure
+
+  code-analysis:
+    name: Code Analysis
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      pull-requests: write
+    needs: [integration-test, unit-test]
+    steps:
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      - name: SonarCloud Scan
+        uses: ./.github/actions/sonarcloud
+
+      - name: Discord notification on success
+        if: success()
+        uses: ./.github/actions/discord/notification-on-success
+
+      - name: Discord notification on failure
+        if: failure()
+        uses: ./.github/actions/discord/notification-on-failure
+
+  deploy:
+    name: Deploy to staging
+    needs: [code-analysis]
+    environment: dwaves-api-staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      - name: Discord notification ${{ env.ENVIRONMENT }} Deployment started
+        uses: ./.github/actions/discord/notification-on-start-deployment
+
+      - name: GCP authentification 🤑
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          service_account_key: ${{ env.GCP_SA_KEY }}
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build 🏗
+        run: |-
+          docker build . \
+            -f ${{ GITHUB.WORKSPACE }}/${{ env.PROJECT_DIRECTORY }}/Dockerfile \
+            -t ${{ env.DOCKER_TAG }}
+        working-directory: ${{ env.BACKEND_DIRECTORY }}
+
+      - name: Publish to Container registry 🛫
+        run: |-
+          echo "Pushing image ${DOCKER_TAG} to google cloud container registry..."
+          gcloud auth configure-docker --quiet
+          docker push ${{ env.DOCKER_TAG }}
+
+      # - name: Deploy to cloud run 🚀
+      #   run: |-
+      #     gcloud run deploy ${{ env.APP }} \
+      #       --image ${{ env.DOCKER_TAG }} \
+      #       --platform managed \
+      #       --region europe-west1 \
+      #       --allow-unauthenticated \
+      #       --memory 2G \
+      #       --timeout 300 \
+      #       --restart-on-failure \
+      #       --project ${{ env.GCP_PROJECT_ID }} 
+
