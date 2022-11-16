@@ -50,7 +50,7 @@ export const Input = () => {
 
 
 /*         useEffect(()=>{
-            axios.post(`http://localhost:3000/`, () => {
+            axios.post(`${import.meta.env.VITE_APP_URL}`, () => {
     
             })
         },[]) */
