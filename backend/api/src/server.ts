@@ -1,15 +1,18 @@
-import express, { Express, Request, Response } from 'express'
-import dotenv from 'dotenv'
-import { PrismaClient } from '../client'
+import express, { Request, Response } from 'express'
+import { PrismaClient } from '@prisma/client'
 
-dotenv.config()
+import config from './config'
+import DwavesToken from '@abi/DwavesToken.json'
 
-const app: Express = express()
-const { HOSTNAME, PORT } = process.env
+const { port, appName } = config
+
+const app = express()
 const prisma = new PrismaClient()
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server 🤯')
+  const ok = '👌OK'
+  console.log(`[${appName}]: ${ok}`)
+  res.json(ok)
 })
 
 app.get('/users', async (req: Request, res: Response) => {
@@ -17,6 +20,10 @@ app.get('/users', async (req: Request, res: Response) => {
   res.json(users)
 })
 
-app.listen(PORT, () => {
-  console.log(`⚡️[server]: Server is running at http://${HOSTNAME}:${PORT}`)
+app.get('/token', async (req: Request, res: Response) => {
+  res.json({ DwavesToken })
+})
+
+app.listen(port, () => {
+  console.log(`[${appName}]: ⚡️Server is running at port ${port}`)
 })

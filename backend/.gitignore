@@ -1,7 +1,5 @@
 node_modules/
 build/
-client/
-artifacts/
 
 *.env
 
