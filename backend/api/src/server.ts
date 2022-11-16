@@ -1,28 +1,13 @@
-import express, { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
+import express from 'express'
 
-import config from './config'
-import DwavesToken from '@abi/DwavesToken.json'
+import env from '@config/env.config'
+import appRouter from '@routers/app.router'
 
-const { port, appName } = config
+const { port, appName } = env
 
 const app = express()
-const prisma = new PrismaClient()
 
-app.get('/', (req: Request, res: Response) => {
-  const ok = '👌OK'
-  console.log(`[${appName}]: ${ok}`)
-  res.json(ok)
-})
-
-app.get('/users', async (req: Request, res: Response) => {
-  const users = await prisma.user.findMany()
-  res.json(users)
-})
-
-app.get('/token', async (req: Request, res: Response) => {
-  res.json({ DwavesToken })
-})
+app.use(appRouter)
 
 app.listen(port, () => {
   console.log(`[${appName}]: ⚡️Server is running at port ${port}`)
