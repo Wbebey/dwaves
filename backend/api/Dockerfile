@@ -11,6 +11,9 @@ COPY db /usr/src/app/db
 
 COPY api /usr/src/app/api/
 
+RUN cat .env
+RUN cat /usr/src/app/db/.env
+
 RUN npm ci --only=production --omit=dev --prefix /usr/src/app/db
 
 RUN npm run deploy --prefix /usr/src/app/db
