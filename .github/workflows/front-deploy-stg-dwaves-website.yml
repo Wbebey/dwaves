@@ -26,6 +26,7 @@ env:
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
+    FRONT_ENV: ${{ secrets.FRONT_ENV }}
     STAGING_URL: ${{ secrets.DWAVES_WEBSITE_STAGING_URL }}
 
 defaults:
@@ -104,6 +105,9 @@ jobs:
               uses: actions/setup-node@v3
               with:
                 node-version: ${{ env.NODE_VERSION }}
+
+            - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
+              run: echo "${{ env.FRONT_ENV }}" > .env
 
             - name: NPM install
               run: npm install
