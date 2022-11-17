@@ -10,3 +10,8 @@ export interface IUserController extends IController {
   get: RequestHandler
   getMonthlyListenings: RequestHandler
 }
+
+export interface IAlbumController extends IController {
+  get: RequestHandler
+  create: RequestHandler
+}
