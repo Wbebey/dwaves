@@ -17,7 +17,6 @@ RUN npm run deploy --prefix /usr/src/app/db
 
 RUN npm run generate --prefix /usr/src/app/db
 
-
 RUN npm install 
 
 RUN npm run build 
