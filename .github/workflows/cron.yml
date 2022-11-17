@@ -1,7 +1,7 @@
 name: Cron scheduled
 
 on:
-  push:
+  # push:
     # paths:
       # - "backend/jobs/**"
   schedule:
