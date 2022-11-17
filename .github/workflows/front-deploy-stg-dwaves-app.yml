@@ -104,11 +104,11 @@ jobs:
               run: echo "${{ env.FRONT_ENV }}" > .env
 
             - name: NPM install
-              run: npm ci --only=production
+              run: npm install
 
             - name: Build 🏗
               run: |-
-                npm run build
+                CI="false" npm run build
 
             - name: Deploy Staging 🚀
               if: ${{ github.ref }} == 'refs/heads/staging'
