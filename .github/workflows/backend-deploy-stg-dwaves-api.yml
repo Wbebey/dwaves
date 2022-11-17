@@ -3,7 +3,6 @@ name: Deploy - Dwaves-api
 on:
   push:
     branches: 
-      - feature/*
       - staging
     paths:
       - backend/api/**
