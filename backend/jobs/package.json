@@ -4,23 +4,22 @@
   "description": "",
   "scripts": {
     "build": "tsc",
-    "start": "node build/payArtists.js",
-    "dev": "concurrently \"tsc -b -w\" \"nodemon --watch ./build/ --exec npm run start\"",
+    "start": "node",
+    "script": "ts-node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "axios": "^1.1.3",
+    "dotenv": "^16.0.3"
+  },
   "devDependencies": {
     "@types/node": "^18.11.3",
     "alchemy-sdk": "^2.2.0",
-    "concurrently": "^7.5.0",
     "ethers": "^5.7.2",
-    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
-  },
-  "dependencies": {
-    "@google-cloud/functions-framework": "^3.1.2",
-    "dotenv": "^16.0.3"
   }
 }
