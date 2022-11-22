@@ -15,4 +15,7 @@ mobile/ @Bolrung @BryanSeychelles @FroggEater
 # precedence. When someone opens a pull request that only
 # modifies JS files, not the global owner(s) will be requested for a review.
 *.yml    @Wbebey
-*.yaml    @Wbebey
+*.yaml  @Wbebey
+*.tf       @Wbebey   
+*.md     @Wbebey
+Dockerfile @Wbebey
