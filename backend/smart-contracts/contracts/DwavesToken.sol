@@ -8,10 +8,11 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract DwavesToken is ERC20, ERC20Burnable, ERC20Capped, AccessControl {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    uint256 public immutable initial_supply = 4e8 * 10**super.decimals();
-
     string private constant _NAME = "Dwaves";
     string private constant _SYMBOL = "VIBES";
+
+    // initial_supply = 40% * VIBES_cap = 0.4 * 1e9 = 4e8 (* decimals)
+    uint256 public immutable initial_supply = 4e8 * 10**super.decimals();
     uint256 private immutable _cap = 1e9 * 10**super.decimals();
 
     constructor(address dwavesBank) ERC20(_NAME, _SYMBOL) ERC20Capped(_cap) {
