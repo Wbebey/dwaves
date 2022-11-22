@@ -26,29 +26,29 @@ describe('ArtistPayer', () => {
   let payerRole: string
 
   before(async () => {
-    const [_deployer, _payer, _bank, _artist1, _artist2] =
+    const [deployer_, payer_, bank_, artist1_, artist2_] =
       await ethers.getSigners()
-    deployer = _deployer
-    payer = _payer
-    bank = _bank
-    artistAddresses = [_artist1.address, _artist2.address]
+    deployer = deployer_
+    payer = payer_
+    bank = bank_
+    artistAddresses = [artist1_.address, artist2_.address]
 
-    const [_f1, _f2] = await Promise.all([
+    const [f1, f2] = await Promise.all([
       ethers.getContractFactory('DwavesToken', deployer),
       ethers.getContractFactory('ArtistPayer', deployer),
     ])
-    dwavesTokenFactory = _f1
-    artistPayerFactory = _f2
+    dwavesTokenFactory = f1
+    artistPayerFactory = f2
 
     dwavesToken = await dwavesTokenFactory.deploy(bank.address)
     await dwavesToken.deployed()
 
-    const [_decimals, _minterRole] = await Promise.all([
+    const [decimals_, minterRole_] = await Promise.all([
       dwavesToken.decimals(),
       dwavesToken.MINTER_ROLE(),
     ])
-    decimals = _decimals
-    minterRole = _minterRole
+    decimals = decimals_
+    minterRole = minterRole_
   })
 
   describe('When deploying the contract', () => {
@@ -58,12 +58,18 @@ describe('ArtistPayer', () => {
 
       payerRole = await artistPayer.PAYER_ROLE()
 
-      const [_rate] = await Promise.all([
+      const [rate_] = await Promise.all([
         artistPayer.rate(),
         dwavesToken.grantRole(minterRole, artistPayer.address),
         artistPayer.grantRole(payerRole, payer.address),
       ])
-      rate = _rate
+      rate = rate_
+    })
+
+    it('Has a valid rate', async () => {
+      const expectedRate = ethers.utils.parseUnits('0.06', decimals)
+      const rate = (await artistPayer.rate()).toString()
+      expect(rate).to.equal(expectedRate)
     })
 
     it("Allows payers to pay artists and emits a 'TokenPayments' event with the right arguments", async () => {
@@ -86,7 +92,7 @@ describe('ArtistPayer', () => {
       const payments = _artistPayer.payArtists(artistAddresses, [45345])
 
       await expect(payments).to.be.revertedWith(
-        'ArtistPayer: addresses and listenings do not have same length'
+        'ArtistPayer: addresses and listenings have different lengths'
       )
     })
 
