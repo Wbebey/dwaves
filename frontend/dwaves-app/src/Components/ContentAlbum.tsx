@@ -1,7 +1,7 @@
-import '../Styles/ContentAlbum.scss'
+import '../styles/ContentAlbum.scss'
 import { AddCircle, Back, Heart} from "iconsax-react"
 
-import datasongs from '../Musics/datasongs'
+import datasongs from '../songs/datasongs'
 import { Link } from 'react-router-dom'
 
 export const ContentAlbum = () => {

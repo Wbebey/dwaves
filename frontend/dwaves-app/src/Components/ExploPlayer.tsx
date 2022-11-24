@@ -1,4 +1,4 @@
-import "../Styles/Explorer.scss"
+import "../styles/Explorer.scss"
 import { ArrowSwapHorizontal, Previous, Play, Pause, Next, ArrowRotateLeft, HeartSlash, CloseSquare } from "iconsax-react"
 import { useRef } from "react"
 

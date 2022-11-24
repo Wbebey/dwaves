@@ -1,7 +1,7 @@
-import '../../Styles/Data Display/List.scss'
+import '../../styles/data/List.scss'
 import { SearchNormal1 } from "iconsax-react"
 
-import playlists from '../../Musics/playlist'
+import playlists from '../../songs/playlist'
 import { Link } from 'react-router-dom'
 
 export const List = () => {
