@@ -1,5 +1,5 @@
 import * as IconSax from "iconsax-react";
-import styles from "styles/shared/styles.module.scss";
+import styles from "styles/global/styles.module.scss";
 
 interface Props {
   icon: string;
