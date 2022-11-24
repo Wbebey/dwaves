@@ -2,7 +2,7 @@
 import { Back, DocumentUpload, MusicCircle } from "iconsax-react"
 import { ChangeEvent, /* useEffect, */ useState } from "react"
 import { useForm } from "react-hook-form"
-import "../Styles/Download.scss"
+import "../styles/Download.scss"
 
 type Single = {
     title: string

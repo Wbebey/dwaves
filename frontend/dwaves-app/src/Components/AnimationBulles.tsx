@@ -1,7 +1,7 @@
-import "../Styles/Player.scss"
+import "../styles/Player.scss"
 import { useEffect, useState } from 'react'
 
-import datasong from '../Musics/datasongs'
+import datasong from '../songs/datasongs'
 
 const dwavesBubble = <div className="bulle" />
 const userBubble = <div  className="bulle-user"><img className="avatar-bulles" src="https://via.placeholder.com/360x360" alt="placeholder" /></div>
