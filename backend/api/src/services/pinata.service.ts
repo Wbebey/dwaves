@@ -27,7 +27,6 @@ type PinataMetadata = {
 
 class PinataService implements IPinataService {
     pinFileToIPFS : (file: ReadStream, metadata: Metadata) => Promise<string> = async (file: ReadStream, metadata: Metadata) => {
-    //async function pinFileToIPFS(file: fs.ReadStream, metadata: Metadata) {
         const url = `${pinataApiHost}/pinning/pinFileToIPFS`
         //making axios POST request to Pinata ⬇️
         let data = new FormData();
@@ -37,24 +36,6 @@ class PinataService implements IPinataService {
             keyvalues: metadata
         });
         data.append('pinataMetadata', metadataPinata);
-
-        //pinataOptions are optional
-        const pinataOptions = JSON.stringify({
-            cidVersion: 0,
-            customPinPolicy: {
-                regions: [
-                    {
-                        id: 'FRA1',
-                        desiredReplicationCount: 1
-                    },
-                    {
-                        id: 'NYC1',
-                        desiredReplicationCount: 2
-                    }
-                ]
-            }
-        });
-        data.append('pinataOptions', pinataOptions);
 
         const res = await axios.post<PinataPinResponse>(url, data, {
             headers: {
@@ -67,8 +48,8 @@ class PinataService implements IPinataService {
         const coverCID = res.data.IpfsHash
         return coverCID
     }
-
-
 }
 
-export default PinataService
+const pinataService = new PinataService()
+
+export default pinataService
