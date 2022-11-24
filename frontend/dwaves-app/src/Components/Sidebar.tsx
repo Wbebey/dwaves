@@ -34,6 +34,12 @@ export const Sidebar: React.FC<Props> = ({ displayModal, connected, setConnected
                     }
                 </li>
                 <div className="divider m-0" />
+                {
+                    connected ? 
+                    <ConnectMetamask/>
+                    :
+                    <div/>
+                }               
                 <li>
                     <Link to={"/"}>
                         <Home2 className="w-10 h-10 mx-auto" />
