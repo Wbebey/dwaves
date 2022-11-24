@@ -26,7 +26,7 @@ function App() {
   const [currentSong, setCurrentSong] = useState(datasong[0])
   const [loginDisplay, setLoginDisplay] = useState(false)
   // Temporary this value will be stored in the token
-  const [connected, setConnected] = useState(false)
+  const [connected, setConnected] = useState(true)
 
   const audioElmt = useRef<HTMLAudioElement>(null) ?? someOtherData()
 
