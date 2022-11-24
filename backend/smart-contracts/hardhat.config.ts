@@ -1,6 +1,5 @@
 import { HardhatUserConfig, task } from 'hardhat/config'
 import '@nomicfoundation/hardhat-toolbox'
-// @ts-ignore
 import * as dotenv from 'dotenv'
 
 dotenv.config()
