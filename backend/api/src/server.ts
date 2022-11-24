@@ -7,7 +7,6 @@ import config from '@config/env.config'
 import appRouter from '@routers/app.router'
 import logger from '@config/logger.config'
 
-const { port, frontHost } = config
 import {
   errorLoggerMiddleware,
   requestLoggerMiddleware,
@@ -16,6 +15,8 @@ import {
   errorResponderMiddleware,
   invalidPathResponderMiddleware,
 } from '@middlewares/responder.middleware'
+
+const { port, frontHost } = config
 
 const app = express()
 app.disable('x-powered-by')
