@@ -26,7 +26,7 @@ describe('ArtistPayer', () => {
   let payerRole: string
 
   before(async () => {
-    const [deployer_, payer_, bank_, artist1_, artist2_] =
+    const [deployer_, payer_, bank_, _, artist1_, artist2_] =
       await ethers.getSigners()
     deployer = deployer_
     payer = payer_

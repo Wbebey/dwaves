@@ -13,7 +13,7 @@ describe('DwavesToken', () => {
   let user: SignerWithAddress
 
   before(async () => {
-    const [deployer_, _, bank_, user_] = await ethers.getSigners()
+    const [deployer_, _, bank_, __, user_] = await ethers.getSigners()
     deployer = deployer_
     bank = bank_
     user = user_
