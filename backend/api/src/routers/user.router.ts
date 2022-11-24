@@ -6,6 +6,7 @@ const userRouter = Router()
 const userController = new UserController()
 
 userRouter.get('/', userController.get)
+
 userRouter.get('/monthlyListenings', userController.getMonthlyListenings)
 
 export default userRouter

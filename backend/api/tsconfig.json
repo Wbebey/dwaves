@@ -14,10 +14,13 @@
     "paths": {
       "@abi/*": ["abi/*"],
       "@interfaces/*": ["interfaces/*"],
+      "@types/*": ["types/*"],
       "@config/*": ["config/*"],
       "@routers/*": ["routers/*"],
       "@controllers/*": ["controllers/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@errors/*": ["errors/*"]
     }
   },
   "include": ["src/**/*"],
