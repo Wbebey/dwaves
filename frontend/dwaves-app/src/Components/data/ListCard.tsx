@@ -27,10 +27,27 @@ export const List = () => {
           style={{ width: "32px", height: "32px", margin: "5px" }}
         />
         <div className="divider divider-horizontal" />
-        <p>titre</p>
-        <p>listes</p>
-        {/* <p>artiste</p> */}
-        <Button text="artistes" handleClick={() => {console.log("Artistes")}}/>
+        <Button
+          text="titres"
+          size="Large"
+          handleClick={() => {
+            console.log("Titres");
+          }}
+        />
+        <Button
+          text="listes"
+          size="Large"
+          handleClick={() => {
+            console.log("Listes");
+          }}
+        />
+        <Button
+          text="artistes"
+          size="Large"
+          handleClick={() => {
+            console.log("Artistes");
+          }}
+        />
       </header>
       <div className="content-playlist">
         <div className="body">
