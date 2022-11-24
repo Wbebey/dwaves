@@ -8,4 +8,6 @@ class AppController implements IAppController {
   }
 }
 
-export default AppController
+const appController = new AppController()
+
+export default appController
