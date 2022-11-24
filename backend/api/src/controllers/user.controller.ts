@@ -12,9 +12,7 @@ class UserController implements IUserController {
   getMonthlyListenings: RequestHandler = async (_, res) => {
     const now = new Date()
     now.setHours(0, 0, 0, 0)
-    const oneMonthBefore = new Date(
-      new Date(now.getTime()).setMonth(now.getMonth() - 1)
-    )
+    const oneMonthBefore = new Date(new Date(now.getTime()).setMonth(now.getMonth() - 1))
 
     const artists = await prisma.user.findMany({
       //* Find users with at least one record in MonthlyListenings for the previous month
@@ -46,9 +44,7 @@ class UserController implements IUserController {
     })
 
     const listenings = artists.map((a) =>
-      a.monthlyListenings
-        .map((ml) => ml.listenings)
-        .reduce((prev, curr) => prev + curr)
+      a.monthlyListenings.map((ml) => ml.listenings).reduce((prev, curr) => prev + curr)
     )
     const artistAddresses = artists.map((a) => a.address)
 
@@ -56,4 +52,6 @@ class UserController implements IUserController {
   }
 }
 
-export default UserController
+const userController = new UserController()
+
+export default userController
