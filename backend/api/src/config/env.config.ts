@@ -21,9 +21,12 @@ const config = {
   pinataGatewayHost: checkEnv('PINATA_GATEWAY_HOST'),
   dwavesBankPrivateKey: checkEnv('DWAVES_BANK_PRIVATE_KEY'),
   alchemyApiKey: checkEnv('ALCHEMY_API_KEY'),
-  jwtPrivateKey: checkEnv('JWT_PRIVATE_KEY'),
-  jwtPublicKey: checkEnv('JWT_PUBLIC_KEY'),
+  accessTokenPrivateKey: checkEnv('ACCESS_TOKEN_PRIVATE_KEY'),
+  accessTokenPublicKey: checkEnv('ACCESS_TOKEN_PUBLIC_KEY'),
+  refreshTokenPrivateKey: checkEnv('REFRESH_TOKEN_PRIVATE_KEY'),
+  refreshTokenPublicKey: checkEnv('REFRESH_TOKEN_PUBLIC_KEY'),
   accessTokenExp: checkEnv<number>('ACCESS_TOKEN_EXP'),
+  refreshTokenExp: checkEnv<number>('REFRESH_TOKEN_EXP'),
 }
 
 export default config

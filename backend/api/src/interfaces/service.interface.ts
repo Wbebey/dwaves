@@ -1,6 +1,7 @@
+import { TokenType } from '@@types/token.type'
 import { ViewUser } from '@@types/user.type'
 import { Prisma, User } from '@prisma/client'
-import { JwtPayload } from 'jsonwebtoken'
+import { JwtPayload, SignOptions } from 'jsonwebtoken'
 
 interface IService {}
 
@@ -15,7 +16,7 @@ export interface IUserService extends IService {
     includePassword?: boolean
   ) => Promise<User | ViewUser | null>
   create: (user: Prisma.UserCreateInput) => Promise<ViewUser>
-  signToken: (user: User) => string
+  signToken: (user: User) => { accessToken: string; refreshToken: string }
   verifyPassword: (
     hashedPassword: string,
     candidatePassword: string
@@ -23,6 +24,10 @@ export interface IUserService extends IService {
 }
 
 export interface ITokenService extends IService {
-  signJwt: (payload: JwtPayload) => string
-  verifyJwt: <T>(token: string) => T | null
+  signJwt: (
+    payload: JwtPayload,
+    tokenType: TokenType,
+    options?: SignOptions
+  ) => string
+  verifyJwt: <T>(token: string, tokenType: TokenType) => T | null
 }
