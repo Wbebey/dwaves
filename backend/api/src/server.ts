@@ -1,16 +1,21 @@
 import express from 'express'
 import fileUpload from 'express-fileupload'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 
 import env from '@config/env.config'
 import appRouter from '@routers/app.router'
 import logger from '@config/logger.config'
 
-const { port, appName } = env
+const { port, appName, frontHost } = env
 
 const app = express()
 app.disable("x-powered-by")
 
+const corsOptions = {
+    origin: frontHost
+};
+app.use(cors(corsOptions))
 // enable files upload
 app.use(fileUpload({
     createParentPath: true
