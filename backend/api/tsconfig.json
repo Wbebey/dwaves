@@ -16,7 +16,8 @@
       "@interfaces/*": ["interfaces/*"],
       "@config/*": ["config/*"],
       "@routers/*": ["routers/*"],
-      "@controllers/*": ["controllers/*"]
+      "@controllers/*": ["controllers/*"],
+      "@services/*": ["services/*"]
     }
   },
   "include": ["src/**/*"],
