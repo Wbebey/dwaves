@@ -2,6 +2,7 @@ import express from 'express'
 import 'express-async-errors'
 import fileUpload from 'express-fileupload'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 import config from '@config/env.config'
 import appRouter from '@routers/app.router'
@@ -25,6 +26,7 @@ app.use(cors({ origin: frontHost }))
 app.use(fileUpload({ createParentPath: true }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
 
 app.use(requestLoggerMiddleware)
 
