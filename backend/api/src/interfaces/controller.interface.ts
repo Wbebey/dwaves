@@ -24,4 +24,6 @@ export interface IMusicController extends IController {
 export interface IAuthController extends IController {
   register: RequestHandler
   login: RequestHandler
+  logout: RequestHandler
+  refresh: RequestHandler
 }
