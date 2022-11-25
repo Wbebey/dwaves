@@ -36,13 +36,14 @@ export const List = () => {
         />
         <Button
           text="listes"
+          icon="playlist"
           size="Large"
           handleClick={() => {
             console.log("Listes");
           }}
         />
         <Button
-          text="artistes"
+          icon="home"
           size="Large"
           handleClick={() => {
             console.log("Artistes");

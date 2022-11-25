@@ -7,14 +7,18 @@
 %_ds-flex-shared {
   align-items: center;
   display: flex;
+}
 
-  &-row {
-    flex-direction: row;
-  }
+%_ds-flex-shared-col {
+  @extend %_ds-flex-shared;
 
-  &-col {
-    flex-direction: column;
-  }
+  flex-direction: column;
+}
+
+%_ds-flex-shared-row {
+  @extend %_ds-flex-shared;
+
+  flex-direction: row;
 }
 
 .ds-align-self {
@@ -42,6 +46,10 @@
 
   &-start {
     align-items: start;
+  }
+
+  &-center {
+    align-items: center;
   }
 
   &-end {
@@ -138,6 +146,16 @@
 }
 
 .ds-text {
+  &-start {
+    text-align: start;
+  }
+  &-center {
+    text-align: center;
+  }
+  &-end {
+    text-align: end;
+  }
+
   &-body {
     @extend %_ds-text-shared;
 
@@ -188,5 +206,27 @@
     &-s {
       font-size: 0.875rem; // 14px @16px;
     }
+  }
+}
+
+/* ------------------------------ MEASUREMENTS ------------------------------ */
+
+.ds-rounded {
+  border-radius: $mes-border-radius;
+}
+
+.ds-fill {
+  height: 100%;
+  width: 100%;
+}
+
+.ds-margin-auto {
+  &-x {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  &-y {
+    margin-top: auto;
+    margin-bottom: auto;
   }
 }
