@@ -1,3 +1,4 @@
+import { TokenType } from '@@types/token.type'
 import logger from '@config/logger.config'
 import AppError from '@errors/app.error'
 import { RequestHandler } from 'express'
@@ -17,9 +18,10 @@ export const deserializeUser: RequestHandler = async (req, res, next) => {
     throw new AppError('You are not logged in', StatusCodes.UNAUTHORIZED)
   }
 
-  logger.debug(accessToken)
-
-  const decoded = tokenService.verifyJwt<{ sub: string }>(accessToken)
+  const decoded = tokenService.verifyJwt<{ sub: string }>(
+    accessToken,
+    TokenType.ACCESS
+  )
   if (!decoded) {
     throw new AppError(
       'Invalid token or user does not exist',

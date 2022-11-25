@@ -4,6 +4,7 @@ import { Prisma, User } from '@prisma/client'
 import * as argon2 from 'argon2'
 import tokenService from './token.service'
 import config from '@config/env.config'
+import { TokenType } from '@@types/token.type'
 
 class UserService implements IUserService {
   exclude<User, Key extends keyof User>(
@@ -41,10 +42,17 @@ class UserService implements IUserService {
   signToken = (user: User) => {
     const accessToken = tokenService.signJwt(
       { sub: user.id.toString() },
+      TokenType.ACCESS,
       { expiresIn: `${config.accessTokenExp}m` }
     )
 
-    return accessToken
+    const refreshToken = tokenService.signJwt(
+      { sub: user.id.toString() },
+      TokenType.REFRESH,
+      { expiresIn: `${config.refreshTokenExp}m` }
+    )
+
+    return { accessToken, refreshToken }
   }
 
   verifyPassword = (hashedPassword: string, candidatePassword: string) => {
