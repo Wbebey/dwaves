@@ -10,7 +10,10 @@ export interface IUserService extends IService {
     keys: Key[]
   ): Omit<User, Key>
   findMany: () => Promise<ViewUser[]>
-  findFirst: (where: Prisma.UserWhereInput) => Promise<User | null>
+  findFirst: (
+    where: Prisma.UserWhereInput,
+    includePassword?: boolean
+  ) => Promise<User | ViewUser | null>
   create: (user: Prisma.UserCreateInput) => Promise<ViewUser>
   signToken: (user: User) => string
   verifyPassword: (

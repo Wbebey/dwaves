@@ -10,6 +10,11 @@ class UserController implements IUserController {
 
     res.json(users)
   }
+
+  me: RequestHandler = (_, res) => {
+    res.json(res.locals.user)
+  }
+
   getMonthlyListenings: RequestHandler = async (_, res) => {
     const now = new Date()
     now.setHours(0, 0, 0, 0)
