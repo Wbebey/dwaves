@@ -1,6 +1,7 @@
 import config from '@config/env.config'
 import AppError from '@errors/app.error'
 import { IAuthController } from '@interfaces/controller.interface'
+import { User } from '@prisma/client'
 import { CookieOptions, RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import userService from 'services/user.service'
@@ -26,7 +27,7 @@ class AuthController implements IAuthController {
 
   login: RequestHandler = async (req, res) => {
     const { email, password } = req.body
-    const user = await userService.findFirst({ email })
+    const user = (await userService.findFirst({ email }, true)) as User | null
 
     if (!user || !(await userService.verifyPassword(user.password, password))) {
       throw new AppError('Invalid email or password', StatusCodes.UNAUTHORIZED)
@@ -35,7 +36,7 @@ class AuthController implements IAuthController {
     const accessToken = userService.signToken(user)
 
     res.cookie('accessToken', accessToken, accessTokenCookieOptions)
-    res.cookie('logged_in', true, {
+    res.cookie('loggedIn', true, {
       ...accessTokenCookieOptions,
       httpOnly: false,
     })

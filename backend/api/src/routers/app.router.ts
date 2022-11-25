@@ -5,14 +5,17 @@ import albumRouter from '@routers/album.router'
 import musicRouter from '@routers/music.router'
 import authRouter from '@routers/auth.router'
 import appController from '@controllers/app.controller'
+import { deserializeUser, requireUser } from '@middlewares/auth.middleware'
 
 const appRouter = Router()
 
 appRouter.get('/', appController.healthcheck)
+appRouter.use('/auth', authRouter)
+
+appRouter.use(deserializeUser, requireUser)
+
 appRouter.use('/users', userRouter)
 appRouter.use('/albums', albumRouter)
 appRouter.use('/musics', musicRouter)
-
-appRouter.use('/auth', authRouter)
 
 export default appRouter

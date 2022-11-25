@@ -21,8 +21,13 @@ class UserService implements IUserService {
     return users.map((user) => this.exclude(user, ['password']))
   }
 
-  findFirst = (where: Prisma.UserWhereInput) => {
-    return prisma.user.findFirst({ where })
+  findFirst = async (where: Prisma.UserWhereInput, includePassword = false) => {
+    const user = await prisma.user.findFirst({ where })
+    if (!includePassword && user) {
+      return this.exclude(user, ['password'])
+    }
+
+    return user
   }
 
   create = async (user: Prisma.UserCreateInput) => {
@@ -36,7 +41,7 @@ class UserService implements IUserService {
   signToken = (user: User) => {
     const accessToken = tokenService.signJwt(
       { sub: user.id.toString() },
-      { expiresIn: `${config.accessTokenExp}` }
+      { expiresIn: `${config.accessTokenExp}m` }
     )
 
     return accessToken
