@@ -1,11 +1,5 @@
-import {
-  Previous,
-  Next,
-  Play,
-  Pause,
-  ArrowSwapHorizontal,
-  ArrowRotateLeft,
-} from "iconsax-react";
+import {Icon} from "components/shared"
+
 import { useRef } from "react";
 
 interface Props {
@@ -94,15 +88,15 @@ export const PlayerReact: React.FC<Props> = ({
           </div>
           <div className="player-nav">
             <div className="contain-button">
-              <ArrowSwapHorizontal />
-              <Previous onClick={handlePrevious} />
+              <Icon icon="random" />
+              <Icon icon="previous" onClick={handlePrevious} />
               {isPlaying ? (
-                <Pause onClick={() => PlayPause()} />
+                <Icon icon="pause" onClick={() => PlayPause()} />
               ) : (
-                <Play onClick={() => PlayPause()} />
+                <Icon icon="play" onClick={() => PlayPause()} />
               )}
-              <Next onClick={handleNext} />
-              <ArrowRotateLeft />
+              <Icon icon="next" onClick={handleNext} />
+              <Icon icon="loop" />
             </div>
           </div>
         </div>

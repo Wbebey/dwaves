@@ -1,10 +1,6 @@
-import "../styles/Explorer.scss"
-import { ContentAlbum } from "../components/ContentAlbum";
+import "styles/Explorer.scss";
+import { ContentAlbum } from "components";
 
 export const Album = () => {
-
-    return (
-        <ContentAlbum/>
-    )
-}
-
+  return <ContentAlbum />;
+};

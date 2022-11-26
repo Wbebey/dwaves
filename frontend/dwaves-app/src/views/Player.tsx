@@ -1,56 +1,64 @@
-import "../styles/Player.scss"
-import logoDeep from '../Images/logo-deep.png'
-import {AnimateBulles} from "../components/AnimationBulles"
-import {PlayerReact} from "../components/PlayerReact";
+import "styles/Player.scss";
+import { AnimateBulles, PlayerReact } from "components";
+
 import { useEffect, useRef, useState } from "react";
 
-import datasong from '../songs/datasongs'
+import datasong from "songs/datasongs";
+import logoDeep from "images/logo-deep.png";
 
 export const Player = () => {
+  const [songs, setSongs] = useState(datasong);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentSong, setCurrentSong] = useState(datasong[0]);
 
-    const [songs, setSongs]= useState(datasong)
-    const [isPlaying , setIsPlaying] = useState(false)
-    const [currentSong, setCurrentSong]= useState(datasong[0])
+  const audioElmt = useRef<HTMLAudioElement>(null) ?? someOtherData();
 
-    const audioElmt= useRef<HTMLAudioElement>(null) ?? someOtherData()
-
-    useEffect(() => {
-        
-        if (isPlaying) {
-            audioElmt.current?.play()
-        }
-        else {
-            audioElmt.current?.pause()
-        }
-    },[audioElmt, isPlaying])
-
-    const onPlaying = () => {
-        const duration: number = audioElmt.current?.duration as number
-        const ct: number = audioElmt.current?.currentTime as number
-
-        setCurrentSong({...currentSong, "progress": ct / duration * 100 , "length": duration })
+  useEffect(() => {
+    if (isPlaying) {
+      audioElmt.current?.play();
+    } else {
+      audioElmt.current?.pause();
     }
+  }, [audioElmt, isPlaying]);
 
-    return (
-        <section className="contain-player-bg" style={{ width: '100vw', height: window.innerHeight , overflowY: 'hidden' }} >
-            <img className="logo-player" src={logoDeep} alt="" />
-            <div className="blur-effect">
-                <audio src={currentSong.Src} ref={audioElmt} onTimeUpdate={onPlaying}/>
-                <PlayerReact 
-                    audioElmt={audioElmt}
-                    isPlaying={isPlaying}
-                    setIsPlaying={setIsPlaying}
-                    currentSong={currentSong}
-                    setCurrentSong={setCurrentSong}
-                    songs={songs}
-                    setSongs={setSongs}
-                />
-                <AnimateBulles />
-            </div>
-        </section>
-    )
-}
+  const onPlaying = () => {
+    const duration: number = audioElmt.current?.duration as number;
+    const ct: number = audioElmt.current?.currentTime as number;
+
+    setCurrentSong({
+      ...currentSong,
+      progress: (ct / duration) * 100,
+      length: duration,
+    });
+  };
+
+  return (
+    <section
+      className="contain-player-bg"
+      style={{
+        width: "100vw",
+        height: window.innerHeight,
+        overflowY: "hidden",
+      }}
+    >
+      <img className="logo-player" src={logoDeep} alt="" />
+      <div className="blur-effect">
+        <audio src={currentSong.Src} ref={audioElmt} onTimeUpdate={onPlaying} />
+        <PlayerReact
+          audioElmt={audioElmt}
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+          currentSong={currentSong}
+          setCurrentSong={setCurrentSong}
+          songs={songs}
+          setSongs={setSongs}
+        />
+        <AnimateBulles />
+      </div>
+    </section>
+  );
+};
 
 function someOtherData(): import("react").RefObject<HTMLAudioElement> {
-    throw new Error("Function not implemented.");
+  throw new Error("Function not implemented.");
 }
