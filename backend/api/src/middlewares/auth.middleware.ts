@@ -1,5 +1,4 @@
 import { TokenType } from '@@types/token.type'
-import logger from '@config/logger.config'
 import AppError from '@errors/app.error'
 import { RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'

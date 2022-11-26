@@ -1,5 +1,5 @@
 import { TokenType } from '@@types/token.type'
-import config from '@config/env.config'
+import env from '@config/env.config'
 import AppError from '@errors/app.error'
 import { IAuthController } from '@interfaces/controller.interface'
 import { User } from '@prisma/client'
@@ -9,15 +9,15 @@ import tokenService from 'services/token.service'
 import userService from 'services/user.service'
 
 const accessTokenCookieOptions: CookieOptions = {
-  expires: new Date(Date.now() + config.accessTokenExp * 60 * 1000),
-  maxAge: config.accessTokenExp * 60 * 1000,
+  expires: new Date(Date.now() + env.accessTokenExp * 60 * 1000),
+  maxAge: env.accessTokenExp * 60 * 1000,
   httpOnly: true,
   sameSite: 'lax',
 }
 
 const refreshTokenCookieOptions: CookieOptions = {
-  expires: new Date(Date.now() + config.refreshTokenExp * 60 * 1000),
-  maxAge: config.refreshTokenExp * 60 * 1000,
+  expires: new Date(Date.now() + env.refreshTokenExp * 60 * 1000),
+  maxAge: env.refreshTokenExp * 60 * 1000,
   httpOnly: true,
   sameSite: 'lax',
 }
@@ -85,7 +85,7 @@ class AuthController implements IAuthController {
     const refreshedAccessToken = tokenService.signJwt(
       { sub: user.id.toString() },
       TokenType.ACCESS,
-      { expiresIn: `${config.accessTokenExp}m` }
+      { expiresIn: `${env.accessTokenExp}m` }
     )
 
     // Send the access token as cookie
