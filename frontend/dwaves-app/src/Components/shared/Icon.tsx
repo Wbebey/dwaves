@@ -1,4 +1,5 @@
 import * as IconSax from "iconsax-react";
+import { MouseEventHandler } from "react";
 import styles from "styles/global/styles.module.scss";
 
 interface Props {
@@ -6,6 +7,7 @@ interface Props {
   variant?: "Linear" | "Outline" | "Broken" | "Bold" | "Bulk" | "TwoTone";
   size?: "Small" | "Regular" | "Large";
   color?: string;
+  onClick?: MouseEventHandler;
 }
 
 export const Icon: React.FC<Props> = ({
@@ -13,6 +15,7 @@ export const Icon: React.FC<Props> = ({
   variant = "Linear",
   size = "Regular",
   color = styles.colMainDark,
+  onClick,
 }) => {
   const icons: { [key: string]: IconSax.Icon } = {
     play: IconSax.Play,
@@ -21,8 +24,8 @@ export const Icon: React.FC<Props> = ({
     previous: IconSax.Previous,
     loop: IconSax.ArrowRotateLeft,
     random: IconSax.ArrowSwapHorizontal,
-    like: IconSax.Like,
-    dislike: IconSax.Dislike,
+    like: IconSax.Heart,
+    dislike: IconSax.HeartSlash,
     alertPos: IconSax.TickCircle,
     alertNeutral: IconSax.InfoCircle,
     alertNeg: IconSax.Danger,
@@ -33,9 +36,11 @@ export const Icon: React.FC<Props> = ({
     search: IconSax.SearchNormal1,
     user: IconSax.ProfileCircle,
     playlist: IconSax.MusicFilter,
+    song: IconSax.MusicCircle,
     close: IconSax.CloseSquare,
     home: IconSax.Home2,
     return: IconSax.Back,
+    upload: IconSax.DocumentUpload,
   };
   const Icon: IconSax.Icon = icons[icon];
 
@@ -44,6 +49,7 @@ export const Icon: React.FC<Props> = ({
       variant={variant}
       size={size === "Small" ? 18 : size === "Regular" ? 24 : 32}
       color={color}
+      onClick={onClick}
     />
   );
 };
