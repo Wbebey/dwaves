@@ -1,0 +1,135 @@
+.ds-button {
+  &-regular {
+    gap: $mes-gap-s;
+    padding-left: $mes-gap-s;
+    padding-right: $mes-gap-s;
+    height: 2rem;
+  }
+  &-large {
+    gap: $mes-gap;
+    padding-left: $mes-gap;
+    padding-right: $mes-gap;
+    height: 3rem;
+  }
+
+  &-icon {
+    &.ds-button {
+      &-regular {
+        padding: 0;
+        height: 2rem;
+        width: 2rem;
+      }
+      &-large {
+        padding: 0;
+        height: 3rem;
+        width: 3rem;
+      }
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  // Colors
+  &-main {
+    background: transparent;
+    color: $col-main-dark;
+    transition: all $mes-trans-exit;
+    svg path {
+      stroke: $col-main-dark;
+    }
+
+    &:hover {
+      background: $col-main-dark;
+      color: $col-main-light;
+      transition: all $mes-trans-entry;
+      svg path {
+        stroke: $col-main-light;
+      }
+    }
+
+    &:focus {
+      background: $col-main-dark-sub;
+      color: $col-main-light;
+      svg path {
+        stroke: $col-main-light;
+      }
+    }
+  }
+  &-neutral {
+    background: transparent;
+    color: $col-accent-neutral;
+    transition: all $mes-trans-exit;
+    svg path {
+      stroke: $col-accent-neutral;
+    }
+
+    &:hover {
+      background: $col-accent-neutral;
+      color: $col-main-light;
+      transition: all $mes-trans-entry;
+      svg path {
+        stroke: $col-main-light;
+      }
+    }
+
+    &:focus {
+      background: $col-accent-neutral-sub;
+      color: $col-main-light;
+      svg path {
+        stroke: $col-main-light;
+      }
+    }
+  }
+  &-positive {
+    background: transparent;
+    color: $col-accent-pos;
+    transition: all $mes-trans-exit;
+    svg path {
+      stroke: $col-accent-pos;
+    }
+
+    &:hover {
+      background: $col-accent-pos;
+      color: $col-main-light;
+      transition: all $mes-trans-entry;
+      svg path {
+        stroke: $col-main-light;
+      }
+    }
+
+    &:focus {
+      background: $col-accent-pos-sub;
+      color: $col-main-light;
+      svg path {
+        stroke: $col-main-light;
+      }
+    }
+  }
+  &-negative {
+    background: transparent;
+    color: $col-accent-neg;
+    transition: all $mes-trans-exit;
+    svg path {
+      stroke: $col-accent-neg;
+    }
+
+    &:hover {
+      background: $col-accent-neg;
+      color: $col-main-light;
+      transition: all $mes-trans-entry;
+      svg path {
+        stroke: $col-main-light;
+      }
+    }
+
+    &:focus {
+      background: $col-accent-neg-sub;
+      color: $col-main-light;
+      svg path {
+        stroke: $col-main-light;
+      }
+    }
+  }
+}
