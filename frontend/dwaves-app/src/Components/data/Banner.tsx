@@ -1,4 +1,4 @@
-import "../../styles/data/Banner.scss";
+import "styles/data/Banner.scss";
 
 const playlists: { title: string }[] = [
   { title: "Playlist 1" },

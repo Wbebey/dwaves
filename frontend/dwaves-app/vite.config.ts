@@ -15,8 +15,20 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "./src/components"),
       },
       {
+        find: "images",
+        replacement: path.resolve(__dirname, "./src/images"),
+      },
+      {
+        find: "songs",
+        replacement: path.resolve(__dirname, "./src/songs"),
+      },
+      {
         find: "styles",
         replacement: path.resolve(__dirname, "./src/styles"),
+      },
+      {
+        find: "views",
+        replacement: path.resolve(__dirname, "./src/views"),
       },
     ],
   },

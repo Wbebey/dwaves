@@ -1,9 +1,9 @@
-import "../../styles/data/List.scss";
-import { SearchNormal1 } from "iconsax-react";
-import { Button } from "components/shared";
+import "styles/data/List.scss";
+import { Button, Icon } from "components/shared";
 
-import playlists from "../../songs/playlist";
 import { Link } from "react-router-dom";
+
+import playlists from "songs/playlist";
 
 export const List = () => {
   return (
@@ -23,9 +23,7 @@ export const List = () => {
             Floating standard
           </label>
         </div>
-        <SearchNormal1
-          style={{ width: "32px", height: "32px", margin: "5px" }}
-        />
+        <Icon icon="search" size="Large" />
         <div className="divider divider-horizontal" />
         <Button
           text="titres"
@@ -36,14 +34,13 @@ export const List = () => {
         />
         <Button
           text="listes"
-          icon="playlist"
           size="Large"
           handleClick={() => {
             console.log("Listes");
           }}
         />
         <Button
-          icon="home"
+          text="artistes"
           size="Large"
           handleClick={() => {
             console.log("Artistes");

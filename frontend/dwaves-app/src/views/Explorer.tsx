@@ -1,8 +1,6 @@
-import "../styles/Explorer.scss"
-import { ContentPlaylist } from '../components/ContentPlaylist'
+import "styles/Explorer.scss";
+import { ContentPlaylist } from "components";
 
 export const Explorer = () => {
-    return (
-        <ContentPlaylist />
-    )
-}
+  return <ContentPlaylist />;
+};
