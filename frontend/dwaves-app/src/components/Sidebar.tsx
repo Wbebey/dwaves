@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import datasongs from "songs/datasongs";
 
-// import { ConnectMetamask } from "./ConnectionMetamask"
+import { ConnectMetamask } from "./ConnectionMetamask"
 
 interface Props {
   displayModal: (e: any) => void;
