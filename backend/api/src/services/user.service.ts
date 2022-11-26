@@ -3,7 +3,7 @@ import prisma from '@config/prisma.config'
 import { Prisma, User } from '@prisma/client'
 import * as argon2 from 'argon2'
 import tokenService from './token.service'
-import config from '@config/env.config'
+import env from '@config/env.config'
 import { TokenType } from '@@types/token.type'
 
 class UserService implements IUserService {
@@ -43,13 +43,13 @@ class UserService implements IUserService {
     const accessToken = tokenService.signJwt(
       { sub: user.id.toString() },
       TokenType.ACCESS,
-      { expiresIn: `${config.accessTokenExp}m` }
+      { expiresIn: `${env.accessTokenExp}m` }
     )
 
     const refreshToken = tokenService.signJwt(
       { sub: user.id.toString() },
       TokenType.REFRESH,
-      { expiresIn: `${config.refreshTokenExp}m` }
+      { expiresIn: `${env.refreshTokenExp}m` }
     )
 
     return { accessToken, refreshToken }
