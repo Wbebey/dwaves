@@ -13,12 +13,13 @@ authRouter.post(
   body('email')
     .isEmail()
     .withMessage('Must be a valid email')
+    .bail()
     .normalizeEmail()
-    .custom(userValidator.checkEmailTaken),
+    .custom(userValidator.isEmailTaken),
   body('password')
     .isLength({ min: 8, max: 100 })
     .withMessage('Must be 8-100 characters long'),
-  body('passwordConfirmation').custom(userValidator.checkPasswordMatch),
+  body('passwordConfirmation').custom(userValidator.doesPasswordMatch),
   userValidator.validate,
   authController.register
 )

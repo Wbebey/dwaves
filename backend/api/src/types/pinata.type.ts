@@ -1,5 +1,5 @@
 export type IPFSMetadata = {
-  type: 'cover' | 'music'
+  type: FileType
   artistId?: number
   albumId?: number
   genre?: string
@@ -11,4 +11,9 @@ export type PinataPinResponse = {
   IpfsHash: string
   PinSize: string
   Timestamp: string
+}
+
+export enum FileType {
+  COVER = 'cover',
+  MUSIC = 'music',
 }
