@@ -42,6 +42,13 @@ class MusicController implements IMusicController {
 
         res.json(pinataGatewayHost + '/' + musicCID)
     }
+
+    getAllMusicByGenre: RequestHandler = async (req, res) => {
+
+        const allMusicsByGenre = await pinataService.getAllMusicByGenreInPinata(req.body.genre)
+
+        res.json(allMusicsByGenre)
+    }
 }
 
 const musicController = new MusicController()

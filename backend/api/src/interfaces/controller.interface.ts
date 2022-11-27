@@ -18,6 +18,7 @@ export interface IAlbumController extends IController {
 }
 
 export interface IMusicController extends IController {
+  getAllMusicByGenre: RequestHandler
   createSingleMusic: RequestHandler
 }
 
