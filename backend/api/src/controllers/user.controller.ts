@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express'
 
 import { IUserController } from '@interfaces/controller.interface'
-import prisma from '@config/prisma.config'
 import userService from 'services/user.service'
 
 class UserController implements IUserController {
@@ -22,34 +21,10 @@ class UserController implements IUserController {
       new Date(now.getTime()).setMonth(now.getMonth() - 1)
     )
 
-    const artists = await prisma.user.findMany({
-      //* Find users with at least one record in MonthlyListenings for the previous month
-      where: {
-        monthlyListenings: {
-          some: {
-            date: {
-              gte: oneMonthBefore,
-              lt: now,
-            },
-          },
-        },
-      },
-      select: {
-        address: true,
-        monthlyListenings: {
-          //* Select ONLY the MonthlyListenings of the previous month
-          where: {
-            date: {
-              gte: oneMonthBefore,
-              lt: now,
-            },
-          },
-          select: {
-            listenings: true,
-          },
-        },
-      },
-    })
+    const artists = await userService.findArtistsMonthlyListenings(
+      oneMonthBefore,
+      now
+    )
 
     const listenings = artists.map((a) =>
       a.monthlyListenings
