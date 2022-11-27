@@ -17,8 +17,8 @@ class UserService implements IUserService {
     return user
   }
 
-  findMany = async () => {
-    const users = await prisma.user.findMany()
+  findMany = async (where: Prisma.UserWhereInput = {}) => {
+    const users = await prisma.user.findMany({ where })
     return users.map((user) => this.exclude(user, ['password']))
   }
 
@@ -37,6 +37,38 @@ class UserService implements IUserService {
     const createdUser = await prisma.user.create({ data: user })
 
     return this.exclude(createdUser, ['password'])
+  }
+
+  findArtistsMonthlyListenings = (startDate: Date, endDate: Date) => {
+    //* Find users with at least one record in MonthlyListenings between startDate (inclusive) and endDate (exclusive)
+    const where = {
+      monthlyListenings: {
+        some: {
+          date: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+      },
+    }
+
+    //* Select the addresses of the users and the MonthlyListenings between startDate (inclusive) and endDate (exclusive)
+    const select = {
+      address: true,
+      monthlyListenings: {
+        where: {
+          date: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          listenings: true,
+        },
+      },
+    }
+
+    return prisma.user.findMany({ where, select })
   }
 
   signToken = (user: User) => {
