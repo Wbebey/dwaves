@@ -1,6 +1,6 @@
 import { ValidationError } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
-import AppError from './app.error'
+import AppError from '@errors/app.error'
 
 class ValidatorError extends AppError {
   public errors: ValidationError[]
