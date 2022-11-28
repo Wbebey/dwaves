@@ -1,9 +1,10 @@
-import { IUserService } from '@interfaces/service.interface'
+import * as argon2 from 'argon2'
 import prisma from '@config/prisma.config'
 import { Prisma, User } from '@prisma/client'
-import * as argon2 from 'argon2'
-import tokenService from './token.service'
+
 import env from '@config/env.config'
+import { IUserService } from '@interfaces/service.interface'
+import tokenService from '@services/token.service'
 import { TokenType } from '@@types/token.type'
 
 class UserService implements IUserService {
