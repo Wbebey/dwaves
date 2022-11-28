@@ -14,11 +14,13 @@ export interface IUserValidator extends IAppValidator {
 }
 
 export interface IMusicValidator extends IAppValidator {
-  isValidGenre: CustomValidator
   isFilePresent: (filetype: FileType) => CustomValidator
 }
 
-export interface IAlbumValidator extends IAppValidator {}
+export interface IAlbumValidator extends IAppValidator {
+  isValidType: CustomValidator
+  isValidGenre: CustomValidator
+}
 
 export interface IGenreValidator extends IAppValidator {
   doesGenreExist: CustomValidator

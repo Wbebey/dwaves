@@ -3,41 +3,43 @@ import { IMusicController } from '@interfaces/controller.interface'
 import env from '@config/env.config'
 import { UploadedFile } from 'express-fileupload'
 import logger from '@config/logger.config'
-import fs from 'fs'
 import pinataService from '@services/pinata.service'
+import { CoverMetadata, FileType, MusicMetadata } from '@@types/pinata.type'
+import albumService from '@services/album.service'
+import { AlbumType } from '@prisma/client'
+import path from 'path'
 
 class MusicController implements IMusicController {
-  create: RequestHandler = async (req, res) => {
-    res.json('ok')
-    // const musicMetadata = JSON.parse(req.body.request)
-    // // Use the name of the input field (i.e. "cover") to retrieve the uploaded file
-    // const cover = req.files.cover as UploadedFile
-    // const music = req.files.music as UploadedFile
+  uploadSingle: RequestHandler = async (req, res) => {
+    const cover = req.files!.cover as UploadedFile
+    const coverMetadata: CoverMetadata = { type: FileType.COVER }
+    const coverCID = await pinataService.pinFileToIPFS(cover, coverMetadata)
 
-    // const pathUploadsFilesDirectory = './src/services/uploadsFile/'
+    logger.log(`cover: ${cover.name} - CID: ${coverCID}`)
 
-    // await cover.mv(pathUploadsFilesDirectory + cover.name)
-    // const coverCID = await pinataService.pinFileToIPFS(
-    //   fs.createReadStream(pathUploadsFilesDirectory + cover.name),
-    //   { type: 'cover' }
-    // )
-    // logger.log(`cover : ${cover.name} - coverCID : ${coverCID}`)
+    const music = req.files!.music as UploadedFile
+    const artistId = res.locals.user.id
+    const album = await albumService.create({
+      name: path.parse(music.name).name,
+      type: AlbumType.SINGLE,
+      artist: { connect: { id: artistId } },
+      genre: { connect: { name: req.body.genre } },
+    })
 
-    // musicMetadata.album = music.name + ' - Single'
-    // musicMetadata.cover = coverCID
-    // musicMetadata.type = 'music'
-    // musicMetadata.listenings = 0
+    const musicMetadata: MusicMetadata = {
+      type: FileType.MUSIC,
+      albumId: album.id,
+      artistId,
+      listenings: 0,
+    }
+    const musicCID = await pinataService.pinFileToIPFS(music, musicMetadata)
 
-    // await music.mv(pathUploadsFilesDirectory + music.name)
-    // const musicCID = await pinataService.pinFileToIPFS(
-    //   fs.createReadStream(pathUploadsFilesDirectory + music.name),
-    //   musicMetadata
-    // )
-    // logger.log(`music : ${music.name} - musicCID : ${musicCID}`)
+    logger.log(`music: ${music.name} - CID: ${musicCID}`)
 
-    // fs.rmSync(pathUploadsFilesDirectory, { recursive: true })
+    const coverUrl = `${env.pinataGatewayHost}/${coverCID}`
+    const musicUrl = `${env.pinataGatewayHost}/${musicCID}`
 
-    // res.json(env.pinataGatewayHost + '/' + musicCID)
+    res.json({ coverUrl, musicUrl })
   }
 }
 
