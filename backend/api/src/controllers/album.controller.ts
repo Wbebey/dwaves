@@ -15,7 +15,7 @@ class AlbumController implements IAlbumController {
       name,
       type,
       artist: { connect: { id: res.locals.user.id } },
-      genre: { connect: { name: genre } },
+      genre: { connect: { id: genre.id } },
     })
 
     res.json(createdAlbum)
