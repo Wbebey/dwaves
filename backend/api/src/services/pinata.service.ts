@@ -31,9 +31,9 @@ class PinataService implements IPinataService {
       },
     })
 
-    const coverCID = res.data.IpfsHash
+    const cid = res.data.IpfsHash
 
-    return coverCID
+    return cid
   }
 }
 

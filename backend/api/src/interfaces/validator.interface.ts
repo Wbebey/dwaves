@@ -1,6 +1,6 @@
 import { FileType } from '@@types/pinata.type'
 import { RequestHandler } from 'express'
-import { CustomValidator } from 'express-validator'
+import { CustomSanitizer, CustomValidator } from 'express-validator'
 
 interface IValidator {}
 
@@ -19,7 +19,7 @@ export interface IMusicValidator extends IAppValidator {
 
 export interface IAlbumValidator extends IAppValidator {
   isValidType: CustomValidator
-  isValidGenre: CustomValidator
+  toValidGenre: CustomSanitizer
 }
 
 export interface IGenreValidator extends IAppValidator {
