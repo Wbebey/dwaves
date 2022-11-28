@@ -27,19 +27,13 @@ COPY prisma/schema.prisma /usr/src/app/api/prisma/
 
 RUN npm ci --only=production
 
-#USER node
+USER node
 
-#COPY --chown=node:node --from=build /usr/src/app/api/build ./build
-#
-#COPY --chown=node:node --from=build /usr/src/app/api/.env ./.env
-#
-#COPY --chown=node:node --from=build /usr/src/app/api/tsconfig.json ./tsconfig.json
+COPY --chown=node:node --from=build /usr/src/app/api/build ./build
 
-COPY --from=build /usr/src/app/api/build ./build
+COPY --chown=node:node --from=build /usr/src/app/api/.env ./.env
 
-COPY --from=build /usr/src/app/api/.env ./.env
-
-COPY --from=build /usr/src/app/api/tsconfig.json ./tsconfig.json
+COPY --chown=node:node --from=build /usr/src/app/api/tsconfig.json ./tsconfig.json
 
 EXPOSE 8080
 
