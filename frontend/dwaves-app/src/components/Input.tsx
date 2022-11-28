@@ -1,4 +1,4 @@
-/* import axios from "axios" */
+import axios from "axios"
 import "styles/Download.scss";
 import { Icon } from "components/shared";
 
@@ -42,14 +42,15 @@ export const Input = () => {
   }
 
   const onSubmit = (data: any) => {
-    console.log(data);
-  };
-
-  /*         useEffect(()=>{
-            axios.post(`${import.meta.env.VITE_APP_URL}`, () => {
-    
-            })
-        },[]) */
+    const form = new FormData()
+    form.append('request', JSON.stringify({ genre: data.genre, artistId: "2" }))
+    form.append("cover", data.cover)
+    form.append("music", data.src)
+    console.log(form)
+    axios.post(`${import.meta.env.VITE_APP_BACK_URL}/musics/pinSingleMusic`, form)
+      .then(res => { console.log('worked') })
+      .catch(err => { console.log(err) })
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
