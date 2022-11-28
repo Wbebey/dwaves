@@ -1,3 +1,4 @@
+import logger from '@config/logger.config'
 import ValidatorError from '@errors/validator.error'
 import { ErrorRequestHandler, RequestHandler } from 'express'
 import { ReasonPhrases, StatusCodes } from 'http-status-codes'
@@ -8,14 +9,12 @@ export const errorResponderMiddleware: ErrorRequestHandler = (
   res,
   __
 ) => {
+  const { message } = err
+
   const status = err.code || StatusCodes.INTERNAL_SERVER_ERROR
-  res
-    .status(status)
-    .json(
-      err instanceof ValidatorError
-        ? err.errors
-        : { ...err, message: err.message }
-    )
+  const error = err instanceof ValidatorError ? err.errors : { ...err, message }
+
+  res.status(status).json(error)
 }
 
 export const invalidPathResponderMiddleware: RequestHandler = (_, res) => {

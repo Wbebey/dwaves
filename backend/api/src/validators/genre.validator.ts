@@ -3,7 +3,7 @@ import { IGenreValidator } from '@interfaces/validator.interface'
 import genreService from '@services/genre.service'
 import { CustomValidator } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
-import { AppValidator } from './app.validator'
+import { AppValidator } from '@validators/app.validator'
 
 class GenreValidator extends AppValidator implements IGenreValidator {
   doesGenreExist: CustomValidator = async (name: string) => {
