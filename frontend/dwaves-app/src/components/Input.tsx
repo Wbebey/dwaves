@@ -1,8 +1,8 @@
 import axios from "axios"
-import "styles/Download.scss";
+import "styles/SingleForm.scss";
 import { Icon } from "components/shared";
 
-import { ChangeEvent, /* useEffect, */ useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 
 type Single = {
@@ -14,7 +14,7 @@ type Single = {
   src: string;
 };
 
-export const Input = () => {
+export const SingleForm = () => {
   const { register, setValue, getValues, handleSubmit } = useForm<Single>();
   const [filesExist, setFilesExist] = useState({ src: false, cover: false });
 
@@ -47,14 +47,14 @@ export const Input = () => {
     form.append("cover", data.cover)
     form.append("music", data.src)
     console.log(form)
-    axios.post(`${import.meta.env.VITE_APP_BACK_URL}/musics/pinSingleMusic`, form)
-      .then(res => { console.log('worked') })
+    axios.post(`${import.meta.env.VITE_APP_BACK_URL}/api/v1/musics/pinSingleMusic`, form)
+      .then(res => { console.log(res, 'worked') })
       .catch(err => { console.log(err) })
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-      <section className="contain-download">
+      <section className="section-download">
         <div className="header">
           <div id="contain-title" className="flex row nowrap">
             <Icon icon="return" size="Large" />

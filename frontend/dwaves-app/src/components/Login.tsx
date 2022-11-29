@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useForm } from "react-hook-form";
 
 type User = {
@@ -10,7 +11,7 @@ export const Login = () => {
   const { register, setValue, getValues, handleSubmit } = useForm<User>();
 
   return (
-    <div className="flex flex-col justify-center">
+    <form className="flex flex-col justify-center">
       <div id="input-text" className="form-control w-full">
         <label className="label">
           <span className="label-text">Username</span>
@@ -35,6 +36,6 @@ export const Login = () => {
       <button type="submit" className="btn btn-primary m-8">
         Login
       </button>
-    </div>
+    </form>
   );
 };
