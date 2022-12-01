@@ -45,7 +45,7 @@ class MusicController implements IMusicController {
   }
 
   get: RequestHandler = async (req, res) => {
-    const allMusics = await pinataService.getMusicFromIPFS()
+    const allMusics = await pinataService.getMusicFromIPFS(req.query)
     res.json(allMusics)
   }
 }
