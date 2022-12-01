@@ -1,4 +1,9 @@
 
+declare const window: Window &
+typeof globalThis & {
+  ethereum: any
+}
+
 export const ConnectMetamask = () => {
 
     const requestConnection = async () => {
