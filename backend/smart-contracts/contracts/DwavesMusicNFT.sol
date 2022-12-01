@@ -39,31 +39,31 @@ contract DwavesMusicNFT is
         return tokenId;
     }
 
-    function getAllTokens() external view returns (uint256[] memory) {
+    function getAllTokens() external view returns (string[] memory) {
         uint256 NFTCount = totalSupply();
-        uint256[] memory NFTList = new uint256[](NFTCount);
+        string[] memory NFTList = new string[](NFTCount);
 
         for (uint256 i = 0; i < NFTCount; i++) {
-            NFTList[i] = tokenByIndex(i);
+            NFTList[i] = tokenURI(tokenByIndex(i));
         }
 
         return NFTList;
     }
 
-    function getMyTokens() external view returns (uint256[] memory) {
+    function getMyTokens() external view returns (string[] memory) {
         return getTokensByAddress(msg.sender);
     }
 
     function getTokensByAddress(address user)
         public
         view
-        returns (uint256[] memory)
+        returns (string[] memory)
     {
         uint256 NFTCount = balanceOf(user);
-        uint256[] memory NFTList = new uint256[](NFTCount);
+        string[] memory NFTList = new string[](NFTCount);
 
         for (uint256 i = 0; i < NFTCount; i++) {
-            NFTList[i] = tokenOfOwnerByIndex(user, i);
+            NFTList[i] = tokenURI(tokenOfOwnerByIndex(user, i));
         }
 
         return NFTList;
