@@ -55,7 +55,7 @@ class AuthController implements IAuthController {
       httpOnly: false,
     })
 
-    res.json({ accessToken })
+    res.status(StatusCodes.NO_CONTENT).send()
   }
 
   logout: RequestHandler = (_, res) => {
@@ -101,7 +101,7 @@ class AuthController implements IAuthController {
       httpOnly: false,
     })
 
-    res.json({ accessToken: refreshedAccessToken })
+    res.status(StatusCodes.NO_CONTENT).send()
   }
 }
 
