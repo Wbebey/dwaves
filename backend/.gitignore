@@ -5,3 +5,5 @@ build/
 
 *.key
 *.key.*
+
+docker-compose.dev.yml
