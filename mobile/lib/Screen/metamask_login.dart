@@ -14,8 +14,6 @@ class Login_metamask extends StatefulWidget {
 class _Login_metamask extends State<Login_metamask> {
   @override
   Widget build(BuildContext context) {
-    // return Scaffold();
-    // }
     return ChangeNotifierProvider(
       create: (context) => MetaMaskProvider()..init(),
       builder: (context, child) {
