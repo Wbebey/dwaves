@@ -1,6 +1,8 @@
 import { TokenType } from '@@types/token.type'
 import AppError from '@errors/app.error'
-import { RequestHandler } from 'express'
+import { User } from '@prisma/client'
+import { ethers } from 'ethers'
+import { RequestHandler, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import tokenService from 'services/token.service'
 import userService from 'services/user.service'
@@ -41,6 +43,22 @@ export const deserializeUser: RequestHandler = async (req, res, next) => {
 }
 
 export const requireUser: RequestHandler = (_, res, next) => {
+  _requireUser(res)
+  next()
+}
+
+export const requireUserWallet: RequestHandler = (_, res, next) => {
+  const user = _requireUser(res)
+  if (user.address === ethers.constants.AddressZero) {
+    throw new AppError(
+      'Current user does not have any wallet registered',
+      StatusCodes.UNAUTHORIZED
+    )
+  }
+  next()
+}
+
+const _requireUser = (res: Response): User => {
   const user = res.locals.user
   if (!user) {
     throw new AppError(
@@ -48,5 +66,6 @@ export const requireUser: RequestHandler = (_, res, next) => {
       StatusCodes.UNAUTHORIZED
     )
   }
-  next()
+
+  return user
 }
