@@ -65,25 +65,30 @@ class PinataService implements IPinataService {
     })
 
 
-    const queryArray = []
-    queryArray.push(genre)
+    let albumIds : number[] = []
+    let artistIds : number[] = []
+    let genreIds : number[] = []
 
-    const albumIds = [... new Set(res.data.rows.map((music) => music.metadata.keyvalues.albumId))]
-    const artistIds = [... new Set(res.data.rows.map((music) => music.metadata.keyvalues.artistId))]
-    const genreIds = [... new Set(res.data.rows.map((music) => music.metadata.keyvalues.genreId))]
+    for (const music of res.data.rows) {
+      albumIds.push(music.metadata.keyvalues.albumId)
+      artistIds.push(music.metadata.keyvalues.artistId)
+      genreIds.push(music.metadata.keyvalues.genreId)
+    }
+    albumIds = [...new Set(albumIds)]
+    artistIds = [...new Set(artistIds)]
+    genreIds = [...new Set(genreIds)]
 
     const albums = await albumService.findMany({id: { in: albumIds}})
     const artists = await userService.findMany({id: { in: artistIds}})
-    const genres = genre ? queryArray : await genreService.findMany({id: { in: genreIds}})
-
+    const genres = genre ? [genre] : await genreService.findMany({id: {in: genreIds}})
 
     const allMusics = res.data.rows.map(music => {
       return {
         name: music.metadata.name,
         src: `${env.pinataGatewayHost}/${music.ipfs_pin_hash}`,
-        albumName: albums.find(x => x.id === music.metadata.keyvalues.albumId)!.name,
-        genreName: genres.find(x => x!.id === music.metadata.keyvalues.genreId)!.name,
-        artistName: artists.find(x => x.id === music.metadata.keyvalues.artistId)!.username,
+        albumName: albums.find(x => x.id === music.metadata.keyvalues.albumId)?.name || '',
+        genreName: genres.find(x => x.id === music.metadata.keyvalues.genreId)?.name || '',
+        artistName: artists.find(x => x.id === music.metadata.keyvalues.artistId)?.username || '',
         listenings: music.metadata.keyvalues.listenings
       }
     })
