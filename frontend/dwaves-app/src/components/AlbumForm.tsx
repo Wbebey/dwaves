@@ -3,7 +3,6 @@ import { Icon } from "components/shared";
 import { ChangeEvent, useState } from "react";
 import { useForm, UseFormSetValue } from "react-hook-form";
 import axios from "axios";
-import { truncate } from "fs";
 
 interface Props {
     setCoverExist: React.Dispatch<React.SetStateAction<boolean>>
