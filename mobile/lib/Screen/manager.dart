@@ -1,4 +1,5 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:dwaves_mobile/Screen/Login_page.dart';
 import 'package:flutter/material.dart';
 import 'notifiers/play_button_notifier.dart';
 import 'notifiers/progress_notifier.dart';
@@ -9,6 +10,7 @@ class Manager extends StatefulWidget {
   @override
   _ManagerState createState() => _ManagerState();
 }
+
 late final PageManager _pageManager;
 
 class _ManagerState extends State<Manager> {
@@ -36,14 +38,16 @@ class _ManagerState extends State<Manager> {
                 image: AssetImage("assets/images/Player-Background.png"),
                 fit: BoxFit.cover),
           ),
-          
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: null,
-                ),
+              IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (context) =>const MyLoginPage()));
+                },
+              ),
               const AudioProgressBar(),
               Row(
                 children: [
@@ -95,6 +99,7 @@ class CurrentSongTitle extends StatelessWidget {
     );
   }
 }
+
 class CurrentSongArtist extends StatelessWidget {
   const CurrentSongArtist({Key? key}) : super(key: key);
   @override
