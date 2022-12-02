@@ -5,6 +5,7 @@ import { body, query } from 'express-validator'
 import musicValidator from '@validators/music.validator'
 import { FileType } from '@@types/pinata.type'
 import albumValidator from '@validators/album.validator'
+import { requireUserWallet } from '@middlewares/auth.middleware'
 
 const musicRouter = Router()
 
@@ -16,6 +17,8 @@ musicRouter.get(
     musicValidator.validate,
     musicController.get
 )
+
+musicRouter.use(requireUserWallet)
 
 musicRouter.post(
   '/pinSingle',
