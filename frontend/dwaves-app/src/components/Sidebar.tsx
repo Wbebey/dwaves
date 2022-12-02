@@ -88,7 +88,7 @@ export const Sidebar: React.FC<Props> = ({ displayModal, connected, setConnected
                         </Link>
                     </li>
                 )}
-                <li style={{ position: 'absolute', bottom: '11%' }}>
+                <li style={connected ? { position: 'absolute', bottom: '11%'} : { position: 'absolute', bottom: '4%' }}>
                     <div>
                         <Setting2 className="w-10 h-10" />
                     </div>
