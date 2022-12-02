@@ -10,7 +10,7 @@ const checkEnv = <T = string>(variable: string): T => {
   return envVariable as T
 }
 
-const config = {
+const env = {
   appName: checkEnv('APP_NAME'),
   port: checkEnv<number>('PORT'),
   frontHost: checkEnv('FRONT_HOST'),
@@ -19,7 +19,7 @@ const config = {
   pinataApiSecret: checkEnv('PINATA_API_SECRET'),
   pinataApiHost: checkEnv('PINATA_API_HOST'),
   pinataGatewayHost: checkEnv('PINATA_GATEWAY_HOST'),
-  dwavesBankPrivateKey: checkEnv('DWAVES_BANK_PRIVATE_KEY'),
+  dwavesPayerPrivateKey: checkEnv('DWAVES_PAYER_PRIVATE_KEY'),
   alchemyApiKey: checkEnv('ALCHEMY_API_KEY'),
   accessTokenPrivateKey: checkEnv('ACCESS_TOKEN_PRIVATE_KEY'),
   accessTokenPublicKey: checkEnv('ACCESS_TOKEN_PUBLIC_KEY'),
@@ -29,4 +29,4 @@ const config = {
   refreshTokenExp: checkEnv<number>('REFRESH_TOKEN_EXP'),
 }
 
-export default config
+export default env
