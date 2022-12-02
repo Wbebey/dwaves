@@ -33,11 +33,11 @@ export type PinataPinResponse = {
 }
 
 export type MusicQuery = {
-  genre?: Genre | null
+  genre?: Genre
 }
 
 
-type MusicWithMetadata = {
+type PinataMusic = {
   metadata: {
     name: string
     keyvalues: MusicMetadata
@@ -46,6 +46,6 @@ type MusicWithMetadata = {
 }
 export type PinataPinListResponse = {
   count: number
-  rows: MusicWithMetadata[]
+  rows: PinataMusic[]
 
 }
