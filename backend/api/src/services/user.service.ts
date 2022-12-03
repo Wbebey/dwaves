@@ -40,6 +40,14 @@ class UserService implements IUserService {
     return this.exclude(createdUser, ['password'])
   }
 
+  update = async (
+    where: Prisma.UserWhereUniqueInput,
+    userUpdate: Prisma.UserUpdateInput
+  ) => {
+    const updatedUser = await prisma.user.update({ where, data: userUpdate })
+    return this.exclude(updatedUser, ['password'])
+  }
+
   findArtistsMonthlyListenings = (startDate: Date, endDate: Date) => {
     //* Find users with at least one record in MonthlyListenings between startDate (inclusive) and endDate (exclusive)
     const where = {
