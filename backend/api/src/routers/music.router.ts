@@ -33,4 +33,14 @@ musicRouter.post(
   musicController.uploadSingle
 )
 
+musicRouter.post(
+    '/pinAlbum',
+    body('genre')
+        .notEmpty()
+        .withMessage('Genre is required')
+        .bail()
+        .customSanitizer(albumValidator.toValidGenre),
+    musicController.uploadAllMusicOfAnAlbum
+)
+
 export default musicRouter
