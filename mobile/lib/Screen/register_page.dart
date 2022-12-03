@@ -6,41 +6,50 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-var email = '';
-var password = "";
 
-class Login extends StatelessWidget {
-  Login({Key? key, this.cookies}) : super(key: key);
+var username = 'sofian3';
+var email = 'sofian3@gmail.com';
+var password = "12345678";
+var password_confirmation = "12345678";
+
+class register extends StatelessWidget {
+  register({Key? key, this.cookies}) : super(key: key);
   final String? cookies;
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyLoginPage(),
+      home: MyregisterPage(),
     );
   }
 }
 
-class MyLoginPage extends StatefulWidget {
-  MyLoginPage({Key? key, this.cookies}) : super(key: key);
+class MyregisterPage extends StatefulWidget {
+  MyregisterPage({Key? key, this.cookies}) : super(key: key);
   final String? cookies;
   @override
-  _MyLoginPageState createState() => _MyLoginPageState();
+  _MyregisterPageState createState() => _MyregisterPageState();
 }
 
-class _MyLoginPageState extends State<MyLoginPage> {
-  void sendLogin() async {
-    var url = Uri.parse('http://localhost:8080/api/v1/auth/login');
+class _MyregisterPageState extends State<MyregisterPage> {
+  void sendRegister() async {
+    var url = Uri.parse('http://localhost:8080/api/v1/auth/register');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final response =
-        await http.post(url, body: {"email": email, "password": password});
+        await http.post(url, body: {
+          "username": username,
+          "email": email,
+          "password": password,
+          "passwordConfirmation": password_confirmation
+        });
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       prefs.setString('cookies', response.body);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Manager()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Manager()));
+    
     } else {
+      print(response.statusCode);
       throw Exception('Failed to create USER.');
     }
   }
@@ -68,13 +77,47 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   width: MediaQuery.of(context).size.height * 0.70,
                   child: Center(
                     child: Text(
-                      'Connection',
+                      'Incription',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: const Color.fromRGBO(236, 236, 254, 1),
                           fontSize: MediaQuery.of(context).size.height * 0.05),
                     ),
                   )),
+                  
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.70,
+                child: TextFormField(
+                  style: const TextStyle(
+                      color: const Color.fromRGBO(236, 236, 254, 1),
+                      fontSize: 20.0),
+                  onChanged: (val) {
+                    print(val);
+                    setState(() => email = val);
+                  },
+                  validator: (val) => val!.isEmpty ? 'Username manquant' : null,
+                  decoration: InputDecoration(
+                    enabledBorder: const UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(255, 3, 186, 203)),
+                    ),
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(255, 3, 186, 203)),
+                    ),
+                    labelStyle: TextStyle(
+                        color: const Color.fromRGBO(236, 236, 254, 1),
+                        fontSize: MediaQuery.of(context).size.height * 0.02),
+                    hintText: 'Username',
+                    hintStyle: const TextStyle(
+                        color: Color.fromRGBO(236, 236, 254, 1)),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.70,
@@ -142,12 +185,46 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.70,
+                child: TextFormField(
+                  style: const TextStyle(
+                    color: Color.fromRGBO(236, 236, 254, 1),
+                    fontSize: 20.0,
+                  ),
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  onChanged: (val) {
+                    print(val);
+                    setState(() => password_confirmation = val);
+                  },
+                  validator: (val) => val!.isEmpty ? 'Password manquant' : null,
+                  decoration: InputDecoration(
+                    enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(255, 0, 247, 255)),
+                    ),
+                    labelStyle: TextStyle(
+                        color: const Color.fromRGBO(236, 236, 254, 1),
+                        fontSize: MediaQuery.of(context).size.height * 0.020),
+                    hintText: 'Confirme ton Mot de passe',
+                    hintStyle: const TextStyle(
+                        color: Color.fromRGBO(236, 236, 254, 1)),
+                  ),
+                ),
+              ),
+              
               const SizedBox(
                 height: 15,
               ),
               GestureDetector(
                 onTap: () {
-                  sendLogin();
+                  sendRegister();
                 },
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.05,
@@ -157,7 +234,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       borderRadius: BorderRadius.circular(25)),
                   child: Center(
                     child: Text(
-                      'Connection',
+                      'Inscris-toi',
                       style: TextStyle(
                           color: Color.fromARGB(255, 255, 255, 255),
                           fontSize: MediaQuery.of(context).size.height * 0.025),
@@ -173,14 +250,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.05,
                   width: MediaQuery.of(context).size.width * 0.75,
-                  child: Center(
-                    child: Text(
-                      'Pas de compte ?',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 255, 255, 255),
-                          fontSize: MediaQuery.of(context).size.height * 0.025),
-                    ),
-                  ),
                 ),
               ),
             ],
