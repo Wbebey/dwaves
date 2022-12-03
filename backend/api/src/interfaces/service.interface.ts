@@ -1,4 +1,9 @@
-import { CoverMetadata, MusicMetadata, ViewMusic, MusicQuery } from '@@types/pinata.type'
+import {
+  CoverMetadata,
+  MusicMetadata,
+  ViewMusic,
+  MusicQuery,
+} from '@@types/pinata.type'
 import { TokenType } from '@@types/token.type'
 import { UserAddressAndMonthlyListenings, ViewUser } from '@@types/user.type'
 import { Album, Genre, Prisma, User } from '@prisma/client'
@@ -18,6 +23,10 @@ export interface IUserService extends IService {
     includePassword?: boolean
   ) => Promise<User | ViewUser | null>
   create: (user: Prisma.UserCreateInput) => Promise<ViewUser>
+  update: (
+    where: Prisma.UserWhereUniqueInput,
+    userUpdate: Prisma.UserUpdateInput
+  ) => Promise<ViewUser>
   findArtistsMonthlyListenings: (
     startDate: Date,
     endDate: Date
@@ -41,9 +50,7 @@ export interface IGenreService extends IService {
 }
 
 export interface IPinataService extends IService {
-  getMusicFromIPFS: (
-      query: MusicQuery
-  ) => Promise<ViewMusic[]>
+  getMusicFromIPFS: (query: MusicQuery) => Promise<ViewMusic[]>
   pinFileToIPFS: (
     file: UploadedFile,
     metadata: CoverMetadata | MusicMetadata
