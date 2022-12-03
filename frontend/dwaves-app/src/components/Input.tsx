@@ -46,10 +46,9 @@ export const SingleForm = () => {
     form.append('request', JSON.stringify({ genre: data.genre, artistId: "2" }))
     form.append("cover", data.cover)
     form.append("music", data.src)
-    console.log(form)
     axios.post(`${import.meta.env.VITE_APP_BACK_URL}/api/v1/musics/pinSingleMusic`, form)
-      .then(res => { console.log(res, 'worked') })
-      .catch(err => { console.log(err) })
+      .then()
+      .catch()
   }
 
   return (
