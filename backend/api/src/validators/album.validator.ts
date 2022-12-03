@@ -14,8 +14,11 @@ class AlbumValidator extends AppValidator implements IAlbumValidator {
     return true
   }
 
-  toValidGenre: CustomSanitizer = async (name: string) => this._toValidGenre(name, StatusCodes.CONFLICT)
-  toValidGenreIfExist: CustomSanitizer = (name: string) => name ? this._toValidGenre(name, StatusCodes.UNPROCESSABLE_ENTITY) : null
+  toValidGenre: CustomSanitizer = async (name: string) =>
+    this._toValidGenre(name, StatusCodes.CONFLICT)
+
+  toValidGenreIfExist: CustomSanitizer = (name: string) =>
+    name ? this._toValidGenre(name, StatusCodes.UNPROCESSABLE_ENTITY) : null
 
   private _toValidGenre = async (name: string, status: StatusCodes) => {
     const genre = await genreService.findUnique({ name })
