@@ -13,12 +13,9 @@ export const Register = () => {
 
 
   const onSubmit = (data: any) => {
-
-    console.log(data)
-
     axios.post(`${import.meta.env.VITE_APP_BACK_URL}/api/v1/auth/register`, data)
-      .then(res => { console.log(res, 'worked') })
-      .catch(err => { console.log(err) })
+      .then()
+      .catch()
   }
 
   return (
