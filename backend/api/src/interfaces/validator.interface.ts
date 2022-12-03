@@ -20,6 +20,7 @@ export interface IMusicValidator extends IAppValidator {
 export interface IAlbumValidator extends IAppValidator {
   isValidType: CustomValidator
   toValidGenre: CustomSanitizer
+  toValidGenreIfExist: CustomSanitizer
 }
 
 export interface IGenreValidator extends IAppValidator {
