@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'notifiers/play_button_notifier.dart';
 import 'notifiers/progress_notifier.dart';
 import 'notifiers/repeat_button_notifier.dart';
+import 'package:path/path.dart' as Path;
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Pagemanager.dart';
 
 class Manager extends StatefulWidget {
@@ -45,7 +48,7 @@ class _ManagerState extends State<Manager> {
                 icon: Icon(Icons.close),
                 onPressed: () {
                   Navigator.push(context,
-                  MaterialPageRoute(builder: (context) =>const MyLoginPage()));
+                  MaterialPageRoute(builder: (context) => MyLoginPage()));
                 },
               ),
               const AudioProgressBar(),
@@ -178,7 +181,19 @@ class AudioControlButtons extends StatelessWidget {
     );
   }
 }
+void sendLogin() async {
+    var url = Uri.parse('http://localhost:8080/api/v1/auth/me');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final response =
+        await http.get(url);
 
+    if (response.statusCode == 200) {
+      print(response.body);
+      
+    } else {
+      throw Exception('Failed to create USER.');
+    }
+  }
 class RepeatButton extends StatelessWidget {
   const RepeatButton({Key? key}) : super(key: key);
   @override
