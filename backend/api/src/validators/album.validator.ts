@@ -5,6 +5,7 @@ import genreService from '@services/genre.service'
 import { CustomSanitizer, CustomValidator, Meta } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
 import { AppValidator } from '@validators/app.validator'
+import albumService from "@services/album.service";
 
 class AlbumValidator extends AppValidator implements IAlbumValidator {
   isValidType: CustomValidator = (type: string) => {
@@ -26,6 +27,30 @@ class AlbumValidator extends AppValidator implements IAlbumValidator {
       throw new AppError('Invalid genre', status)
     }
     return genre
+  }
+
+  isNotSingleMusicWithThisName: CustomValidator = async (name: string, {req}) => {
+    const artistId = req.app.locals.user.id
+    const album = await albumService.findMany({
+      name: name, artistId, type: AlbumType.SINGLE
+    })
+
+    if (album.length > 0) {
+      throw new AppError('You already have a single music with this name', StatusCodes.CONFLICT)
+    }
+    return true
+  }
+
+  isValidAlbumName: CustomValidator = async (name: string, {req}) => {
+    const artistId = req.app.locals.user.id
+    const album = await albumService.findMany({
+      name: name, artistId, type: AlbumType.ALBUM
+    })
+
+    if (album.length > 0) {
+      throw new AppError('You already have an album with this name', StatusCodes.CONFLICT)
+    }
+    return true
   }
 }
 
