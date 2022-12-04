@@ -3,6 +3,7 @@ import { Genre } from '@prisma/client'
 export enum FileType {
   COVER = 'cover',
   MUSIC = 'music',
+  MUSICS = 'musics'
 }
 
 export type CoverMetadata = {

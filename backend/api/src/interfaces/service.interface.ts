@@ -54,6 +54,7 @@ export interface IPinataService extends IService {
   getMusicFromIPFS: (query: MusicQuery) => Promise<ViewMusic[]>
   pinFileToIPFS: (
     file: UploadedFile,
+    fileName: string,
     metadata: CoverMetadata | MusicMetadata
   ) => Promise<string>
 }

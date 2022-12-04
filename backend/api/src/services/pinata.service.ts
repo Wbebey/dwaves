@@ -21,13 +21,14 @@ import { UploadedFile } from 'express-fileupload'
 class PinataService implements IPinataService {
   pinFileToIPFS = async (
     file: UploadedFile,
+    fileName: string,
     metadata: CoverMetadata | MusicMetadata
   ) => {
     const url = `${env.pinataApiHost}/pinning/pinFileToIPFS`
 
     let data = new FormData()
-    const metadataPinata = JSON.stringify({ keyvalues: metadata })
-    data.append('pinataMetadata', metadataPinata)
+    const metadataPinata = JSON.stringify({ name: fileName, keyvalues: metadata })
+    data.append('pinataMetadata',  metadataPinata)
     const stream = Readable.from(file.data)
     data.append('file', stream, { filepath: file.name })
 
