@@ -26,6 +26,7 @@ class MusicController implements IMusicController {
       type: AlbumType.SINGLE,
       artist: { connect: { id: artistId } },
       genre: { connect: { id: genreId } },
+      coverCID,
     })
 
     const musicMetadata: MusicMetadata = {
