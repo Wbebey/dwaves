@@ -47,6 +47,7 @@ model Album {
   genreId  Int
   name     String
   type     AlbumType
+  coverCID String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
