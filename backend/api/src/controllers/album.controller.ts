@@ -5,11 +5,43 @@ import albumService from '@services/album.service'
 import { UploadedFile } from 'express-fileupload'
 import AppError from '@errors/app.error'
 import { StatusCodes } from 'http-status-codes'
+import userService from "@services/user.service";
+import genreService from "@services/genre.service";
 
 class AlbumController implements IAlbumController {
   get: RequestHandler = async (req, res) => {
-    const albums = await albumService.findMany()
+    const { type } = req.query
 
+    if(type === 'preview') {
+      const albums = await albumService.findMany()
+
+      let artistIds : number[] = []
+      let genreIds : number[] = []
+
+      for (const album of albums) {
+        artistIds.push(album.artistId)
+        genreIds.push(album.genreId)
+      }
+
+      artistIds = [...new Set(artistIds)]
+      genreIds = [...new Set(genreIds)]
+
+      const artists = await userService.findMany({id: { in: artistIds}})
+      const genres = await genreService.findMany({id: {in: genreIds}})
+
+
+      const albumsPreview = albums.map(album => {
+        return {
+          albumName: album.name,
+          genreName: genres.find(x => x.id === album.genreId)?.name || '',
+          artistName: artists.find(x => x.id === album.artistId)?.username || '',
+        }
+      })
+      res.json('truc')
+      return
+    }
+
+    const albums = await albumService.findMany()
     res.json(albums)
   }
 
