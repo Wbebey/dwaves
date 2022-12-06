@@ -17,7 +17,7 @@ export const ModalLogin: React.FC<Props> = ({ displayModal }) => {
             onClick={(e) => {
               displayModal(e);
             }}
-            src={`${import.meta.env.VITE_APP_URL}logo-dwaves.png`}
+            src={`${import.meta.env.VITE_APP_URL}/logo-dwaves.png`}
             alt=""
           />
           <div className="tabs">

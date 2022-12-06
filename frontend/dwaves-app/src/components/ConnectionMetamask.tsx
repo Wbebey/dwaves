@@ -18,7 +18,7 @@ export const ConnectMetamask = () => {
         <li>
             <div onClick={requestConnection} className="avatar mx-auto">
                 <div className="w-8 rounded-full">
-                    <img src={import.meta.env.VITE_APP_URL + 'metamask.png'} alt='' />
+                    <img src={`${import.meta.env.VITE_APP_URL}/metamask.png`} alt='' />
                 </div>
             </div>
         </li>
