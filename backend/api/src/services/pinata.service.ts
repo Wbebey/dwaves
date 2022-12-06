@@ -27,7 +27,7 @@ class PinataService implements IPinataService {
 
     let data = new FormData()
     const metadataPinata = JSON.stringify({ keyvalues: metadata })
-    data.append('pinataMetadata',  metadataPinata)
+    data.append('pinataMetadata', metadataPinata)
     const stream = Readable.from(file.data)
     data.append('file', stream, { filepath: file.name })
 
