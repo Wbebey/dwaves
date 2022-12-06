@@ -1,3 +1,4 @@
+import { AlbumCreateInput } from '@@types/album.type'
 import {
   CoverMetadata,
   MusicMetadata,
@@ -41,7 +42,7 @@ export interface IUserService extends IService {
 
 export interface IAlbumService extends IService {
   findMany: (where?: Prisma.AlbumWhereInput) => Promise<Album[]>
-  create: (album: Prisma.AlbumCreateInput, cover: UploadedFile) => Promise<Album>
+  create: (album: AlbumCreateInput, cover: UploadedFile) => Promise<Album>
 }
 
 export interface IGenreService extends IService {
