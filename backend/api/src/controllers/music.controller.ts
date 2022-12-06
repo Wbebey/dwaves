@@ -19,22 +19,18 @@ class MusicController implements IMusicController {
 
   uploadSingle: RequestHandler = async (req, res) => {
     const cover = req.files!.cover as UploadedFile
-    const coverMetadata: CoverMetadata = { type: FileType.COVER }
-    const coverCID = await pinataService.pinFileToIPFS(cover, coverMetadata)
-
-    logger.log(`cover: ${cover.name} - CID: ${coverCID}`)
-
     const music = req.files!.music as UploadedFile
-    const { id: artistId, address: artistAddress } = req.app.locals.user.id
+    const { id: artistId, address: artistAddress } = req.app.locals.user
     const name = req.body.name
     const genreId = req.body.genre.id
+
     const album = await albumService.create({
       name,
       type: AlbumType.SINGLE,
       artist: { connect: { id: artistId } },
       genre: { connect: { id: genreId } },
-      coverCID,
-    })
+      coverCID: ''
+    }, cover)
 
     const musicMetadata: MusicMetadata = {
       type: FileType.MUSIC,
@@ -45,56 +41,49 @@ class MusicController implements IMusicController {
       listenings: 0,
     }
     const musicCID = await pinataService.pinFileToIPFS(music, musicMetadata)
-
     logger.log(`music: ${music.name} - CID: ${musicCID}`)
 
-    const coverUrl = `${env.pinataGatewayHost}/${coverCID}`
     const musicUrl = `${env.pinataGatewayHost}/${musicCID}`
 
     await nftService.mint(artistAddress, musicCID)
 
-    res.json({ coverUrl, musicUrl })
+    res.json({ musicUrl })
   }
 
   uploadAlbum: RequestHandler = async (req, res) => {
 
     const cover = req.files!.cover as UploadedFile
     const musics = req.files!.musics as UploadedFile[]
-    const artistId = req.app.locals.user.id
+    const { id: artistId, address: artistAddress } = req.app.locals.user
     const { genre, albumName, musicNames } = req.body
     const genreId = genre.id
 
-    //pin Cover on Pinata
-    const coverMetadata: CoverMetadata = { type: FileType.COVER }
-    const coverCID = await pinataService.pinFileToIPFS(cover, coverMetadata)
-    logger.log(`cover: ${cover.name} - CID: ${coverCID}`)
-    const coverUrl = `${env.pinataGatewayHost}/${coverCID}`
-
-    //create Album
     const album = await albumService.create({
       name: albumName,
       type: AlbumType.ALBUM,
       artist: { connect: { id: artistId } },
       genre: { connect: { id: genreId } },
-    })
-
+      coverCID: ''
+    }, cover)
 
     const musicMetadata: MusicMetadata = {
       type: FileType.MUSIC,
-      name: 'truc',
+      name: '',
       albumId: album.id,
       artistId,
       genreId,
       listenings: 0,
     }
 
-    //pin each musics
     const musicsUrl :string[] = await Promise.all(musics.map(async (music, index) => {
+      musicMetadata.name = musicNames[index]
 
       const musicCID = await pinataService.pinFileToIPFS(music, musicMetadata)
       logger.log(`music: ${music.name} - CID: ${musicCID}`)
 
-      return `musicCID - ${index+1} : ${env.pinataGatewayHost}/${musicCID}`
+      await nftService.mint(artistAddress, musicCID)
+
+      return `musicUrl - ${index+1} : ${env.pinataGatewayHost}/${musicCID}`
     }))
 
     res.json({ musicsUrl })
