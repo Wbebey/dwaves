@@ -14,7 +14,7 @@ export const ContentAlbum = () => {
         </Link>
         <div className="divider divider-horizontal" />
         <div className="title">
-          <img src={`${import.meta.env.VITE_APP_URL}stamina1.jpg`} alt="" />
+          <img src={`${import.meta.env.VITE_APP_URL}/stamina1.jpg`} alt="" />
           <h3>Stamina</h3>
         </div>
         <div className="avatar">

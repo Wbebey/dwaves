@@ -34,17 +34,17 @@ export const Banner = () => {
           <img
             alt=""
             className="img one"
-            src={`${import.meta.env.VITE_APP_URL}stamina1.jpg`}
+            src={`${import.meta.env.VITE_APP_URL}/stamina1.jpg`}
           />
           <img
             alt=""
             className="img two"
-            src={`${import.meta.env.VITE_APP_URL}stamina2.jpg`}
+            src={`${import.meta.env.VITE_APP_URL}/stamina2.jpg`}
           />
           <img
             alt=""
             className="img three"
-            src={`${import.meta.env.VITE_APP_URL}stamina3.jpg`}
+            src={`${import.meta.env.VITE_APP_URL}/stamina3.jpg`}
           />
         </div>
       </div>
