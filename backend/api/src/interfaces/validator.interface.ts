@@ -1,4 +1,5 @@
 import { FileType } from '@@types/pinata.type'
+import { AlbumType } from '@prisma/client'
 import { RequestHandler } from 'express'
 import { CustomSanitizer, CustomValidator } from 'express-validator'
 
@@ -23,8 +24,7 @@ export interface IAlbumValidator extends IAppValidator {
   isValidType: CustomValidator
   toValidGenre: CustomSanitizer
   toValidGenreIfExist: CustomSanitizer
-  isValidSingleName: CustomValidator
-  isValidAlbumName: CustomValidator
+  isValidName: (type: AlbumType) => CustomValidator
   toValidMusicNames: CustomSanitizer
 }
 
