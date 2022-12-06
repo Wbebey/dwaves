@@ -29,28 +29,34 @@ class AlbumValidator extends AppValidator implements IAlbumValidator {
     return genre
   }
 
-  isNotSingleMusicWithThisName: CustomValidator = async (name: string, {req}) => {
-    const artistId = req.app.locals.user.id
+  isValidSingleName: CustomValidator = async (name: string, {req}) =>
+      this._isValidName(name, req.app.locals.user.id, AlbumType.SINGLE)
+
+  isValidAlbumName: CustomValidator = async (name: string, {req}) =>
+      this._isValidName(name, req.app.locals.user.id, AlbumType.ALBUM)
+
+  private _isValidName = async (name: string, artistId: number, albumType: AlbumType) => {
     const album = await albumService.findMany({
-      name: name, artistId, type: AlbumType.SINGLE
+      name: name, artistId, type: albumType
     })
 
     if (album.length > 0) {
-      throw new AppError('You already have a single music with this name', StatusCodes.CONFLICT)
+      if (albumType===AlbumType.SINGLE) {
+        throw new AppError('You already have a single music with this name', StatusCodes.CONFLICT)
+      } else {
+        throw new AppError('You already have an album with this name', StatusCodes.CONFLICT)
+      }
     }
     return true
   }
 
-  isValidAlbumName: CustomValidator = async (name: string, {req}) => {
-    const artistId = req.app.locals.user.id
-    const album = await albumService.findMany({
-      name: name, artistId, type: AlbumType.ALBUM
-    })
-
-    if (album.length > 0) {
-      throw new AppError('You already have an album with this name', StatusCodes.CONFLICT)
+  toValidMusicNames: CustomSanitizer = async (name: string) => {
+    const musicNames = JSON.parse(name);
+    if (!Array.isArray(musicNames)) {
+      throw new AppError('musicNames is not an array', StatusCodes.CONFLICT)
     }
-    return true
+
+    return musicNames
   }
 }
 
