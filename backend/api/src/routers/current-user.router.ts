@@ -19,5 +19,3 @@ currentUserRouter.put(
 )
 
 export default currentUserRouter
-
-
