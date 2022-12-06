@@ -27,11 +27,11 @@ musicRouter.post(
     .withMessage('Genre is required')
     .bail()
     .customSanitizer(albumValidator.toValidGenre),
-  body('musicName')
+  body('name')
     .notEmpty()
-    .withMessage('musicName is required')
+    .withMessage('the name of the music is required')
     .bail()
-    .custom(albumValidator.isNotSingleMusicWithThisName),
+    .custom(albumValidator.isValidSingleName),
   body().custom(musicValidator.hasOneFile(FileType.COVER)),
   body().custom(musicValidator.hasOneFile(FileType.MUSIC)),
   musicValidator.validate,
@@ -50,14 +50,15 @@ musicRouter.post(
         .withMessage('albumName is required')
         .bail()
         .custom(albumValidator.isValidAlbumName),
-    body('musicsName')
+    body('musicNames')
         .notEmpty()
-        .withMessage('musicsName is required')
-        .bail(),
+        .withMessage('musicNames is required')
+        .bail()
+        .customSanitizer(albumValidator.toValidMusicNames),
     body().custom(musicValidator.hasOneFile(FileType.COVER)),
     body().custom(musicValidator.hasFiles(FileType.MUSICS)),
     musicValidator.validate,
-    musicController.uploadAllMusicOfAnAlbum
+    musicController.uploadAlbum
 )
 
 export default musicRouter
