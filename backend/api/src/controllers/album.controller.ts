@@ -7,6 +7,7 @@ import AppError from '@errors/app.error'
 import { StatusCodes } from 'http-status-codes'
 import userService from "@services/user.service";
 import genreService from "@services/genre.service";
+import env from "@config/env.config";
 
 class AlbumController implements IAlbumController {
   get: RequestHandler = async (req, res) => {
@@ -33,11 +34,12 @@ class AlbumController implements IAlbumController {
       const albumsPreview = albums.map(album => {
         return {
           albumName: album.name,
-          genreName: genres.find(x => x.id === album.genreId)?.name || '',
+          coverUrl: `${env.pinataGatewayHost}/${album.coverCID}`,
+          genre: genres.find(x => x.id === album.genreId)?.name || '',
           artistName: artists.find(x => x.id === album.artistId)?.username || '',
         }
       })
-      res.json('truc')
+      res.json(albumsPreview)
       return
     }
 
