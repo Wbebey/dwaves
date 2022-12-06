@@ -2,9 +2,9 @@ import axios from 'axios'
 import { IPinataService } from '@interfaces/service.interface'
 import FormData from 'form-data'
 import env from '@config/env.config'
-import genreService from "@services/genre.service"
-import userService from "@services/user.service";
-import albumService from "@services/album.service";
+import genreService from '@services/genre.service'
+import userService from '@services/user.service'
+import albumService from '@services/album.service'
 import {
   CoverMetadata,
   ViewMusic,
@@ -15,8 +15,6 @@ import {
 } from '@@types/pinata.type'
 import { Readable } from 'stream'
 import { UploadedFile } from 'express-fileupload'
-
-
 
 class PinataService implements IPinataService {
   pinFileToIPFS = async (
@@ -44,18 +42,19 @@ class PinataService implements IPinataService {
     return cid
   }
 
-  getMusicFromIPFS = async (
-      query: MusicQuery
-  ): Promise<ViewMusic[]> => {
-
-    const {genre} = query
+  getMusicFromIPFS = async (query: MusicQuery): Promise<ViewMusic[]> => {
+    const { genre } = query
 
     const baseUrl = `${env.pinataApiHost}/data/pinList?status=pinned&metadata[keyvalues]`
-    const filter = {type:{value:'music',op:'eq'}}
-    const url = genre
-        ? `${baseUrl}=${JSON.stringify({...filter, genreId: {value: genre.id, op: 'eq'}})}`
-        : `${baseUrl}=${JSON.stringify(filter)}`
+    const typeFilter = { type: { value: 'music', op: 'eq' } }
+    const genreIdFilter = genre
+      ? { genreId: { value: genre.id, op: 'eq' } }
+      : {}
 
+    const url = `${baseUrl}=${JSON.stringify({
+      ...typeFilter,
+      ...genreIdFilter,
+    })}`
 
     const res = await axios.get<PinataPinListResponse>(url, {
       headers: {
@@ -64,10 +63,9 @@ class PinataService implements IPinataService {
       },
     })
 
-
-    let albumIds : number[] = []
-    let artistIds : number[] = []
-    let genreIds : number[] = []
+    let albumIds: number[] = []
+    let artistIds: number[] = []
+    let genreIds: number[] = []
 
     for (const music of res.data.rows) {
       albumIds.push(music.metadata.keyvalues.albumId)
@@ -78,18 +76,22 @@ class PinataService implements IPinataService {
     artistIds = [...new Set(artistIds)]
     genreIds = [...new Set(genreIds)]
 
-    const albums = await albumService.findMany({id: { in: albumIds}})
-    const artists = await userService.findMany({id: { in: artistIds}})
-    const genres = genre ? [genre] : await genreService.findMany({id: {in: genreIds}})
+    const albums = await albumService.findMany({ id: { in: albumIds } })
+    const artists = await userService.findMany({ id: { in: artistIds } })
+    const genres = genre
+      ? [genre]
+      : await genreService.findMany({ id: { in: genreIds } })
 
-    const allMusics = res.data.rows.map(music => {
+    const allMusics = res.data.rows.map((music) => {
+      const { name, keyvalues } = music.metadata
+      const { albumId, genreId, artistId, listenings } = keyvalues
       return {
-        name: music.metadata.name,
+        name,
         src: `${env.pinataGatewayHost}/${music.ipfs_pin_hash}`,
-        albumName: albums.find(x => x.id === music.metadata.keyvalues.albumId)?.name || '',
-        genreName: genres.find(x => x.id === music.metadata.keyvalues.genreId)?.name || '',
-        artistName: artists.find(x => x.id === music.metadata.keyvalues.artistId)?.username || '',
-        listenings: music.metadata.keyvalues.listenings
+        albumName: albums.find((a) => a.id === albumId)?.name || '',
+        genreName: genres.find((g) => g.id === genreId)?.name || '',
+        artistName: artists.find((a) => a.id === artistId)?.username || '',
+        listenings,
       }
     })
 
