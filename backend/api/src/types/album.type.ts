@@ -4,6 +4,7 @@ export type AlbumCreateInput = Omit<Prisma.AlbumCreateInput, 'coverCID'>
 
 export type AlbumFilter = {
   genre?: Genre
+  artistId?: number
 }
 
 export type ViewAlbum = Omit<
