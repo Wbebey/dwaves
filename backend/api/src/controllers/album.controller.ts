@@ -5,12 +5,15 @@ import albumService from '@services/album.service'
 import { UploadedFile } from 'express-fileupload'
 import AppError from '@errors/app.error'
 import { StatusCodes } from 'http-status-codes'
+import userService from "@services/user.service";
+import genreService from "@services/genre.service";
+import env from "@config/env.config";
 
 class AlbumController implements IAlbumController {
   get: RequestHandler = async (req, res) => {
-    const albums = await albumService.findMany()
+    const albums = await albumService.findMany({}, {genre: true, artist: true})
 
-    res.json(albums)
+    return res.json(albums)
   }
 
   show: RequestHandler = async (req, res) => {
