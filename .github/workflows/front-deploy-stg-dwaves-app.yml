@@ -20,7 +20,7 @@ env:
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
-    FRONT_ENV: ${{ secrets.FRONT_ENV }}
+    ENV_VARS: ${{ secrets.DWAVES_APP_STAGING_ENV }}
     STAGING_URL: ${{ secrets.DWAVES_APP_STAGING_URL }}
 
 defaults:
@@ -101,7 +101,7 @@ jobs:
                 node-version: ${{ env.NODE_VERSION }}
 
             - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
-              run: echo "${{ env.FRONT_ENV }}" > .env
+              run: echo "${{ env.ENV_VARS }}" > .env
 
             - name: NPM install
               run: npm install
@@ -110,7 +110,7 @@ jobs:
               run: |-
                 CI="false" npm run build
 
-            - name: Deploy Staging 🚀
+            - name: Deploy to {{ env.ENVIRONMENT }} 🚀
               if: ${{ github.ref }} == 'refs/heads/staging'
               run: |-
                 export environment="${{ env.APP }}-${{ env.ENVIRONMENT }}"
