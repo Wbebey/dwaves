@@ -41,7 +41,7 @@ export interface IUserService extends IService {
 }
 
 export interface IAlbumService extends IService {
-  findMany: (where?: Prisma.AlbumWhereInput) => Promise<Album[]>
+  findMany: (where?: Prisma.AlbumWhereInput, include?: Prisma.AlbumInclude) => Promise<Album[]>
   findUnique: (where: Prisma.AlbumWhereUniqueInput) => Promise<Album | null>
   create: (album: AlbumCreateInput, cover: UploadedFile) => Promise<Album>
 }

@@ -5,11 +5,14 @@ import { UploadedFile } from 'express-fileupload'
 import { CoverMetadata, FileType } from '@@types/pinata.type'
 import pinataService from '@services/pinata.service'
 import logger from '@config/logger.config'
-import { AlbumCreateInput } from '@@types/album.type'
+import { AlbumCreateInput, AlbumFilters } from '@@types/album.type'
 
 class AlbumService implements IAlbumService {
-  findMany = (where: Prisma.AlbumWhereInput = {}) =>
-    prisma.album.findMany({ where })
+  findMany = (where: Prisma.AlbumWhereInput = {}, include?: Prisma.AlbumInclude) => {
+    const filters: AlbumFilters = include ? {where, include} : {where}
+
+    return prisma.album.findMany(filters)
+  }
 
   findUnique = async (where: Prisma.AlbumWhereUniqueInput) =>
     prisma.album.findUnique({ where })
