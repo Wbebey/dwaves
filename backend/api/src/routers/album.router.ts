@@ -1,14 +1,19 @@
 import { Router } from 'express'
 
 import albumController from '@controllers/album.controller'
-import { body, param } from 'express-validator'
+import { body, param, query } from 'express-validator'
 import albumValidator from '@validators/album.validator'
 import musicValidator from '@validators/music.validator'
 import { FileType } from '@@types/pinata.type'
 
 const albumRouter = Router()
 
-albumRouter.get('/', albumController.get)
+albumRouter.get(
+  '/',
+  query('genre').bail().customSanitizer(albumValidator.toValidGenreIfExist),
+  albumValidator.validate,
+  albumController.list
+)
 albumRouter.get(
   '/:id',
   param('id').isInt({ min: 0 }).withMessage('Invalid id'),

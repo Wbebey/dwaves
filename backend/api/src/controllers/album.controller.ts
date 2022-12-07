@@ -6,10 +6,11 @@ import { UploadedFile } from 'express-fileupload'
 import AppError from '@errors/app.error'
 import { StatusCodes } from 'http-status-codes'
 import pinataService from '@services/pinata.service'
+import { AlbumGetRequestHandler } from '@@types/app.type'
 
 class AlbumController implements IAlbumController {
-  get: RequestHandler = async (req, res) => {
-    const albums = await albumService.findMany()
+  list: AlbumGetRequestHandler = async (req, res) => {
+    const albums = await albumService.findMany({ genreId: req.query.genre?.id })
 
     res.json(albums)
   }
