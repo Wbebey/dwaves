@@ -1,91 +1,61 @@
-name: Deploy - Dwaves-api
+name: Deploy Dwaves-api on Label
 
 on:
-  push:
-    branches: 
-      - staging
+  pull_request:
+    types: [labeled]
+    branches: [staging]
     paths:
       - backend/api/**
 
 env:
     APP: dwaves-api
-    ENVIRONMENT: staging
+    ENVIRONMENT: test
     NODE_VERSION: 16.x
-    BACKEND_DIRECTORY: backend
     PROJECT_DIRECTORY: backend/api
-    ENV_VARS: ${{ secrets.DWAVES_API_STAGING_ENV }}
-    DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-    DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }} 
     SONAR_PROJECT_BASE_DIR: backend/api/
     SONAR_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_API }}
     SONAR_PROJECT_KEY: ${{ secrets.DWAVES_API_PROJECT_KEY }}
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
-    # DOCKER_TAG: gcr.io/${{ secrets.DWAVES_PROJECT_ID }}/dwaves-api:${{ github.sha }}
+    ENV_VARS: ${{ secrets.DWAVES_API_TEST_ENV }}
 
-defaults:
-  run:
-    working-directory: "backend/api"
+defaults: 
+    run:
+        working-directory: "backend/api"
 
 jobs:
-  integration-test:
-    name: Integretion Test
+  remove-label:
+    name: Remove Label
+    if: ${{ github.event.label.name == 'deploy-dwaves-api-test' }}
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout 😇
-        uses: actions/checkout@v3
-
-      - name: Integration Tests 🏗
-        uses: ./.github/actions/frontend/integration-test
-
-      - name: Discord notification on failure
-        if: failure()
-        uses: ./.github/actions/discord/notification-on-failure
-
-  unit-test:
-    name: Unit Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout 😇
-        uses: actions/checkout@v3
-
-      - name: Unit Test 🧪
-        uses: ./.github/actions/frontend/unit-test
-
-      - name: Discord notification on failure
-        if: failure()
-        uses: ./.github/actions/discord/notification-on-failure
-
-  code-analysis:
-    name: Code Analysis
-    runs-on: ubuntu-latest
-    permissions: 
+    permissions:
       contents: read
       pull-requests: write
-    needs: [integration-test, unit-test]
     steps:
-      - name: Checkout 😇
+      - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: SonarCloud Scan
-        uses: ./.github/actions/sonarcloud
-
-      - name: Discord notification on failure
-        if: failure()
-        uses: ./.github/actions/discord/notification-on-failure
+      - name: Remove Label from PR
+        uses: actions-ecosystem/action-remove-labels@v1.3.0
+        with:
+          labels: ${{ github.event.label.name }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
-    name: Deploy to staging
-    needs: [code-analysis]
-    environment: dwaves-api-staging
+    name: Deploy
+    if: ${{ github.event.label.name == 'deploy-dwaves-api-test' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    environment:
+      name: dwaves-api-test
     steps:
       - name: Checkout 😇
         uses: actions/checkout@v3
-
-      - name: Discord notification ${{ env.ENVIRONMENT }} Deployment started
-        uses: ./.github/actions/discord/notification-on-start-deployment
 
       - name: GCP authentification 🤑
         uses: google-github-actions/setup-gcloud@v0
@@ -97,13 +67,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-      
-      #TODO: remove this step when we find a new way to manage env file is ready
-      # - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
-      #   run: |-
-      #     export APP_ENV = env_${{ env.APP }}_${{ env.ENVIRONMENT }}
-      #     cat $APP_ENV
-      #     echo "$APP_ENV" > .env
 
       - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
         run: echo "${{ env.ENV_VARS }}" > .env
@@ -117,7 +80,6 @@ jobs:
             --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
             --build-arg BUILD_NUMBER=${{ github.run_number }} \
             --build-arg BUILD_URL=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
 
       - name: Publish to Container registry 🛫
         run: |-
@@ -136,12 +98,3 @@ jobs:
             --memory 512Mi \
             --timeout 300 \
             --project ${{ env.GCP_PROJECT_ID }}
-
-      - name: Discord notification on success
-        if: success()
-        uses: ./.github/actions/discord/notification-on-success
-
-      - name: Discord notification on failure
-        if: failure()
-        uses: ./.github/actions/discord/notification-on-failure
-
