@@ -8,51 +8,37 @@ import logger from '@config/logger.config'
 import { AlbumCreateInput } from '@@types/album.type'
 import env from '@config/env.config'
 
+const viewAlbumSelect = {
+  id: true,
+  coverCID: true,
+  type: true,
+  name: true,
+  createdAt: true,
+  genre: { select: { name: true } },
+  artist: { select: { username: true } },
+  subscribers: { select: { _count: true } },
+}
+
+type ViewAlbumSelectResult = Prisma.AlbumGetPayload<{
+  select: typeof viewAlbumSelect
+}>
+
 class AlbumService implements IAlbumService {
-  findMany = (where: Prisma.AlbumWhereInput = {}) =>
-    prisma.album.findMany({ where })
+  findMany = async (where: Prisma.AlbumWhereInput = {}) => {
+    const viewAlbums = await prisma.album.findMany({
+      where,
+      select: viewAlbumSelect,
+    })
+
+    return viewAlbums.map(this.toViewAlbum)
+  }
 
   findUnique = async (where: Prisma.AlbumWhereUniqueInput) => {
-    const albumDb = await prisma.album.findUnique({
+    const albums = await prisma.album.findUnique({
       where,
-      select: {
-        id: true,
-        coverCID: true,
-        type: true,
-        name: true,
-        createdAt: true,
-        genre: {
-          select: {
-            name: true,
-          },
-        },
-        artist: {
-          select: {
-            username: true,
-          },
-        },
-        subscribers: {
-          select: {
-            _count: true,
-          },
-        },
-      },
+      select: viewAlbumSelect,
     })
-    if (!albumDb) {
-      return null
-    }
-
-    const album = {
-      ...albumDb,
-      cover: `${env.pinataGatewayHost}/${albumDb.coverCID}`,
-      genre: albumDb.genre.name,
-      artist: albumDb.artist.username,
-      subscribers: albumDb.subscribers.length,
-    }
-
-    const { coverCID, ...viewAlbum } = album
-
-    return viewAlbum
+    return albums && this.toViewAlbum(albums)
   }
 
   create = async (album: AlbumCreateInput, cover: UploadedFile) => {
@@ -64,6 +50,19 @@ class AlbumService implements IAlbumService {
     const data: Prisma.AlbumCreateInput = { ...album, coverCID }
 
     return prisma.album.create({ data })
+  }
+
+  private toViewAlbum = (viewAlbumSelectResult: ViewAlbumSelectResult) => {
+    const album = {
+      ...viewAlbumSelectResult,
+      cover: `${env.pinataGatewayHost}/${viewAlbumSelectResult.coverCID}`,
+      genre: viewAlbumSelectResult.genre.name,
+      artist: viewAlbumSelectResult.artist.username,
+      subscribers: viewAlbumSelectResult.subscribers.length,
+    }
+    const { coverCID, ...viewAlbum } = album
+
+    return viewAlbum
   }
 }
 
