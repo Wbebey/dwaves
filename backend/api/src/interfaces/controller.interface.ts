@@ -1,3 +1,4 @@
+import { Genre } from '@prisma/client'
 import { RequestHandler } from 'express'
 
 interface IController {}
@@ -25,7 +26,7 @@ export interface IGenreController extends IController {
 }
 
 export interface IMusicController extends IController {
-  get: RequestHandler
+  get: RequestHandler<{}, {}, {}, { genre?: Genre }>
   uploadSingle: RequestHandler
   uploadAlbum: RequestHandler
 }
