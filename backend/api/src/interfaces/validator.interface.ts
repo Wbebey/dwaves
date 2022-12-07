@@ -26,6 +26,7 @@ export interface IAlbumValidator extends IAppValidator {
   toValidGenreIfExist: CustomSanitizer
   isValidName: (type: AlbumType) => CustomValidator
   toValidMusicNames: CustomSanitizer
+  toValidArtistIdIfExist: CustomSanitizer
 }
 
 export interface IGenreValidator extends IAppValidator {
