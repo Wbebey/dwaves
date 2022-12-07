@@ -5,6 +5,7 @@ import albumService from '@services/album.service'
 import { UploadedFile } from 'express-fileupload'
 import AppError from '@errors/app.error'
 import { StatusCodes } from 'http-status-codes'
+import pinataService from '@services/pinata.service'
 
 class AlbumController implements IAlbumController {
   get: RequestHandler = async (req, res) => {
@@ -19,7 +20,16 @@ class AlbumController implements IAlbumController {
       throw new AppError('Album not found', StatusCodes.NOT_FOUND)
     }
 
-    res.json(album)
+    const rawMusics = await pinataService.getMusicFromIPFS({
+      albumId: album.id,
+    })
+    const musics = rawMusics.map((music) => ({
+      src: music.src,
+      name: music.name,
+      listenings: music.listenings,
+    }))
+
+    res.json({ ...album, musics })
   }
 
   create: RequestHandler = async (req, res) => {
