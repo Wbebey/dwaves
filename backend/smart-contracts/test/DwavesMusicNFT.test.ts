@@ -78,6 +78,30 @@ describe('DwavesMusicNFT', () => {
         `AccessControl: account ${user1.address.toLowerCase()} is missing role ${minterRole}`
       )
     })
+
+    it("Allows payer to batch mint NFT to user and emit a 'Transfer' event for each token minted", async () => {
+      const nftBatchMint = dwavesMusicNFT.batch_mint(user1.address, [
+        MUSIC_CID1,
+        MUSIC_CID2,
+      ])
+      expect(nftBatchMint)
+        .to.changeTokenBalance(dwavesMusicNFT, user1.address, 2)
+        .and.to.emit(dwavesMusicNFT, 'Transfer')
+        .withArgs(dwavesMusicNFT.address, user1.address, 1)
+        .and.to.emit(dwavesMusicNFT, 'Transfer')
+        .withArgs(dwavesMusicNFT.address, user1.address, 2)
+    })
+
+    it('Prevents batch mint if account does not have the minter role', async () => {
+      const dwavesMusicNFT_ = dwavesMusicNFT.connect(deployer)
+      const nftBatchMint = dwavesMusicNFT_.batch_mint(user1.address, [
+        MUSIC_CID1,
+        MUSIC_CID2,
+      ])
+      expect(nftBatchMint).to.be.revertedWith(
+        `AccessControl: account ${user1.address.toLowerCase()} is missing role ${minterRole}`
+      )
+    })
   })
 
   describe('When minting several tokens to two user', () => {
