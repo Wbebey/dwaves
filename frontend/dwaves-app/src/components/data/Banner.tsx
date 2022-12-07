@@ -13,9 +13,7 @@ export const Banner = () => {
       <div
         className="background-image"
         style={{
-          backgroundImage: `url('${
-            import.meta.env.VITE_APP_URL
-          }playlist1.png')`,
+          backgroundImage: `url('/playlist1.png')`,
         }}
       />
       <div className="background-blur" />
@@ -34,17 +32,17 @@ export const Banner = () => {
           <img
             alt=""
             className="img one"
-            src={`${import.meta.env.VITE_APP_URL}/stamina1.jpg`}
+            src="/stamina1.jpg"
           />
           <img
             alt=""
             className="img two"
-            src={`${import.meta.env.VITE_APP_URL}/stamina2.jpg`}
+            src="/stamina2.jpg"
           />
           <img
             alt=""
             className="img three"
-            src={`${import.meta.env.VITE_APP_URL}/stamina3.jpg`}
+            src="/stamina3.jpg"
           />
         </div>
       </div>
