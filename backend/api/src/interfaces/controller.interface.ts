@@ -15,6 +15,7 @@ export interface IUserController extends IController {
 
 export interface IAlbumController extends IController {
   get: RequestHandler
+  show: RequestHandler
   create: RequestHandler
 }
 
