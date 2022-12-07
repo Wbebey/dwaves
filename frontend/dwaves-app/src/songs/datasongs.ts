@@ -12,8 +12,8 @@ export default [
         Avatar: "https://via.placeholder.com/360x360",
       },
     ],
-    Src: `${import.meta.env.VITE_APP_URL}/audiotest1.mp3`,
-    Cover: `${import.meta.env.VITE_APP_URL}/stamina1.jpg`,
+    Src: `/audiotest1.mp3`,
+    Cover: `/stamina1.jpg`,
     outDate: "",
   },
   {
@@ -29,8 +29,8 @@ export default [
         Avatar: "https://via.placeholder.com/360x360",
       },
     ],
-    Src: `${import.meta.env.VITE_APP_URL}/audiotest2.mp3`,
-    Cover: `${import.meta.env.VITE_APP_URL}/stamina2.jpg`,
+    Src: `/audiotest2.mp3`,
+    Cover: `/stamina2.jpg`,
     outDate: "",
   },
   {
@@ -46,8 +46,8 @@ export default [
         Avatar: "https://via.placeholder.com/360x360",
       },
     ],
-    Src: `${import.meta.env.VITE_APP_URL}/audiotest3.mp3`,
-    Cover: `${import.meta.env.VITE_APP_URL}/stamina3.jpg`,
+    Src: `/audiotest3.mp3`,
+    Cover: `/stamina3.jpg`,
     outDate: "",
   },
 ];

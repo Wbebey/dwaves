@@ -14,8 +14,9 @@ export const Login = () => {
     axios.post(`${import.meta.env.VITE_APP_BACK_URL}/auth/login`, data, {withCredentials: true})
       .then(res => { 
         window.location.reload()
+        console.log(res)
       })
-      .catch()
+      .catch(err => {console.log(err)})
   }
 
   return (
