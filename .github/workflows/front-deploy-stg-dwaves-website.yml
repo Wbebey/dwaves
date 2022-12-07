@@ -44,7 +44,7 @@ jobs:
             - name: Integration Tests 🏗
               uses: ./.github/actions/frontend/integration-test
 
-            - name: Discord notification on failure
+            - name: Discord notification on failure.
               if: failure()
               uses: ./.github/actions/notification-on-failure
 
