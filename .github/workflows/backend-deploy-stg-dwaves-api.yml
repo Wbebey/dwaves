@@ -112,7 +112,7 @@ jobs:
         run: |-
           docker build . \
             -f ${{ GITHUB.WORKSPACE }}/${{ env.PROJECT_DIRECTORY }}/Dockerfile \
-            -t {{ env.DOCKER_TAG }} \
+            -t ${{ env.DOCKER_TAG }} \
             --build-arg ENVIRONMENT=${{ env.ENVIRONMENT }} \
             --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
             --build-arg BUILD_NUMBER=${{ github.run_number }} \
@@ -121,14 +121,14 @@ jobs:
 
       - name: Publish to Container registry 🛫
         run: |-
-          echo "Pushing image {{ env.DOCKER_TAG }} to google cloud container registry..."
+          echo "Pushing image ${{ env.DOCKER_TAG }} to google cloud container registry..."
           gcloud auth configure-docker --quiet
-          docker push {{ env.DOCKER_TAG }}
+          docker push ${{ env.DOCKER_TAG }}
 
       - name: Deploy to cloud run on {{ env.ENVIRONMENT }} 🚀
         run: |-
           gcloud run deploy ${{ env.APP }}-${{ env.ENVIRONMENT }} \
-            --image {{ env.DOCKER_TAG }} \
+            --image ${{ env.DOCKER_TAG }} \
             --platform managed \
             --region europe-west1 \
             --allow-unauthenticated \
