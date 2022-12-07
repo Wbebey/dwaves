@@ -30,8 +30,9 @@ class AlbumValidator extends AppValidator implements IAlbumValidator {
   }
 
   isValidName =
-    (type: AlbumType): CustomValidator =>
+    (albumType?: AlbumType): CustomValidator =>
     async (name: string, { req }) => {
+      const type = albumType || req.body.type
       const album = await albumService.findMany({
         name,
         artistId: req.app.locals.user.id,
