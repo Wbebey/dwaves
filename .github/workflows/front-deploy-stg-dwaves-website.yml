@@ -26,7 +26,7 @@ env:
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
-    FRONT_ENV: ${{ secrets.FRONT_ENV }}
+    FRONT_ENV: ${{ secrets.WEBSITE_ENV }}
     STAGING_URL: ${{ secrets.DWAVES_WEBSITE_STAGING_URL }}
 
 defaults:
