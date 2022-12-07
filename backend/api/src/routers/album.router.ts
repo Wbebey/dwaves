@@ -17,13 +17,17 @@ albumRouter.get(
 )
 albumRouter.post(
   '/',
-  body('name').notEmpty().withMessage('Name is required'),
   body('type')
     .notEmpty()
     .withMessage('Type is required')
     .bail()
     .toUpperCase()
     .custom(albumValidator.isValidType),
+  body('name')
+    .notEmpty()
+    .withMessage('Name is required')
+    .bail()
+    .custom(albumValidator.isValidName()),
   body('genre')
     .notEmpty()
     .withMessage('Genre is required')
