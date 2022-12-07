@@ -11,6 +11,9 @@ class AlbumService implements IAlbumService {
   findMany = (where: Prisma.AlbumWhereInput = {}) =>
     prisma.album.findMany({ where })
 
+  findUnique = async (where: Prisma.AlbumWhereUniqueInput) =>
+    prisma.album.findUnique({ where })
+
   create = async (album: AlbumCreateInput, cover: UploadedFile) => {
     const coverMetadata: CoverMetadata = { type: FileType.COVER }
     const coverCID = await pinataService.pinFileToIPFS(cover, coverMetadata)
