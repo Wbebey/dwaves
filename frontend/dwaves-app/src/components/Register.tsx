@@ -1,32 +1,45 @@
-import axios from "axios";
-import { useForm } from "react-hook-form";
+import axios from 'axios'
+import { useForm } from 'react-hook-form'
 
 type User = {
-  username: string;
-  email: string;
-  password: string;
-  passwordConfirmation:string
-};
+  username: string
+  email: string
+  password: string
+  passwordConfirmation: string
+}
 
-export const Register = () => {
-  const { register, setValue, getValues, handleSubmit } = useForm<User>();
+interface Props {
+  setShowLogin: React.Dispatch<React.SetStateAction<boolean>>
+}
 
+export const Register: React.FC<Props> = ({ setShowLogin }) => {
+  const { register, setValue, getValues, handleSubmit } = useForm<User>()
 
   const onSubmit = (data: any) => {
-    axios.post(`${import.meta.env.VITE_APP_BACK_URL}/auth/register`, data)
-      .then()
-      .catch()
+    console.log({ data })
+    axios
+      .post(`${import.meta.env.VITE_APP_BACK_URL}/auth/register`, data)
+      .then((res) => {
+        setShowLogin(true)
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-center">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col justify-center"
+    >
       <div id="input-text" className="form-control w-full">
         <label className="label">
           <span className="label-text">Username</span>
         </label>
         <input
           type="text"
-          {...register("username")}
+          {...register('username')}
           placeholder="Type here"
           className="input input-ghost"
         />
@@ -37,7 +50,7 @@ export const Register = () => {
         </label>
         <input
           type="text"
-          {...register("email")}
+          {...register('email')}
           placeholder="Type here"
           className="input input-ghost"
         />
@@ -50,7 +63,7 @@ export const Register = () => {
           type="password"
           placeholder="Type here"
           className="input input-ghost"
-          {...register("password")}
+          {...register('password')}
         />
       </div>
       <div id="input-text" className="form-control w-full">
@@ -59,7 +72,7 @@ export const Register = () => {
         </label>
         <input
           type="password"
-          {...register("passwordConfirmation")}
+          {...register('passwordConfirmation')}
           placeholder="Type here"
           className="input input-ghost"
         />
@@ -68,5 +81,5 @@ export const Register = () => {
         Register
       </button>
     </form>
-  );
-};
+  )
+}
