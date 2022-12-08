@@ -6,13 +6,14 @@ import logger from '@config/logger.config'
 import pinataService from '@services/pinata.service'
 import { FileType, MusicMetadata } from '@@types/pinata.type'
 import albumService from '@services/album.service'
-import { AlbumType, Genre } from '@prisma/client'
+import { AlbumType } from '@prisma/client'
 import nftService from '@services/nft.service'
+import { MusicListRequestHandler } from '@@types/app.type'
 
 class MusicController implements IMusicController {
-  get: RequestHandler<{}, {}, {}, { genre?: Genre }> = async (req, res) => {
+  get: MusicListRequestHandler = async (req, res) => {
     const { genre } = req.query
-    const musics = await pinataService.getMusicFromIPFS({ genreId: genre?.id })
+    const musics = await pinataService.getMusicFromIPFS({ genre })
     res.json(musics)
   }
 
