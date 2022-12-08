@@ -5,6 +5,7 @@ import 'package:path/path.dart' as Path;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:dwaves_mobile/Screen/register_page.dart';
 
 var email = '';
 var password = "";
@@ -168,7 +169,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Manager()));
+                  MaterialPageRoute(builder: (context) => MyregisterPage()));
                 },
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.05,
@@ -179,8 +180,10 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       style: TextStyle(
                           color: Color.fromARGB(255, 255, 255, 255),
                           fontSize: MediaQuery.of(context).size.height * 0.025),
+                          
                     ),
                   ),
+                  
                 ),
               ),
             ],
