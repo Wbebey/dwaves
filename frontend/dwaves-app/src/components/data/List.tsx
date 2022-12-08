@@ -69,7 +69,11 @@ export const List = () => {
             <div className="overflow-x">
               <div className="contain-card">
                 {albums.map((album) => (
-                  <Link key={album.id} to={'/album'} className="card">
+                  <Link
+                    key={album.id}
+                    to={`/album/${album.id}`}
+                    className="card"
+                  >
                     <img src={album.cover} alt="" />
                     <h3>{album.name}</h3>
                     <p>{album.artist}</p>
