@@ -60,4 +60,18 @@ musicRouter.post(
   musicController.uploadAlbum
 )
 
+musicRouter.post('/incrementListenings',
+    body('musicUrl')
+        .notEmpty()
+        .withMessage('musicUrl is required')
+        .bail()
+        .customSanitizer(musicValidator.toValidMusicUrl),
+    body('listeningsValue')
+        .notEmpty()
+        .withMessage('listeningsValue is required')
+        .bail(),
+    musicValidator.validate,
+    musicController.incrementListeningsMetadata)
+
+
 export default musicRouter
