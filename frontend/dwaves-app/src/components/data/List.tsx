@@ -1,15 +1,48 @@
-import "styles/data/List.scss";
-import { Button, Icon } from "components/shared";
+import 'styles/data/List.scss'
+import { Button, Icon } from 'components/shared'
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
-import playlists from "songs/playlist";
+import playlists from 'songs/playlist'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+
+type Album = {
+  id: number
+  type: string
+  name: string
+  createdAt: Date
+  genre: string
+  artist: string
+  subscribers: number
+  cover: string
+}
 
 export const List = () => {
+  const [albums, setAlbums] = useState<Album[]>([])
+  const getAlbums = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_APP_BACK_URL}/albums`,
+        {
+          withCredentials: true,
+        }
+      )
+      console.log(res.data)
+      setAlbums(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getAlbums()
+  }, [])
+
   return (
     <section className="contain-list-view">
       <header className="head">
-        <div style={{ width: "60%" }} className="relative z-0">
+        <div style={{ width: '60%' }} className="relative z-0">
           <input
             type="text"
             id="floating_standard"
@@ -25,44 +58,29 @@ export const List = () => {
         </div>
         <Icon icon="search" size="Large" />
         <div className="divider divider-horizontal" />
-        <Button
-          text="titres"
-          size="Large"
-          handleClick={() => {}}
-        />
-        <Button
-          text="listes"
-          size="Large"
-          handleClick={() => {}}
-        />
-        <Button
-          text="artistes"
-          size="Large"
-          handleClick={() => {}}
-        />
+        <Button text="titres" size="Large" handleClick={() => {}} />
+        <Button text="listes" size="Large" handleClick={() => {}} />
+        <Button text="artistes" size="Large" handleClick={() => {}} />
       </header>
       <div className="content-playlist">
         <div className="body">
           {/* modify flex with action button */}
-          {playlists.map((playlist) => (
-            <div key={playlist.title} className="row">
-              <h2>{playlist.title}</h2>
-              <div className="overflow-x">
-                <div className="contain-card">
-                  {playlist.musics.map((music) => (
-                    <Link key={music.Title} to={"/album"} className="card">
-                      <img src={music.Cover} alt="" />
-                      <h3>{music.Title}</h3>
-                      <p>{music.Artist}</p>
-                    </Link>
-                  ))}
-                </div>
+          <div className="row">
+            <div className="overflow-x">
+              <div className="contain-card">
+                {albums.map((album) => (
+                  <Link key={album.id} to={'/album'} className="card">
+                    <img src={album.cover} alt="" />
+                    <h3>{album.name}</h3>
+                    <p>{album.artist}</p>
+                  </Link>
+                ))}
               </div>
-              <div className="divider divider-vertical" />
             </div>
-          ))}
+            <div className="divider divider-vertical" />
+          </div>
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
