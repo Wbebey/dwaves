@@ -34,7 +34,18 @@ const main = async () => {
     signer
   )
 
-  const res = await axios.get<MonthlyListenings>(routes.MONTHLY_LISTENINGS)
+  const data = {
+    email: 'artist1@gmail.com',
+    password: '12345678',
+  }
+  const loginRes = await axios.post<void>(routes.LOGIN, data, {
+    withCredentials: true,
+  })
+  console.log(loginRes.headers['set-cookie'])
+
+  const res = await axios.get<MonthlyListenings>(routes.MONTHLY_LISTENINGS, {
+    headers: { Cookie: loginRes.headers['set-cookie'] },
+  })
   const { listenings, artistAddresses } = res.data
 
   const addressesListenings = artistAddresses.reduce((acc, el, i) => {
