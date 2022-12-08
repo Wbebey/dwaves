@@ -43,7 +43,7 @@ export const ModalLogin: React.FC<Props> = ({ toggleModal, setConnected }) => {
           {showLogin ? (
             <Login toggleModal={toggleModal} setConnected={setConnected} />
           ) : (
-            <Register />
+            <Register setShowLogin={setShowLogin} />
           )}
         </div>
       </div>
