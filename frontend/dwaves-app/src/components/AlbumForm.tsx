@@ -9,6 +9,10 @@ interface Props {
     setValue: UseFormSetValue<CoverFile>
 }
 
+interface AlbumProps {
+    arraySong: SongData[]
+}
+
 type CoverFile = {
     src: any
 }
@@ -47,15 +51,28 @@ const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue }) => {
     )
 }
 
-const AlbumCover = () => {
+const AlbumCover : React.FC<AlbumProps> = ({ arraySong }) => {
     const { register, setValue, getValues, handleSubmit } = useForm<CoverFile>();
     const [cover, setCover] = useState<CoverFile>({ src: {} })
     const [coverExist, setCoverExist] = useState(false)
 
+    console.log(arraySong)
+    const title:Array<string> = []
+    const musics:Array<File|null> = []
+
+    arraySong.forEach((song)=> {
+        title.push(song.title)
+        musics.push(song.src)
+    })
+
+    console.log(musics)
+    console.log(title)
+
     const onSubmit = (data: any) => {
         const form = new FormData()
         form.append("cover", data.src)
-
+        form.append("musics", musics)
+        form.append("musicNames", data.src)
     }
 
     return (
@@ -112,7 +129,7 @@ export const AlbumForm = () => {
     return (
         <section className="contain-album-form">
             <div className="header">
-                <AlbumCover />
+                <AlbumCover arraySong={arraySong} />
             </div>
             <div className="content-form-album">
                 <ul className="list-form-album">

@@ -31,10 +31,7 @@ function App() {
       audioElmt.current?.pause();
     }
 
-    console.log(document.cookie)  
-
     if (log == "true") {
-      console.log(log)
       setConnected(true)
     } else {
       setConnected(false)
@@ -80,7 +77,6 @@ function App() {
         songs={songs}
         setSongs={setSongs}
       />
-
       <section style={{ color: "black", height: "75%" }}>
         <section className="container-app">
           <div className="contain-explorer">
