@@ -38,9 +38,9 @@ export const ConnectMetamask = () => {
                 <div className="w-8 rounded-full">
                     {
                         wallet ?
-                            <img src={`${import.meta.env.VITE_APP_URL}metamask-b&w.png`} alt='' />
+                            <img src="/metamask-b&w.png" alt='' />
                             :
-                            <img src={`${import.meta.env.VITE_APP_URL}metamask-color.png`} alt='' />
+                            <img src="/metamask-color.png" alt='' />
                     }
 
                 </div>
