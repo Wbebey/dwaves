@@ -1,21 +1,65 @@
-import "styles/ContentAlbum.scss";
-import {Icon} from "components/shared";
+import 'styles/ContentAlbum.scss'
+import { Icon } from 'components/shared'
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from 'react-router-dom'
 
-import datasongs from "songs/datasongs";
+import datasongs from 'songs/datasongs'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+
+type Music = {
+  src: string
+  name: string
+  listenings: number
+}
+type AlbumDetail = {
+  id: number
+  type: string
+  name: string
+  createdAt: Date
+  genre: string
+  artist: string
+  subscribers: number
+  cover: string
+  musics: Music[]
+}
 
 export const ContentAlbum = () => {
+  const { id } = useParams()
+
+  const [album, setAlbum] = useState<AlbumDetail>()
+
+  const getAlbumDetails = async (id: string) => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_APP_BACK_URL}/albums/${id}`,
+        {
+          withCredentials: true,
+        }
+      )
+      console.log(res.data)
+      setAlbum(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (id) {
+      getAlbumDetails(id)
+    }
+  }, [id])
+
   return (
     <div className="content-album">
       <header className="head">
-        <Link to={"/"}>
+        <Link to={'/'}>
           <Icon icon="return" size="Large" />
         </Link>
         <div className="divider divider-horizontal" />
         <div className="title">
-          <img src="/stamina1.jpg" alt="" />
-          <h3>Stamina</h3>
+          <img src={album?.cover} alt="" />
+          <h3>{album?.name}</h3>
         </div>
         <div className="avatar">
           <div className="w-14 h-14 rounded-full">
@@ -24,8 +68,8 @@ export const ContentAlbum = () => {
         </div>
       </header>
       <ul className="list-song">
-        {datasongs.map((song, i) => (
-          <li key={song.Title} className="song-li">
+        {album?.musics.map((music, i) => (
+          <li key={i} className="song-li">
             <div className="avatar placeholder">
               <div className="text-neutral-content rounded-full w-10">
                 <span className="text-xl">0{i + 1}</span>
@@ -33,8 +77,8 @@ export const ContentAlbum = () => {
             </div>
             <div className="p-0 divider divider-horizontal" />
             <div className="song-li-info">
-              <h4 style={{}}>{song.Title}</h4>
-              <p>{song.Artist}</p>
+              <h4 style={{}}>{music.name}</h4>
+              <p>{album.artist}</p>
             </div>
             <div className="song-li-action">
               <Icon icon="add" />
@@ -45,5 +89,5 @@ export const ContentAlbum = () => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
