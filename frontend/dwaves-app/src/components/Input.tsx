@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import 'styles/SingleForm.scss'
 import { Icon } from 'components/shared'
 
@@ -12,7 +12,17 @@ type Single = {
   music: File
 }
 
-export const SingleForm = () => {
+type responseRequest = {
+  response:string
+  status:number
+  visible:boolean
+}
+
+interface Props {
+  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+}
+
+export const SingleForm : React.FC<Props> = ({ setAlert }) => {
   const { register, setValue, getValues, handleSubmit } = useForm<Single>()
   const [filesExist, setFilesExist] = useState({ music: false, cover: false })
 
@@ -46,10 +56,26 @@ export const SingleForm = () => {
       })
       .then((res) => {
         console.log(res)
+        if (Array.isArray(res.data)) {
+          displayAlert(res.data[0].msg , res.status)
+        } else {
+          displayAlert(res.data.message , res.status)
+        }
       })
       .catch((err) => {
-        console.log(err)
+        if (Array.isArray(err.response.data)) {
+          displayAlert(err.response.data[0].msg , err.response.status)
+        } else {
+          displayAlert(err.response.data.message , err.response.status)
+        }
       })
+  }
+
+  const displayAlert = (msg:string , status:number) => {
+    setAlert({response : msg , status : status, visible: true })
+    setTimeout(()=>{
+      setAlert({response : "" , status : 0, visible: false })
+    }, 3000)
   }
 
   return (
