@@ -12,14 +12,14 @@ const accessTokenCookieOptions: CookieOptions = {
   expires: new Date(Date.now() + env.accessTokenExp * 60 * 1000),
   maxAge: env.accessTokenExp * 60 * 1000,
   httpOnly: true,
-  sameSite: 'lax',
+  sameSite: 'none',
 }
 
 const refreshTokenCookieOptions: CookieOptions = {
   expires: new Date(Date.now() + env.refreshTokenExp * 60 * 1000),
   maxAge: env.refreshTokenExp * 60 * 1000,
   httpOnly: true,
-  sameSite: 'lax',
+  sameSite: 'none',
 }
 
 if (process.env.NODE_ENV === 'production') {
