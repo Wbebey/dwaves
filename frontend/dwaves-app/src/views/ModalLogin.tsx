@@ -1,42 +1,37 @@
-import "styles/Login.scss";
-import { Login, Register } from "components";
+import 'styles/Login.scss'
+import { Login, Register } from 'components'
 
-import { useState } from "react";
+import { useState } from 'react'
 interface Props {
-  displayModal: (e: any) => void;
+  toggleModal: () => void
+  setConnected: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const ModalLogin: React.FC<Props> = ({ displayModal }) => {
-  const [showLogin, setShowLogin] = useState(true);
+export const ModalLogin: React.FC<Props> = ({ toggleModal, setConnected }) => {
+  const [showLogin, setShowLogin] = useState(true)
 
   return (
     <div id="contain-modal">
       <div id="modal">
         <header>
-          <img
-            onClick={(e) => {
-              displayModal(e);
-            }}
-            src="/logo-dwaves.png"
-            alt=""
-          />
+          <img onClick={toggleModal} src="/logo-dwaves.png" alt="" />
           <div className="tabs">
             <div
               onClick={() => {
-                setShowLogin(true);
+                setShowLogin(true)
               }}
               className={`tab tab-lg tab-lifted ${
-                showLogin ? "tab-active" : ""
+                showLogin ? 'tab-active' : ''
               }`}
             >
               Login
             </div>
             <div
               onClick={() => {
-                setShowLogin(false);
+                setShowLogin(false)
               }}
               className={`tab tab-lg tab-lifted ${
-                showLogin ? "" : "tab-active"
+                showLogin ? '' : 'tab-active'
               }`}
             >
               Register
@@ -45,9 +40,13 @@ export const ModalLogin: React.FC<Props> = ({ displayModal }) => {
           {showLogin ? <h1>Login</h1> : <h1>Register</h1>}
         </header>
         <div className="content px-8">
-          {showLogin ? <Login /> : <Register />}
+          {showLogin ? (
+            <Login toggleModal={toggleModal} setConnected={setConnected} />
+          ) : (
+            <Register />
+          )}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
