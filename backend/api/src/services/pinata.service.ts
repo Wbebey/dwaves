@@ -67,6 +67,16 @@ class PinataService implements IPinataService {
 
     return musics
   }
+
+  getListenersForAllArtists = async () => {
+
+    
+
+
+
+
+    return 'hello'
+  }
 }
 
 const pinataService = new PinataService()

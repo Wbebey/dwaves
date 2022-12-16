@@ -48,6 +48,7 @@ export interface IGenreService extends IService {
 
 export interface IPinataService extends IService {
   getMusicFromIPFS: (musicFilter: MusicFilter) => Promise<ViewMusic[]>
+  getListenersForAllArtists: () => Promise<string>
   pinFileToIPFS: (
     file: UploadedFile,
     metadata: CoverMetadata | MusicMetadata

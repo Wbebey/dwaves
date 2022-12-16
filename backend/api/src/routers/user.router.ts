@@ -7,6 +7,8 @@ const userRouter = Router()
 
 userRouter.get('/', userController.get)
 userRouter.get('/monthlyListenings', userController.getMonthlyListenings)
+userRouter.get('/allListeningsForAllArtist', userController.getMonthlyListenings)
+
 
 userRouter.use('/me', currentUserRouter)
 
