@@ -1,0 +1,25 @@
+# https://github.com/marketplace/actions/codeball-ai-code-review
+name: Codeball AI Code Review
+on:
+  pull_request:
+    branches:
+      - staging
+  pull_request_review_comment:
+    types: [created, edited]
+
+jobs:
+  codeball-ai:
+    runs-on: ubuntu-latest
+    name: Codeball AI
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Codeball AI
+        uses: sturdy-dev/codeball-action@v2
+        with:
+          approvePullRequests: "true"
+          labelPullRequestsWhenApproved: "true"
+          labelPullRequestsWhenReviewNeeded: "true"
+          failJobsWhenReviewNeeded: "false"
