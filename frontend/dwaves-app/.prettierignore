@@ -1,0 +1,25 @@
+# Ignore artifacts:
+build
+dist
+cache
+coverage
+node_modules
+
+npm-debug.log
+pnpm-lock.yaml
+ts-node-*
+package-lock.json
+package.json
+
+
+*.log
+*.cjs
+*.md
+*.vue
+*.yml
+*yaml
+*.json
+**/.git
+**/.svn
+**/.hg
+**/node_modules

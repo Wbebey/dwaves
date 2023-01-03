@@ -108,3 +108,32 @@ This project exists thanks to all the people who contribute.
 <a href="https://github.com/TharickABDUL">
   <img src="https://github.com/TharickABDUL.png?size=100">
 </a>
+
+## 👉 Coding guidelines
+
+### ESLint
+
+We use [ESLint ↗](https://eslint.org/) for both linting and formatting.
+
+<table><tr><td width="500px" valign="top">
+
+#### IDE Setup
+
+We recommend using [VS Code ↗](https://code.visualstudio.com/) along with the [ESLint extension ↗](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and prettier.
+
+With the settings on the right, you can have auto-fix and formatting when you save the code you are editing.
+
+</td><td width="500px"><br>
+
+VS Code's `settings.json`
+
+```json
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll": false,
+        "source.fixAll.eslint": true
+    }
+}
+```
+
+</td></tr></table>
