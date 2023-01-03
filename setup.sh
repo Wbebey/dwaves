@@ -5,17 +5,18 @@
 
 set -euxo pipefail
 
-# Install pre-commit hooks
 install_pre_commit() {
-    # Install pre-commit  if necessary
     if ! [ -x "$(command -v pre-commit)" ]
     then
         echo "Installing pre-commit"
+        # pip install ggshield || pip3 install ggshield
+        # pip install python-dotenv || pip3 install python-dotenv
         pip install pre-commit || pip3 install pre-commit
     else
         echo "pre-commit is already installed"
     fi
-
+    pip install ggshield || pip3 install ggshield
+    pip install python-dotenv || pip3 install python-dotenv
     pre-commit install 
 }
 
