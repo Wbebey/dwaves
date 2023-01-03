@@ -1,6 +1,6 @@
 name: GitGuardian scan
 
-on: [push, pull_request]
+on: [pull_request]
 
 env:
   GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
@@ -9,6 +9,8 @@ jobs:
   scanning:
     name: GitGuardian scan
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
