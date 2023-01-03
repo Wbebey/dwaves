@@ -1,40 +1,33 @@
 version: 2
 updates:
-  - package-ecosystem: npm
+  - package-ecosystem: 'npm'
     directory: '/backend'
     schedule:
-      interval: daily
+      interval: weekly
       time: '12:00'
       timezone: 'Europe/Paris'
     labels:
-      - backend
-      - security
-      - dependency-update
+      - 'backend'
+      - 'security'
+      - 'dependency-update'
     assignees:
       - 'dependabot-bot'
       - 'alexandre-pinon'
     reviewers:
       - 'alexandre-pinon'
+    target-branch: 'staging'
     open_pull_requests_limit: 3
-    allow_downgrades: false
-    allow_reintroduced_dependencies: false
-    allow_updates_to_stable_versions: false
-    allow_updates_to_test_dependencies: false
-    allow_security_alerts: true
-    allow_major_updates: true
-    allow_minor_updates: true
-    allow_patch_updates: true
 
-  - package-ecosystem: npm
+  - package-ecosystem: 'npm'
     directory: '/frontend'
     schedule:
-      interval: daily
+      interval: 'weekly'
       time: '12:00'
       timezone: 'Europe/Paris'
     labels:
-      - frontend
-      - security
-      - dependency-update
+      - 'frontend'
+      - 'security'
+      - 'dependency-update'
     assignees:
       - 'dependabot-bot'
       - 'alexandre-pinon'
@@ -42,106 +35,75 @@ updates:
     reviewers:
       - 'alexandre-pinon'
       - 'BryanSeychelles'
+    target-branch: 'staging'
     open_pull_requests_limit: 2
-    allow_downgrades: false
-    allow_reintroduced_dependencies: false
-    allow_updates_to_stable_versions: false
-    allow_updates_to_test_dependencies: false
-    allow_security_alerts: true
-    allow_major_updates: true
-    allow_minor_updates: true
-    allow_patch_updates: true
 
-  - package-ecosystem: gradle
+
+  - package-ecosystem: 'gradle'
     directory: '/mobile'
     schedule:
-      interval: daily
+      interval: 'weekly'
     labels:
-      - mobile
-      - security
-      - dependency-update
+      - 'mobile'
+      - 'security'
+      - 'dependency-update'
     assignees:
       - 'dependabot-bot'
       - 'Bolrung'
     reviewers:
       - 'Bolrung'
+    target-branch: 'staging'
     open_pull_requests_limit: 2
-    allow_downgrades: false
-    allow_reintroduced_dependencies: false
-    allow_security_alerts: true
-    allow_major_updates: true
-    allow_minor_updates: true
-    allow_patch_updates: true
-    ignore_dependency_not_found_errors: false
 
-  - package-ecosystem: docker
+
+  - package-ecosystem: 'docker'
     directory: '/'
     schedule:
-      interval: daily
+      interval: 'weekly'
     labels:
-      - architechture
-      - docker
-      - security
-      - dependency-update
+      - 'architechture'
+      - 'docker'
+      - 'security'
+      - 'dependency-update'
     assignees:
       - 'dependabot-bot'
       - 'Wbebey'
     reviewers:
       - 'Wbebey'
+    target-branch: 'staging'
     open_pull_requests_limit: 2
-    allow_downgrades: false
-    allow_reintroduced_dependencies: false
-    allow_updates_to_stable_versions: true
-    allow_updates_to_test_dependencies: false
-    allow_security_alerts: true
-    allow_major_updates: true
-    allow_minor_updates: true
-    allow_patch_updates: true
 
-  - package-ecosystem: github-actions
+  - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
-      interval: daily
+      interval: 'weekly'
     labels:
-      - architechture
-      - github-actions
-      - security
-      - dependency-update
+      - 'architechture'
+      - 'github-actions'
+      - 'security'
+      - 'dependency-update'
     assignees:
       - 'dependabot-bot'
       - 'Wbebey'
     reviewers:
       - 'Wbebey'
+    target-branch: 'staging'
     open_pull_requests_limit: 2
-    allow_downgrades: false
-    allow_reintroduced_dependencies: false
-    allow_updates_to_stable_versions: true
-    allow_updates_to_test_dependencies: false
-    allow_security_alerts: true
-    allow_major_updates: true
-    allow_minor_updates: true
-    allow_patch_updates: true
 
-  - package-ecosystem: terraform
+
+  - package-ecosystem: 'terraform'
     directory: '/'
     schedule:
-      interval: daily
+      interval: 'weekly'
     labels:
-      - architechture
-      - terraform
-      - security
-      - dependency-update
+      - 'architechture'
+      - 'terraform'
+      - 'security'
+      - 'dependency-update'
     assignees:
       - 'dependabot-bot'
       - 'Wbebey'
     reviewers:
       - 'Wbebey'
+    target-branch: 'staging'
     open_pull_requests_limit: 2
-    allow_downgrades: false
-    allow_reintroduced_dependencies: false
-    allow_updates_to_stable_versions: true
-    allow_updates_to_test_dependencies: false
-    allow_security_alerts: true
-    allow_major_updates: true
-    allow_minor_updates: true
-    allow_patch_updates: true
