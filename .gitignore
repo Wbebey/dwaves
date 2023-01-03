@@ -7,3 +7,4 @@ vcs.xml
 .idea/
 .DS_Store
 .vscode
+**.env
