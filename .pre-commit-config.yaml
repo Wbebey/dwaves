@@ -6,5 +6,6 @@ repos:
         stages: [commit]
         language: python
         entry: ggshield
-        # args: ['--api-key', '${GITGUARDIAN_API_KEY}']
+        verbose: true
+
 
