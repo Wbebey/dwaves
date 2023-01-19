@@ -60,14 +60,15 @@ jobs:
 
   code-analysis:
     name: Code Analysis
-    if: github.ref in 
-      [
-        'refs/heads/main',
-        'refs/heads/staging', 
-        'refs/heads/feature/', 
-        'refs/heads/bugfix/', 
-        'refs/heads/hotfix/'
-      ]
+    # if: github.ref in 
+    #   [
+    #     'refs/heads/main',
+    #     'refs/heads/staging', 
+    #     'refs/heads/feature/', 
+    #     'refs/heads/bugfix/', 
+    #     'refs/heads/hotfix/'
+    #   ]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/bugfix/') || startsWith(github.ref, 'refs/heads/hotfix/')
     runs-on: ubuntu-latest
     needs: [integration-test, unit-test]
     permissions: 
