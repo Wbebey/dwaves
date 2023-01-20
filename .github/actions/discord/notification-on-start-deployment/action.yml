@@ -9,7 +9,7 @@ runs:
         username: "Dwaves"
         severity: info
         color: "#9408F0"
-        text: "Hello ${{ env.DISCORD_TEAM_ID }}, a new **${{ env.ENVIRONMENT }}** deployment is starting on **${{ env.APP }}** [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+        text: "Hello ${{ env.DISCORD_TEAM_ID }}, a new deployment is starting on **${{ env.APP }}** in branch **${{ github.ref }}** [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
         description:  "**${{ github.workflow }}** - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})**"
         details: |
             **Author :** ${{ github.actor }} 
