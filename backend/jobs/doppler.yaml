@@ -1,0 +1,3 @@
+setup:
+  project: dwaves-jobs
+  config: dev
