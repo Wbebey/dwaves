@@ -18,7 +18,6 @@ export interface IUserValidator extends IAppValidator {
 export interface IMusicValidator extends IAppValidator {
   hasOneFile: (filetype: FileType) => CustomValidator
   hasFiles: (filetype: FileType) => CustomValidator
-  toValidMusicUrl: CustomSanitizer
 }
 
 export interface IAlbumValidator extends IAppValidator {
