@@ -8,7 +8,11 @@
     "start": "TS_NODE_BASEURL=build node -r tsconfig-paths/register build/server.js",
     "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "prisma migrate deploy"
+    "deploy": "prisma migrate deploy",
+    "db:init": "prisma migrate deploy && prisma db seed"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
