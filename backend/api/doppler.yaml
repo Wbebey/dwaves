@@ -1,0 +1,3 @@
+setup:
+  project: dwaves-api
+  config: dev
