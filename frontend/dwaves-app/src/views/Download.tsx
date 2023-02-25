@@ -2,12 +2,8 @@ import "styles/Explorer.scss";
 import { SingleForm } from "components";
 import { AlbumForm } from "components";
 import { useState } from "react";
+import { responseRequest } from "models";
 
-type responseRequest = {
-  response:string
-  status:number
-  visible:boolean
-}
 interface Props {
   setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
 }
