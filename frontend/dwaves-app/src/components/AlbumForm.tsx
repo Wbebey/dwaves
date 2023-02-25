@@ -3,6 +3,7 @@ import { Icon } from 'components/shared'
 import { ChangeEvent, useState } from 'react'
 import { useForm, UseFormSetValue } from 'react-hook-form'
 import axios from 'axios'
+import { responseRequest } from 'models'
 
 interface Props {
   setCoverExist: React.Dispatch<React.SetStateAction<boolean>>
@@ -29,12 +30,6 @@ type Album = {
   name: string
   genre: string
   src: any
-}
-
-type responseRequest = {
-  response:string
-  status:number
-  visible:boolean
 }
 
 const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue, setAlert }) => {

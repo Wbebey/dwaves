@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { responseRequest } from 'models'
 import { useForm } from 'react-hook-form'
 
 type User = {
@@ -10,9 +11,10 @@ type User = {
 
 interface Props {
   setShowLogin: React.Dispatch<React.SetStateAction<boolean>>
+  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
 }
 
-export const Register: React.FC<Props> = ({ setShowLogin }) => {
+export const Register: React.FC<Props> = ({ setShowLogin, setAlert }) => {
   const { register, setValue, getValues, handleSubmit } = useForm<User>()
 
   const onSubmit = (data: any) => {
@@ -20,12 +22,19 @@ export const Register: React.FC<Props> = ({ setShowLogin }) => {
     axios
       .post(`${import.meta.env.VITE_APP_BACK_URL}/auth/register`, data)
       .then((res) => {
-        setShowLogin(true)
-        console.log(res)
+        setShowLogin(false)
+        displayAlert(res.data.message , res.status)
       })
       .catch((err) => {
         console.log(err)
       })
+  }
+
+  const displayAlert = (msg:string , status:number) => {
+    setAlert({response : msg , status : status, visible: true })
+    setTimeout(()=>{
+      setAlert({response : "" , status : 0, visible: false })
+    }, 3000)
   }
 
   return (
