@@ -16,6 +16,8 @@ export interface IUserController extends IController {
   me: RequestHandler
   addWallet: RequestHandler
   getMonthlyListenings: RequestHandler
+  updateInfo: RequestHandler
+  updatePassword: RequestHandler
 }
 
 export interface IAlbumController extends IController {

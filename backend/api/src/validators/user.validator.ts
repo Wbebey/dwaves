@@ -8,9 +8,12 @@ import { ethers } from 'ethers'
 
 class UserValidator extends AppValidator implements IUserValidator {
   isEmailTaken: CustomValidator = async (email: string) => {
-    const user = await userService.findFirst({ email })
-    if (user) {
-      throw new AppError('Email already in use', StatusCodes.CONFLICT)
+    return this._isEmailTaken(email)
+  }
+
+  isNewEmailTaken: CustomValidator = async (email: string, { req }) => {
+    if (email !== req.app.locals.user.email) {
+      return this._isEmailTaken(email)
     }
     return true
   }
@@ -34,6 +37,14 @@ class UserValidator extends AppValidator implements IUserValidator {
         'Password confirmation does not match password',
         StatusCodes.UNPROCESSABLE_ENTITY
       )
+    }
+    return true
+  }
+
+  _isEmailTaken = async (email: string) => {
+    const user = await userService.findFirst({ email })
+    if (user) {
+      throw new AppError('Email already in use', StatusCodes.CONFLICT)
     }
     return true
   }

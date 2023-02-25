@@ -1,6 +1,9 @@
 import { IUserController } from '@interfaces/controller.interface'
 import userService from 'services/user.service'
 import { RequestHandler } from 'express'
+import { StatusCodes } from 'http-status-codes'
+import AppError from '@errors/app.error'
+import { User } from '@prisma/client'
 
 class UserController implements IUserController {
   get: RequestHandler = async (_, res) => {
@@ -43,6 +46,35 @@ class UserController implements IUserController {
     const artistAddresses = artists.map((a) => a.address)
 
     res.json({ listenings, artistAddresses })
+  }
+
+  updateInfo: RequestHandler = async (req, res) => {
+    const { username, email } = req.body
+
+    const user = await userService.update(
+      { id: req.app.locals.user.id },
+      { username, email }
+    )
+
+    res.json(user)
+  }
+
+  updatePassword: RequestHandler = async (req, res) => {
+    const { id } = req.app.locals.user
+    const { oldPassword, password } = req.body
+
+    const user = (await userService.findFirst({ id }, true)) as User | null
+
+    if (
+      !user ||
+      !(await userService.verifyPassword(user.password, oldPassword))
+    ) {
+      throw new AppError('Invalid password', StatusCodes.UNPROCESSABLE_ENTITY)
+    }
+
+    const userUpdated = await userService.update({ id }, { password })
+
+    res.json(userUpdated)
   }
 }
 
