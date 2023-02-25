@@ -4,18 +4,13 @@ import { Icon } from 'components/shared'
 
 import { ChangeEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { responseRequest } from 'models'
 
 type Single = {
   title: string
   genre: string
   cover: File
   music: File
-}
-
-type responseRequest = {
-  response:string
-  status:number
-  visible:boolean
 }
 
 interface Props {

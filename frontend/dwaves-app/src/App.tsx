@@ -6,12 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import datasong from 'songs/datasongs'
-
-type responseRequest = {
-  response:string
-  status:number
-  visible:boolean
-}
+import { responseRequest } from 'models'
 
 function App() {
   const [loader, setLoader] = useState(true)
@@ -99,7 +94,7 @@ function App() {
         </section>
       </section>
       {loginDisplay ? (
-        <ModalLogin toggleModal={toggleModal} setConnected={setConnected} />
+        <ModalLogin setAlert={setAlert} toggleModal={toggleModal} setConnected={setConnected} />
       ) : (
         <div />
       )}
