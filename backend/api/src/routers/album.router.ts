@@ -43,5 +43,11 @@ albumRouter.post(
   albumValidator.validate,
   albumController.create
 )
+albumRouter.delete(
+  '/:id',
+  param('id').isInt({ min: 0 }).withMessage('Album id must be a positive int'),
+  albumValidator.validate,
+  albumController.delete
+)
 
 export default albumRouter
