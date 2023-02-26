@@ -39,6 +39,19 @@ class PinataService implements IPinataService {
     return cid
   }
 
+  unpinFileFromIPFS = async (cid: string) => {
+    const url = `${env.pinataApiHost}/pinning/unpin/${cid}`
+
+    const res = await axios.delete<string>(url, {
+      headers: {
+        pinata_api_key: env.pinataApiKey,
+        pinata_secret_api_key: env.pinataApiSecret,
+      },
+    })
+
+    return res.data
+  }
+
   getMusicFromIPFS = async (musicFilter: MusicFilter) => {
     const { genre, albumId } = musicFilter
     const baseUrl = `${env.pinataApiHost}/data/pinList?status=pinned&metadata[keyvalues]`
@@ -68,15 +81,17 @@ class PinataService implements IPinataService {
     return musics
   }
 
-  updateListeningsMetadata = async (musicCID: string, newListeningsValue: number) => {
-
+  updateListeningsMetadata = async (
+    musicCID: string,
+    newListeningsValue: number
+  ) => {
     const url = `${env.pinataApiHost}/pinning/hashMetadata`
 
     const data = {
       ipfsPinHash: musicCID,
       keyvalues: {
-        listenings: newListeningsValue
-      }
+        listenings: newListeningsValue,
+      },
     }
 
     const res = await axios.put(url, data, {
