@@ -27,7 +27,7 @@ export const ExploPlayer: React.FC<Props> = ({
     audioElmt.current!.play();
   };
 
-  let index = songs.findIndex(
+  let index = songs.musics.findIndex(
     (x: { Title: string }) => x.Title == currentSong.Title
   );
 
@@ -43,21 +43,21 @@ export const ExploPlayer: React.FC<Props> = ({
 
   const handlePrevious = () => {
     if (index === 0) {
-      setCurrentSong(songs[songs.length - 1]);
-      index = songs.length - 1;
+      setCurrentSong(songs.musics[songs.musics.length - 1]);
+      index = songs.musics.length - 1;
     } else {
-      setCurrentSong(songs[index - 1]);
+      setCurrentSong(songs.musics[index - 1]);
       index = index - 1;
     }
     audioElmt.current!.currentTime = 0;
   };
 
   const handleNext = () => {
-    if (index === songs.length - 1) {
-      setCurrentSong(songs[0]);
+    if (index === songs.musics.length - 1) {
+      setCurrentSong(songs.musics[0]);
       index = 0;
     } else {
-      setCurrentSong(songs[index + 1]);
+      setCurrentSong(songs.musics[index + 1]);
       index = index + 1;
     }
     audioElmt.current!.currentTime = 0;
@@ -67,8 +67,8 @@ export const ExploPlayer: React.FC<Props> = ({
     <div id="contain-top-player">
       <div className="player-bar">
         <div id="contain-left-bar" className="flex row nowrap">
-          <img src={currentSong.Cover} alt={currentSong.Title} />
-          <p>Dinos - {currentSong.Title}</p>
+          <img src={songs.cover} alt={currentSong.name} />
+          <p>Dinos - {currentSong.name}</p>
         </div>
         <div id="nav-widget-player" className="flex row nowrap">
           <Icon icon="random" />
