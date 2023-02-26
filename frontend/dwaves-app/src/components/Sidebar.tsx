@@ -83,7 +83,7 @@ export const Sidebar: React.FC<Props> = ({
         ) : (
           <div />
         )}
-        <div className="divider m-0" />
+        <div className="divider m-0" />{/* 
         {datasongs.map((song) => (
           <li key={song.Title}>
             <Link to={'/album'}>
@@ -95,7 +95,7 @@ export const Sidebar: React.FC<Props> = ({
               <p>Item</p>
             </Link>
           </li>
-        ))}
+        ))} */}
         <li
           style={
             connected
