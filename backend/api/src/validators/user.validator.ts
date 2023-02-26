@@ -42,7 +42,7 @@ class UserValidator extends AppValidator implements IUserValidator {
   }
 
   _isEmailTaken = async (email: string) => {
-    const user = await userService.findFirst({ email })
+    const user = await userService.findUnique({ email })
     if (user) {
       throw new AppError('Email already in use', StatusCodes.CONFLICT)
     }

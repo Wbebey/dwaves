@@ -41,7 +41,7 @@ class AuthController implements IAuthController {
 
   login: RequestHandler = async (req, res) => {
     const { email, password } = req.body
-    const user = (await userService.findFirst({ email }, true)) as User | null
+    const user = (await userService.findUnique({ email }, true)) as User | null
 
     if (!user || !(await userService.verifyPassword(user.password, password))) {
       throw new AppError(
@@ -84,7 +84,7 @@ class AuthController implements IAuthController {
       )
     }
 
-    const user = await userService.findFirst({ id: +decoded.sub })
+    const user = await userService.findUnique({ id: +decoded.sub })
     if (!user) {
       throw new AppError(
         'User with that token no longer exist',

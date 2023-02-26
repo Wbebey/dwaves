@@ -23,8 +23,11 @@ class UserService implements IUserService {
     return users.map((user) => this.exclude(user, ['password']))
   }
 
-  findFirst = async (where: Prisma.UserWhereInput, includePassword = false) => {
-    const user = await prisma.user.findFirst({ where })
+  findUnique = async (
+    where: Prisma.UserWhereUniqueInput,
+    includePassword = false
+  ) => {
+    const user = await prisma.user.findUnique({ where })
     if (!includePassword && user) {
       return this.exclude(user, ['password'])
     }

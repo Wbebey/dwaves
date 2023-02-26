@@ -4,17 +4,39 @@ import env from '@config/env.config'
 import { UploadedFile } from 'express-fileupload'
 import logger from '@config/logger.config'
 import pinataService from '@services/pinata.service'
-import { FileType, MusicMetadata } from '@@types/pinata.type'
+import { FileType, MusicMetadata, ViewMusic } from '@@types/pinata.type'
 import albumService from '@services/album.service'
 import { AlbumType } from '@prisma/client'
 import nftService from '@services/nft.service'
-import { MusicListRequestHandler } from '@@types/app.type'
+import {
+  MusicListRequestHandler,
+  PopularMusicRequestHandler,
+} from '@@types/app.type'
+import userService from '@services/user.service'
+import genreService from '@services/genre.service'
 
 class MusicController implements IMusicController {
   get: MusicListRequestHandler = async (req, res) => {
-    const { genre } = req.query
-    const musics = await pinataService.getMusicFromIPFS({ genre })
+    const { artistId, genre } = req.query
+    const musics = await pinataService.getMusicFromIPFS({ genre, artistId })
     res.json(musics)
+  }
+
+  getPopular: PopularMusicRequestHandler = async (req, res) => {
+    const { artistId, genre, limit } = req.query
+    const musics = await pinataService.getMusicFromIPFS({ genre, artistId })
+
+    const popularMusics = musics
+      .sort((a, b) => b.listenings - a.listenings)
+      .slice(0, limit || 10)
+
+    //* Don't parallelize promises to not instantiate too many db connections
+    const viewMusics = []
+    for await (const music of popularMusics.map(this._toViewMusic)) {
+      viewMusics.push(music)
+    }
+
+    res.json(viewMusics)
   }
 
   uploadSingle: RequestHandler = async (req, res) => {
@@ -92,12 +114,31 @@ class MusicController implements IMusicController {
     res.json({ coverUrl, musicUrls })
   }
 
-
   incrementListeningsMetadata: RequestHandler = async (req, res) => {
     const { musicCID, listeningsValue } = req.body
-    const resPinata = await pinataService.updateListeningsMetadata(musicCID, listeningsValue)
+    const resPinata = await pinataService.updateListeningsMetadata(
+      musicCID,
+      listeningsValue
+    )
 
     res.json(resPinata)
+  }
+
+  private _toViewMusic = async (music: ViewMusic) => {
+    const { artistId, genreId, albumId, ...rest } = music
+
+    const [artist, genre, album] = await Promise.all([
+      userService.findUnique({ id: artistId }),
+      genreService.findUnique({ id: genreId }),
+      albumService.findUnique({ id: albumId }),
+    ])
+
+    return {
+      ...rest,
+      artist: artist?.username || 'Unknown',
+      genre: genre?.name || 'Unknown',
+      album: album?.name || 'Unknown',
+    }
   }
 }
 
