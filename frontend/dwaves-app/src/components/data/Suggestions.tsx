@@ -8,7 +8,7 @@ export const Suggestions = () => {
       <h3>Pour vous</h3>
       <div className="divider divider-vertical" />
       <div className="overflow-x">
-        {datasongs.map((song) => (
+{/*         {datasongs.map((song) => (
           <div key={song.Title} className="card-aside">
             <img src={song.Cover} alt={song.Cover} />
             <div className="text">
@@ -16,7 +16,7 @@ export const Suggestions = () => {
               <p>Lorem ipsum dolor sit amet, consectetur</p>
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );
