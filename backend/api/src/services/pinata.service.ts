@@ -40,7 +40,7 @@ class PinataService implements IPinataService {
   }
 
   getMusicFromIPFS = async (musicFilter: MusicFilter) => {
-    const { genre, albumId } = musicFilter
+    const { genre, albumId, artistId } = musicFilter
     const baseUrl = `${env.pinataApiHost}/data/pinList?status=pinned&metadata[keyvalues]`
 
     let filter: PinataQueryFilter = { type: { value: 'music', op: 'eq' } }
@@ -49,6 +49,9 @@ class PinataService implements IPinataService {
     }
     if (albumId) {
       filter.albumId = { value: albumId.toString(), op: 'eq' }
+    }
+    if (artistId) {
+      filter.artistId = { value: artistId.toString(), op: 'eq' }
     }
 
     const url = `${baseUrl}=${JSON.stringify(filter)}`
@@ -68,15 +71,17 @@ class PinataService implements IPinataService {
     return musics
   }
 
-  updateListeningsMetadata = async (musicCID: string, newListeningsValue: number) => {
-
+  updateListeningsMetadata = async (
+    musicCID: string,
+    newListeningsValue: number
+  ) => {
     const url = `${env.pinataApiHost}/pinning/hashMetadata`
 
     const data = {
       ipfsPinHash: musicCID,
       keyvalues: {
-        listenings: newListeningsValue
-      }
+        listenings: newListeningsValue,
+      },
     }
 
     const res = await axios.put(url, data, {
