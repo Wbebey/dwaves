@@ -1,2 +1,2 @@
-# Dwaves website
+# Dwaves website.
 # =============

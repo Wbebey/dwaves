@@ -1,0 +1,101 @@
+name: Terraform
+
+on:
+  push:
+    branches:
+      - staging
+    paths:
+      - '.terraform/**'
+  pull_request:
+    paths:
+      - '.terraform/**'
+
+env:
+  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  TF_SA: ${{ secrets.TF_SA }}
+  TF_VARS: ${{ secrets.TF_VARS }}
+
+defaults:
+  run:
+    working-directory: ".terraform"
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ env.TF_API_TOKEN }}
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -write=true -recursive
+
+      - name: GCP Service Account Key
+        run: |-
+          pwd
+          echo "${{ env.TF_SA }}" > ./terraform-infrastructure.json
+
+      - name: Secrets to Environment Variables
+        run: |-
+          mkdir -p ./secrets/dwaves
+          echo "${{ env.TF_VARS }}" > ./secrets/dwaves/secrets.tfvars
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        id: plan
+        if: github.event_name == 'pull_request'
+        run: terraform plan -var-file=./secrets/dwaves/secrets.tfvars  -no-color -input=false
+        continue-on-error: true
+
+      - name: Update Pull Request
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
+        run: terraform apply -var-file=./secrets/dwaves/secrets.tfvars -auto-approve -input=false
+
+      - name: Terraform Destroy
+        if: success()
+        run: rm -rf terraform.tfstate terraform.tfstate.backup secrets/dwaves/secrets.tfvars

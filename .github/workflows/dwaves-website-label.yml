@@ -1,4 +1,4 @@
-name: Deploy Dwaves-website on Label
+name: Dwaves-website on Label
 
 on:
   pull_request:
@@ -9,14 +9,12 @@ on:
 
 env:
     APP: dwaves-website
-    ENVIRONMENT: test
-    DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-    DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }} 
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
-    FRONT_ENV: ${{ secrets.FRONT_ENV }}
     TEST_URL: ${{ secrets.DWAVES_WEBSITE_TEST_URL }}
+    DOPPLER_TOKEN_TEST: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_TEST }}
+    PROPERTIES_SCRIPT: ${{ GITHUB.WORKSPACE }}/.github/script/environment.sh
 
 defaults:
     run:
@@ -56,33 +54,8 @@ jobs:
       - name: Checkout 😇
         uses: actions/checkout@v3
 
-      - name: GCP authentification 🤑
-        uses: google-github-actions/setup-gcloud@v0
-        with:
-          service_account_key: ${{ env.GCP_SA_KEY }}
-          project_id: ${{ env.GCP_PROJECT_ID }}
-
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
-        run: echo "${{ env.FRONT_ENV }}" > .env
-
-      - name: Install dependencies 📦
-        run: npm install
-
-      - name: Build 🏗
-        run: CI='false' npm run build
-
-      - name: Deploy Production 🚀
-        if: ${{ github.ref }} == 'refs/heads/staging'
-        run: |-
-          export environment="${{ env.APP }}-${{ env.ENVIRONMENT }}"
-          export deploy_url=${{ env.TEST_URL }}
-          gsutil rsync -R build/ gs://$deploy_url
-          echo "Deployed to $environment environment: $deploy_url"
+      - name: Deploy to GCS 🚀
+        uses: ./.github/actions/frontend/deployment/dwaves-frontend-deploy.yml
 
       - name: Discord notification on failure
         if: failure()
