@@ -1,0 +1,60 @@
+name: Deploy Dwaves-api on Label
+
+on:
+  pull_request:
+    types: [labeled]
+    branches: [staging]
+    paths:
+      - backend/api/**
+
+env:
+    APP: dwaves-api
+    NODE_VERSION: 16.x
+    PROJECT_DIRECTORY: backend/api
+    GITHUB_REF: ${{ github.ref }}
+    GITHUB_SHA: ${{ github.sha }}
+    GCP_SA_KEY: ${{ secrets.TF_SA }}
+    GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
+    DOPPLER_TOKEN_TEST: ${{ secrets.DOPPLER_DWAVES_API_TOKEN_TEST }}
+    PROPERTIES_SCRIPT: ${{ GITHUB.WORKSPACE }}/.github/script/environment.sh
+
+defaults: 
+    run:
+        working-directory: "backend/api"
+
+jobs:
+  remove-label:
+    name: Remove Label
+    if: ${{ github.event.label.name == 'deploy-dwaves-api-test' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Remove Label from PR
+        uses: actions-ecosystem/action-remove-labels@v1.3.0
+        with:
+          labels: ${{ github.event.label.name }}
+          github_token: ${{ env.SONAR_GITHUB_TOKEN }}
+
+  deploy:
+    name: Deploy
+    if: ${{ github.event.label.name == 'deploy-dwaves-api-test' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    environment:
+      name: dwaves-api-test
+      url: https://dwaves-api-test.tonfrere.fr
+    steps:
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      - name: Deploy to GCP 🚀
+        uses: ./.github/actions/backend/dwaves-api-deploy.yml

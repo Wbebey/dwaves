@@ -8,12 +8,12 @@ on:
     - cron: "0 0 1 * *" # Run at 00:00 on day-of-month 1
 
 env:
+  APP: dwaves-jobs
   NODE_VERSION: 16.x
   JOBS_DIRECTORY: backend/jobs
-  DATABASE_DIRECTORY: backend/db
-  ENV_VARS: ${{ secrets.DWAVES_JOBS_STAGING_ENV }}
   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
   DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }}
+  DOPPLER_TOKEN_TEST: ${{ secrets.DOPPLER_DWAVES_JOBS_TOKEN_TEST }}
 
 jobs:
   execute-script:
@@ -27,8 +27,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Retrieve environment for jobs
-        run: echo "${{ env.ENV_VARS }}" > .env
+      - name: Retrieve environment variables 🌎
+        run: |-
+          source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
 
       - name: Install dependencies
         run: npm install

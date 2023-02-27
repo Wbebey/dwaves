@@ -1,0 +1,51 @@
+name: "Deploy dwaves-api to cloud run 🚀"
+description: "Deploy dwaves-api to cloud run 🚀"
+runs:
+    using: composite
+    steps:
+      - name: GCP authentification 🤑
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          service_account_key: ${{ env.GCP_SA_KEY }}
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Retrieve environment variables 🌎
+        shell: bash
+        run: |-
+          source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
+
+      - name: Build 🏗
+        shell: bash
+        run: |-
+          source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
+          docker build . \
+            -f ${{ GITHUB.WORKSPACE }}/${{ env.PROJECT_DIRECTORY }}/Dockerfile \
+            -t $DOCKER_TAG \
+
+      - name: Publish to Container registry 🛫
+        shell: bash
+        run: |-
+          source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
+          echo "Pushing image $DOCKER_TAG to google cloud container registry..."
+          gcloud auth configure-docker --quiet
+          docker push $DOCKER_TAG
+
+      - name: Deploy to cloud run 🚀
+        shell: bash
+        run: |-
+          source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
+          echo "Deploying image $DOCKER_TAG to google cloud run on environment $ENVIRONMENT"
+          gcloud run deploy ${{ env.APP }}-$ENVIRONMENT \
+            --image $DOCKER_TAG \
+            --platform managed \
+            --region europe-west1 \
+            --allow-unauthenticated \
+            --cpu 1000m \
+            --memory 512Mi \
+            --timeout 300 \
+            --project ${{ env.GCP_PROJECT_ID }}
