@@ -1,12 +1,15 @@
 import './App.scss'
-import { Loader, ExploPlayer, Sidebar, Alert, Footer } from 'components'
+
 import {Player, Explorer, Album, Download, ModalLogin, Profile, PlaylistPage, Playlist} from 'views'
+import { Loader, Sidebar, Alert, Footer } from 'components'
+import { PlayerShader } from 'components/player'
+import { Icon } from 'components/shared'
+
+import { responseRequest, Music, AlbumDetail } from "models";
+import { PlayPause, PlayRandomSong } from 'songs/listenMusic'
 
 import { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { Icon } from "components/shared";
-import { responseRequest, Music, AlbumDetail } from 'models'
-import { PlayPause, PlayRandomSong } from 'songs/listenMusic'
 import axios from "axios"
 
 function App() {
@@ -25,23 +28,23 @@ function App() {
   const buildDate = import.meta.env.VITE_APP_BUILD_DATE
   const commitUrl = import.meta.env.VITE_APP_COMMIT_URL
 
-  const audioElmt = useRef<HTMLAudioElement>(null) ?? someOtherData()
+  const audioElmt = useRef<HTMLAudioElement>(null) ?? someOtherData();
 
   useEffect(() => {
     setTimeout(() => {
-      setLoader(false)
-    }, 1000)
+      setLoader(false);
+    }, 1000);
 
     if (isPlaying) {
-      audioElmt.current?.play()
+      audioElmt.current?.play();
     } else {
-      audioElmt.current?.pause()
+      audioElmt.current?.pause();
     }
-  }, [audioElmt, isPlaying])
+  }, [audioElmt, isPlaying]);
 
   useEffect(() => {
-    if (document.cookie.includes('loggedIn=true')) {
-      setConnected(true)
+    if (document.cookie.includes("loggedIn=true")) {
+      setConnected(true);
     }
     // getLikedMusics();
   }, [])
@@ -51,8 +54,8 @@ function App() {
   }, [connected])
 
   const onPlaying = () => {
-    const duration: number = audioElmt.current?.duration as number
-    const ct: number = audioElmt.current?.currentTime as number
+    const duration: number = audioElmt.current?.duration as number;
+    const ct: number = audioElmt.current?.currentTime as number;
 
     console.log(duration, 'duration')
     if (songs) {
@@ -60,7 +63,7 @@ function App() {
         ...currentSong!,
         progress: (ct / duration) * 100,
         length: duration,
-      })
+      });
     }
     if (repeat) {
       if (currentSong?.progress! >= 99) {
@@ -131,14 +134,12 @@ function App() {
   return loader ? (
     <Loader />
   ) : (
-    <section style={{ color: 'black', height: window.innerHeight }}>
-      {
-        currentSong &&
+    <section style={{ color: "black", height: window.innerHeight }}>
+      {currentSong && (
         <audio src={currentSong.src} ref={audioElmt} onTimeUpdate={onPlaying} />
-      }
-      {
-        currentSong ?
-          <ExploPlayer
+      )}
+      {currentSong ? (
+          <PlayerShader
             audioElmt={audioElmt}
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
@@ -155,24 +156,21 @@ function App() {
             likedMusics={likedMusics}
             likeOrDislikeMusic={likeOrDislikeMusic}
           />
-          :
-          <div id="contain-top-player">
-            <div id='player-bar' className="flex justify-center w-full">
-              <div id="nav-widget-player" className="flex row nowrap">
-                <Icon icon="random" />
-                <Icon icon="previous" />
-                <Icon icon="play" />
-                <Icon icon="next" />
-                <Icon icon="loop" />
+        ) : (
+            <div id="contain-top-player">
+              <div id="player-bar" className="flex justify-center w-full">
+                <div id="nav-widget-player" className="flex row nowrap">
+                  <Icon icon="random" />
+                  <Icon icon="previous" />
+                  <Icon icon="play" />
+                  <Icon icon="next" />
+                  <Icon icon="loop" />
+                </div>
               </div>
             </div>
-          </div>
-      }
-      {
-        alert?.visible &&
-        <Alert alert={alert} />
-      }
-      <section style={{ color: 'black', height: '75%' }}>
+      )}
+      {alert?.visible && <Alert alert={alert} />}
+      <section style={{ color: "black", height: "75%" }}>
         <section className="container-app">
           <div className="contain-explorer">
             <Router>
@@ -204,16 +202,20 @@ function App() {
         </section>
       </section>
       {loginDisplay ? (
-        <ModalLogin setAlert={setAlert} toggleModal={toggleModal} setConnected={setConnected} />
+        <ModalLogin
+          setAlert={setAlert}
+          toggleModal={toggleModal}
+          setConnected={setConnected}
+        />
       ) : (
         <div />
       )}
       <Footer envName={envName} buildDate={buildDate} commitUrl={commitUrl} />
     </section>
-  )
+  );
 }
 
-export default App
-function someOtherData(): import('react').RefObject<HTMLAudioElement> {
-  throw new Error('Function not implemented.')
+export default App;
+function someOtherData(): import("react").RefObject<HTMLAudioElement> {
+  throw new Error("Function not implemented.");
 }

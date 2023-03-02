@@ -1,5 +1,6 @@
 import "styles/Player.scss";
-import { AnimateBulles, PlayerReact } from "components";
+import { AnimateBulles } from "components";
+import { PlayerReact } from "components/player";
 
 import { useEffect, useRef, useState } from "react";
 
