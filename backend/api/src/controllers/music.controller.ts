@@ -125,19 +125,17 @@ class MusicController implements IMusicController {
   }
 
   private _toViewMusic = async (music: ViewMusic) => {
-    const { artistId, genreId, albumId, ...rest } = music
+    const { artistId, genreId, ...rest } = music
 
-    const [artist, genre, album] = await Promise.all([
+    const [artist, genre] = await Promise.all([
       userService.findUnique({ id: artistId }),
       genreService.findUnique({ id: genreId }),
-      albumService.findUnique({ id: albumId }),
     ])
 
     return {
       ...rest,
       artist: artist?.username || 'Unknown',
       genre: genre?.name || 'Unknown',
-      album: album?.name || 'Unknown',
     }
   }
 }
