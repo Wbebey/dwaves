@@ -9,7 +9,7 @@
     "dev": "doppler run -- nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "doppler run -- prisma migrate deploy",
-    "db:init": "doppler run -- prisma migrate deploy && prisma db seed"
+    "db:init": "doppler run -- prisma migrate deploy && doppler run -- prisma db seed"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

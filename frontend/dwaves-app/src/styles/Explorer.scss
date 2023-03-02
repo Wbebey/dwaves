@@ -44,6 +44,13 @@
     display: block;
     height: 20%;
     background-color: $primary;
+    #player-bar{
+        #nav-widget-player > * {
+            margin: 20% 8px;
+            width: 32px;
+            height: 32px;
+        }
+    }
     .player-bar{
         @extend .flex-row-nowrap;
         width: 100%;
