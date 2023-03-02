@@ -1,4 +1,4 @@
-import {Icon} from "components/shared"
+import { Icon } from "components/shared";
 
 import { useRef } from "react";
 
