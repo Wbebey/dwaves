@@ -70,34 +70,36 @@ export const ContentAlbum: React.FC<Props> = ({ setCurrentSong, setSongs }) => {
           </div>
         </div>
       </header>
-      <ul className="list-song">
-        {album?.musics.map((music, i) => (
-          <li
-            onClick={e => {
-              setCurrentSong(music)
-              setSongs(album)
-            }}
-            key={i}
-            className="song-li cursor-pointer"
-          >
-            <div className="avatar placeholder">
-              <div className="text-neutral-content rounded-full w-10">
-                <span className="text-xl">0{i + 1}</span>
+      <div className='container-list'>
+        <ul className="list-song">
+          {album?.musics.map((music, i) => (
+            <li
+              onClick={e => {
+                setCurrentSong(music)
+                setSongs(album)
+              }}
+              key={i}
+              className="song-li cursor-pointer"
+            >
+              <div className="avatar placeholder">
+                <div className="text-neutral-content rounded-full w-10">
+                  <span className="text-xl">0{i + 1}</span>
+                </div>
               </div>
-            </div>
-            <div className="p-0 divider divider-horizontal" />
-            <div className="song-li-info">
-              <h4 style={{}}>{music.name}</h4>
-              <p>{album.artist}</p>
-            </div>
-            <div className="song-li-action">
-              <Icon icon="add" />
-              <Icon icon="like" />
-              <p>2 : 30</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+              <div className="p-0 divider divider-horizontal" />
+              <div className="song-li-info">
+                <h4 style={{}}>{music.name}</h4>
+                <p>{album.artist}</p>
+              </div>
+              <div className="song-li-action">
+                <Icon icon="add" />
+                <Icon icon="like" />
+                <p>2 : 30</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }
