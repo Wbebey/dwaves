@@ -35,8 +35,8 @@ const main = async () => {
     deployer,
     dwavesToken.address,
     bank.address,
-    openingDate,
-    closingDate
+    Math.floor(openingDate.getTime() / 1000),
+    Math.floor(closingDate.getTime() / 1000)
   )) as ICO
 
   const [MINTER_ROLE, PAYER_ROLE] = await Promise.all([
