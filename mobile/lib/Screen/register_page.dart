@@ -35,7 +35,7 @@ class MyregisterPage extends StatefulWidget {
 
 class _MyregisterPageState extends State<MyregisterPage> {
   void sendRegister() async {
-    var url = Uri.parse('http://localhost:8080/api/v1/auth/register');
+    var url = Uri.parse('http://0.0.0.0:8080/api/v1/auth/register');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final response =
         await http.post(url, body: {
@@ -165,7 +165,6 @@ class _MyregisterPageState extends State<MyregisterPage> {
                   autocorrect: false,
                   onChanged: (val) {
                     print(val);
-
                     setState(() => password = val);
                   },
                   validator: (val) => val!.isEmpty ? 'Password manquant' : null,
@@ -225,7 +224,10 @@ class _MyregisterPageState extends State<MyregisterPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  sendRegister();
+                  if(password == password_confirmation){
+                    sendRegister();
+                  }
+                  
                 },
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.05,

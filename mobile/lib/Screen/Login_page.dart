@@ -30,19 +30,22 @@ class MyLoginPage extends StatefulWidget {
   _MyLoginPageState createState() => _MyLoginPageState();
 }
 
+
+
 class _MyLoginPageState extends State<MyLoginPage> {
-  void sendLogin() async {
-    var url = Uri.parse('http://localhost:8080/api/v1/auth/login');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  void sendLogin() async{
+    var url = Uri.parse('http://0.0.0.0:8080/api/v1/auth/login');
     final response =
         await http.post(url, body: {"email": email, "password": password});
 
-    if (response.statusCode == 200) {
-      prefs.setString('cookies', response.body);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Manager()));
-    } else {
-      throw Exception('Failed to create USER.');
+    if (response.statusCode == 200){
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      prefs.setString('token', response.body);
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Manager()));
+
     }
   }
 
