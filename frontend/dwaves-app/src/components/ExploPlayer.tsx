@@ -1,7 +1,7 @@
 import "styles/Explorer.scss";
 import { Icon } from "components/shared";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface Props {
   audioElmt: React.RefObject<HTMLAudioElement>;
@@ -63,13 +63,20 @@ export const ExploPlayer: React.FC<Props> = ({
     audioElmt.current!.currentTime = 0;
   };
 
+  useEffect(() => {
+    console.log(songs)
+  }, [songs])
+
   return (
     <div id="contain-top-player">
       <div className="player-bar">
-        <div id="contain-left-bar" className="flex row nowrap">
-          <img src={songs.cover} alt={currentSong.name} />
-          <p>Dinos - {currentSong.name}</p>
-        </div>
+        {
+          songs &&
+          <div id="contain-left-bar" className="flex row nowrap">
+            <img src={songs.cover} alt={currentSong.name} />
+            <p>{songs.artist} - {currentSong.name}</p>
+          </div>
+        }
         <div id="nav-widget-player" className="flex row nowrap">
           <Icon icon="random" />
           <Icon icon="previous" onClick={handlePrevious} />
@@ -81,19 +88,25 @@ export const ExploPlayer: React.FC<Props> = ({
           <Icon icon="next" onClick={handleNext} />
           <Icon icon="loop" />
         </div>
-        <div id="contain-right-bar" className="flex row nowrap">
-          <p>01:21 / 02:03</p>
-          <Icon icon="dislike" />
-          <Icon icon="close" />
-        </div>
+        {
+          songs &&
+          <div id="contain-right-bar" className="flex row nowrap">
+            <p>01:21 / 02:03</p>
+            <Icon icon="dislike" />
+            <Icon icon="close" />
+          </div>
+        }
       </div>
       <div>
-        <div className="seekbar" onClick={checkWidth} ref={clickRef}>
-          <div
-            className="time"
-            style={{ width: `${currentSong.progress}%`, display: "block" }}
-          />
-        </div>
+        {
+          songs &&
+          <div className="seekbar" onClick={checkWidth} ref={clickRef}>
+            <div
+              className="time"
+              style={{ width: `${currentSong.progress}%`, display: "block" }}
+            />
+          </div>
+        }
       </div>
     </div>
   );
