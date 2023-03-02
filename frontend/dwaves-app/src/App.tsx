@@ -1,6 +1,6 @@
 import './App.scss'
 import { Loader, ExploPlayer, Sidebar, Alert } from 'components'
-import { Player, Explorer, Album, Download, ModalLogin } from 'views'
+import { Player, Explorer, Album, Download, ModalLogin, Profile } from 'views'
 
 import { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -106,6 +106,7 @@ function App() {
                 <Route path="/album/:id" element={<Album setCurrentSong={setCurrentSong} setSongs={setSongs} />} />
                 <Route path="/player" element={<Player />} />
                 <Route path="/download" element={<Download setAlert={setAlert} />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/user" element={<div />} />
               </Routes>
             </Router>
