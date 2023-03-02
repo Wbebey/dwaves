@@ -8,7 +8,8 @@ import { Login } from "components/Login";
 import { PlayerReact } from "components/PlayerReact";
 import { Register } from "components/Register";
 import { Sidebar } from "components/Sidebar";
-import { AlbumForm } from "components/AlbumForm"
+import { AlbumForm } from "components/AlbumForm";
+import { PopularSongOfArtist} from "components/PopularSongOfArtist";
 
 export {
   AnimateBulles,
@@ -22,4 +23,5 @@ export {
   PlayerReact,
   Register,
   Sidebar,
+  PopularSongOfArtist,
 };
