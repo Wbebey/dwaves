@@ -39,6 +39,19 @@ class PinataService implements IPinataService {
     return cid
   }
 
+  unpinFileFromIPFS = async (cid: string) => {
+    const url = `${env.pinataApiHost}/pinning/unpin/${cid}`
+
+    const res = await axios.delete<string>(url, {
+      headers: {
+        pinata_api_key: env.pinataApiKey,
+        pinata_secret_api_key: env.pinataApiSecret,
+      },
+    })
+
+    return res.data
+  }
+
   getMusicFromIPFS = async (musicFilter: MusicFilter) => {
     const { genre, albumId, artistId } = musicFilter
     const baseUrl = `${env.pinataApiHost}/data/pinList?status=pinned&metadata[keyvalues]`

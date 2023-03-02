@@ -129,5 +129,19 @@ describe('DwavesMusicNFT', () => {
       const userTokens = await dwavesMusicNFT_.getMyTokens()
       expect(userTokens).to.have.all.members(user2Tokens)
     })
+
+    it('Allows burning a token', async () => {
+      const dwavesMusicNFT_ = dwavesMusicNFT.connect(user1)
+      const tokenBurn = dwavesMusicNFT_.burn(1)
+      expect(tokenBurn)
+        .to.changeTokenBalance(dwavesMusicNFT, user1.address, -1)
+        .and.to.emit(dwavesMusicNFT, 'Transfer')
+        .withArgs(user1.address, dwavesMusicNFT.address, 1)
+    })
+
+    it('Prevents burning a token if not owner', async () => {
+      const tokenBurn = dwavesMusicNFT.burn(1)
+      expect(tokenBurn).to.be.revertedWith(`ERC721: caller is not the owner`)
+    })
   })
 })

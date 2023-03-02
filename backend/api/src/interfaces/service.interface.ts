@@ -1,5 +1,10 @@
 import { AlbumCreateInput, ViewAlbum } from '@@types/album.type'
-import { CoverMetadata, MusicFilter, MusicMetadata, ViewMusic } from '@@types/pinata.type'
+import {
+  CoverMetadata,
+  MusicFilter,
+  MusicMetadata,
+  ViewMusic,
+} from '@@types/pinata.type'
 import { TokenType } from '@@types/token.type'
 import { UserAddressAndMonthlyListenings, ViewUser } from '@@types/user.type'
 import { Album, Genre, Prisma, User } from '@prisma/client'
@@ -38,6 +43,7 @@ export interface IAlbumService extends IService {
   findMany: (where?: Prisma.AlbumWhereInput) => Promise<ViewAlbum[]>
   findUnique: (where: Prisma.AlbumWhereUniqueInput) => Promise<ViewAlbum | null>
   create: (album: AlbumCreateInput, cover: UploadedFile) => Promise<Album>
+  delete: (where: Prisma.AlbumWhereUniqueInput) => Promise<Album>
 }
 
 export interface IGenreService extends IService {
@@ -52,7 +58,11 @@ export interface IPinataService extends IService {
     file: UploadedFile,
     metadata: CoverMetadata | MusicMetadata
   ) => Promise<string>
-  updateListeningsMetadata: (musicCID: string, newListeningsValue: number) => Promise<string>
+  unpinFileFromIPFS: (CID: string) => Promise<string>
+  updateListeningsMetadata: (
+    musicCID: string,
+    newListeningsValue: number
+  ) => Promise<string>
 }
 
 export interface INFTService extends IService {
