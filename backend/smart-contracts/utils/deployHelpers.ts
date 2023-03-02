@@ -31,7 +31,19 @@ export const writeABI = async (
     address: contract.address,
     abi: JSON.parse(contract.interface.format('json') as string),
   }
-  await fs.writeFile(`../api/src/abi/${filename}.json`, JSON.stringify(data))
+  const writeToAPI = fs.writeFile(
+    `../api/src/abi/${filename}.json`,
+    JSON.stringify(data)
+  )
+  const writeToApp = fs.writeFile(
+    `../../frontend/dwaves-app/src/abi/${filename}.json`,
+    JSON.stringify(data)
+  )
+  const writeToWebsite = fs.writeFile(
+    `../../frontend/dwaves-website/src/abi/${filename}.json`,
+    JSON.stringify(data)
+  )
+  await Promise.all([writeToAPI, writeToApp, writeToWebsite])
 }
 
 export const cleanup = () => process.exit(0)

@@ -1,7 +1,7 @@
 import { ethers } from 'hardhat'
 
 import { deploy, writeABI, cleanup, handleError } from '../utils/deployHelpers'
-import { ArtistPayer, DwavesToken } from '../typechain-types'
+import { ArtistPayer, DwavesToken, ICO } from '../typechain-types'
 
 const main = async () => {
   const [deployer, payer, bank] = await ethers.getSigners()
@@ -21,6 +21,24 @@ const main = async () => {
     dwavesToken.address
   )) as ArtistPayer
 
+  const now = new Date()
+  const openingDate = new Date(
+    new Date(now.getTime()).setDate(now.getDate() + 1)
+  )
+  const closingDate = new Date(
+    new Date(now.getTime()).setMonth(now.getMonth() + 3)
+  )
+
+  const icoName = 'ICO'
+  const ico = (await deploy(
+    icoName,
+    deployer,
+    dwavesToken.address,
+    bank.address,
+    openingDate,
+    closingDate
+  )) as ICO
+
   const [MINTER_ROLE, PAYER_ROLE] = await Promise.all([
     dwavesToken.MINTER_ROLE(),
     artistPayer.PAYER_ROLE(),
@@ -33,6 +51,7 @@ const main = async () => {
   await Promise.all([
     writeABI(dwavesToken, tokenName),
     writeABI(artistPayer, payerName),
+    writeABI(ico, icoName),
   ])
 
   console.log('😎 DONE')
