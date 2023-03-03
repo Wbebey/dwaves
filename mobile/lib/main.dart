@@ -7,6 +7,7 @@ import 'package:dwaves_mobile/Componant/Boutton.dart';
 import 'Componant/Boutton.dart';
 import 'package:flutter/services.dart';
 import 'package:dwaves_mobile/Screen/manager.dart';
+import 'Screen/View_Playlist.dart';
 
 
 
@@ -17,11 +18,12 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  String? cookies;
+  String? token;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: cookies == null ?  MyregisterPage() : Manager(),
+    return const MaterialApp(
+      home: ViewPlaylist(),
     );
   }
 }
+

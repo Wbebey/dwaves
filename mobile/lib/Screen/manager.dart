@@ -181,19 +181,7 @@ class AudioControlButtons extends StatelessWidget {
     );
   }
 }
-void sendLogin() async {
-    var url = Uri.parse('http://localhost:8080/api/v1/auth/me');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final response =
-        await http.get(url);
 
-    if (response.statusCode == 200) {
-      print(response.body);
-      
-    } else {
-      throw Exception('Failed to create USER.');
-    }
-  }
 class RepeatButton extends StatelessWidget {
   const RepeatButton({Key? key}) : super(key: key);
   @override

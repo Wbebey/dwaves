@@ -18,6 +18,7 @@ class PageManager {
   late AudioPlayer _audioPlayer;
   late ConcatenatingAudioSource _playlist;
 
+
   PageManager() {
     _init();
   }
@@ -37,10 +38,12 @@ class PageManager {
     final song1 = Uri.parse('$prefix/SoundHelix-Song-1.mp3');
     final song2 = Uri.parse('$prefix/SoundHelix-Song-2.mp3');
     final song3 = Uri.parse('$prefix/SoundHelix-Song-3.mp3');
+    final song4 = Uri.parse('$prefix/SoundHelix-Song-4.mp3');
     _playlist = ConcatenatingAudioSource(children: [
       AudioSource.uri(song1, tag: 'Song 1'),
       AudioSource.uri(song2, tag: 'Song 2'),
       AudioSource.uri(song3, tag: 'Song 3'),
+      AudioSource.uri(song4, tag: 'Song 4'),
     ]);
     await _audioPlayer.setAudioSource(_playlist);
   }

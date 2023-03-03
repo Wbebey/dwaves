@@ -11,8 +11,8 @@ var email = '';
 var password = "";
 
 class Login extends StatelessWidget {
-  Login({Key? key, this.cookies}) : super(key: key);
-  final String? cookies;
+  Login({Key? key, this.token}) : super(key: key);
+  final String? token;
 
   // This widget is the root of your application.
   @override
@@ -24,30 +24,32 @@ class Login extends StatelessWidget {
 }
 
 class MyLoginPage extends StatefulWidget {
-  MyLoginPage({Key? key, this.cookies}) : super(key: key);
-  final String? cookies;
+  MyLoginPage({Key? key, this.token}) : super(key: key);
+  final String? token;
   @override
   _MyLoginPageState createState() => _MyLoginPageState();
 }
 
 
 
+
 class _MyLoginPageState extends State<MyLoginPage> {
-  void sendLogin() async{
+  void sendLogin() async {
     var url = Uri.parse('http://0.0.0.0:8080/api/v1/auth/login');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     final response =
         await http.post(url, body: {"email": email, "password": password});
 
-    if (response.statusCode == 200){
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    if (response.statusCode == 200) {
       prefs.setString('token', response.body);
-
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Manager()));
-
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Manager()));
+    } else {
+      throw Exception('Failed USER is not created.');
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
