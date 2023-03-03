@@ -108,7 +108,7 @@ jobs:
               uses: ./.github/actions/discord/notification-on-start-deployment
 
             - name: Deploy to GCP 🚀
-              uses: ./.github/actions/frontend/deployment/dwaves-frontend-deploy.yml
+              uses: ./.github/actions/frontend/deployment
 
             - name: Discord notification on success
               if: success()
