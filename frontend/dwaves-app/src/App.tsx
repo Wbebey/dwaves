@@ -2,7 +2,7 @@ import './App.scss'
 
 import {Player, Explorer, Album, Download, ModalLogin, Profile, PlaylistPage, Playlist} from 'views'
 import { Loader, Sidebar, Alert, Footer } from 'components'
-import { PlayerShader } from 'components/player'
+import { PlayerWrapper } from 'components/player'
 import { Icon } from 'components/shared'
 
 import { responseRequest, Music, AlbumDetail } from "models";
@@ -135,7 +135,7 @@ function App() {
         <audio src={currentSong.src} ref={audioElmt} onTimeUpdate={onPlaying} />
       )}
       {currentSong ? (
-          <PlayerShader
+          <PlayerWrapper
             audioElmt={audioElmt}
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
@@ -151,7 +151,8 @@ function App() {
             PlayRandomSong={PlayRandomSong}
             likedMusics={likedMusics}
             likeOrDislikeMusic={likeOrDislikeMusic}
-          />
+            planeSubdivisions={6}
+        />
         ) : (
             <div id="contain-top-player">
               <div id="player-bar" className="flex justify-center w-full">
