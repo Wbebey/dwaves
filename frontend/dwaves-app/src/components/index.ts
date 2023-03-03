@@ -12,6 +12,7 @@ import { AlbumForm } from "components/AlbumForm";
 import { Alert } from "components/Alert";
 import { PopularSongOfArtist} from "components/PopularSongOfArtist";
 import {SwitchTab} from "components/SwitchTab";
+import {SongList} from "components/SongList";
 
 export {
   AnimateBulles,
@@ -27,5 +28,6 @@ export {
   Sidebar,
   Alert,
   PopularSongOfArtist,
-  SwitchTab
+  SwitchTab,
+  SongList
 };
