@@ -14,6 +14,7 @@ env:
   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
   DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }}
   DOPPLER_TOKEN_TEST: ${{ secrets.DOPPLER_DWAVES_JOBS_TOKEN_TEST }}
+  PROPERTIES_SCRIPT: ${{ GITHUB.WORKSPACE }}/.github/script/environment.sh
 
 jobs:
   execute-script:

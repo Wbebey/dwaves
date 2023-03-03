@@ -100,7 +100,7 @@ jobs:
     # if:         (github.event.label.name == 'deploy-dwaves-api-test' &&
     #     github.event_name == 'pull_request' && 
     #     github.event.pull_request.head.ref == 'staging')
-    if: (github.ref == 'refs/heads/main' ||
+    if: github.ref == 'refs/heads/main' ||
         github.ref == 'refs/heads/staging' 
     needs: [code-analysis]
     environment: dwaves-api
