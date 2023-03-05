@@ -4,6 +4,7 @@ import { IPlaylistController } from '@interfaces/controller.interface'
 import pinataService from '@services/pinata.service'
 import playlistService from '@services/playlist.service'
 import { RequestHandler } from 'express'
+import { UploadedFile } from 'express-fileupload'
 import { StatusCodes } from 'http-status-codes'
 
 class PlaylistController implements IPlaylistController {
@@ -31,6 +32,7 @@ class PlaylistController implements IPlaylistController {
     res.json({ ...playlist, musics })
   }
   create: RequestHandler = async (req, res) => {
+    const cover = req.files?.cover as UploadedFile | undefined
     const { creatorId, name } = req.body
 
     const playlist = {
@@ -38,18 +40,20 @@ class PlaylistController implements IPlaylistController {
       creator: { connect: { id: creatorId } },
       likes: 0,
     }
-    const createdPlaylist = await playlistService.create(playlist)
+    const createdPlaylist = await playlistService.create(playlist, cover)
 
     res.json(createdPlaylist)
   }
   update: RequestHandler = async (req, res) => {
+    const cover = req.files?.cover as UploadedFile | undefined
     const playlist = await this._getPlaylistIfExists(+req.params.id)
 
     const { name, likes, musics } = req.body
 
     const updatedPlaylist = await playlistService.update(
       { id: playlist.id },
-      { name, likes, musics }
+      { name, likes, musics },
+      cover
     )
 
     res.json(updatedPlaylist)

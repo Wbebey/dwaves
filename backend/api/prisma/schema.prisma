@@ -63,6 +63,7 @@ model Playlist {
   name      String
   likes     Int
   musics    String[]
+  coverCID  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

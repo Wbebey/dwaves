@@ -8,8 +8,9 @@
     "start": "doppler run -- TS_NODE_BASEURL=build node -r tsconfig-paths/register build/server.js",
     "dev": "doppler run -- nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "doppler run -- prisma migrate deploy",
     "db:init": "doppler run -- prisma migrate deploy && prisma db seed",
+    "db:migrate": "doppler run -- prisma migrate dev",
+    "db:deploy": "doppler run -- prisma migrate deploy",
     "deploy-db": "prisma migrate deploy",
     "deploy-db:init": "prisma migrate deploy && prisma db seed"
   },
