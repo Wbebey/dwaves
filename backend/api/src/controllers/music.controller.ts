@@ -4,7 +4,7 @@ import env from '@config/env.config'
 import { UploadedFile } from 'express-fileupload'
 import logger from '@config/logger.config'
 import pinataService from '@services/pinata.service'
-import { FileType, MusicMetadata, ViewMusic } from '@@types/pinata.type'
+import { FileType, MusicMetadata } from '@@types/pinata.type'
 import albumService from '@services/album.service'
 import { AlbumType } from '@prisma/client'
 import nftService from '@services/nft.service'
@@ -12,8 +12,7 @@ import {
   MusicListRequestHandler,
   PopularMusicRequestHandler,
 } from '@@types/app.type'
-import userService from '@services/user.service'
-import genreService from '@services/genre.service'
+import musicService from '@services/music.service'
 
 class MusicController implements IMusicController {
   get: MusicListRequestHandler = async (req, res) => {
@@ -24,19 +23,12 @@ class MusicController implements IMusicController {
 
   getPopular: PopularMusicRequestHandler = async (req, res) => {
     const { artistId, genre, limit } = req.query
-    const musics = await pinataService.getMusicFromIPFS({ genre, artistId })
+    const popularMusics = await musicService.getPopularMusics(
+      { artistId, genre },
+      limit
+    )
 
-    const popularMusics = musics
-      .sort((a, b) => b.listenings - a.listenings)
-      .slice(0, limit || 10)
-
-    //* Don't parallelize promises to not instantiate too many db connections
-    const viewMusics = []
-    for await (const music of popularMusics.map(this._toViewMusic)) {
-      viewMusics.push(music)
-    }
-
-    res.json(viewMusics)
+    res.json(popularMusics)
   }
 
   uploadSingle: RequestHandler = async (req, res) => {
@@ -122,21 +114,6 @@ class MusicController implements IMusicController {
     )
 
     res.json(resPinata)
-  }
-
-  private _toViewMusic = async (music: ViewMusic) => {
-    const { artistId, genreId, ...rest } = music
-
-    const [artist, genre] = await Promise.all([
-      userService.findUnique({ id: artistId }),
-      genreService.findUnique({ id: genreId }),
-    ])
-
-    return {
-      ...rest,
-      artist: artist?.username || 'Unknown',
-      genre: genre?.name || 'Unknown',
-    }
   }
 }
 

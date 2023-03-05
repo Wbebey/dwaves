@@ -78,3 +78,10 @@ export interface ITokenService extends IService {
   ) => string
   verifyJwt: <T>(token: string, tokenType: TokenType) => T | null
 }
+
+export interface IMusicService extends IService {
+  getPopularMusics: (
+    musicFilter: MusicFilter,
+    limit?: number
+  ) => Promise<ViewMusic[]>
+}
