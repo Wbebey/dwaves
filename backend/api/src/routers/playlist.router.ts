@@ -1,3 +1,4 @@
+import { FileType } from '@@types/pinata.type'
 import playlistController from '@controllers/playlist.controller'
 import playlistValidator from '@validators/playlist.validator'
 import userValidator from '@validators/user.validator'
@@ -33,6 +34,7 @@ playlistRouter.post(
     .bail()
     .customSanitizer(userValidator.toValidUserId),
   body('name').notEmpty().withMessage('Name is required'),
+  body().custom(playlistValidator.hasOneFileOptional(FileType.COVER)),
   playlistValidator.validate,
   playlistController.create
 )
@@ -41,9 +43,19 @@ playlistRouter.put(
   param('id')
     .isInt({ min: 1 })
     .withMessage('Playlist id must be a strictly positive int'),
-  body('name').notEmpty().withMessage('Name is required'),
-  body('likes').isInt({ min: 0 }).withMessage('Likes must be a positive int'),
-  body('musics').isArray().withMessage('Musics must be an array'),
+  body('name')
+    .if(body('name').exists())
+    .notEmpty()
+    .withMessage('Name is required'),
+  body('likes')
+    .if(body('likes').exists())
+    .isInt({ min: 0 })
+    .withMessage('Likes must be a positive int'),
+  body('musics')
+    .if(body('musics').exists())
+    .isArray()
+    .withMessage('Musics must be an array'),
+  body().custom(playlistValidator.hasOneFileOptional(FileType.COVER)),
   playlistValidator.validate,
   playlistController.update
 )
