@@ -7,13 +7,19 @@ import { FileType } from '@@types/pinata.type'
 import albumValidator from '@validators/album.validator'
 import { requireUserWallet } from '@middlewares/auth.middleware'
 import { AlbumType } from '@prisma/client'
+import userValidator from '@validators/user.validator'
 
 const musicRouter = Router()
 
 musicRouter.get(
   '/',
   query('genre').bail().customSanitizer(albumValidator.toValidGenreIfExist),
-  query('artistId').customSanitizer(albumValidator.toValidArtistIdIfExist),
+  query('artistId')
+    .if(query('artistId').exists())
+    .isInt({ min: 1 })
+    .withMessage('Album id must be a strictly positive int')
+    .bail()
+    .customSanitizer(userValidator.toValidUserId),
   musicValidator.validate,
   musicController.get
 )
@@ -21,7 +27,12 @@ musicRouter.get(
 musicRouter.get(
   '/popular',
   query('genre').bail().customSanitizer(albumValidator.toValidGenreIfExist),
-  query('artistId').customSanitizer(albumValidator.toValidArtistIdIfExist),
+  query('artistId')
+    .if(query('artistId').exists())
+    .isInt({ min: 1 })
+    .withMessage('Album id must be a strictly positive int')
+    .bail()
+    .customSanitizer(userValidator.toValidUserId),
   query('limit')
     .if(query('limit').exists())
     .isInt({ min: 1, max: 20 })
