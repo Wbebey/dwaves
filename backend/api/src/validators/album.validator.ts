@@ -2,11 +2,10 @@ import AppError from '@errors/app.error'
 import { IAlbumValidator } from '@interfaces/validator.interface'
 import { AlbumType } from '@prisma/client'
 import genreService from '@services/genre.service'
-import { CustomSanitizer, CustomValidator, Meta } from 'express-validator'
+import { CustomSanitizer, CustomValidator } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
 import { AppValidator } from '@validators/app.validator'
 import albumService from '@services/album.service'
-import userService from '@services/user.service'
 
 class AlbumValidator extends AppValidator implements IAlbumValidator {
   isValidType: CustomValidator = (type: string) => {
@@ -64,18 +63,6 @@ class AlbumValidator extends AppValidator implements IAlbumValidator {
     } catch (_) {
       throw error
     }
-  }
-
-  toValidArtistIdIfExist: CustomSanitizer = async (artistId: string) => {
-    if (!artistId) {
-      return undefined
-    }
-
-    const user = await userService.findUnique({ id: +artistId })
-    if (!user) {
-      throw new AppError('User not found', StatusCodes.UNPROCESSABLE_ENTITY)
-    }
-    return +artistId
   }
 }
 

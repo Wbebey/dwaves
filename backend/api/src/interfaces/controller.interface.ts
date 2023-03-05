@@ -2,8 +2,8 @@ import {
   AlbumGetRequestHandler,
   LimitRequestHandler,
   MusicListRequestHandler,
+  PlaylistGetRequestHandler,
 } from '@@types/app.type'
-import { Genre } from '@prisma/client'
 import { RequestHandler } from 'express'
 
 interface IController {}
@@ -48,4 +48,12 @@ export interface IAuthController extends IController {
   login: RequestHandler
   logout: RequestHandler
   refresh: RequestHandler
+}
+
+export interface IPlaylistController extends IController {
+  list: PlaylistGetRequestHandler
+  show: RequestHandler
+  create: RequestHandler
+  update: RequestHandler
+  delete: RequestHandler
 }
