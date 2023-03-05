@@ -7,7 +7,7 @@ import {
 } from '@@types/pinata.type'
 import { TokenType } from '@@types/token.type'
 import { UserAddressAndMonthlyListenings, ViewUser } from '@@types/user.type'
-import { Album, Genre, Prisma, User } from '@prisma/client'
+import { Album, Genre, Playlist, Prisma, User } from '@prisma/client'
 import { UploadedFile } from 'express-fileupload'
 import { JwtPayload, SignOptions } from 'jsonwebtoken'
 
@@ -84,4 +84,17 @@ export interface IMusicService extends IService {
     musicFilter: MusicFilter,
     limit?: number
   ) => Promise<ViewMusic[]>
+}
+
+export interface IPlaylistService extends IService {
+  findMany: (where: Prisma.PlaylistWhereInput) => Promise<Playlist[]>
+  findUnique: (
+    where: Prisma.PlaylistWhereUniqueInput
+  ) => Promise<Playlist | null>
+  update: (
+    where: Prisma.PlaylistWhereUniqueInput,
+    playlistUpdate: Prisma.PlaylistUpdateInput
+  ) => Promise<Playlist>
+  create: (playlist: Prisma.PlaylistCreateInput) => Promise<Playlist>
+  delete: (where: Prisma.PlaylistWhereUniqueInput) => Promise<Playlist>
 }

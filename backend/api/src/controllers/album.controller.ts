@@ -7,7 +7,6 @@ import AppError from '@errors/app.error'
 import { StatusCodes } from 'http-status-codes'
 import pinataService from '@services/pinata.service'
 import { AlbumGetRequestHandler } from '@@types/app.type'
-import logger from '@config/logger.config'
 
 class AlbumController implements IAlbumController {
   list: AlbumGetRequestHandler = async (req, res) => {
