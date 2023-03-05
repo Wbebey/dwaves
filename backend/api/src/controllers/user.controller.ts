@@ -4,6 +4,9 @@ import { RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import AppError from '@errors/app.error'
 import { User } from '@prisma/client'
+import musicService from '@services/music.service'
+import { LimitRequestHandler } from '@@types/app.type'
+import albumService from '@services/album.service'
 
 class UserController implements IUserController {
   get: RequestHandler = async (_, res) => {
@@ -46,6 +49,24 @@ class UserController implements IUserController {
     const artistAddresses = artists.map((a) => a.address)
 
     res.json({ listenings, artistAddresses })
+  }
+
+  getMyPopularMusics: LimitRequestHandler = async (req, res) => {
+    const { id } = req.app.locals.user
+    const { limit } = req.query
+    const popularMusics = await musicService.getPopularMusics(
+      { artistId: id },
+      limit
+    )
+
+    res.json(popularMusics)
+  }
+
+  getMyAlbums: RequestHandler = async (req, res) => {
+    const { id } = req.app.locals.user
+    const albums = await albumService.findMany({ artistId: id })
+
+    res.json(albums)
   }
 
   updateInfo: RequestHandler = async (req, res) => {
