@@ -13,16 +13,15 @@ runs:
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
-          pwd && ls -la
           npm install
 
       - name: Build 🏗
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
-          CI="false" npm run build
+          CI="false" npm run deploy-build
 
-      - name: Deploy Production 🚀
+      - name: Deploy  🚀
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
