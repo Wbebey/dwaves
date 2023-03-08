@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "doppler run -- vite",
-    "build": "doppler run --tsc && vite build",
-    "preview": "doppler run -- vite preview"
+    "build": "doppler run -- tsc && vite build",
+    "preview": "doppler run -- vite preview",
+    "deploy-build": "tsc && vite build"
   },
   "dependencies": {
     "axios": "^1.1.3",
