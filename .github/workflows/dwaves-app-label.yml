@@ -56,7 +56,7 @@ jobs:
       - name: Checkout 😇
         uses: actions/checkout@v3
 
-      - name: Deploy to GCS 🚀
+      - name: Deploy to GCP 🚀
         uses: ./.github/actions/frontend/deployment
 
       - name: Discord notification on failure
