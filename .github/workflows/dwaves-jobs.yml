@@ -1,4 +1,4 @@
-name: Test & Analyse - Dwaves-jobs
+name: Dwaves-jobs
 
 on:
   push:
