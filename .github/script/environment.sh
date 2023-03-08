@@ -19,7 +19,7 @@ function get_environment_properties() {
         export BUCKET_NAME="${STAGING_URL}"
         export DOCKER_TAG="gcr.io/${GCP_PROJECT_ID}/${APP}-$ENVIRONMENT:$BRANCH_NAME-${GITHUB_SHA}"
     else
-        export ENVIRONMENT="testing"
+        export ENVIRONMENT="test"
         export ENV_NAME="test"
         export DOPPLER_TOKEN="${DOPPLER_TOKEN_TEST}"
         export BUCKET_NAME="${TEST_URL}"

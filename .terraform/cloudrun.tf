@@ -40,6 +40,9 @@ resource "google_cloud_run_service_iam_member" "iam-run-dwaves-api-test" {
   location = google_cloud_run_service.dwaves-api-test-service.location
   role     = "roles/run.invoker"
   member   = "allUsers"
+  depends_on = [
+    google_cloud_run_service.dwaves-api-test-service
+  ]
 }
 
 resource "google_cloud_run_domain_mapping" "dns-dwaves-api-test" {
@@ -52,6 +55,10 @@ resource "google_cloud_run_domain_mapping" "dns-dwaves-api-test" {
   spec {
     route_name = google_cloud_run_service.dwaves-api-test-service.name
   }
+
+  depends_on = [
+    google_cloud_run_service.dwaves-api-test-service
+  ]
 }
 
 # Cloud Run for dwaves-api-production
@@ -90,6 +97,9 @@ resource "google_cloud_run_service_iam_member" "iam-run-dwaves-api-production" {
   location = google_cloud_run_service.dwaves-api-production-service.location
   role     = "roles/run.invoker"
   member   = "allUsers"
+  depends_on = [
+    google_cloud_run_service.dwaves-api-production-service
+  ]
 }
 
 resource "google_cloud_run_domain_mapping" "dns-dwaves-api-production" {
@@ -102,6 +112,10 @@ resource "google_cloud_run_domain_mapping" "dns-dwaves-api-production" {
   spec {
     route_name = google_cloud_run_service.dwaves-api-production-service.name
   }
+
+  depends_on = [
+    google_cloud_run_service.dwaves-api-production-service
+  ]
 }
 
 # Cloud Run for dwaves-api-staging
@@ -140,6 +154,9 @@ resource "google_cloud_run_service_iam_member" "iam-run-dwaves-api-staging" {
   location = google_cloud_run_service.dwaves-api-staging-service.location
   role     = "roles/run.invoker"
   member   = "allUsers"
+  depends_on = [
+    google_cloud_run_service.dwaves-api-staging-service
+  ]
 }
 
 resource "google_cloud_run_domain_mapping" "dns-dwaves-api-staging" {
@@ -152,5 +169,8 @@ resource "google_cloud_run_domain_mapping" "dns-dwaves-api-staging" {
   spec {
     route_name = google_cloud_run_service.dwaves-api-staging-service.name
   }
-}
 
+  depends_on = [
+    google_cloud_run_service.dwaves-api-staging-service
+  ]
+}
