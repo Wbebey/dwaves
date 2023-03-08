@@ -15,19 +15,23 @@ runs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Retrieve environment variables 🌎
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
 
       - name: Build 🏗
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
+          pwd && ls -la
           docker build . \
             -f ${{ GITHUB.WORKSPACE }}/${{ env.PROJECT_DIRECTORY }}/Dockerfile \
             -t $DOCKER_TAG \
 
       - name: Publish to Container registry 🛫
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
@@ -36,6 +40,7 @@ runs:
           docker push $DOCKER_TAG
 
       - name: Deploy to cloud run 🚀
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
