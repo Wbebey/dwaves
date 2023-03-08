@@ -11,6 +11,7 @@ env:
     APP: dwaves-api
     NODE_VERSION: 16.x
     PROJECT_DIRECTORY: backend/api
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     GITHUB_REF: ${{ github.ref }}
     GITHUB_SHA: ${{ github.sha }}
     GCP_SA_KEY: ${{ secrets.TF_SA }}
@@ -40,7 +41,7 @@ jobs:
         uses: actions-ecosystem/action-remove-labels@v1.3.0
         with:
           labels: ${{ github.event.label.name }}
-          github_token: ${{ env.SONAR_GITHUB_TOKEN }}
+          github_token: ${{ env.GITHUB_TOKEN }}
 
   deploy:
     name: Deploy
