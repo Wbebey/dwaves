@@ -21,6 +21,6 @@ apply:
 
 import:
 	terraform -chdir="$(terraform_folder)" init && \
-	terraform -chdir="$(terraform_folder)" import -var-file=$(secrets_folder)/secrets.tfvars google_project.dwaves dwaves-572068
+	terraform -chdir="$(terraform_folder)" import -var-file=$(secrets_folder)/secrets.tfvars  $(resource) $(id)
 
 .PHONY: init  plan  apply 
