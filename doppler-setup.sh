@@ -43,7 +43,7 @@ function install_doppler() {
 function doppler_setup() {
     properties
     # Log in to Doppler using your credentials
-    doppler login
+    # doppler login
 
     for project in "${directories[@]}"
     do
