@@ -35,6 +35,8 @@ export const SongList: React.FC<Props> = ({songs, setCurrentSong, setSongs}) => 
                 {songs?.musics.map((music, i) => (
                     <li
                         onClick={e => {
+                            //console.log(music)
+                            //console.log(songs)
                             setCurrentSong(music)
                             setSongs(songs)
                         }}
