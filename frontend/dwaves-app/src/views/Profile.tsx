@@ -2,7 +2,12 @@ import "styles/Explorer.scss";
 import {AlbumForm, PopularSongOfArtist, SingleForm, SwitchTab} from "../components";
 import {useState} from "react";
 
-export const Profile = () => {
+interface Props {
+    setCurrentSong: React.Dispatch<React.SetStateAction<any>>
+    setSongs: React.Dispatch<React.SetStateAction<any>>
+}
+
+export const Profile:React.FC<Props> = ({setCurrentSong, setSongs}) => {
 
     const [showForm, setShowForm] = useState(true)
 
@@ -12,7 +17,7 @@ export const Profile = () => {
             <SwitchTab FirstValue={'Overview'} SecondValue={'My Info'} showForm={showForm} setShowForm={setShowForm}/>
 
             {showForm ?
-                <PopularSongOfArtist/>
+                <PopularSongOfArtist setCurrentSong={setCurrentSong} setSongs={setSongs}/>
                 :
                 null
             }
