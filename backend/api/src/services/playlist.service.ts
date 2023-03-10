@@ -18,12 +18,10 @@ class PlaylistService implements IPlaylistService {
     playlist: PlaylistCreateInput,
     cover?: UploadedFile
   ): Promise<Playlist> => {
-    // @ts-ignore
     const data: Prisma.PlaylistCreateInput = { ...playlist, coverCID: '' }
 
     if (cover) {
       const coverMetadata: CoverMetadata = { type: FileType.COVER }
-      // @ts-ignore
       data.coverCID = await pinataService.pinFileToIPFS(cover, coverMetadata)
     }
 
@@ -37,7 +35,6 @@ class PlaylistService implements IPlaylistService {
   ): Promise<Playlist> => {
     if (cover) {
       const coverMetadata: CoverMetadata = { type: FileType.COVER }
-      // @ts-ignore
       playlistUpdate.coverCID = await pinataService.pinFileToIPFS(
         cover,
         coverMetadata
@@ -52,7 +49,6 @@ class PlaylistService implements IPlaylistService {
   ): Promise<Playlist> => {
     const playlist = await prisma.playlist.delete({ where })
 
-    // @ts-ignore
     await pinataService.unpinFileFromIPFS(playlist.coverCID)
 
     return playlist

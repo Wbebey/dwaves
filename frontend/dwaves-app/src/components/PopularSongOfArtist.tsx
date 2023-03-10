@@ -50,20 +50,20 @@ export const PopularSongOfArtist: React.FC<Props> = ({setCurrentSong, setSongs})
     }
 
     return (
-        <div className={'h-[97%] pt-[30px] pl-[20px]'}>
-            <div className={`w-full h-[90%] overflow-scroll`}>
+        <div>
+            <div>
                 <h1 className={'text-4xl pl-[5px] font-bold mb-5'}>My Popular Song</h1>
                 {
                     mostPopularSong.map((song, index) => (
                         <>
-                            <div key={index} className={'flex flex-row mb-5 hover:bg-teal-300'}
+                            <div key={index} className={'flex flex-row mb-5 cursor-pointerno hover:bg-teal-300'}
                                  onClick={e => {
                                      //setCurrentSong(song)
                                      //setSongs(mostPopularSong)
                                  }}>
                                 <div className={'text-2xl align-baseline flex self-center pl-2 w-24'}>{index + 1}</div>
                                 <div className={'flex justify-between  items-center w-full'}>
-                                    <div className={'w-16'}>
+                                    <div className={'w-12 pt-2 pb-2'}>
                                         <img src={song?.albumCover} alt=""/>
                                     </div>
                                     <div>
