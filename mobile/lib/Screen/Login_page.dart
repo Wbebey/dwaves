@@ -1,14 +1,17 @@
 import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
 import 'package:dwaves_mobile/Screen/manager.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as Path;
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dwaves_mobile/Screen/register_page.dart';
 
 var email = '';
 var password = "";
+
 
 class Login extends StatelessWidget {
   Login({Key? key, this.token}) : super(key: key);
@@ -30,26 +33,22 @@ class MyLoginPage extends StatefulWidget {
   _MyLoginPageState createState() => _MyLoginPageState();
 }
 
-
-
-
 class _MyLoginPageState extends State<MyLoginPage> {
-  void sendLogin() async {
+  sendLogin() async {
     var url = Uri.parse('http://0.0.0.0:8080/api/v1/auth/login');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final response =
         await http.post(url, body: {"email": email, "password": password});
 
-    if (response.statusCode == 200) {
-      prefs.setString('token', response.body);
+    if (response.statusCode == 204) {
+      var res = response.headers['set-cookie']!.split(';')[0].split('=')[1];
+      prefs.setString('token', res);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Manager()));
     } else {
       throw Exception('Failed USER is not created.');
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -173,8 +172,10 @@ class _MyLoginPageState extends State<MyLoginPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyregisterPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyregisterPage()));
                 },
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.05,
@@ -185,10 +186,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       style: TextStyle(
                           color: Color.fromARGB(255, 255, 255, 255),
                           fontSize: MediaQuery.of(context).size.height * 0.025),
-                          
                     ),
                   ),
-                  
                 ),
               ),
             ],

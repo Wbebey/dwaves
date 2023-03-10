@@ -1,27 +1,42 @@
+import 'dart:io';
+
 import 'package:dwaves_mobile/Screen/manager.dart';
 import 'package:dwaves_mobile/Screen/manager.dart';
 import 'package:dwaves_mobile/Screen/playlist.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:just_audio/just_audio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Pagemanager.dart';
 import 'manager.dart';
 import 'manager.dart';
 import 'notifiers/play_button_notifier.dart';
 
 // affiche moi les musiques de la playlist de PageManager
-class ViewPlaylist extends StatefulWidget {
-  const ViewPlaylist({Key? key}) : super(key: key);
+class Album extends StatefulWidget {
+  const Album({Key? key, required this.id, required this.type})
+      : super(key: key);
+
+  final int id;
+  final String type;
+
+  factory Album.fromJson(Map<String, dynamic> json) {
+    return Album(
+      id: json['id'],
+      type: json['type'],
+    );
+  }
 
   @override
-  _ViewPlaylistState createState() => _ViewPlaylistState();
+  _ViewAlbumState createState() => _ViewAlbumState();
 }
 
-class _ViewPlaylistState extends State<ViewPlaylist> {
+class _ViewAlbumState extends State<Album> {
   late final PageManager _pageManager;
   late final AudioPlayer _player;
   late final Manager _manager;
-  
+  late Future<List<Album>> futureAlbums;
 
   @override
   void initState() {
@@ -29,6 +44,8 @@ class _ViewPlaylistState extends State<ViewPlaylist> {
     _pageManager = PageManager();
     _player = AudioPlayer();
     _manager = Manager();
+    super.initState();
+    futureAlbums = fetchAlbums();
   }
 
   @override
@@ -38,23 +55,57 @@ class _ViewPlaylistState extends State<ViewPlaylist> {
     super.dispose();
   }
 
+  Future<String?> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  Future<List<Album>> fetchAlbums() async {
+
+    String? token = await getToken();
+
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+      
+    final response = await http.get(
+        Uri.parse('http://localhost:8080/api/v1/albums'),
+        headers: headers ,);
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      List<Album> albums = [];
+      data.forEach((album) => albums.add(Album.fromJson(album)));
+      return albums;
+    } else {
+      throw Exception('Failed to load albums');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(),
-      body: ListView.builder(
-        itemCount: _pageManager.playlistNotifier.value.length,
-        itemBuilder: (context, index) {
-          final item = _pageManager.playlistNotifier.value[index];
-          return new ListTile(
-            title: Text(item),
-            subtitle: Text(item),
-            onTap: () async {
-              await _player.setUrl(item);
-              await _player.play();
-            },
-          );
-        },
+      body: Center(
+        child: FutureBuilder<List<Album>>(
+          future: futureAlbums,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(snapshot.data![index].type),
+                    subtitle: Text('ID: ${snapshot.data![index].id}'),
+                  );
+                },
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+            return CircularProgressIndicator();
+          },
+        ),
       ),
 // rajoute un petit player a la fin de la page tout en bas et un bouton pour fermer la page
       bottomNavigationBar: BottomAppBar(
