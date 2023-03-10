@@ -11,6 +11,7 @@ import { Sidebar } from "components/Sidebar";
 import { AlbumForm } from "components/AlbumForm";
 import { Alert } from "components/Alert";
 import { PopularSongOfArtist} from "components/PopularSongOfArtist";
+import {AlbumOfArtist} from "components/AlbumOfArtist";
 import {SwitchTab} from "components/SwitchTab";
 import {SongList} from "components/SongList";
 
@@ -28,6 +29,7 @@ export {
   Sidebar,
   Alert,
   PopularSongOfArtist,
+  AlbumOfArtist,
   SwitchTab,
   SongList
 };
