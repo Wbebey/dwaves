@@ -1,9 +1,10 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
 
 import {BsThreeDotsVertical} from "react-icons/bs";
+import {responseRequest} from "../models";
 
 type Album = {
     id: number
@@ -16,11 +17,14 @@ type Album = {
     cover: string
 }
 
-export const AlbumOfArtist = () => {
+interface Props {
+    setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+}
 
+export const AlbumOfArtist: React.FC<Props> = ({setAlert}) => {
     const [openDeleteOfAnAlbum, setOpenDeleteOfAnAlbum] = useState<number>(0)
-
     const [albums, setAlbums] = useState<Album[]>([])
+
     const getMyAlbums = async () => {
         try {
             const res = await axios.get(
@@ -35,11 +39,8 @@ export const AlbumOfArtist = () => {
         }
     }
 
-
     const showDeleteButton = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, albumId: number) => {
         e.preventDefault();
-
-        console.log(openDeleteOfAnAlbum)
 
         if (openDeleteOfAnAlbum === 0) {
             setOpenDeleteOfAnAlbum(albumId)
@@ -48,6 +49,34 @@ export const AlbumOfArtist = () => {
         }
     }
 
+    const deleteAlbum = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>, albumId: number) => {
+        e.preventDefault();
+
+        try {
+            const res = await axios.delete(
+                `${import.meta.env.VITE_APP_BACK_URL}/albums/${albumId}`,
+                {
+                    withCredentials: true,
+                }
+            )
+            if (Array.isArray(res.data)) {
+                displayAlert(res.data[0].msg, res.status)
+            } else {
+                displayAlert('Album deleted successfuly', res.status)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+
+        getMyAlbums()
+    }
+
+    const displayAlert = (msg: string, status: number) => {
+        setAlert({response: msg, status: status, visible: true})
+        setTimeout(() => {
+            setAlert({response: "", status: 0, visible: false})
+        }, 3000)
+    }
 
     useEffect(() => {
         getMyAlbums()
@@ -67,12 +96,18 @@ export const AlbumOfArtist = () => {
                             <div className={'pt-2 pl-2 flex flex-row items-center justify-between'}>
                                 <h3 className={'font-semibold text-l'}>{album.name}</h3>
                                 <div className={'relative flex'}>
-                                    <div className={'z-40 bg-amber-200'} onClick={e => showDeleteButton(e, album.id)}>
+                                    <div className={'z-40'} onClick={e => showDeleteButton(e, album.id)}>
                                         <BsThreeDotsVertical/>
                                     </div>
                                     {openDeleteOfAnAlbum === album.id &&
-                                        <div className='absolute text-center text-red-500 pt-5 bg-amber-500'>
-                                            <p className='bg-gray-100 p-1 rounded-lg w-16'>Delete !</p>
+                                        <div className='absolute text-center text-red-500 pt-5'>
+                                            <div className='bg-gray-100 p-1 rounded-lg w-16'
+                                                 onClick={e => {
+                                                     deleteAlbum(e, album.id)
+                                                 }}
+                                            >
+                                                <p>Delete !</p>
+                                            </div>
                                         </div>
                                     }
                                 </div>
@@ -83,5 +118,5 @@ export const AlbumOfArtist = () => {
             </div>
         </div>
     )
-
 }
+
