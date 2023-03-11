@@ -1,13 +1,11 @@
 import {responseRequest} from "../models";
 import {Icon} from "./shared";
 
-
 type Music = {
     src: string
     name: string
     listenings: number
 }
-
 
 type AlbumDetail = {
     id: number
@@ -63,5 +61,4 @@ export const SongList: React.FC<Props> = ({songs, setCurrentSong, setSongs}) => 
             </ul>
         </div>
     )
-
 }

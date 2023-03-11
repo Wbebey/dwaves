@@ -14,10 +14,11 @@ export const Download : React.FC<Props> = ({ setAlert }) => {
 
       <SwitchTab FirstValue={'Single'} SecondValue={'Album'} showForm={showForm} setShowForm={setShowForm}/>
 
-      { showForm ?
-        <SingleForm setAlert={setAlert} />
-        :
-        <AlbumForm setAlert={setAlert} />
+      {
+          showForm ?
+              <SingleForm setAlert={setAlert} />
+              :
+              <AlbumForm setAlert={setAlert} />
       }
     </div>
   )
