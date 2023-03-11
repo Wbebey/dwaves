@@ -19,8 +19,6 @@ interface Props {
 }
 
 export const PopularSongOfArtist: React.FC<Props> = ({setCurrentSong, setSongs}) => {
-
-
     const [mostPopularSong, setMostPopularSong] = useState<MostPopularSong[]>([])
 
     const getMostPopularSong = async () => {
@@ -40,7 +38,6 @@ export const PopularSongOfArtist: React.FC<Props> = ({setCurrentSong, setSongs})
     useEffect(() => {
         getMostPopularSong()
     }, [])
-
 
     function convertDateToYearUTC(dateStr: Date) {
         console.log(dateStr)
@@ -82,5 +79,4 @@ export const PopularSongOfArtist: React.FC<Props> = ({setCurrentSong, setSongs})
             </div>
         </div>
     )
-
 }
