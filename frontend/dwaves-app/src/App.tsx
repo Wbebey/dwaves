@@ -5,13 +5,13 @@ import { Player, Explorer, Album, Download, ModalLogin, Profile } from 'views'
 import { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Icon } from "components/shared";
-import { responseRequest, music, artist } from 'models'
+import { responseRequest, Music, AlbumDetail } from 'models'
 
 function App() {
   const [loader, setLoader] = useState(true)
-  const [songs, setSongs] = useState<artist>()
+  const [songs, setSongs] = useState<AlbumDetail>()
   const [isPlaying, setIsPlaying] = useState(false)
-  const [currentSong, setCurrentSong] = useState<music>()
+  const [currentSong, setCurrentSong] = useState<Music|null>()
   const [loginDisplay, setLoginDisplay] = useState(false)
   const [alert, setAlert] = useState<responseRequest>()
   // Temporary this value will be stored in the token
@@ -43,7 +43,7 @@ function App() {
 
     if (songs) {
       setCurrentSong({
-        ...currentSong,
+        ...currentSong!,
         progress: (ct / duration) * 100,
         length: duration,
       })
