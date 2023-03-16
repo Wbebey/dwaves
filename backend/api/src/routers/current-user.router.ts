@@ -3,6 +3,7 @@ import { Router } from 'express'
 import userController from '@controllers/user.controller'
 import { body, query } from 'express-validator'
 import userValidator from '@validators/user.validator'
+import { FileType } from '@@types/pinata.type'
 
 const currentUserRouter = Router()
 
@@ -20,6 +21,18 @@ currentUserRouter.get(
   '/albums',
   userValidator.validate,
   userController.getMyAlbums
+)
+currentUserRouter.get(
+  '/playlists',
+  userValidator.validate,
+  userController.getMyPlaylists
+)
+currentUserRouter.post(
+  '/playlists',
+  body('name').notEmpty().withMessage('Name is required'),
+  body().custom(userValidator.hasOneFileOptional(FileType.COVER)),
+  userValidator.validate,
+  userController.createPlaylist
 )
 currentUserRouter.put(
   '/addWallet',
