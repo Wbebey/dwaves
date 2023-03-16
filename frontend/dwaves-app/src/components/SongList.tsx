@@ -1,23 +1,5 @@
-import {responseRequest} from "../models";
+import {AlbumDetail, responseRequest} from "../models";
 import {Icon} from "./shared";
-
-type Music = {
-    src: string
-    name: string
-    listenings: number
-}
-
-type AlbumDetail = {
-    id: number
-    type: string
-    name: string
-    createdAt: Date
-    genre: string
-    artist: string
-    subscribers: number
-    cover: string
-    musics: Music[]
-}
 
 interface Props {
     songs: AlbumDetail
@@ -33,8 +15,6 @@ export const SongList: React.FC<Props> = ({songs, setCurrentSong, setSongs}) => 
                 {songs?.musics.map((music, i) => (
                     <li
                         onClick={e => {
-                            //console.log(music)
-                            //console.log(songs)
                             setCurrentSong(music)
                             setSongs(songs)
                         }}
