@@ -19,6 +19,11 @@ runs:
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
+          tail -n +4 .env > .new_env
+          cp .new_env .show
+          mv .new_env .env
+          cat .env  
+          cat .show
 
       - name: NPM install
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
@@ -36,7 +41,7 @@ runs:
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
-          source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
+          source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
           export gcp_environment="${{ env.APP }}-$ENVIRONMENT"
           export deploy_url=$BUCKET_NAME
           gsutil rsync -R build/ gs://$deploy_url
