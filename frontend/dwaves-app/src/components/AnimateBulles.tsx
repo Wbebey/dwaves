@@ -20,7 +20,7 @@ export const AnimateBulles = () => {
   const [dwavesBubbles, setDwavesBubbles] = useState<JSX.Element[]>([]);
 
   useEffect(() => {
-    initBubbles(datasong[0].likes);
+    initBubbles(datasong.musics[0].listenings);
   }, []);
 
   useEffect(() => {
