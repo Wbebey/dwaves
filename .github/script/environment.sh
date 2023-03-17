@@ -35,3 +35,17 @@ function doppler_setup() {
      --header 'accept: application/json' \
      --header "authorization: Bearer $DOPPLER_TOKEN" > .env
 }
+
+function export_build_date() {
+    echo "Setting build date"
+    get_environment_properties
+    export GITHUB_BUILD_DATE=$(date +"%Y-%m-%dT%H:%M:%SZ")
+    sed -i "s/${APP_BUILD_DATE}=.*/${APP_BUILD_DATE}=$GITHUB_BUILD_DATE/g" .env
+}
+
+function export_commit_url () {
+    echo "Setting commit url"
+    get_environment_properties
+    export GITHUB_COMMIT_URL="https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
+    sed -i -e "s/${APP_COMMIT_URL}=.*/${APP_COMMIT_URL}=$GITHUB_COMMIT_URL/g" .env
+}
