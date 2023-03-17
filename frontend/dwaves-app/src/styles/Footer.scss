@@ -1,0 +1,17 @@
+@import '../App.scss';
+
+.footer {
+    background-color: $col-accent-pos;
+    opacity: 1;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    border-radius: $mes-border-radius;
+    border-width: $mes-border-width;
+    }
+
+    .footer__item {
+    margin: 0;
+    }

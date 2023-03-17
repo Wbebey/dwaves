@@ -14,6 +14,7 @@ import { PopularSongOfArtist} from "components/PopularSongOfArtist";
 import { AlbumOfArtist } from "components/AlbumOfArtist";
 import { SwitchTab } from "components/SwitchTab";
 import { SongList } from "components/SongList";
+import { Footer } from "components/Footer";
 
 export {
   AnimateBulles,
@@ -31,5 +32,6 @@ export {
   PopularSongOfArtist,
   AlbumOfArtist,
   SwitchTab,
-  SongList
+  SongList,
+  Footer
 };
