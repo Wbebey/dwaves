@@ -68,9 +68,9 @@ export const Sidebar: React.FC<Props> = ({
           </Link>
         </li>
         <li>
-          <div>
-            <MusicFilter className="w-10 h-10" />
-          </div>
+          <Link to={'/playlist'}>
+            <MusicFilter className="w-10 h-10 mx-auto" />
+          </Link>
         </li>
         {connected ? (
           <li>
