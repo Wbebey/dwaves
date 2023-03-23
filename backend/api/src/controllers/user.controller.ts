@@ -8,8 +8,6 @@ import musicService from '@services/music.service'
 import { LimitRequestHandler } from '@@types/app.type'
 import albumService from '@services/album.service'
 import playlistService from '@services/playlist.service'
-import { ParamsDictionary } from 'express-serve-static-core'
-import { ParsedQs } from 'qs'
 import { UploadedFile } from 'express-fileupload'
 
 class UserController implements IUserController {
@@ -122,6 +120,15 @@ class UserController implements IUserController {
     const userUpdated = await userService.update({ id }, { password })
 
     res.json(userUpdated)
+  }
+
+  updateLikedMusics: RequestHandler = async (req, res) => {
+    const { id } = req.app.locals.user
+    const { musics } = req.body
+
+    const user = await userService.update({ id }, { myLikedMusics: musics })
+
+    res.json(user)
   }
 }
 
