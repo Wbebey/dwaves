@@ -68,5 +68,11 @@ currentUserRouter.put(
   userValidator.validate,
   userController.updatePassword
 )
+currentUserRouter.put(
+  '/updateLikedMusics',
+  body('musics').isArray().withMessage('Musics must be an array'),
+  userValidator.validate,
+  userController.updateLikedMusics
+)
 
 export default currentUserRouter
