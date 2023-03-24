@@ -18,11 +18,10 @@ function App() {
   const [currentSong, setCurrentSong] = useState<Music | undefined>()
   const [loginDisplay, setLoginDisplay] = useState(false)
   const [alert, setAlert] = useState<responseRequest>()
-  const envName =`${import.meta.env.VITE_NODE_ENV}`
-  const buildDate =`${import.meta.env.VITE_APP_BUILD_DATE}`
-  const commitUrl =`${import.meta.env.VITE_APP_COMMIT_URL}`
-  // Temporary this value will be stored in the token
-  const [connected, setConnected] = useState(false)
+  const [connected, setConnected] = useState(false) // Temporary this value will be stored in the token
+  const envName = import.meta.env.VITE_NODE_ENV
+  const buildDate = import.meta.env.VITE_APP_BUILD_DATE
+  const commitUrl = import.meta.env.VITE_APP_COMMIT_URL
 
   const audioElmt = useRef<HTMLAudioElement>(null) ?? someOtherData()
 
