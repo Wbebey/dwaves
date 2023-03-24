@@ -30,7 +30,13 @@ export const SongList: React.FC<Props> = ({
                             setCurrentSong(music)
                             setSongs(songs.musics)
                             setArtist(songs)
-                            PlayPause(audioElmt, isPlaying, setIsPlaying)
+                            if (isPlaying === true) {
+                                setTimeout(()=>{
+                                    PlayPause(audioElmt, false, setIsPlaying)
+                                },1000)
+                            } else {
+                                PlayPause(audioElmt, isPlaying, setIsPlaying)
+                            }
                         }}
                         key={i}
                         className="song-li cursor-pointer"
