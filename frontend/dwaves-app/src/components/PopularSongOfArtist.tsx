@@ -40,7 +40,6 @@ export const PopularSongOfArtist: React.FC<Props> = ({setCurrentSong, setSongs})
     }, [])
 
     function convertDateToYearUTC(dateStr: Date) {
-        console.log(dateStr)
         const date = new Date(dateStr);
         const year = date.getUTCFullYear();
         return year.toString();

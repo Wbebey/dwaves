@@ -4,24 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { SongList } from "./SongList";
-
-type Music = {
-  src: string
-  name: string
-  listenings: number
-}
-
-type AlbumDetail = {
-  id: number
-  type: string
-  name: string
-  createdAt: Date
-  genre: string
-  artist: string
-  subscribers: number
-  cover: string
-  musics: Music[]
-}
+import { AlbumDetail } from "models";
 
 interface Props {
   setCurrentSong: React.Dispatch<React.SetStateAction<any>>
@@ -29,6 +12,7 @@ interface Props {
   audioElmt: React.RefObject<HTMLAudioElement>;
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  setArtist : React.Dispatch<React.SetStateAction<AlbumDetail|undefined>>;
 }
 
 export const ContentAlbum: React.FC<Props> = ({
@@ -37,6 +21,7 @@ export const ContentAlbum: React.FC<Props> = ({
   audioElmt,
   isPlaying,
   setIsPlaying,
+  setArtist
 }) => {
   const { id } = useParams()
 
@@ -50,7 +35,6 @@ export const ContentAlbum: React.FC<Props> = ({
           withCredentials: true,
         }
       )
-      console.log(res.data)
       setAlbum(res.data)
     } catch (error) {
       console.log(error)
@@ -86,7 +70,9 @@ export const ContentAlbum: React.FC<Props> = ({
         setCurrentSong={setCurrentSong}
         audioElmt={audioElmt}
         isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying} />
+        setIsPlaying={setIsPlaying} 
+        setArtist={setArtist}
+      />
     </div>
   )
 }
