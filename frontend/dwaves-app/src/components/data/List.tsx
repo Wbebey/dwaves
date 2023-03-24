@@ -28,7 +28,6 @@ export const List = () => {
           withCredentials: true,
         }
       )
-      console.log(res.data)
       setAlbums(res.data)
     } catch (error) {
       console.log(error)
