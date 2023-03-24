@@ -14,11 +14,20 @@ runs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: NPM install
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
+        shell: bash
+        run: |-
+          npm install
+
       - name: Retrieve environment variables 🌎
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
+          cat .env 
+          head .env
+          tail .env
           tail -n +4 .env > .new_env && mv .new_env .env
 
       - name: Export build date 📅
@@ -33,19 +42,15 @@ runs:
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && export_commit_url
 
-
-      - name: NPM install
+      - name: Build 🏗
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
           ls -la
           cat .env
-          npm install
-
-      - name: Build 🏗
-        working-directory:  ${{ env.PROJECT_DIRECTORY }}
-        shell: bash
-        run: |-
+          cp .env .new_env
+          cat .new_env
+          head .new_env
           CI="false" npm run deploy-build
 
       - name: Deploy  🚀
