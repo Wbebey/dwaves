@@ -18,7 +18,6 @@ export const Register: React.FC<Props> = ({ setShowLogin, setAlert }) => {
   const { register, setValue, getValues, handleSubmit } = useForm<User>()
 
   const onSubmit = (data: any) => {
-    console.log({ data })
     axios
       .post(`${import.meta.env.VITE_APP_BACK_URL}/auth/register`, data)
       .then((res) => {
