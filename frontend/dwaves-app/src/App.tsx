@@ -9,9 +9,10 @@ import { responseRequest, Music, AlbumDetail } from 'models'
 
 function App() {
   const [loader, setLoader] = useState(true)
-  const [songs, setSongs] = useState<AlbumDetail>()
+  const [artist, setArtist] = useState<AlbumDetail|undefined>()
+  const [songs, setSongs] = useState<Music[]|undefined>()
   const [isPlaying, setIsPlaying] = useState(false)
-  const [currentSong, setCurrentSong] = useState<Music|null>()
+  const [currentSong, setCurrentSong] = useState<Music|undefined>()
   const [loginDisplay, setLoginDisplay] = useState(false)
   const [alert, setAlert] = useState<responseRequest>()
   // Temporary this value will be stored in the token
@@ -72,6 +73,7 @@ function App() {
           setCurrentSong={setCurrentSong}
           songs={songs}
           setSongs={setSongs}
+          artist={artist}
         />
         :
       <div id="contain-top-player">
@@ -103,7 +105,7 @@ function App() {
             renders the first one that matches the current URL. */}
               <Routes>
                 <Route path="/" element={<Explorer />} />
-                <Route path="/album/:id" element={<Album setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt} isPlaying={isPlaying} setIsPlaying={setIsPlaying} />} />
+                <Route path="/album/:id" element={<Album setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt} isPlaying={isPlaying} setIsPlaying={setIsPlaying} setArtist= {setArtist} />} />
                 <Route path="/player" element={<Player />} />
                 <Route path="/download" element={<Download setAlert={setAlert} />} />
                 <Route path="/profile" element={<Profile setCurrentSong={setCurrentSong} setSongs={setSongs} setAlert={setAlert} />} />

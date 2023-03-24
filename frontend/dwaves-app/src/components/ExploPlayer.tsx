@@ -1,17 +1,19 @@
 import "styles/Explorer.scss";
 import { Icon } from "components/shared";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { PlayPause } from "songs/listenMusic";
+import { AlbumDetail, Music } from "models";
 
 interface Props {
   audioElmt: React.RefObject<HTMLAudioElement>;
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
-  currentSong: any;
-  setCurrentSong: React.Dispatch<React.SetStateAction<any>>;
+  currentSong: Music;
+  setCurrentSong: React.Dispatch<React.SetStateAction<Music|undefined>>;
   songs: any;
-  setSongs: React.Dispatch<React.SetStateAction<any>>;
+  setSongs: React.Dispatch<React.SetStateAction<Music[]|undefined>>;
+  artist : AlbumDetail|undefined
 }
 
 export const ExploPlayer: React.FC<Props> = ({
@@ -22,10 +24,11 @@ export const ExploPlayer: React.FC<Props> = ({
   setCurrentSong,
   songs,
   setSongs,
+  artist
 }) => {
 
-  let index = songs.musics.findIndex(
-    (x: { Title: string }) => x.Title == currentSong.Title
+  let index = songs.findIndex(
+    (x: { name: string }) => x.name == currentSong.name
   );
 
   const clickRef = useRef<HTMLDivElement>(null);
@@ -40,38 +43,35 @@ export const ExploPlayer: React.FC<Props> = ({
 
   const handlePrevious = () => {
     if (index === 0) {
-      setCurrentSong(songs.musics[songs.musics.length - 1]);
-      index = songs.musics.length - 1;
+      setCurrentSong(songs[songs.length - 1]);
+      index = songs.length - 1;
     } else {
-      setCurrentSong(songs.musics[index - 1]);
+      setCurrentSong(songs[index - 1]);
       index = index - 1;
     }
     audioElmt.current!.currentTime = 0;
   };
 
   const handleNext = () => {
-    if (index === songs.musics.length - 1) {
-      setCurrentSong(songs.musics[0]);
+    if (index === songs.length - 1) {
+      setCurrentSong(songs[0]);
       index = 0;
     } else {
-      setCurrentSong(songs.musics[index + 1]);
+      console.log(songs[index + 1], index);
+      setCurrentSong(songs[index + 1]);
       index = index + 1;
     }
     audioElmt.current!.currentTime = 0;
   };
 
-  useEffect(() => {
-    console.log(songs)
-  }, [songs])
-
   return (
     <div id="contain-top-player">
       <div className="player-bar">
         {
-          songs &&
+          artist &&
           <div id="contain-left-bar" className="flex row nowrap">
-            <img src={songs.cover} alt={currentSong.name} />
-            <p>{songs.artist} - {currentSong.name}</p>
+            <img src={artist.cover} alt={currentSong.name} />
+            <p>{artist.artist} - {currentSong.name}</p>
           </div>
         }
         <div id="nav-widget-player" className="flex row nowrap">

@@ -34,7 +34,6 @@ export const Sidebar: React.FC<Props> = ({
       )
       .then((res) => {
         setConnected(false)
-        console.log(res)
       })
       .catch((err) => {
         console.log(err)

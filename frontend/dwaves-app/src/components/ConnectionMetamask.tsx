@@ -25,8 +25,6 @@ export const ConnectMetamask = () => {
 
     useEffect(() => {
         if (wallet) {
-            console.log('connected')
-            console.log(wallet)
             const data = { address: wallet[0] }
             RequestAdress(data)
         }
