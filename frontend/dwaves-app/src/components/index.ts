@@ -16,6 +16,7 @@ import { SwitchTab } from "components/SwitchTab";
 import { SongList } from "components/SongList";
 import { CreatePlaylist } from "components/CreatePlaylist";
 import { PlaylistsOfUser } from "./PlaylistsOfUser";
+import { ContentOfPlaylist } from "./ContentOfPlaylist";
 import { Footer } from "components/Footer";
 
 export {
@@ -37,5 +38,6 @@ export {
   SongList,
   CreatePlaylist,
   PlaylistsOfUser,
+  ContentOfPlaylist,
   Footer
 };
