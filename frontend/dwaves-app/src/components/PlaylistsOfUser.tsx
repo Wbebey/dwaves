@@ -47,7 +47,7 @@ export const PlaylistsOfUser: React.FC<Props> = ({setAlert}) => {
             if (Array.isArray(res.data)) {
                 displayAlert(res.data[0].msg, res.status)
             } else {
-                displayAlert('Playlist deleted successfuly', res.status)
+                displayAlert('Playlist deleted successfully', res.status)
             }
         } catch (error) {
             console.log(error)
@@ -74,7 +74,7 @@ export const PlaylistsOfUser: React.FC<Props> = ({setAlert}) => {
                             <div className={'pt-2 pl-2 flex flex-row items-center justify-between'}>
                                 <h3 className={'font-semibold text-l'}>{playlist.name}</h3>
                                 <div onClick={(e) => e.preventDefault()}
-                                     className="dropdown dropdown-hover bg-transparent">
+                                     className="dropdown bg-transparent">
                                     <div tabIndex={0}>
                                         <BsThreeDotsVertical/>
                                     </div>
