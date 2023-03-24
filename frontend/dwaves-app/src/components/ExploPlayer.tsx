@@ -2,6 +2,7 @@ import "styles/Explorer.scss";
 import { Icon } from "components/shared";
 
 import { useEffect, useRef } from "react";
+import { PlayPause } from "songs/listenMusic";
 
 interface Props {
   audioElmt: React.RefObject<HTMLAudioElement>;
@@ -22,10 +23,6 @@ export const ExploPlayer: React.FC<Props> = ({
   songs,
   setSongs,
 }) => {
-  const PlayPause = () => {
-    setIsPlaying(!isPlaying);
-    audioElmt.current!.play();
-  };
 
   let index = songs.musics.findIndex(
     (x: { Title: string }) => x.Title == currentSong.Title
@@ -81,9 +78,9 @@ export const ExploPlayer: React.FC<Props> = ({
           <Icon icon="random" />
           <Icon icon="previous" onClick={handlePrevious} />
           {isPlaying ? (
-            <Icon icon="pause" onClick={() => PlayPause()} />
+            <Icon icon="pause" onClick={() => PlayPause(audioElmt , isPlaying, setIsPlaying)} />
           ) : (
-            <Icon icon="play" onClick={() => PlayPause()} />
+            <Icon icon="play" onClick={() => PlayPause(audioElmt , isPlaying, setIsPlaying)} />
           )}
           <Icon icon="next" onClick={handleNext} />
           <Icon icon="loop" />
