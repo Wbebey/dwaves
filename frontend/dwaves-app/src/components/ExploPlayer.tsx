@@ -3,7 +3,7 @@ import { Icon } from "components/shared";
 import styles from "styles/global/styles.module.scss";
 
 import { useRef } from "react";
-import { PlayPause } from "songs/listenMusic";
+import { PlayPause, PlayRandomSong } from "songs/listenMusic";
 import { AlbumDetail, Music } from "models";
 
 interface Props {
@@ -17,6 +17,8 @@ interface Props {
   artist: AlbumDetail | undefined
   setRepeat: React.Dispatch<React.SetStateAction<boolean>>;
   repeat: boolean;
+  setRandom: React.Dispatch<React.SetStateAction<boolean>>;
+  random: boolean;
 }
 
 export const ExploPlayer: React.FC<Props> = ({
@@ -29,7 +31,9 @@ export const ExploPlayer: React.FC<Props> = ({
   setSongs,
   artist,
   setRepeat,
-  repeat
+  repeat,
+  setRandom,
+  random,
 }) => {
 
   let index = songs.findIndex(
@@ -61,12 +65,16 @@ export const ExploPlayer: React.FC<Props> = ({
   };
 
   const handleNext = () => {
-    if (index === songs.length - 1) {
-      setCurrentSong(songs[0]);
-      index = 0;
+    if (random) {
+      setCurrentSong(PlayRandomSong(songs));
     } else {
-      setCurrentSong(songs[index + 1]);
-      index = index + 1;
+      if (index === songs.length - 1) {
+        setCurrentSong(songs[0]);
+        index = 0;
+      } else {
+        setCurrentSong(songs[index + 1]);
+        index = index + 1;
+      }
     }
     audioElmt.current!.currentTime = 0;
     setTimeout(() => {
@@ -85,7 +93,13 @@ export const ExploPlayer: React.FC<Props> = ({
           </div>
         }
         <div id="nav-widget-player" className="flex row nowrap">
-          <Icon icon="random" />
+          <Icon
+            icon="random"
+            color={random ? `blue` : '#191a24'}
+            onClick={() => {
+              setRandom(true)
+            }}
+          />
           <Icon icon="previous" onClick={handlePrevious} />
           {isPlaying ? (
             <Icon icon="pause" onClick={() => PlayPause(audioElmt, isPlaying, setIsPlaying)} />
