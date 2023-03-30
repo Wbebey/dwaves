@@ -17,6 +17,8 @@ interface Props {
     isPlaylistSong?: boolean
     deleteMusicToThePlaylist?: any
     setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+    likedMusics: string[];
+    likeOrDislikeMusic: (music: string)=> void
 }
 
 
@@ -30,16 +32,12 @@ export const SongList: React.FC<Props> = ({
                                               setArtist,
                                               isPlaylistSong,
                                               deleteMusicToThePlaylist,
-                                              setAlert
+                                              setAlert,
+                                              likedMusics,
+                                              likeOrDislikeMusic
                                           }) => {
 
     const [allPlaylists, setAllPlaylists] = useState<Playlists>([])
-    const [likedMusics, setLikedMusics] = useState<string[]>([])
-
-    useEffect(() => {
-        getAllPlaylistsOfTheUser();
-
-    }, [])
 
     const getAllPlaylistsOfTheUser = async () => {
         try {
@@ -99,23 +97,8 @@ export const SongList: React.FC<Props> = ({
         }, 3000)
     }
 
-    const getLikedMusics = async () => {
-        try {
-            const res = await axios.get(
-                `${import.meta.env.VITE_APP_BACK_URL}/users/me`,
-                {
-                    withCredentials: true,
-                }
-            )
-            setLikedMusics(res.data.myLikedMusics)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     useEffect(() => {
         getAllPlaylistsOfTheUser();
-        getLikedMusics();
     }, [])
 
 
@@ -127,36 +110,7 @@ export const SongList: React.FC<Props> = ({
 
     const isLikedMusics = (music: string) => {
         const musicCID = foundCidMusic(music)
-
         return likedMusics.includes(musicCID);
-    }
-
-    const updateLikedMusics = async (musics: string[]) => {
-        try {
-            const data = {musics: musics}
-            const res = await axios.put(`${import.meta.env.VITE_APP_BACK_URL}/users/me/updateLikedMusics`, data, {
-                    withCredentials: true,
-                }
-            )
-            // console.log(res.status)
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
-    const likeOrDislikeMusic = (music: string) => {
-        const musicCID = foundCidMusic(music)
-        const listOfLickedMusics = [...likedMusics]
-
-        if (likedMusics.includes(musicCID)) {
-            const updatedLikedMusics = listOfLickedMusics.filter(element => element !== musicCID);
-            setLikedMusics(updatedLikedMusics)
-            updateLikedMusics(updatedLikedMusics)
-        } else {
-            listOfLickedMusics.push(musicCID)
-            setLikedMusics(listOfLickedMusics)
-            updateLikedMusics(listOfLickedMusics)
-        }
     }
 
     return (
