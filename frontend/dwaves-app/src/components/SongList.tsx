@@ -30,7 +30,7 @@ export const SongList: React.FC<Props> = ({
                             setCurrentSong(music)
                             setSongs(songs.musics)
                             setArtist(songs)
-                            if (isPlaying === true) {
+                            if (isPlaying) {
                                 setTimeout(()=>{
                                     PlayPause(audioElmt, false, setIsPlaying)
                                 },1000)
