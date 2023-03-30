@@ -30,7 +30,8 @@ export const PlayerWrapper: React.FC<Props> = ({
 }) => {
   return (
     <div className="player-explorer-wrapper">
-      <Canvas camera={{position: [0.0, 0.0, 0.1], zoom: 2.0}}>
+      {/* Because we love magic numbers */}
+      <Canvas camera={{position: [0.0, 0.0, 0.1], zoom: 1.3825}}>
         <PlayerShader planeSubdivisions={planeSubdivisions}/>
         <ambientLight intensity={1.0} />
       </Canvas>
