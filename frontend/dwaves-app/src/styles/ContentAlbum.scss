@@ -43,8 +43,8 @@
         -ms-overflow-style: none;
         overflow: -moz-scrollbars-none;
         .song-li:hover{
-            background: $col-main-dark;
-            color: $col-main-light;
+            //background: $col-main-dark;
+            //color: $col-main-light;
         }
         .song-li{
             @extend .flex-row-nowrap;
