@@ -15,6 +15,7 @@ interface Props {
   setSongs: React.Dispatch<React.SetStateAction<any>>;
   // Shader properties
   planeSubdivisions: number;
+  playerStatus: "active" | "paused" | "inactive";
 }
 
 export const PlayerWrapper: React.FC<Props> = ({
@@ -27,12 +28,13 @@ export const PlayerWrapper: React.FC<Props> = ({
   setSongs,
   // Shader properties
   planeSubdivisions,
+  playerStatus,
 }) => {
   return (
     <div className="player-explorer-wrapper">
       {/* Because we love magic numbers */}
       <Canvas camera={{position: [0.0, 0.0, 0.1], zoom: 1.3825}}>
-        <PlayerShader planeSubdivisions={planeSubdivisions}/>
+        <PlayerShader planeSubdivisions={planeSubdivisions} playerStatus={playerStatus}/>
         <ambientLight intensity={1.0} />
       </Canvas>
     </div>
