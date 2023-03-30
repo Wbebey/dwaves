@@ -20,9 +20,11 @@ export interface IUserController extends IController {
   getMyPopularMusics: LimitRequestHandler
   getMyAlbums: RequestHandler
   getMyPlaylists: RequestHandler
+  getMyLikedMusics: RequestHandler
   createPlaylist: RequestHandler
   updateInfo: RequestHandler
   updatePassword: RequestHandler
+  updateLikedMusics: RequestHandler
 }
 
 export interface IAlbumController extends IController {

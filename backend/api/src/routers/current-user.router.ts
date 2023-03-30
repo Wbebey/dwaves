@@ -17,16 +17,9 @@ currentUserRouter.get(
   userValidator.validate,
   userController.getMyPopularMusics
 )
-currentUserRouter.get(
-  '/albums',
-  userValidator.validate,
-  userController.getMyAlbums
-)
-currentUserRouter.get(
-  '/playlists',
-  userValidator.validate,
-  userController.getMyPlaylists
-)
+currentUserRouter.get('/albums', userController.getMyAlbums)
+currentUserRouter.get('/playlists', userController.getMyPlaylists)
+currentUserRouter.get('/likedMusics', userController.getMyLikedMusics)
 currentUserRouter.post(
   '/playlists',
   body('name').notEmpty().withMessage('Name is required'),
