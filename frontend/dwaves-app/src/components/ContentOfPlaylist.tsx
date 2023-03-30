@@ -4,15 +4,27 @@ import {Link, useParams} from 'react-router-dom'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import {SongList} from "./SongList";
-import {responseRequest} from "../models";
+import {AlbumDetail, responseRequest} from "../models";
 
 interface Props {
     setCurrentSong: React.Dispatch<React.SetStateAction<any>>
     setSongs: React.Dispatch<React.SetStateAction<any>>
+    audioElmt: React.RefObject<HTMLAudioElement>;
+    isPlaying: boolean;
+    setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+    setArtist : React.Dispatch<React.SetStateAction<AlbumDetail|undefined>>;
     setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
 }
 
-export const ContentOfPlaylist: React.FC<Props> = ({setCurrentSong, setSongs, setAlert}) => {
+export const ContentOfPlaylist: React.FC<Props> = ({
+                                                       setCurrentSong,
+                                                       setSongs,
+                                                       audioElmt,
+                                                       isPlaying,
+                                                       setIsPlaying,
+                                                       setArtist,
+                                                       setAlert
+                                                   }) => {
     const {id} = useParams()
 
     const [playlist, setPlaylist] = useState<any>()
@@ -39,8 +51,6 @@ export const ContentOfPlaylist: React.FC<Props> = ({setCurrentSong, setSongs, se
             console.log(error)
         }
     }
-
-
 
 
     const deleteMusicToThePlaylist = async (musicSrc: string) => {
@@ -121,8 +131,17 @@ export const ContentOfPlaylist: React.FC<Props> = ({setCurrentSong, setSongs, se
                     </div>
                 </div>
             </header>
-            <SongList songs={playlist} setSongs={setSongs} setCurrentSong={setCurrentSong} setAlert={setAlert}
-                      deleteMusicToThePlaylist={deleteMusicToThePlaylist} isPlaylistSong={true}/>
+            <SongList songs={playlist}
+                      setSongs={setSongs}
+                      setCurrentSong={setCurrentSong}
+                      audioElmt={audioElmt}
+                      isPlaying={isPlaying}
+                      setIsPlaying={setIsPlaying}
+                      setArtist={setArtist}
+                      deleteMusicToThePlaylist={deleteMusicToThePlaylist}
+                      isPlaylistSong={true}
+                      setAlert={setAlert}
+            />
         </div>
     )
 }
