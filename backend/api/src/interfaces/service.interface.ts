@@ -4,6 +4,7 @@ import {
   MusicFilter,
   MusicMetadata,
   ViewMusic,
+  ViewMusicDetail,
 } from '@@types/pinata.type'
 import { TokenType } from '@@types/token.type'
 import { UserAddressAndMonthlyListenings, ViewUser } from '@@types/user.type'
@@ -83,7 +84,8 @@ export interface IMusicService extends IService {
   getPopularMusics: (
     musicFilter: MusicFilter,
     limit?: number
-  ) => Promise<ViewMusic[]>
+  ) => Promise<ViewMusicDetail[]>
+  toViewMusic: (music: ViewMusic) => Promise<ViewMusicDetail>
 }
 
 export interface IPlaylistService extends IService {
