@@ -22,7 +22,6 @@ interface Props {
 }
 
 export const AlbumOfArtist: React.FC<Props> = ({setAlert}) => {
-    const [openDeleteOfAnAlbum, setOpenDeleteOfAnAlbum] = useState<number>(0)
     const [albums, setAlbums] = useState<Album[]>([])
 
     const getMyAlbums = async () => {
@@ -39,19 +38,7 @@ export const AlbumOfArtist: React.FC<Props> = ({setAlert}) => {
         }
     }
 
-    const showDeleteButton = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, albumId: number) => {
-        e.preventDefault();
-
-        if (openDeleteOfAnAlbum === 0) {
-            setOpenDeleteOfAnAlbum(albumId)
-        } else {
-            setOpenDeleteOfAnAlbum(0)
-        }
-    }
-
-    const deleteAlbum = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>, albumId: number) => {
-        e.preventDefault();
-
+    const deleteAlbum = async (albumId: number) => {
         try {
             const res = await axios.delete(
                 `${import.meta.env.VITE_APP_BACK_URL}/albums/${albumId}`,
@@ -87,32 +74,40 @@ export const AlbumOfArtist: React.FC<Props> = ({setAlert}) => {
             <h1 className={'text-4xl pl-[5px] font-bold mb-5'}>My Albums</h1>
             <div className={'flex flex-row mb-11'}>
                 {albums.map((album) => (
-                    <div className="w-52 hover:bg-teal-300 p-4">
+                    <div key={album.id} className="w-52 hover:bg-teal-300 p-4">
                         <Link
                             key={album.id}
                             to={`/album/${album.id}`}
                         >
                             <img src={album.cover} alt=""/>
-                            <div className={'pt-2 pl-2 flex flex-row items-center justify-between'}>
-                                <h3 className={'font-semibold text-l'}>{album.name}</h3>
-                                <div className={'relative flex'}>
-                                    <div className={'z-40'} onClick={e => showDeleteButton(e, album.id)}>
-                                        <BsThreeDotsVertical/>
-                                    </div>
-                                    {openDeleteOfAnAlbum === album.id &&
-                                        <div className='absolute text-center text-red-500 pt-5'>
-                                            <div className='bg-gray-100 p-1 rounded-lg w-16'
-                                                 onClick={e => {
-                                                     deleteAlbum(e, album.id)
-                                                 }}
-                                            >
-                                                <p>Delete !</p>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
                         </Link>
+                        <div className={'pt-2 pl-2 flex flex-row items-center justify-between'}>
+                            <h3 className={'font-semibold text-l'}>{album.name}</h3>
+                            <div className={'relative flex dropdown dropdown-end'}>
+                                <div tabIndex={0}>
+                                    <BsThreeDotsVertical/>
+                                </div>
+                                <ul tabIndex={0}
+                                    className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-28 hover:bg-white">
+                                    <button className="hover:bg-white self-center"
+                                            onClick={() => deleteAlbum(album.id)}>
+                                        Delete !
+                                    </button>
+                                </ul>
+                                {/*{openDeleteOfAnAlbum === album.id &&*/}
+                                {/*    <div className='absolute text-center text-red-500 pt-5'>*/}
+                                {/*        <div className='bg-gray-100 p-1 rounded-lg w-16'*/}
+                                {/*             onClick={e => {*/}
+                                {/*                 deleteAlbum(e, album.id)*/}
+                                {/*             }}*/}
+                                {/*        >*/}
+                                {/*            <p>Delete !</p>*/}
+                                {/*        </div>*/}
+                                {/*    </div>*/}
+                                {/*}*/}
+                            </div>
+                        </div>
+
                     </div>
                 ))}
             </div>

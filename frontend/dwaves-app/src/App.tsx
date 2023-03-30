@@ -129,7 +129,7 @@ function App() {
             renders the first one that matches the current URL. */}
               <Routes>
                 <Route path="/" element={<Explorer />} />
-                <Route path="/album/:id" element={<Album setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt} isPlaying={isPlaying} setIsPlaying={setIsPlaying} setArtist={setArtist} />} />
+                <Route path="/album/:id" element={<Album setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt} isPlaying={isPlaying} setIsPlaying={setIsPlaying} setArtist={setArtist} setAlert={setAlert} />} />
                 <Route path="/playlist/:id" element={<Playlist setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt} isPlaying={isPlaying} setIsPlaying={setIsPlaying} setArtist={setArtist} setAlert={setAlert} />} />
                 <Route path="/player" element={<Player />} />
                 <Route path="/download" element={<Download setAlert={setAlert} />} />
