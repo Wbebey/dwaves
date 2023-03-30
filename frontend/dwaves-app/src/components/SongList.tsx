@@ -1,7 +1,7 @@
 import {PlayPause} from "songs/listenMusic";
 import {AlbumDetail, responseRequest, Playlists} from "../models";
 import {Icon} from "./shared";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {IoAdd} from "react-icons/all";
 import {BsThreeDotsVertical} from "react-icons/bs";
@@ -16,7 +16,7 @@ interface Props {
     setArtist: React.Dispatch<React.SetStateAction<AlbumDetail | undefined>>
     isPlaylistSong?: boolean
     deleteMusicToThePlaylist?: any
-    setAlert?: React.Dispatch<React.SetStateAction<responseRequest | undefined>>;
+    setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
 }
 
 
@@ -92,6 +92,13 @@ export const SongList: React.FC<Props> = ({
         }
     }
 
+    const displayAlert = (msg: string, status: number) => {
+        setAlert({response: msg, status: status, visible: true})
+        setTimeout(() => {
+            setAlert({response: "", status: 0, visible: false})
+        }, 3000)
+    }
+
     const getLikedMusics = async () => {
         try {
             const res = await axios.get(
@@ -111,12 +118,7 @@ export const SongList: React.FC<Props> = ({
         getLikedMusics();
     }, [])
 
-    const displayAlert = (msg: string, status: number) => {
-        setAlert!({response: msg, status: status, visible: true})
-        setTimeout(() => {
-            setAlert!({response: "", status: 0, visible: false})
-        }, 3000)
-    }
+
 
     const foundCidMusic = (musicUrl: string) => {
         const musicCIDArray = musicUrl.split("/")
@@ -209,13 +211,15 @@ export const SongList: React.FC<Props> = ({
                                                 <IoAdd/>
                                             </div>
                                             <ul tabIndex={0}
-                                                className="dropdown-content p-2 shadow bg-base-100 rounded-box w-52 hover:bg-white items-center">
+                                                className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 hover:bg-white items-center">
                                                 {allPlaylists.map((thePlaylist, i) => (
-                                                    <button key={i} className="hover:bg-white self-center"
-                                                            onClick={() => addSongToThePlaylist(thePlaylist.id, music.src!)}
-                                                    >
-                                                        {thePlaylist.name}
-                                                    </button>
+                                                    <li key={i}>
+                                                        <button className="hover:bg-white self-center"
+                                                                onClick={() => addSongToThePlaylist(thePlaylist.id, music.src!)}
+                                                        >
+                                                            {thePlaylist.name}
+                                                        </button>
+                                                    </li>
                                                 ))}
                                             </ul>
                                         </div>

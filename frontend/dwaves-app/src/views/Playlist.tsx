@@ -9,7 +9,7 @@ interface Props {
     audioElmt: React.RefObject<HTMLAudioElement>
     isPlaying: boolean
     setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
-    setArtist: React.Dispatch<React.SetStateAction<AlbumDetail | undefined>>;
+    setArtist: React.Dispatch<React.SetStateAction<AlbumDetail | undefined>>
     setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
 }
 
@@ -27,5 +27,7 @@ export const Playlist: React.FC<Props> = ({
                               audioElmt={audioElmt}
                               isPlaying={isPlaying}
                               setIsPlaying={setIsPlaying}
-                              setArtist={setArtist} setAlert={setAlert}/>;
+                              setArtist={setArtist}
+                              setAlert={setAlert}
+    />;
 };
