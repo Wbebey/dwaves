@@ -11,6 +11,8 @@ interface Props {
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
   setArtist : React.Dispatch<React.SetStateAction<AlbumDetail|undefined>>
   setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+  likedMusics: string[];
+  likeOrDislikeMusic: (music: string)=> void
 }
 
 export const Album: React.FC<Props> = ({
@@ -20,7 +22,9 @@ export const Album: React.FC<Props> = ({
   isPlaying,
   setIsPlaying,
   setArtist,
-  setAlert
+  setAlert,
+  likedMusics,
+  likeOrDislikeMusic
 }) => {
   return <ContentAlbum
     setCurrentSong={setCurrentSong}
@@ -30,6 +34,8 @@ export const Album: React.FC<Props> = ({
     setIsPlaying={setIsPlaying}
     setArtist={setArtist}
     setAlert={setAlert}
+    likedMusics={likedMusics}
+    likeOrDislikeMusic={likeOrDislikeMusic}
 
   />;
 };
