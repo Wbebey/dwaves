@@ -38,7 +38,9 @@ export const CreatePlaylist: React.FC<Props> = ({setAlert}) => {
                     withCredentials: true,
                 }
             )
-
+            setPlaylistName('')
+            setImage([])
+            setImageURL('')
             if (Array.isArray(res.data)) {
                 displayAlert(res.data[0].msg, res.status)
             } else {

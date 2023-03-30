@@ -29,3 +29,8 @@ export type AlbumDetail = {
     cover: string
     musics: Test[]
 }
+
+export type Playlists = {
+    id: number
+    name: string
+}[]
