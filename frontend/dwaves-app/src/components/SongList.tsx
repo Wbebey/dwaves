@@ -24,6 +24,7 @@ export const SongList: React.FC<Props> = ({
 }) => {
 
     const [allPlaylists, setAllPlaylists] = useState<Playlists>([])
+    const [likedMusics, setLikedMusics] = useState<string[]>([])
 
     useEffect(() => {
         getAllPlaylistsOfTheUser();
@@ -49,7 +50,6 @@ export const SongList: React.FC<Props> = ({
                     withCredentials: true,
                 }
             )
-
             res.data.musics.forEach((music: any) => {
                 const musicUrl = music.src.split('/')
                 musicsCid.push(musicUrl[musicUrl.length - 1])
@@ -82,12 +82,71 @@ export const SongList: React.FC<Props> = ({
         }
     }
 
+    const getLikedMusics = async () => {
+        try {
+            const res = await axios.get(
+                `${import.meta.env.VITE_APP_BACK_URL}/users/me`,
+                {
+                    withCredentials: true,
+                }
+            )
+            setLikedMusics(res.data.myLikedMusics)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getAllPlaylistsOfTheUser();
+        getLikedMusics();
+    }, [])
+
     const displayAlert = (msg: string, status: number) => {
         setAlert({response: msg, status: status, visible: true})
         setTimeout(() => {
             setAlert({response: "", status: 0, visible: false})
         }, 3000)
     }
+
+    const foundCidMusic = (musicUrl: string) => {
+        const musicCIDArray = musicUrl.split("/")
+        return musicCIDArray[musicCIDArray.length -1]
+    }
+
+    const isLikedMusics = (music: string) => {
+        const musicCID = foundCidMusic(music)
+
+        return likedMusics.includes(musicCID);
+    }
+
+    const updateLikedMusics = async (musics: string[]) => {
+        try {
+            const data = {musics: musics}
+            const res = await axios.put(`${import.meta.env.VITE_APP_BACK_URL}/users/me/updateLikedMusics`, data, {
+                    withCredentials: true,
+                }
+            )
+            // console.log(res.status)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const likeOrDislikeMusic = (music: string) => {
+        const musicCID = foundCidMusic(music)
+        const listOfLickedMusics = [...likedMusics]
+
+        if (likedMusics.includes(musicCID)) {
+            const updatedLikedMusics = listOfLickedMusics.filter(element => element !== musicCID);
+            setLikedMusics(updatedLikedMusics)
+            updateLikedMusics(updatedLikedMusics)
+        } else {
+            listOfLickedMusics.push(musicCID)
+            setLikedMusics(listOfLickedMusics)
+            updateLikedMusics(listOfLickedMusics)
+        }
+    }
+
     return (
         <div className='container-list'>
             <ul className="list-song">
