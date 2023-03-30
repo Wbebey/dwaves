@@ -134,7 +134,7 @@ function App() {
       {currentSong && (
         <audio src={currentSong.src} ref={audioElmt} onTimeUpdate={onPlaying} />
       )}
-      {currentSong ? (
+      {/* {currentSong ? ( */}
           <PlayerWrapper
             audioElmt={audioElmt}
             isPlaying={isPlaying}
@@ -152,20 +152,19 @@ function App() {
             likedMusics={likedMusics}
             likeOrDislikeMusic={likeOrDislikeMusic}
             planeSubdivisions={6}
+          playerStatus={currentSong ? "active" : "inactive"}
         />
-        ) : (
-            <div id="contain-top-player">
-              <div id="player-bar" className="flex justify-center w-full">
-                <div id="nav-widget-player" className="flex row nowrap">
-                  <Icon icon="random" />
-                  <Icon icon="previous" />
-                  <Icon icon="play" />
-                  <Icon icon="next" />
-                  <Icon icon="loop" />
-                </div>
-              </div>
-            </div>
-      )}
+         {/* <div id="contain-top-player">
+           <div id="player-bar" className="flex justify-center w-full">
+             <div id="nav-widget-player" className="flex row nowrap">
+               <Icon icon="random" />
+               <Icon icon="previous" />
+               <Icon icon="play" />
+               <Icon icon="next" />
+               <Icon icon="loop" />
+             </div>
+           </div>
+         </div> */}
       {alert?.visible && <Alert alert={alert} />}
       <section style={{ color: "black", height: "75%" }}>
         <section className="container-app">
