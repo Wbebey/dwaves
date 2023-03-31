@@ -14,6 +14,7 @@
       height: 192px;
       width: 100%;
       top: 0;
+      padding: 0 24px;
 
       background: transparent;
 
@@ -27,10 +28,24 @@
 
           .widget {
             &-left {
+              display: flex;
+              align-items: center;
+              justify-content: start;
               width: 33%;
 
-              > * {
-                margin: 0px 8px;
+              &-content {
+                display: flex;
+                align-items: center;
+                justify-content: start;
+
+                > * {
+                  margin: 0px 8px;
+                }
+
+                img {
+                  width: 128px;
+                  height: 128px;
+                }
               }
             }
 
@@ -48,10 +63,24 @@
             }
 
             &-right {
+              display: flex;
+              align-items: center;
+              justify-content: end;
               width: 33%;
 
-              > * {
-                margin: 0px 8px;
+              &-content {
+                display: flex;
+                align-items: center;
+                justify-content: end;
+
+                > * {
+                  margin: 0px 8px;
+                }
+
+                svg {
+                  width: 32px;
+                  height: 32px;
+                }
               }
             }
           }
