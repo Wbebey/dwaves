@@ -5,14 +5,14 @@ import { Icon } from 'components/shared'
 import { AlbumDetail, Music } from 'models'
 import { playPause } from 'songs/listenMusic'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 
 interface Props {
   audioElmt: React.RefObject<HTMLAudioElement>
   isPlaying: boolean
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
-  currentSong: Music
+  currentSong: Music | undefined
   setCurrentSong: React.Dispatch<React.SetStateAction<Music | undefined>>
   songs: any
   setSongs: React.Dispatch<React.SetStateAction<Music[] | undefined>>
@@ -47,6 +47,9 @@ export const PlayerWrapper: React.FC<Props> = ({
   // Shader properties
   planeSubdivisions,
 }) => {
+  const [playerStatus, setPlayerStatus] = useState<
+    'playing' | 'paused' | 'inactive'
+  >('inactive')
   const clickRef = useRef<HTMLDivElement>(null)
 
   const foundCidMusic = (musicUrl: string) => {
@@ -59,14 +62,13 @@ export const PlayerWrapper: React.FC<Props> = ({
     return likedMusics.includes(musicCID)
   }
 
-  let songIndex = songs?.musics.findIndex(
-    (x: { name: string }) => x.name == currentSong.name,
+  let songIndex = songs?.musics?.findIndex(
+    (x: { name: string }) => x.name == currentSong?.name,
   )
-  let playerStatus: 'playing' | 'paused' | 'inactive' = 'inactive'
 
   useEffect(() => {
-    if (!currentSong) playerStatus = 'inactive'
-    else playerStatus = isPlaying ? 'playing' : 'paused'
+    if (!currentSong) setPlayerStatus('inactive')
+    else setPlayerStatus(isPlaying ? 'playing' : 'paused')
   }, [currentSong, isPlaying])
 
   const updateProgressWidth = (e: any) => {
@@ -123,14 +125,14 @@ export const PlayerWrapper: React.FC<Props> = ({
         />
         <ambientLight intensity={1.0} />
       </Canvas>
-      <div className="player-explorer-content">
+      <div className="player-explorer-content ds-text-body-l">
         <div className="player-bar">
           <div className="widget-left">
             {artist && (
-              <div className="flex row nowrap">
-                <img src={artist.cover} alt={currentSong.name} />
+              <div className="widget-left-content">
+                <img src={artist.cover} alt={currentSong?.name} />
                 <p>
-                  {artist.artist} - {currentSong.name}
+                  {artist.artist} - {currentSong?.name}
                 </p>
               </div>
             )}
@@ -168,21 +170,18 @@ export const PlayerWrapper: React.FC<Props> = ({
 
           <div className="widget-right">
             {songs && (
-              <div className="flex row nowrap">
+              <div className="widget-right-content">
                 <p>01:21 / 02:03</p>
-                <button
-                  className="pb-6"
-                  onClick={() => likeOrDislikeMusic(currentSong.src!)}
-                >
+                <button onClick={() => likeOrDislikeMusic(currentSong?.src!)}>
                   <Icon
                     icon="like"
-                    color={isLikedMusics(currentSong.src!) ? 'red' : 'black'}
+                    color={isLikedMusics(currentSong?.src!) ? 'red' : 'black'}
                     variant={
-                      isLikedMusics(currentSong.src!) ? 'Bold' : 'Linear'
+                      isLikedMusics(currentSong?.src!) ? 'Bold' : 'Linear'
                     }
                   />
                 </button>
-                <div className="pt-1.5 pr-5">
+                <div>
                   <Icon icon="close" />
                 </div>
               </div>
