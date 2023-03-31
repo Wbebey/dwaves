@@ -18,7 +18,7 @@ interface Props {
     deleteMusicToThePlaylist?: any
     setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
     likedMusics: string[];
-    likeOrDislikeMusic: (music: string)=> void
+    likeOrDislikeMusic: (music: string) => void
 }
 
 
@@ -100,7 +100,6 @@ export const SongList: React.FC<Props> = ({
     useEffect(() => {
         getAllPlaylistsOfTheUser();
     }, [])
-
 
 
     const foundCidMusic = (musicUrl: string) => {
