@@ -1,5 +1,5 @@
 import "styles/Explorer.scss";
-import {AlbumForm, PopularSongOfArtist, AlbumOfArtist, SingleForm, SwitchTab} from "../components";
+import {AlbumForm, ArtistPopularSong, AlbumOfArtist, SingleForm, SwitchTab} from "../components";
 import React, {useEffect, useRef, useState} from "react";
 import {responseRequest} from "../models";
 
@@ -20,7 +20,7 @@ export const Profile: React.FC<Props> = ({setCurrentSong, setSongs, setAlert}) =
                 <div className={'h-[97%] pt-[30px] pl-[20px]'}>
                     <div className={`w-full h-[90%] overflow-scroll`}>
                         <AlbumOfArtist setAlert={setAlert}/>
-                        <PopularSongOfArtist setCurrentSong={setCurrentSong} setSongs={setSongs}/>
+                        <ArtistPopularSong setCurrentSong={setCurrentSong} setSongs={setSongs}/>
                     </div>
                 </div>
                 :
