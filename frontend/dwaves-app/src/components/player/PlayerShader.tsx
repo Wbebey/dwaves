@@ -39,14 +39,16 @@ export const PlayerShader: React.FC<Props> = ({
   useFrame((state) => {
     let amplitude = AMPLITUDES[playerStatus]
     amplitude = THREE.MathUtils.lerp(
+      // @ts-ignore
       meshRef.current.material.uniforms.uAmplitude.value,
       amplitude,
       0.05,
     )
-
-    // Please, please, please ignore the TS warning here
+    
+    // @ts-ignore
     meshRef.current.material.uniforms.uTime.value =
       state.clock.elapsedTime / 4.0
+    // @ts-ignore
     meshRef.current.material.uniforms.uAmplitude.value =
       amplitude
   })
