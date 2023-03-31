@@ -80,6 +80,8 @@ export const PlayerWrapper: React.FC<Props> = ({
   }
 
   const switchToPrevious = () => {
+    if (!songs) return
+
     if (songIndex === 0) {
       setCurrentSong(songs.musics[songs.musics.length - 1])
       songIndex = songs.musics.length - 1
@@ -95,6 +97,8 @@ export const PlayerWrapper: React.FC<Props> = ({
   }
 
   const switchToNext = () => {
+    if (!songs) return
+
     if (songIndex === songs.musics.length - 1) {
       setCurrentSong(songs.musics[0])
       songIndex = 0
