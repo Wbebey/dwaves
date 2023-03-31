@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Icon } from "components/shared";
 import { responseRequest, Music, AlbumDetail } from 'models'
 import { PlayPause, PlayRandomSong } from 'songs/listenMusic'
-import axios from "axios";
+import axios from "axios"
 
 function App() {
   const [loader, setLoader] = useState(true)
@@ -187,7 +187,7 @@ function App() {
                 />
                 <Route path="/playlist/:id" element={<Playlist setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt}
                                                                isPlaying={isPlaying} setIsPlaying={setIsPlaying} setArtist={setArtist}
-                                                               setAlert={setAlert} />}
+                                                               setAlert={setAlert} likedMusics={likedMusics} likeOrDislikeMusic={likeOrDislikeMusic} />}
                 />
                 <Route path="/player" element={<Player />} />
                 <Route path="/download" element={<Download setAlert={setAlert} />} />
