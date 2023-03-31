@@ -11,56 +11,67 @@
       align-items: stretch;
       justify-content: center;
       position: absolute;
+      height: 192px;
       width: 100%;
       top: 0;
 
       background: transparent;
 
-      .player-bar {
-        @extend %_ds-flex-shared-row;
+      .player {
+        &-bar {
+          @extend %_ds-flex-shared-row;
 
-        align-items: center;
-        justify-content: space-around;
+          align-items: stretch;
+          justify-content: space-between;
+          height: 100%;
 
-        .widget-player {
-          display: flex;
+          .widget {
+            &-left {
+              width: 33%;
 
-          > * {
-            margin: 20% 8px;
-            width: 32px;
-            height: 32px;
+              > * {
+                margin: 0px 8px;
+              }
+            }
+
+            &-player {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 33%;
+
+              > * {
+                margin: 0px 8px;
+                width: 32px;
+                height: 32px;
+              }
+            }
+
+            &-right {
+              width: 33%;
+
+              > * {
+                margin: 0px 8px;
+              }
+            }
           }
         }
 
-        .widget-left {
-        }
+        &-seekbar {
+          margin-top: 1px;
+          margin-bottom: 25px;
+          width: 100%;
+          height: 5px;
+          background: #000;
+          border-radius: 10px;
 
-        .widget-right {
+          .time {
+            height: 100%;
+            background: blue;
+            border-radius: 10px;
+          }
         }
       }
-
-      // .player-bar {
-      //   @extend %_ds-flex-shared-row;
-      //   width: 100%;
-      //   justify-content: space-between;
-      //   font-size: 24px;
-      //   #nav-widget-player > * {
-      //     margin: 20% 8px;
-      //     width: 32px;
-      //     height: 32px;
-      //   }
-      //   #contain-right-bar > * {
-      //     margin: 20% 8px;
-      //   }
-      //   #contain-left-bar > img {
-      //     width: 128px;
-      //     height: 128px;
-      //     margin: 8px;
-      //   }
-      //   #contain-left-bar > p {
-      //     margin: 15% 8px;
-      //   }
-      // }
     }
   }
 }

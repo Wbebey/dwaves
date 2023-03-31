@@ -17,7 +17,7 @@
     padding: 0 150px;
     margin: 0;
     .contain-explorer{
-        @extend .flex-row-nowrap;
+        @extend %_ds-flex-row-nowrap;
         margin-top: 16px;
         height: 100%;
         .content{
@@ -31,7 +31,7 @@
                 height: 35%;
             }
             .container{
-                @extend .flex-row-nowrap;
+                @extend %_ds-flex-row-nowrap;
                 margin-top: 16px;
                 height: 62.5%;
                 width: 100%;
