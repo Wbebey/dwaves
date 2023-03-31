@@ -15,7 +15,7 @@ import { PlayerWrapper } from 'components/player'
 import { Icon } from 'components/shared'
 
 import { responseRequest, Music, AlbumDetail } from 'models'
-import { playPause, playRandomSong } from 'songs/listenMusic'
+import { playPause, playRandomSong, incrementlisteningsMusic} from 'songs/listenMusic'
 
 import { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -33,6 +33,7 @@ function App() {
   const [alert, setAlert] = useState<responseRequest>()
   const [connected, setConnected] = useState(false) // Temporary this value will be stored in the token
   const [likedMusics, setLikedMusics] = useState<string[]>([])
+
   const envName = import.meta.env.VITE_NODE_ENV
   const buildDate = import.meta.env.VITE_APP_BUILD_DATE
   const commitUrl = import.meta.env.VITE_APP_COMMIT_URL
@@ -69,25 +70,29 @@ function App() {
         progress: (ct / duration) * 100,
         length: duration,
       })
-      if (currentSong) {
-        console.log(currentSong.listenings)
-        setListenings(currentSong.listenings)
-      }
     }
-    if (repeat) {
-      if (currentSong?.progress! >= 99) {
-        playPause(audioElmt, false, setIsPlaying)
-      }
-    }
+  }
+
+  useEffect(() => {
+    setListenings(currentSong?.listenings)
+    console.log(songs, 'songs')
+  }, [songs])
+
+  useEffect(() => {
+    console.log('request', listenings)
+    currentSong && incrementlisteningsMusic(currentSong, listenings)
+  }, [listenings])
+
+  const endedSong = () => {
+    listenings && setListenings(listenings + 1)
+    repeat && playPause(audioElmt, false, setIsPlaying)
     if (random) {
-      if (currentSong?.progress! >= 99) {
-        setCurrentSong(playRandomSong(songs!))
-        setTimeout(() => {
-          playPause(audioElmt, false, setIsPlaying)
-        }, 1000)
-        setListenings(listenings)
-        console.log(listenings)
-      }
+      console.log("in random")
+      setCurrentSong(playRandomSong(songs!));
+      setTimeout(() => {
+        playPause(audioElmt, false, setIsPlaying)
+      }, 1000)
+      setListenings(listenings)
     }
   }
 
@@ -124,7 +129,6 @@ function App() {
           withCredentials: true,
         },
       )
-      // console.log(res.status)
     } catch (err) {
       console.log(err)
     }
@@ -152,7 +156,7 @@ function App() {
   ) : (
     <section style={{ color: 'black', height: window.innerHeight }}>
       {currentSong && (
-        <audio src={currentSong.src} ref={audioElmt} onTimeUpdate={onPlaying} />
+        <audio onEnded={(e) => endedSong()} src={currentSong.src} ref={audioElmt} onTimeUpdate={onPlaying} />
       )}
       <PlayerWrapper
         audioElmt={audioElmt}
