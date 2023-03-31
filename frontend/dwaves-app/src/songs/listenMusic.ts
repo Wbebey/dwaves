@@ -15,12 +15,12 @@ export const playRandomSong = (songs: Music[]): Music => {
   return songs[Math.floor(Math.random() * max!)]
 }
 
-export const IncrementlisteningsMusic = async (currentSong : Music) => {
+export const incrementlisteningsMusic = async (currentSong : Music, listenings:number|undefined) => {
   await axios.post(
     `${import.meta.env.VITE_APP_BACK_URL}/musics/incrementListenings`,
     {
       "musicCID" : currentSong?.src?.split("/")[4],
-      "listeningsValue": currentSong?.listenings! + 1
+      "listeningsValue": listenings
     },
     {
       withCredentials: true,
