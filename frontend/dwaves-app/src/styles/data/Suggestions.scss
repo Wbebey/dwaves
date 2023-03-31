@@ -27,7 +27,7 @@
         }
         width: 100%;
         height: 64px;
-        @extend .flex-row-nowrap;
+        @extend %_ds-flex-row-nowrap;
         padding: 8px;
         border-radius: 4px;
         img {
