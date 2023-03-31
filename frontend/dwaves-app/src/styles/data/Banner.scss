@@ -31,7 +31,7 @@
     }
 
     .content-playlist{
-        @extend .flex-row-nowrap;
+        @extend %_ds-flex-row-nowrap;
         top: 0;
         left: 0;
         width: 100%;
