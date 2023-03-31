@@ -15,7 +15,7 @@ import { PlayerWrapper } from 'components/player'
 import { Icon } from 'components/shared'
 
 import { responseRequest, Music, AlbumDetail } from 'models'
-import { PlayPause, PlayRandomSong } from 'songs/listenMusic'
+import { playPause, playRandomSong } from 'songs/listenMusic'
 
 import { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -72,14 +72,14 @@ function App() {
     }
     if (repeat) {
       if (currentSong?.progress! >= 99) {
-        PlayPause(audioElmt, false, setIsPlaying)
+        playPause(audioElmt, false, setIsPlaying)
       }
     }
     if (random) {
       if (currentSong?.progress! >= 99) {
-        setCurrentSong(PlayRandomSong(songs!))
+        setCurrentSong(playRandomSong(songs!))
         setTimeout(() => {
-          PlayPause(audioElmt, false, setIsPlaying)
+          playPause(audioElmt, false, setIsPlaying)
         }, 1000)
       }
     }
@@ -161,7 +161,7 @@ function App() {
         repeat={repeat}
         random={random}
         setRandom={setRandom}
-        PlayRandomSong={PlayRandomSong}
+        playRandomSong={playRandomSong}
         likedMusics={likedMusics}
         likeOrDislikeMusic={likeOrDislikeMusic}
         planeSubdivisions={4}
