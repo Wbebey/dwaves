@@ -149,7 +149,7 @@ export const SongList: React.FC<Props> = ({
                   PlayPause(audioElmt, isPlaying, setIsPlaying);
                 }
               }}
-              className="song-li cursor-pointer"
+              className="song-li cursor-pointer flex items-center"
             >
               <div className="avatar placeholder">
                 <div className="text-neutral-content rounded-full w-10">
@@ -157,16 +157,25 @@ export const SongList: React.FC<Props> = ({
                 </div>
               </div>
               <div className="p-0 divider divider-horizontal" />
+              {isPlaylistSong && (
+                <div className="w-12 mr-5">
+                  <img src={music.albumCover} alt="" />
+                </div>
+              )}
               <div className="song-li-info">
                 <h4 style={{}}>{music.name}</h4>
-                <p>{songs.artist}</p>
+                <p>
+                  {isPlaylistSong
+                    ? `${music.artist} - ${music.albumName}`
+                    : songs.artist}
+                </p>
               </div>
             </li>
             <div className="song-li-action w-56 flex flex-row items-end pb-5">
               <div>
                 {!isLikedPlaylist &&
                   (isPlaylistSong ? (
-                    <div className="dropdown dropdown-bottom bg-transparent">
+                    <div className="dropdown dropdown-bottom bg-transparent cursor-pointer">
                       <div tabIndex={0}>
                         <BsThreeDotsVertical />
                       </div>
