@@ -33,7 +33,6 @@ export const UserPlaylists: React.FC<Props> = ({setAlert}) => {
     }
 
     const deletePlaylist = async (playlistId: number) => {
-
         try {
             const res = await axios.delete(
                 `${import.meta.env.VITE_APP_BACK_URL}/playlists/${playlistId}`,
@@ -41,9 +40,7 @@ export const UserPlaylists: React.FC<Props> = ({setAlert}) => {
                     withCredentials: true,
                 }
             )
-
             getPlaylists()
-
             if (Array.isArray(res.data)) {
                 displayAlert(res.data[0].msg, res.status)
             } else {
@@ -65,11 +62,17 @@ export const UserPlaylists: React.FC<Props> = ({setAlert}) => {
         <div>
             <h1 className={'text-4xl pl-[5px] font-bold mb-5'}>My Playlists</h1>
             <div className={'flex flex-row mb-11'}>
+                <div className="w-52 hover:bg-teal-300 p-4">
+                    <Link to={`/playlist/likedMusicsPlaylist`}>
+                        <img src="/playlistLiked.webp" alt=""/>
+                        <div className={'pt-2 pl-2 flex'}>
+                            <h3 className={'font-semibold text-l w-full text-center'}>My liked musics</h3>
+                        </div>
+                    </Link>
+                </div>
                 {playlists.map((playlist: any) => (
                     <div key={playlist.id} className="w-52 hover:bg-teal-300 p-4">
-                        <Link
-                            to={`/playlist/${playlist.id}`}
-                        >
+                        <Link to={`/playlist/${playlist.id}`}>
                             <img src={`${import.meta.env.VITE_PINATA_GATEWAY_HOST}/${playlist.coverCID}`} alt=""/>
                             <div className={'pt-2 pl-2 flex flex-row items-center justify-between'}>
                                 <h3 className={'font-semibold text-l'}>{playlist.name}</h3>
