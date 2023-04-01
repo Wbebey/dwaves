@@ -2,33 +2,27 @@ import {responseRequest} from "../models";
 import React from "react";
 
 interface Props {
-    FirstValue: string;
-    SecondValue: string;
-    showForm: boolean;
-    setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+    values: string[]
+    showForm: string;
+    setShowForm: React.Dispatch<React.SetStateAction<string>>;
 
 }
 
-export const SwitchTab: React.FC<Props> = ({FirstValue, SecondValue, showForm, setShowForm}) => {
+export const SwitchTab: React.FC<Props> = ({values, showForm, setShowForm}) => {
 
+    const widthOfComponent = values.length > 2 ? 'w-1/3' : 'w-1/2'
     return (
         <div className="tabs">
-            <div
-                className={`w-1/2 tab tab-lg tab-lifted ${showForm ? "tab-active" : ""}`}
-                onClick={() => {
-                    setShowForm(true)
-                }}
-            >
-                {FirstValue}
-            </div>
-            <div
-                className={`w-1/2 tab tab-lg tab-lifted ${showForm ? "" : "tab-active"}`}
-                onClick={() => {
-                    setShowForm(false)
-                }}
-            >
-                {SecondValue}
-            </div>
+            {values.map((value, index) => (
+                <div key={index}
+                     className={`${widthOfComponent} tab tab-lg tab-lifted ${showForm === value ? "tab-active" : ""}`}
+                     onClick={() => {
+                         setShowForm(value)
+                     }}
+                >
+                    {value}
+                </div>
+            ))}
         </div>
     )
 }
