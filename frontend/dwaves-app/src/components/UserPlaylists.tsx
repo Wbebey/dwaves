@@ -61,7 +61,7 @@ export const UserPlaylists: React.FC<Props> = ({setAlert}) => {
     return (
         <div>
             <h1 className={'text-4xl pl-[5px] font-bold mb-5'}>My Playlists</h1>
-            <div className={'flex flex-row mb-11'}>
+            <div className={'flex flex-row mb-11 flex-wrap'}>
                 <div className="w-52 hover:bg-teal-300 p-4">
                     <Link to={`/playlist/likedMusicsPlaylist`}>
                         <img src="/playlistLiked.webp" alt=""/>
