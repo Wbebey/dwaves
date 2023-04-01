@@ -203,21 +203,27 @@ export const SongList: React.FC<Props> = ({
                           tabIndex={0}
                           className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 hover:bg-white items-center"
                         >
-                          {allPlaylists.map((thePlaylist, i) => (
-                            <li key={i}>
-                              <button
-                                className="hover:bg-white self-center"
-                                onClick={() =>
-                                  addSongToThePlaylist(
-                                    thePlaylist.id,
-                                    music.src!
-                                  )
-                                }
-                              >
-                                {thePlaylist.name}
-                              </button>
+                          {allPlaylists.length > 0 ? (
+                            allPlaylists.map((thePlaylist, i) => (
+                              <li key={i}>
+                                <button
+                                  className="hover:bg-white self-center"
+                                  onClick={() =>
+                                    addSongToThePlaylist(
+                                      thePlaylist.id,
+                                      music.src!
+                                    )
+                                  }
+                                >
+                                  {thePlaylist.name}
+                                </button>
+                              </li>
+                            ))
+                          ) : (
+                            <li className="text-center">
+                              You don't have a playlist yet !
                             </li>
-                          ))}
+                          )}
                         </ul>
                       </div>
                     </>
