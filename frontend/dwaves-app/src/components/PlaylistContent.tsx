@@ -151,7 +151,6 @@ export const PlaylistContent: React.FC<Props> = ({
           {playlist && (
             <>
               <img src={playlist.cover} alt="" />
-              {/*<img src={`${import.meta.env.VITE_PINATA_GATEWAY_HOST}/${playlist.coverCID}`} alt=""/>*/}
               <h3>{playlist?.name}</h3>
             </>
           )}
