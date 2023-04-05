@@ -24,8 +24,8 @@ const MakeTheTransaction = ({
   chainId,
 }: Props) => {
   const [inputValue, setInputValue] = useState("");
-
   const [transactionInProgress, setTransactionInProgress] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const purchaseButtonIsDisabled = wallet !== "" && inputValue !== "";
 
@@ -46,8 +46,9 @@ const MakeTheTransaction = ({
     });
 
     await res.wait();
+    setOpenModal(true);
     setTransactionInProgress(false);
-    setInputValue("")
+    setInputValue("");
     console.log(res);
   };
 
@@ -104,6 +105,47 @@ const MakeTheTransaction = ({
             Get Your Vibes Here 🚀
           </button>
         )}
+      </div>
+
+      <input
+        type="checkbox"
+        checked={openModal}
+        id="my-modal"
+        className="modal-toggle"
+        onChange={() => {
+          setOpenModal(false);
+        }}
+      />
+      <div className="modal w-full">
+        <div className="modal-box flex items-center flex-col">
+          <h3 className="font-bold text-2xl text-center mb-4">
+            Your transaction is completed 🥳 🎉 !
+          </h3>
+          <img
+            className="w-40"
+            src={`https://media.tenor.com/0IEk-u1XpG0AAAAd/angry-dog.gif`}
+            alt=""
+          />
+
+          <a
+            href="https://dwaves-app-staging.tonfrere.fr/"
+            className="btn btn-ghost normal-case text-xl flex flex-row items-center mt-5"
+          >
+            <p className="mr-4">Discover the power of </p>
+            <img
+              className="w-28"
+              src={`./../public/logo-dwaves-white.png`}
+              alt=""
+            />
+            <p className="ml-3">now !</p>
+          </a>
+
+          <div className="modal-action">
+            <label htmlFor="my-modal" className="btn">
+              Yay!
+            </label>
+          </div>
+        </div>
       </div>
     </div>
   );
