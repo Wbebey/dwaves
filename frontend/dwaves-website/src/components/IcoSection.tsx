@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { AlchemyProvider, ethers } from "ethers";
+import { AlchemyProvider, BrowserProvider, ethers } from "ethers";
+
+const alchemyApiKey = import.meta.env.VITE_APP_ALCHEMY_API_KEY;
 
 import ContractICO from "../abi/ICO.json";
 import ClosingTimeCounter from "./ClosingTimeCounter";
 import ConnectWallet from "./ConnectWallet";
+import MakeTheTransaction from "./MakeTheTransaction";
 
 declare const window: Window &
   typeof globalThis & {
@@ -11,67 +14,49 @@ declare const window: Window &
   };
 
 export const IcoSection = () => {
-  const alchemyApiKey = import.meta.env.VITE_APP_ALCHEMY_API_KEY;
-
   const [wallet, setWallet] = useState<string>("");
+  const [balance, setBalance] = useState<string | undefined>();
+  const [chainId, setChainId] = useState<number | undefined>();
+  const [chainName, setChainName] = useState<string | undefined>();
+  const [openingTime, setOpeningTime] = useState(null);
   const [closingTime, setClosingTime] = useState(null);
   const [remainingTokens, setRemainingTokens] = useState(null);
+  const [cap, setCap] = useState(null);
 
-  const fetchOpeningTime = async () => {
+  const fetchContractInfo = async () => {
     const provider = new AlchemyProvider("goerli", alchemyApiKey);
     const contract = new ethers.Contract(
       ContractICO.address,
       ContractICO.abi,
       provider
     );
-    //const openingTime = await contract.openingTime();
-    //console.log(openingTime)
+    const openingTime = await contract.openingTime();
     const closingTime = await contract.closingTime();
     const remainingTokens = await contract.remainingTokens();
     const icoCap = await contract.cap();
-    console.log(icoCap);
-    console.log(remainingTokens);
+    setOpeningTime(openingTime);
     setClosingTime(closingTime.toString());
     setRemainingTokens(remainingTokens.toString());
+    setCap(icoCap);
   };
 
   useEffect(() => {
-    fetchOpeningTime();
+    fetchContractInfo();
   }, []);
 
-  const requestConnection = async () => {
-    if (window.ethereum) {
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
+  useEffect(() => {
+    if (wallet) {
+      const provider = new BrowserProvider(window.ethereum);
+      provider.getBalance(wallet).then((result: any) => {
+        setBalance(ethers.formatEther(result));
       });
-      setWallet(accounts);
+      provider.getNetwork().then((result: any) => {
+        console.log(result)
+        setChainId(result.chainId);
+        setChainName(result.name);
+      });
     }
-  };
-
-  const buyTokens = async () => {
-    try {
-      const provider = new AlchemyProvider("goerli", alchemyApiKey);
-
-
-      // Signer
-      // const signer = new ethers.Wallet(alchemyApiKey, provider)
-
-
-      const contract = new ethers.Contract(
-        ContractICO.address,
-        ContractICO.abi,
-        provider
-      );
-      // console.log(provider.getBalance(wallet))
-
-      console.log(wallet, {value: ethers.parseEther('100')})
-
-      const res = await contract.buyTokens(wallet, {value: ethers.parseEther('100')});
-      await res.wait();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  }, [wallet]);
 
   return (
     <section className="container mx-auto flex flex-col justify-center h-auto ">
@@ -107,35 +92,39 @@ export const IcoSection = () => {
       </div>
       <div id="timer" className="w-full">
         <ClosingTimeCounter closingTime={closingTime} />
-        <div className="w-full flex flex-row justify-around">
-          <ConnectWallet
-            wallet={wallet}
-            requestConnection={requestConnection}
-          />
-          <div className="card w-1/2 bg-base-100 shadow-xl mx-7">
-            <div className="card-body">
-              <h2 className="card-title text-3xl">Buy VIBES 🤑!</h2>
-              <p>
-                Now is the time to invest in the future of music and support
-                this innovative platform by purchasing VIBE tokens during the
-                ICO
-              </p>
-              <div className="card-actions justify-end pt-3">
-                <button
-                  onClick={buyTokens}
-                  className="btn btn-primary w-64 btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-                >
-                  buy !!!!
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className=" flex flex-row nowrap p-8 justify-between ">
-          <button className="btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg">
-            Buy token
-          </button>
-        </div>
+        {/*<div className="w-full flex flex-row justify-around">*/}
+        {/*  <ConnectWallet*/}
+        {/*    wallet={wallet}*/}
+        {/*    requestConnection={requestConnection}*/}
+        {/*  />*/}
+        {/*  <div className="card w-1/2 bg-base-100 shadow-xl mx-7">*/}
+        {/*    <div className="card-body">*/}
+        {/*      <h2 className="card-title text-3xl">Buy VIBES 🤑!</h2>*/}
+        {/*      <p>*/}
+        {/*        Now is the time to invest in the future of music and support*/}
+        {/*        this innovative platform by purchasing VIBE tokens during the*/}
+        {/*        ICO*/}
+        {/*      </p>*/}
+        {/*      <div className="card-actions justify-end pt-3">*/}
+        {/*        <button*/}
+        {/*          onClick={buyTokens}*/}
+        {/*          className="btn btn-primary w-64 btn-xs sm:btn-sm md:btn-md lg:btn-lg"*/}
+        {/*        >*/}
+        {/*          buy !!!!*/}
+        {/*        </button>*/}
+        {/*      </div>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
+      </div>
+      <div>
+        <MakeTheTransaction
+          wallet={wallet}
+          setWallet={setWallet}
+          balance={balance}
+          chainName={chainName}
+          chainId={chainId}
+        />
       </div>
       <div className="flex flex-row nowrap items-center">
         <div className="w-1/5">
@@ -152,7 +141,7 @@ export const IcoSection = () => {
           <h1 className="text-5xl">Raised</h1>
           <progress
             className="progress progress-primary w-full"
-            value="50"
+            value="80"
             max="100"
           />
         </div>
@@ -186,14 +175,9 @@ export const IcoSection = () => {
                     What do we do{" "}
                   </h2>
                   <p className="text-justify mt-8 sm:mt-0 text-xl ">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
+                    Connecting your Metamask wallet is necessary to buy VIBES
+                    tokens as it allows for a secure and seamless transaction on
+                    the Ethereum blockchain
                   </p>
                 </div>
               </div>
