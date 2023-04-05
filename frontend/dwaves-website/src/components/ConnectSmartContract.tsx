@@ -9,7 +9,7 @@ const ConnectSmartContract = () => {
   const [balance, setBalance] = useState<string | undefined>();
   const [currentAccount, setCurrentAccount] = useState<string | undefined>();
   const [chainId, setChainId] = useState<number | undefined>();
-  const [chainname, setChainName] = useState<string | undefined>();
+  const [chainName, setChainName] = useState<string | undefined>();
 
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const ConnectSmartContract = () => {
           ?<div>
             <p>Account info</p>
             <p>ETH Balance of current account: {balance}</p>
-            <p>Chain Info: ChainId {chainId} name {chainname}</p>
+            <p>Chain Info: ChainId {chainId} name {chainName}</p>
           </div>
           :<></>
       }
