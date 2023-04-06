@@ -4,7 +4,6 @@ import "./App.scss";
 import { HeroSection } from "./components/HeroSection";
 import { IcoSection } from "./components/IcoSection";
 import { Wave } from "./components/svg/Wave";
-import ConnectSmartContract from "./components/ConnectSmartContract";
 
 const App = () => {
   return (
