@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const ClosingTimeCounter = ({ closingTime }: any) => {
   const [closingTimeCounterValue, setClosingTimeCounterValue] = useState({
     days: 0,
-    hours: 0,
+    hours: "00",
     minutes: "00",
     seconds: "00",
   });
@@ -16,7 +16,7 @@ const ClosingTimeCounter = ({ closingTime }: any) => {
 
     setClosingTimeCounterValue({
       days,
-      hours,
+      hours: hours.toLocaleString("en-US", { minimumIntegerDigits: 2 }),
       minutes: minutes.toLocaleString("en-US", { minimumIntegerDigits: 2 }),
       seconds: seconds.toLocaleString("en-US", { minimumIntegerDigits: 2 }),
     });
@@ -31,7 +31,7 @@ const ClosingTimeCounter = ({ closingTime }: any) => {
         clearInterval(intervalId);
         setClosingTimeCounterValue({
           days: 0,
-          hours: 0,
+          hours: "00",
           minutes: "00",
           seconds: "00",
         });
