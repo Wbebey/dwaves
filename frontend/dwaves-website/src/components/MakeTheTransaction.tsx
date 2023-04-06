@@ -9,7 +9,7 @@ type Props = {
   balance: string | undefined;
   chainName: string | undefined;
   chainId: number | undefined;
-  rate: bigint | undefined;
+  rate: number | undefined;
 };
 
 declare const window: Window &
@@ -25,15 +25,18 @@ const MakeTheTransaction = ({
   chainId,
   rate,
 }: Props) => {
-  const [inputValue, setInputValue] = useState<string>("");
-  const [vibesValue, setVibesValue] = useState<string>("")
+  const [ethersValue, setEthersValue] = useState<string>("");
+  const [vibesValue, setVibesValue] = useState<string>("");
   const [transactionInProgress, setTransactionInProgress] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [txnHash, setTxnHash] = useState(
     "0x03b430994b92557aa2a876e92a9973d91f9fc0547d1ef0855919900c01b7b5a4"
   );
 
-  const purchaseButtonIsDisabled = wallet !== "" && parseFloat(inputValue) !== 0 && parseFloat(inputValue) < parseFloat(balance!)
+  const purchaseButtonIsDisabled =
+    wallet !== "" &&
+    parseFloat(ethersValue) !== 0 &&
+    parseFloat(ethersValue) < parseFloat(balance!);
 
   const transfer = async () => {
     if (!window.ethereum) return;
@@ -48,7 +51,7 @@ const MakeTheTransaction = ({
     );
 
     const res = await erc20.buyTokens(wallet, {
-      value: ethers.parseEther(inputValue!.toString()),
+      value: ethers.parseEther(ethersValue!.toString()),
     });
 
     await res.wait();
@@ -57,15 +60,27 @@ const MakeTheTransaction = ({
     );
     setOpenModal(true);
     setTransactionInProgress(false);
-    setInputValue("");
+    setEthersValue("");
     console.log(res);
   };
+
+  const changeEthersValue = (value: string) => {
+    setEthersValue(value)
+    const result = +value*rate!
+    setVibesValue(result.toString())
+  }
+
+  const changeVibesValue = (value: string) => {
+    setVibesValue(value)
+    const result = +value/rate!
+    setEthersValue(result.toString())
+  }
 
   return (
     <div className="flex justify-center">
       <div className="flex flex-col items-center border-2 border-cyan-800 rounded-lg w-11/12 px-28">
         <ConnectWallet wallet={wallet} setWallet={setWallet} />
-        <h1 className="text-3xl mt-20 mb-14">
+        <h1 className="text-3xl mt-14 mb-16">
           Join the Vibe Revolution : Buy Tokens Today 🤯
         </h1>
         <div className="w-full flex flex-row justify-center items-center ">
@@ -74,8 +89,8 @@ const MakeTheTransaction = ({
             placeholder="The amount of Ethereum you want to exchange"
             className="input input-bordered input-primary w-full text-lg mr-5"
             disabled={wallet === ""}
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            value={ethersValue}
+            onChange={(e) => changeEthersValue(e.target.value)}
           />
           <p className="bg-cyan-800 p-3 rounded-lg w-48 text-center">
             ETHEREUM
@@ -95,9 +110,9 @@ const MakeTheTransaction = ({
             type="number"
             placeholder="The value in VIBES"
             className="input input-primary w-full text-lg mr-5"
-            disabled={true}
-            value={inputValue}
-            // onChange={(e) => changeInputValue(e.target.value)}
+            disabled={wallet === ""}
+            value={vibesValue}
+            onChange={(e) => changeVibesValue(e.target.value)}
           />
           <p className="bg-cyan-800 p-3 rounded-lg w-48 text-center">VIBES</p>
         </div>
