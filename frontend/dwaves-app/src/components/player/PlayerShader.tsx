@@ -10,20 +10,19 @@ interface Props {
   playerStatus: 'playing' | 'paused' | 'inactive'
 }
 
-const AMPLITUDES = {
-  playing: 0.006,
-  paused: 0.002,
-  inactive: 0.0,
-}
-
 export const PlayerShader: React.FC<Props> = ({
   planeSubdivisions,
   playerStatus,
 }) => {
+  const AMPLITUDES = {
+    playing: 0.012,
+    paused: 0.007,
+    inactive: 0.0,
+  }
   // 192 corresponds to the player component height
   // -> see PlayerWrapper.scss
-  const subdivs = Math.max(planeSubdivisions, 4)
-  const ratio = 192 / window.innerWidth
+  const subdivs = Math.max(planeSubdivisions, 20)
+  const ratio = 185 / window.innerWidth
 
   const meshRef = useRef<THREE.Mesh>(null!)
   const materialRef = useRef<THREE.ShaderMaterial>(null!)
