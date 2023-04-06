@@ -164,7 +164,7 @@ function App() {
         playRandomSong={playRandomSong}
         likedMusics={likedMusics}
         likeOrDislikeMusic={likeOrDislikeMusic}
-        planeSubdivisions={4}
+        planeSubdivisions={8}
       />
       {alert?.visible && <Alert alert={alert} />}
       <section style={{ color: 'black', height: '75%' }}>
