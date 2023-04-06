@@ -7,7 +7,6 @@ import { playPause } from 'songs/listenMusic'
 
 import { useEffect, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { OrthographicCamera } from 'three'
 
 interface Props {
   audioElmt: React.RefObject<HTMLAudioElement>
