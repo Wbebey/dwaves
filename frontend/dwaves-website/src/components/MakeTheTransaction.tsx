@@ -30,7 +30,7 @@ const MakeTheTransaction = ({
   const [transactionInProgress, setTransactionInProgress] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [txnHash, setTxnHash] = useState(
-    "0x03b430994b92557aa2a876e92a9973d91f9fc0547d1ef0855919900c01b7b5a4"
+    ""
   );
 
   const purchaseButtonIsDisabled =
