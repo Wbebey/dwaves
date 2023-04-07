@@ -16,6 +16,7 @@ import { CreatePlaylist } from "components/CreatePlaylist";
 import { UserPlaylists } from "./UserPlaylists";
 import { PlaylistContent } from "./PlaylistContent";
 import { CreateConcert } from "./CreateConcert";
+import { Kitsune } from "./Kitsune";
 import { Footer } from "components/Footer";
 
 export {
@@ -37,5 +38,6 @@ export {
   UserPlaylists,
   PlaylistContent,
   CreateConcert,
+  Kitsune,
   Footer
 };
