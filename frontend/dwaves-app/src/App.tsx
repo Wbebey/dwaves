@@ -9,13 +9,18 @@ import {
   Profile,
   PlaylistPage,
   Playlist,
+  Marketplace,
 } from 'views'
 import { Loader, Sidebar, Alert, Footer } from 'components'
 import { PlayerWrapper } from 'components/player'
 import { Icon } from 'components/shared'
 
 import { responseRequest, Music, AlbumDetail } from 'models'
-import { playPause, playRandomSong, incrementlisteningsMusic} from 'songs/listenMusic'
+import {
+  playPause,
+  playRandomSong,
+  incrementlisteningsMusic,
+} from 'songs/listenMusic'
 
 import { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -32,6 +37,7 @@ function App() {
   const [loginDisplay, setLoginDisplay] = useState(false)
   const [alert, setAlert] = useState<responseRequest>()
   const [connected, setConnected] = useState(false) // Temporary this value will be stored in the token
+  const [wallet, setWallet] = useState<string>('')
   const [likedMusics, setLikedMusics] = useState<string[]>([])
 
   const envName = import.meta.env.VITE_NODE_ENV
@@ -63,7 +69,7 @@ function App() {
   const onPlaying = async () => {
     const duration: number = audioElmt.current?.duration as number
     const ct: number = audioElmt.current?.currentTime as number
-    console.log(currentSong,'currentSong')
+    console.log(currentSong, 'currentSong')
     if (songs) {
       setCurrentSong({
         ...currentSong!,
@@ -85,7 +91,7 @@ function App() {
     listenings && setListenings(listenings + 1)
     repeat && playPause(audioElmt, false, setIsPlaying)
     if (random) {
-      setCurrentSong(playRandomSong(songs!));
+      setCurrentSong(playRandomSong(songs!))
       setTimeout(() => {
         playPause(audioElmt, false, setIsPlaying)
       }, 1000)
@@ -153,7 +159,12 @@ function App() {
   ) : (
     <section style={{ color: 'black', height: window.innerHeight }}>
       {currentSong && (
-        <audio onEnded={(e) => endedSong()} src={currentSong.src} ref={audioElmt} onTimeUpdate={onPlaying} />
+        <audio
+          onEnded={(e) => endedSong()}
+          src={currentSong.src}
+          ref={audioElmt}
+          onTimeUpdate={onPlaying}
+        />
       )}
       <PlayerWrapper
         audioElmt={audioElmt}
@@ -182,6 +193,8 @@ function App() {
                 toggleModal={toggleModal}
                 connected={connected}
                 setConnected={setConnected}
+                wallet={wallet}
+                setWallet={setWallet}
               />
               {/* A <Routes> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
@@ -220,6 +233,7 @@ function App() {
                   }
                 />
                 <Route path="/player" element={<Player />} />
+                <Route path="/marketplace" element={<Marketplace wallet={wallet}/>} />
                 <Route
                   path="/download"
                   element={<Download setAlert={setAlert} />}
@@ -259,6 +273,7 @@ function App() {
 }
 
 export default App
+
 function someOtherData(): import('react').RefObject<HTMLAudioElement> {
   throw new Error('Function not implemented.')
 }
