@@ -3,7 +3,7 @@ import { Icon } from "components/shared";
 import styles from "styles/global/styles.module.scss";
 
 import React, {useEffect, useRef, useState} from "react";
-import { PlayPause, PlayRandomSong } from "songs/listenMusic";
+import { playPause, playRandomSong } from "songs/listenMusic";
 import { AlbumDetail, Music } from "models";
 import axios from "axios";
 
@@ -20,7 +20,7 @@ interface Props {
   repeat: boolean;
   setRandom: React.Dispatch<React.SetStateAction<boolean>>;
   random: boolean;
-  PlayRandomSong: (songs: Music[]) => Music;
+  playRandomSong: (songs: Music[]) => Music;
   likedMusics: string[];
   likeOrDislikeMusic: (music: string)=> void
 }
@@ -38,7 +38,7 @@ export const ExploPlayer: React.FC<Props> = ({
   repeat,
   setRandom,
   random,
-  PlayRandomSong,
+  playRandomSong,
   likedMusics,
   likeOrDislikeMusic
 }) => {
@@ -77,13 +77,13 @@ export const ExploPlayer: React.FC<Props> = ({
     }
     audioElmt.current!.currentTime = 0;
     setTimeout(() => {
-      PlayPause(audioElmt, false, setIsPlaying)
+      playPause(audioElmt, false, setIsPlaying)
     }, 1000)
   };
 
   const handleNext = () => {
     if (random) {
-      setCurrentSong(PlayRandomSong(songs));
+      setCurrentSong(playRandomSong(songs));
     } else {
       if (index === songs.length - 1) {
         setCurrentSong(songs[0]);
@@ -95,7 +95,7 @@ export const ExploPlayer: React.FC<Props> = ({
     }
     audioElmt.current!.currentTime = 0;
     setTimeout(() => {
-      PlayPause(audioElmt, false, setIsPlaying)
+      playPause(audioElmt, false, setIsPlaying)
     }, 1000)
   };
 
@@ -119,9 +119,9 @@ export const ExploPlayer: React.FC<Props> = ({
           />
           <Icon icon="previous" onClick={handlePrevious} />
           {isPlaying ? (
-            <Icon icon="pause" onClick={() => PlayPause(audioElmt, isPlaying, setIsPlaying)} />
+            <Icon icon="pause" onClick={() => playPause(audioElmt, isPlaying, setIsPlaying)} />
           ) : (
-            <Icon icon="play" onClick={() => PlayPause(audioElmt, isPlaying, setIsPlaying)} />
+            <Icon icon="play" onClick={() => playPause(audioElmt, isPlaying, setIsPlaying)} />
           )}
           <Icon icon="next" onClick={handleNext} />
           <Icon
