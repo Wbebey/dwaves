@@ -6,7 +6,6 @@ import 'package:dwaves_mobile/Screen/View_detail_album.dart';
 import 'package:dwaves_mobile/Screen/manager.dart';
 import 'package:dwaves_mobile/Screen/manager.dart';
 import 'package:dwaves_mobile/Screen/playlist.dart';
-import 'package:dwaves_mobile/Screen/test.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
