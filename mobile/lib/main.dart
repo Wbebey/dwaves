@@ -6,7 +6,7 @@ import 'package:dwaves_mobile/Componant/Boutton.dart';
 import 'Componant/Boutton.dart';
 import 'package:flutter/services.dart';
 import 'package:dwaves_mobile/Screen/manager.dart';
-import 'Screen/View_Playlist.dart';
+import 'Screen/View_Album.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: token == null ? MyLoginPage() : Manager(),
+      home: token != null ? MyLoginPage() : Manager(),
     );
   }
 }

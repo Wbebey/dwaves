@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'notifiers/play_button_notifier.dart';
 import 'notifiers/progress_notifier.dart';
@@ -33,17 +34,25 @@ class PageManager {
     _listenForChangesInSequenceState();
   }
 
-  void _setInitialPlaylist() async {
-    const prefix = 'https://www.soundhelix.com/examples/mp3';
-    final song1 = Uri.parse('$prefix/SoundHelix-Song-1.mp3');
-    final song2 = Uri.parse('$prefix/SoundHelix-Song-2.mp3');
-    final song3 = Uri.parse('$prefix/SoundHelix-Song-3.mp3');
-    final song4 = Uri.parse('$prefix/SoundHelix-Song-4.mp3');
+
+Future<String?> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+
+  void songplaylist(String song) async {
+    final song1 = Uri.parse(song);
     _playlist = ConcatenatingAudioSource(children: [
       AudioSource.uri(song1, tag: 'Song 1'),
-      AudioSource.uri(song2, tag: 'Song 2'),
-      AudioSource.uri(song3, tag: 'Song 3'),
-      AudioSource.uri(song4, tag: 'Song 4'),
+    ]);
+    await _audioPlayer.setAudioSource(_playlist);
+  }
+
+  void _setInitialPlaylist() async {
+    final song1 = Uri.parse('https://dwavesforever.mypinata.cloud/ipfs/QmYSwirKi5DE3vUzGeHe16uB7HsKkktGpWVw5pPQDRY37E');
+    _playlist = ConcatenatingAudioSource(children: [
+      AudioSource.uri(song1),
     ]);
     await _audioPlayer.setAudioSource(_playlist);
   }

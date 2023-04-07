@@ -9,8 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dwaves_mobile/Screen/register_page.dart';
 
-var email = '';
-var password = "";
+var email = 'sofian32@gmail.com';
+var password = "12345678";
 
 
 class Login extends StatelessWidget {

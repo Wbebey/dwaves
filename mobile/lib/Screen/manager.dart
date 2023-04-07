@@ -1,6 +1,6 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:dwaves_mobile/Screen/Login_page.dart';
-import 'package:dwaves_mobile/Screen/View_Playlist.dart';
+import 'package:dwaves_mobile/Screen/View_Album.dart';
 import 'package:flutter/material.dart';
 import 'notifiers/play_button_notifier.dart';
 import 'notifiers/progress_notifier.dart';
@@ -49,7 +49,7 @@ class _ManagerState extends State<Manager> {
                 icon: Icon(Icons.close),
                 onPressed: () {
                   Navigator.push(context,
-                  MaterialPageRoute(builder: (context) =>  Album(id: 5, type: 'ALBUM')));
+                  MaterialPageRoute(builder: (context) =>  Album(id: 0,name:'', type: 'ALBUM', genre: '', artist: '' )));
                 },
               ),
               const AudioProgressBar(),

@@ -1,8 +1,12 @@
 import 'dart:io';
 
+import 'package:dwaves_mobile/Componant/Boutton.dart';
+import 'package:dwaves_mobile/Screen/Login_page.dart';
+import 'package:dwaves_mobile/Screen/View_detail_album.dart';
 import 'package:dwaves_mobile/Screen/manager.dart';
 import 'package:dwaves_mobile/Screen/manager.dart';
 import 'package:dwaves_mobile/Screen/playlist.dart';
+import 'package:dwaves_mobile/Screen/test.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -15,21 +19,38 @@ import 'notifiers/play_button_notifier.dart';
 
 // affiche moi les musiques de la playlist de PageManager
 class Album extends StatefulWidget {
-  const Album({Key? key, required this.id, required this.type})
-      : super(key: key);
-
+  const Album({Key? key, required this.type, required this.name, required this.genre, required this.artist, required this.id  })
+  : super(key: key);
   final int id;
+  final String name;
   final String type;
+  final String genre;
+  final String artist;
+
+  int get getarea {
+    return id;
+  }
+
+  void set setarea(int value) {
+    late int id = value;
+  }
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
       id: json['id'],
+      name: json['name'],
       type: json['type'],
+      genre: json['genre'],
+      artist: json['artist'],
+      
+      
     );
   }
+  
 
   @override
   _ViewAlbumState createState() => _ViewAlbumState();
+  
 }
 
 class _ViewAlbumState extends State<Album> {
@@ -61,27 +82,29 @@ class _ViewAlbumState extends State<Album> {
   }
 
   Future<List<Album>> fetchAlbums() async {
-
     String? token = await getToken();
-
+    
     final headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
-      
+
     final response = await http.get(
-        Uri.parse('http://localhost:8080/api/v1/albums'),
-        headers: headers ,);
+      Uri.parse('http://localhost:8080/api/v1/albums'),
+      headers: headers,
+    );
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
+      
       List<Album> albums = [];
       data.forEach((album) => albums.add(Album.fromJson(album)));
+      print(albums);
       return albums;
     } else {
       throw Exception('Failed to load albums');
     }
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,8 +118,22 @@ class _ViewAlbumState extends State<Album> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(snapshot.data![index].type),
-                    subtitle: Text('ID: ${snapshot.data![index].id}'),
+                    title: Text(snapshot.data![index].name),
+                    subtitle: Text('Artist: ${snapshot.data![index].artist}'),
+                    onTap: () {
+                      //Navigator.pop(context,);
+                      //Navigator.push(context,MaterialPageRoute(builder: (context) =>  Detail_Album(id:snapshot.data![index].id ,name:'', type: 'ALBUM', genre: '', artist: '' )));
+                      Navigator.push(context, 
+                      MaterialPageRoute(
+                        builder: (context) => Music(src: '', name: '',),
+                        settings: RouteSettings(
+                          arguments: snapshot.data![index].id,
+                        ),
+                        ) 
+                      );
+                      
+                    },
+                    
                   );
                 },
               );
@@ -127,6 +164,15 @@ class _ViewAlbumState extends State<Album> {
     );
   }
 }
+class MyClass {
+  late int _id = id;
+
+  int get id => _id;
+
+  set id(int value) {
+    _id = value;
+  }
+}
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -136,7 +182,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         children: const [
           SizedBox(width: 16),
-          Text('Playlist', style: TextStyle(color: Colors.black)),
+          Text('View Album', style: TextStyle(color: Colors.black)),
         ],
       ),
       actions: [
