@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import {
-  AlbumForm, CreateConcert,
+  AlbumForm,
+  CreateConcert,
   CreatePlaylist,
+  Kitsune,
   SingleForm,
   SwitchTab,
   UserPlaylists,
@@ -32,7 +34,7 @@ export const Marketplace: React.FC<Props> = ({
             </p>
             <p className="text-xl my-5">Click on the Fox !</p>
             <div className="cursor-pointer" onClick={requestConnectionMetamask}>
-              <img src="/metamask-color.png" alt="" width={100} />
+              <Kitsune />
             </div>
           </div>
         </div>
