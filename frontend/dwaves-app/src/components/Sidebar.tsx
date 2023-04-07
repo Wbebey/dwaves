@@ -20,14 +20,14 @@ interface Props {
   connected: boolean
   wallet: string
   setConnected: React.Dispatch<React.SetStateAction<boolean>>
-  setWallet: React.Dispatch<React.SetStateAction<string>>
+  requestConnectionMetamask: () => Promise<void>
 }
 
 export const Sidebar: React.FC<Props> = ({
   toggleModal,
   connected,
   wallet,
-  setWallet,
+  requestConnectionMetamask,
   setConnected,
 }) => {
   const disconect = () => {
@@ -69,7 +69,10 @@ export const Sidebar: React.FC<Props> = ({
         </li>
         <div className="divider m-0" />
         {connected ? (
-          <ConnectMetamask wallet={wallet} setWallet={setWallet} />
+          <ConnectMetamask
+            wallet={wallet}
+            requestConnectionMetamask={requestConnectionMetamask}
+          />
         ) : (
           <div />
         )}
