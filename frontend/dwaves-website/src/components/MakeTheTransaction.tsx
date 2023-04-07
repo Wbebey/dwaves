@@ -29,9 +29,7 @@ const MakeTheTransaction = ({
   const [vibesValue, setVibesValue] = useState<string>("");
   const [transactionInProgress, setTransactionInProgress] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [txnHash, setTxnHash] = useState(
-    ""
-  );
+  const [txnHash, setTxnHash] = useState("");
 
   const purchaseButtonIsDisabled =
     wallet !== "" &&
@@ -55,26 +53,25 @@ const MakeTheTransaction = ({
     });
 
     await res.wait();
-    setTxnHash(
-      "0x03b430994b92557aa2a876e92a9973d91f9fc0547d1ef0855919900c01b7b5a4"
-    );
+    setTxnHash(res.hash);
     setOpenModal(true);
     setTransactionInProgress(false);
     setEthersValue("");
+    setVibesValue("");
     console.log(res);
   };
 
   const changeEthersValue = (value: string) => {
-    setEthersValue(value)
-    const result = +value*rate!
-    setVibesValue(result.toString())
-  }
+    setEthersValue(value);
+    const result = +value * rate!;
+    setVibesValue(result.toString());
+  };
 
   const changeVibesValue = (value: string) => {
-    setVibesValue(value)
-    const result = +value/rate!
-    setEthersValue(result.toString())
-  }
+    setVibesValue(value);
+    const result = +value / rate!;
+    setEthersValue(result.toString());
+  };
 
   return (
     <div className="flex justify-center">
