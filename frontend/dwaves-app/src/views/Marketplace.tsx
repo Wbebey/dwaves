@@ -45,7 +45,7 @@ export const Marketplace: React.FC<Props> = ({
             showForm={showTickets}
             setShowForm={setShowTickets}
           />
-          <div className={'h-[97%] pt-[30px] pl-[20px]'}>
+          <div className={'h-[97%] pt-[30px]'}>
             {showTickets === 'Upcoming concerts' ? (
               <div>HEY HEY</div>
             ) : (
