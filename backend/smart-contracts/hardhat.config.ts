@@ -23,11 +23,19 @@ if (!ALCHEMY_API_KEY || accounts.includes(undefined)) {
 }
 
 const config: HardhatUserConfig = {
-  solidity: '0.8.17',
+  solidity: {
+    version: '0.8.17',
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
   defaultNetwork: 'localhost',
   networks: {
-    goerli: {
-      url: `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+    sepolia: {
+      url: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       accounts: accounts as string[],
     },
   },
