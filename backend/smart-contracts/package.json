@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "compile": "doppler run -- hardhat compile",
     "dev": "doppler run -- hardhat node",
     "test": "doppler run -- hardhat test",
     "deploy": "npm run deploy:token && npm run deploy:nft",
@@ -20,7 +21,9 @@
     "@nomiclabs/hardhat-ethers": "^2.1.1",
     "chai": "^4.3.6",
     "ethers": "^5.7.1",
-    "hardhat": "^2.11.2"
+    "hardhat": "^2.11.2",
+    "prettier": "^2.8.7",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
