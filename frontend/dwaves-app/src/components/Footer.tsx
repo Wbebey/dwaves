@@ -9,7 +9,7 @@ export const Footer: React.FC<FooterProps> = ({ buildDate, envName, commitUrl })
     const date = new Date(buildDate);
 
     return (
-        <footer className="footer">
+        <footer className="footer hidden">
             <p className="footer__item">Env: {envName}</p>
             <p className="footer__item">
                 <a className='' href={commitUrl} target="_blank">
