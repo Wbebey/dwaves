@@ -10,6 +10,8 @@ export interface IAppValidator extends IValidator {
   hasOneFile: (filetype: FileType) => CustomValidator
   hasFiles: (filetype: FileType) => CustomValidator
   hasOneFileOptional: (filetype: FileType) => CustomValidator
+  toValidGenre: CustomSanitizer
+  toValidGenreIfExist: CustomSanitizer
 }
 
 export interface IUserValidator extends IAppValidator {
@@ -24,8 +26,6 @@ export interface IMusicValidator extends IAppValidator {}
 
 export interface IAlbumValidator extends IAppValidator {
   isValidType: CustomValidator
-  toValidGenre: CustomSanitizer
-  toValidGenreIfExist: CustomSanitizer
   isValidName: (type: AlbumType) => CustomValidator
   toValidMusicNames: CustomSanitizer
 }
