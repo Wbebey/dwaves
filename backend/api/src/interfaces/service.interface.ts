@@ -1,4 +1,5 @@
 import { AlbumCreateInput, ViewAlbum } from '@@types/album.type'
+import { ConcertEvent } from '@@types/event.type'
 import {
   CoverMetadata,
   MusicFilter,
@@ -67,8 +68,15 @@ export interface IPinataService extends IService {
 }
 
 export interface INFTService extends IService {
-  mint: (artistAddress: string, musicCID: string) => Promise<string>
-  batchMint: (artistAddress: string, musicCIDs: string[]) => Promise<string[]>
+  mintDwavesMusicNFT: (
+    artistAddress: string,
+    musicCID: string
+  ) => Promise<string>
+  batchMintDwavesMusicNFT: (
+    artistAddress: string,
+    musicCIDs: string[]
+  ) => Promise<string[]>
+  createConcertEvent: (event: ConcertEvent) => Promise<number[]>
 }
 
 export interface ITokenService extends IService {
