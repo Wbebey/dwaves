@@ -27,25 +27,6 @@ currentUserRouter.post(
   userValidator.validate,
   userController.createPlaylist
 )
-currentUserRouter.post(
-  '/concertEvents',
-  body('name').notEmpty().withMessage('Name is required'),
-  body('date').isISO8601().withMessage('Invalid date'),
-  body('location').notEmpty().withMessage('Location is required'),
-  body('genre')
-    .notEmpty()
-    .withMessage('Genre is required')
-    .bail()
-    .customSanitizer(userValidator.toValidGenre),
-  body('ticketCount')
-    .isInt({ min: 0 })
-    .withMessage('Ticket count must be a positive int'),
-  body('ticketPrice')
-    .isInt({ min: 0 })
-    .withMessage('Ticket price must be a positive int'),
-  userValidator.validate,
-  userController.createConcertEvent
-)
 currentUserRouter.put(
   '/addWallet',
   body('address')
