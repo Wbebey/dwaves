@@ -62,9 +62,7 @@ class AlbumController implements IAlbumController {
     })
 
     await Promise.all(
-      musics.map((music) =>
-        pinataService.unpinFileFromIPFS(music.src.split('/').pop()!)
-      )
+      musics.map((music) => pinataService.unpinFileFromIPFS(music.cid))
     )
 
     res.status(StatusCodes.NO_CONTENT).send()

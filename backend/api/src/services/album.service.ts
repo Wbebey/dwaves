@@ -55,8 +55,6 @@ class AlbumService implements IAlbumService {
   delete = async (where: Prisma.AlbumWhereUniqueInput) => {
     const album = await prisma.album.delete({ where })
 
-    await pinataService.unpinFileFromIPFS(album.coverCID)
-
     return album
   }
 
