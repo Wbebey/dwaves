@@ -13,7 +13,30 @@ class PlaylistController implements IPlaylistController {
     const { creatorId } = req.query
     const playlists = await playlistService.findMany({ creatorId })
 
-    res.json(playlists)
+    const uniqueMusics = new Set(
+      playlists.map((playlist) => playlist.musics).flat()
+    )
+
+    const musicDetails = await Promise.all(
+      Array.from(uniqueMusics).map(async (musicCID) => {
+        const ipfsMusics = await pinataService.getMusicFromIPFS({ musicCID })
+
+        if (!ipfsMusics.length) {
+          throw new AppError('Music not found', StatusCodes.NOT_FOUND)
+        }
+
+        return await musicService.toViewMusic(ipfsMusics[0])
+      })
+    )
+
+    const playlistsWithMusicDetails = playlists.map((playlist) => ({
+      ...playlist,
+      musics: playlist.musics.map((musicCID) =>
+        musicDetails.find((music) => musicCID === music.cid)
+      ),
+    }))
+
+    res.json(playlistsWithMusicDetails)
   }
   show: RequestHandler = async (req, res) => {
     const playlist = await this._getPlaylistIfExists(+req.params.id)

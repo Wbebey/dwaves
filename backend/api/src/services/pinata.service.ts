@@ -69,6 +69,7 @@ class PinataService implements IPinataService {
     const musics = res.data.rows.map((music) => ({
       ...music.metadata.keyvalues,
       src: `${env.pinataGatewayHost}/${music.ipfs_pin_hash}`,
+      cid: music.ipfs_pin_hash,
     }))
 
     return musics
