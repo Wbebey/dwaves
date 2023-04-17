@@ -10,8 +10,6 @@ import albumService from '@services/album.service'
 import playlistService from '@services/playlist.service'
 import { UploadedFile } from 'express-fileupload'
 import pinataService from '@services/pinata.service'
-import { ConcertEvent } from '@@types/event.type'
-import nftService from '@services/nft.service'
 
 class UserController implements IUserController {
   get: RequestHandler = async (_, res) => {
@@ -149,6 +147,38 @@ class UserController implements IUserController {
     const { musics } = req.body
 
     const user = await userService.update({ id }, { myLikedMusics: musics })
+
+    res.json(user)
+  }
+
+  followArtist: RequestHandler = async (req, res) => {
+    const { id } = req.app.locals.user
+    const { id: artistId } = req.params
+
+    if (id === artistId) {
+      throw new AppError(
+        'You cannot follow yourself',
+        StatusCodes.UNPROCESSABLE_ENTITY
+      )
+    }
+
+    const user = await userService.followArtist(id, +artistId)
+
+    res.json(user)
+  }
+
+  unfollowArtist: RequestHandler = async (req, res) => {
+    const { id } = req.app.locals.user
+    const { id: artistId } = req.params
+
+    if (id === artistId) {
+      throw new AppError(
+        'You cannot unfollow yourself',
+        StatusCodes.UNPROCESSABLE_ENTITY
+      )
+    }
+
+    const user = await userService.unfollowArtist(id, +artistId)
 
     res.json(user)
   }

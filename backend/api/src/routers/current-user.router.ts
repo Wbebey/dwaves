@@ -1,7 +1,7 @@
 import { Router } from 'express'
 
 import userController from '@controllers/user.controller'
-import { body, query } from 'express-validator'
+import { body, param, query } from 'express-validator'
 import userValidator from '@validators/user.validator'
 import { FileType } from '@@types/pinata.type'
 
@@ -66,6 +66,26 @@ currentUserRouter.put(
   body('musics').isArray().withMessage('Musics must be an array'),
   userValidator.validate,
   userController.updateLikedMusics
+)
+currentUserRouter.put(
+  '/follow/:id',
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid artist id')
+    .bail()
+    .customSanitizer(userValidator.toValidUserId),
+  userValidator.validate,
+  userController.followArtist
+)
+currentUserRouter.put(
+  '/unfollow/:id',
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid artist id')
+    .bail()
+    .customSanitizer(userValidator.toValidUserId),
+  userValidator.validate,
+  userController.unfollowArtist
 )
 
 export default currentUserRouter

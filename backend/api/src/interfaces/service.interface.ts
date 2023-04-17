@@ -39,6 +39,8 @@ export interface IUserService extends IService {
     hashedPassword: string,
     candidatePassword: string
   ) => Promise<boolean>
+  followArtist: (userId: number, artistId: number) => Promise<User>
+  unfollowArtist: (userId: number, artistId: number) => Promise<User>
 }
 
 export interface IAlbumService extends IService {

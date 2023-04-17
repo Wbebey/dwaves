@@ -27,7 +27,18 @@ class UserService implements IUserService {
     where: Prisma.UserWhereUniqueInput,
     includePassword = false
   ) => {
-    const user = await prisma.user.findUnique({ where })
+    const user = await prisma.user.findUnique({
+      where,
+      include: {
+        playlists: true,
+        albums: true,
+        monthlyListenings: true,
+        likedAlbums: true,
+        likedPlaylists: true,
+        likedArtists: true,
+        subscribers: true,
+      },
+    })
     if (!includePassword && user) {
       return this.exclude(user, ['password'])
     }
@@ -105,6 +116,54 @@ class UserService implements IUserService {
 
   verifyPassword = (hashedPassword: string, candidatePassword: string) => {
     return argon2.verify(hashedPassword, candidatePassword)
+  }
+
+  followArtist = async (userId: number, artistId: number) => {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        likedArtists: {
+          connect: { id: artistId },
+        },
+      },
+      include: {
+        likedArtists: true,
+      },
+    })
+    const artist = await prisma.user.update({
+      where: { id: artistId },
+      data: {
+        subscribers: {
+          connect: { id: userId },
+        },
+      },
+    })
+
+    return user
+  }
+
+  unfollowArtist = async (userId: number, artistId: number) => {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        likedArtists: {
+          disconnect: { id: artistId },
+        },
+      },
+      include: {
+        likedArtists: true,
+      },
+    })
+    const artist = await prisma.user.update({
+      where: { id: artistId },
+      data: {
+        subscribers: {
+          disconnect: { id: userId },
+        },
+      },
+    })
+
+    return user
   }
 }
 
