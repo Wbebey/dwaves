@@ -41,6 +41,10 @@ export interface IUserService extends IService {
   ) => Promise<boolean>
   followArtist: (userId: number, artistId: number) => Promise<User>
   unfollowArtist: (userId: number, artistId: number) => Promise<User>
+  likeAlbum: (userId: number, albumId: number) => Promise<User>
+  dislikeAlbum: (userId: number, albumId: number) => Promise<User>
+  likePlaylist: (userId: number, playlistId: number) => Promise<User>
+  dislikePlaylist: (userId: number, playlistId: number) => Promise<User>
 }
 
 export interface IAlbumService extends IService {

@@ -28,12 +28,15 @@ export interface IAlbumValidator extends IAppValidator {
   isValidType: CustomValidator
   isValidName: (type: AlbumType) => CustomValidator
   toValidMusicNames: CustomSanitizer
+  toValidAlbumId: CustomSanitizer
 }
 
 export interface IGenreValidator extends IAppValidator {
   doesGenreExist: CustomValidator
 }
 
-export interface IPlaylistValidator extends IAppValidator {}
+export interface IPlaylistValidator extends IAppValidator {
+  toValidPlaylistId: CustomSanitizer
+}
 
 export interface IEventValidator extends IAppValidator {}
