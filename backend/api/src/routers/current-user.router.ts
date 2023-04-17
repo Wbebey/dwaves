@@ -4,6 +4,8 @@ import userController from '@controllers/user.controller'
 import { body, param, query } from 'express-validator'
 import userValidator from '@validators/user.validator'
 import { FileType } from '@@types/pinata.type'
+import albumValidator from '@validators/album.validator'
+import playlistValidator from '@validators/playlist.validator'
 
 const currentUserRouter = Router()
 
@@ -86,6 +88,46 @@ currentUserRouter.put(
     .customSanitizer(userValidator.toValidUserId),
   userValidator.validate,
   userController.unfollowArtist
+)
+currentUserRouter.put(
+  '/likeAlbum/:id',
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid album id')
+    .bail()
+    .customSanitizer(albumValidator.toValidAlbumId),
+  userValidator.validate,
+  userController.likeAlbum
+)
+currentUserRouter.put(
+  '/dislikeAlbum/:id',
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid album id')
+    .bail()
+    .customSanitizer(albumValidator.toValidAlbumId),
+  userValidator.validate,
+  userController.dislikeAlbum
+)
+currentUserRouter.put(
+  '/likePlaylist/:id',
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid playlist id')
+    .bail()
+    .customSanitizer(playlistValidator.toValidPlaylistId),
+  userValidator.validate,
+  userController.likePlaylist
+)
+currentUserRouter.put(
+  '/dislikePlaylist/:id',
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid playlist id')
+    .bail()
+    .customSanitizer(playlistValidator.toValidPlaylistId),
+  userValidator.validate,
+  userController.dislikePlaylist
 )
 
 export default currentUserRouter

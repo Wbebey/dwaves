@@ -165,6 +165,92 @@ class UserService implements IUserService {
 
     return user
   }
+
+  likeAlbum = async (userId: number, albumId: number) => {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        likedAlbums: {
+          connect: { id: albumId },
+        },
+      },
+      include: {
+        likedAlbums: true,
+      },
+    })
+
+    return user
+  }
+
+  dislikeAlbum = async (userId: number, albumId: number) => {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        likedAlbums: {
+          disconnect: { id: albumId },
+        },
+      },
+      include: {
+        likedAlbums: true,
+      },
+    })
+
+    return user
+  }
+
+  likePlaylist = async (userId: number, playlistId: number) => {
+    const playlist = await prisma.playlist.update({
+      where: { id: playlistId },
+      data: {
+        subscribers: {
+          connect: { id: userId },
+        },
+        likes: {
+          increment: 1,
+        },
+      },
+    })
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        likedPlaylists: {
+          connect: { id: playlistId },
+        },
+      },
+      include: {
+        likedPlaylists: true,
+      },
+    })
+
+    return user
+  }
+
+  dislikePlaylist = async (userId: number, playlistId: number) => {
+    const playlist = await prisma.playlist.update({
+      where: { id: playlistId },
+      data: {
+        subscribers: {
+          disconnect: { id: userId },
+        },
+        likes: {
+          decrement: 1,
+        },
+      },
+    })
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        likedPlaylists: {
+          disconnect: { id: playlistId },
+        },
+      },
+      include: {
+        likedPlaylists: true,
+      },
+    })
+
+    return user
+  }
 }
 
 const userService = new UserService()
