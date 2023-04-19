@@ -71,20 +71,41 @@ export const CreateConcert = () => {
     getGenres()
   }, [])
 
-
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
   } = useForm<IFormValues>()
+
   const onSubmit: SubmitHandler<IFormValues> = (data) => {
-    const summary = {...data, eventDate: date!.startDate}
-    console.log(summary)
+    const eventsDetails = {
+      name: data['Event name'],
+      date: date!.startDate,
+      location: data['Event place'],
+      genre: data.Genre,
+      ticketCount: data['Number of available tickets'],
+      ticketPrice: data['Ticket price in VIBES']
+    }
+    console.log(eventsDetails)
+    mintEventNft(eventsDetails)
   }
 
-  console.log('vibes' + watch('Ticket price in VIBES'))
-  //
+  const mintEventNft = async (eventsDetails: any) => {
+    try {
+      const res = await axios.post(
+          `${import.meta.env.VITE_APP_BACK_URL}/events`,
+          eventsDetails,
+          {
+            withCredentials: true,
+          }
+      );
+      console.log(res)
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div>
       <h3 className="text-3xl text-center">
@@ -113,8 +134,11 @@ export const CreateConcert = () => {
               <img src="./../../ticketTemplate.png" alt="" />
             </div>
             <button
-              className="mt-10 self-center w-1/3 bg-teal-300 h-16 rounded-lg"
+              className={
+                'disabled:opacity-50 mt-10 self-center w-1/3 bg-teal-300 h-16 rounded-lg'
+              }
               type="submit"
+              disabled={!isDirty || !isValid}
             >
               Mint {watch('Number of available tickets')} tickets NFTs
             </button>
