@@ -16,7 +16,7 @@ declare const window: Window &
   };
 
 export const IcoSection = () => {
-  const testNet = "goerli";
+  const testNet = "sepolia";
   const [wallet, setWallet] = useState<string>("");
   const [balance, setBalance] = useState<string | undefined>();
   const [chainId, setChainId] = useState<number | undefined>();
@@ -41,6 +41,7 @@ export const IcoSection = () => {
     const remainingTokens = await contract.remainingTokens();
     const icoCap = await contract.cap();
     setOpeningTime(openingTime);
+
     setClosingTime(closingTime.toString());
     setRate(Number(rate));
     setRemainingTokens(remainingTokens.toString());
