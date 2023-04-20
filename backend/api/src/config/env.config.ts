@@ -27,6 +27,8 @@ const env = {
   refreshTokenPublicKey: checkEnv('REFRESH_TOKEN_PUBLIC_KEY'),
   accessTokenExp: checkEnv<number>('ACCESS_TOKEN_EXP'),
   refreshTokenExp: checkEnv<number>('REFRESH_TOKEN_EXP'),
+  googleApplicationCredentials: checkEnv('GOOGLE_APPLICATION_CREDENTIALS'),
+  gcsImageBucketName: checkEnv('GCS_IMAGE_BUCKET_NAME'),
 }
 
 export default env

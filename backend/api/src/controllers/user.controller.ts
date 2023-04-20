@@ -10,6 +10,7 @@ import albumService from '@services/album.service'
 import playlistService from '@services/playlist.service'
 import { UploadedFile } from 'express-fileupload'
 import pinataService from '@services/pinata.service'
+import gcsService from '@services/gcs.service'
 
 class UserController implements IUserController {
   get: RequestHandler = async (_, res) => {
@@ -215,6 +216,20 @@ class UserController implements IUserController {
     const { id: playlistId } = req.params
 
     const user = await userService.dislikePlaylist(id, +playlistId)
+
+    res.json(user)
+  }
+
+  uploadAvatar: RequestHandler = async (req, res) => {
+    const { id, avatar } = req.app.locals.user
+    const newAvatar = req.files!.avatar as UploadedFile
+
+    const uploadedImage = await gcsService.uploadProfilePicture(
+      newAvatar,
+      avatar
+    )
+
+    const user = await userService.update({ id }, { avatar: uploadedImage.url })
 
     res.json(user)
   }
