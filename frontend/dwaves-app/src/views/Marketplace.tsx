@@ -154,20 +154,22 @@ export const Marketplace: React.FC<Props> = ({
 
     const formattedEvents: any = []
     uniqueEventsWithIdEvent.forEach((event: any) => {
-      formattedEvents.push({
-        id: event[1],
-        name: event[2],
-        date: moment(Number(event[3])).format('MM/DD/YYYY'),
-        place: event[4],
-        genre: event[5],
-        artist: event[6],
-        price: parseFloat(event[8]),
-        availableTickets:
-          falseCountsAndFirstFalseById(ticketNFTContract)[event[1]].count,
-        ticketIdToBuy:
-          falseCountsAndFirstFalseById(ticketNFTContract)[event[1]]
-            .firstFalseId,
-      })
+      if (event[6] !== myUsername) {
+        formattedEvents.push({
+          id: event[1],
+          name: event[2],
+          date: moment(Number(event[3])).format('MM/DD/YYYY'),
+          place: event[4],
+          genre: event[5],
+          artist: event[6],
+          price: parseFloat(event[8]),
+          availableTickets:
+            falseCountsAndFirstFalseById(ticketNFTContract)[event[1]].count,
+          ticketIdToBuy:
+            falseCountsAndFirstFalseById(ticketNFTContract)[event[1]]
+              .firstFalseId,
+        })
+      }
     })
     // console.log(formattedEvents)
     setFormattedEvents(formattedEvents)
