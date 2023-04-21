@@ -40,6 +40,9 @@ const TheEvent = ({ event }: any) => {
 export const YourConcerts: FC<Props> = ({ allMyEvents }) => {
   return (
     <div className="h-[95%] overflow-scroll">
+      <h1 className="text-center text-3xl mt-3 mb-5">
+        Your future Decentralized Concerts !
+      </h1>
       <div className="flex flex-row flex-wrap">
         {allMyEvents.map((myEvent) => (
           <div key={myEvent.name} className="w-1/3">
