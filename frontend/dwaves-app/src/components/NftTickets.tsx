@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react'
 import { AlbumDetail, Music, FormattedEvents } from '../models'
+import axios from 'axios'
 
 interface Props {
   balance: string
@@ -56,11 +57,28 @@ export const NftTickets: FC<Props> = ({
 }) => {
   const [openModal, setOpenModal] = useState(false)
   const [ticketToBuyId, setTicketToBuyId] = useState(0)
+  const [ticketToOpen, setTicketToOpen] = useState(0)
 
+  const buyTicket = async () => {
+    try {
+      const res = await axios.post(
+        `${
+          import.meta.env.VITE_APP_BACK_URL
+        }/events/buyTicket/${ticketToBuyId}`,
+        { truc: 'truc' },
+        {
+          withCredentials: true,
+        },
+      )
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div className="h-[95%] overflow-scroll">
       <div className="pl-5 pb-10">
-        Your balance : {balance} Eth
+        Your balance : {balance} SepoliaETH
         <div>
           Chain : {chainName} - {chainId}
         </div>
@@ -84,7 +102,8 @@ export const NftTickets: FC<Props> = ({
             key={index}
             onClick={() => {
               setOpenModal(true)
-              setTicketToBuyId(index)
+              setTicketToOpen(index)
+              setTicketToBuyId(+event.ticketIdToBuy)
             }}
             className="w-1/2 cursor-pointer"
           >
@@ -106,11 +125,17 @@ export const NftTickets: FC<Props> = ({
           <h3 className="font-bold text-2xl text-center mb-4 text-white">
             It's time for you 🤯 !
           </h3>
-          <TheTicket event={formattedEvents[ticketToBuyId]} />
+          <TheTicket event={formattedEvents[ticketToOpen]} />
           <div className="modal-action">
-            <label htmlFor="my-modal" className="btn btn-primary">
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                buyTicket()
+                setOpenModal(false)
+              }}
+            >
               Buy this ticket 🚀 !
-            </label>
+            </button>
             <button onClick={() => setOpenModal(false)} className="btn ml-10">
               Cancel
             </button>
