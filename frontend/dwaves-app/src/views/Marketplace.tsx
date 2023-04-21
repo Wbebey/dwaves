@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { CreateConcert, Kitsune, NftTickets, SwitchTab } from '../components'
+import {
+  CreateConcert,
+  Kitsune,
+  NftTickets,
+  SwitchTab,
+  YourConcerts,
+} from '../components'
 import { FormattedEvents } from '../models'
 import { BrowserProvider, ethers } from 'ethers'
 
@@ -22,7 +28,7 @@ export const Marketplace: React.FC<Props> = ({
   requestConnectionMetamask,
 }) => {
   const [myUsername, setMyUsername] = useState('')
-  const [showTickets, setShowTickets] = useState('Upcoming concerts')
+  const [showTickets, setShowTickets] = useState('NFT Tickets')
   const [balance, setBalance] = useState('')
   const [chainName, setChainName] = useState('')
   const [chainId, setChainId] = useState('')
@@ -52,6 +58,19 @@ export const Marketplace: React.FC<Props> = ({
       genre: '',
       artist: '',
       price: 0,
+    },
+  ])
+
+  const [allMyEvents, setAllMyEvents] = useState([
+    {
+      name: '',
+      date: '',
+      daysUntilConcert: '',
+      place: '',
+      genre: '',
+      totalTickets: 0,
+      price: 0,
+      ticketSold: 0,
     },
   ])
 
@@ -150,7 +169,7 @@ export const Marketplace: React.FC<Props> = ({
             .firstFalseId,
       })
     })
-
+    // console.log(formattedEvents)
     setFormattedEvents(formattedEvents)
   }
 
@@ -162,8 +181,6 @@ export const Marketplace: React.FC<Props> = ({
       signer,
     )
     const myTickets = await concertTicketNFT.getMyTickets()
-    console.log(myTickets)
-
     const myTicketsFormatted = myTickets
       .map((ticket: any) => ({
         id: ticket[0],
@@ -177,7 +194,7 @@ export const Marketplace: React.FC<Props> = ({
       }))
       .filter((ticket: any) => ticket.daysUntilConcert >= 0)
     // .filter((ticket: any) => ticket.daysUntilConcert >= 0 && ticket.artist !== myUsername)
-    console.log(myTicketsFormatted)
+    // console.log(myTicketsFormatted)
     setMyTickets(myTicketsFormatted)
   }
 
@@ -189,7 +206,20 @@ export const Marketplace: React.FC<Props> = ({
       signer,
     )
     const myEvents = await concertTicketNFT.getMyEvents()
-    // console.log(myEvents)
+
+    const formattedEvents = myEvents
+      .map((event: any) => ({
+        name: event[1],
+        date: moment(Number(event[2])).format('MM/DD/YYYY'),
+        daysUntilConcert: moment(Number(event[2])).diff(moment(), 'days'),
+        place: event[3],
+        genre: event[4],
+        totalTickets: event[6].toString(),
+        price: event[7].toString(),
+        ticketSold: event[8].toString(),
+      }))
+      .filter((ticket: any) => ticket.daysUntilConcert >= 0)
+    setAllMyEvents(formattedEvents)
   }
 
   return (
@@ -213,12 +243,12 @@ export const Marketplace: React.FC<Props> = ({
       ) : (
         <>
           <SwitchTab
-            values={['Upcoming concerts', 'Create a concert']}
+            values={['NFT Tickets', 'Your future shows', 'Create a concert']}
             showForm={showTickets}
             setShowForm={setShowTickets}
           />
           <div className={'h-[97%] pt-[20px]'}>
-            {showTickets === 'Upcoming concerts' ? (
+            {showTickets === 'NFT Tickets' ? (
               <NftTickets
                 balance={balance}
                 chainName={chainName}
@@ -226,6 +256,8 @@ export const Marketplace: React.FC<Props> = ({
                 formattedEvents={formattedEvents}
                 myTickets={myTickets}
               />
+            ) : showTickets === 'Your future shows' ? (
+              <YourConcerts allMyEvents={allMyEvents} />
             ) : (
               <CreateConcert />
             )}
