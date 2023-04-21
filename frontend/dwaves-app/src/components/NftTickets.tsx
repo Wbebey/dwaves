@@ -6,6 +6,16 @@ interface Props {
   chainName: string
   chainId: string
   formattedEvents: FormattedEvents
+  myTickets: {
+    id: number
+    name: string
+    date: string
+    daysUntilConcert: number
+    place: string
+    genre: string
+    artist: string
+    price: number
+  }[]
 }
 
 const TheTicket = ({ event }: any) => {
@@ -22,7 +32,9 @@ const TheTicket = ({ event }: any) => {
           </div>
           <div className="flex flex-row items-end justify-between">
             <p className="text-blue-500 text-xl">
-              {event.availableTickets} places left
+              {event.availableTickets
+                ? `${event.availableTickets} places left`
+                : `Concert in ${event.daysUntilConcert} days`}
             </p>
             <p className="text-blue-600 font-bold text-center pt-2 text-2xl">
               {event.price} Vibes
@@ -40,18 +52,29 @@ export const NftTickets: FC<Props> = ({
   chainName,
   chainId,
   formattedEvents,
+  myTickets,
 }) => {
   const [openModal, setOpenModal] = useState(false)
   const [ticketToBuyId, setTicketToBuyId] = useState(0)
 
   return (
     <div className="h-[95%] overflow-scroll">
-      <div>
-        {balance}
+      <div className="pl-5 pb-10">
+        Your balance : {balance} Eth
         <div>
-          {chainName} - {chainId}
+          Chain : {chainName} - {chainId}
         </div>
       </div>
+
+      <h2 className="text-center text-3xl">My Purchases - Concert Tickets</h2>
+      <div className="flex flex-row flex-wrap">
+        {myTickets.map((event, index) => (
+          <div key={index} className="w-1/2">
+            <TheTicket event={event} />
+          </div>
+        ))}
+      </div>
+
       <h2 className="text-center text-3xl">
         buy a ticket for one of these upcoming concerts !
       </h2>
