@@ -1,6 +1,15 @@
 import React, { FC, useState } from 'react'
 import { AlbumDetail, Music, FormattedEvents } from '../models'
 import axios from 'axios'
+import { BrowserProvider, ethers } from 'ethers'
+
+import DwavesToken from '../abi/DwavesToken.json'
+import ConcertTicketNFT from '../abi/ConcertTicketNFT.json'
+
+declare const window: Window &
+  typeof globalThis & {
+    ethereum: any
+  }
 
 interface Props {
   balance: string
@@ -59,8 +68,45 @@ export const NftTickets: FC<Props> = ({
   const [ticketToBuyId, setTicketToBuyId] = useState(0)
   const [ticketToOpen, setTicketToOpen] = useState(0)
 
+  const approveTransaction = async (amount: number) => {
+    console.log('Getting the dwaves token contract...')
+
+    const provider = new BrowserProvider(window.ethereum)
+    const signer = await provider.getSigner()
+    const dwavesToken = new ethers.Contract(
+      DwavesToken.address,
+      DwavesToken.abi,
+      signer,
+    )
+    const concertTicketNFT = new ethers.Contract(
+      ConcertTicketNFT.address,
+      ConcertTicketNFT.abi,
+      signer,
+    )
+
+    const token_ = dwavesToken.connect(signer)
+
+    console.log('Approve 535 tokens...')
+    // console.log(dwavesToken)
+    const tx = await dwavesToken.approve(ConcertTicketNFT.address, 900, {
+      gasLimit: 100000,
+    })
+    await tx.wait()
+    console.log(tx)
+
+    console.log('Allowance...')
+    console.log(signer.address)
+    console.log(ConcertTicketNFT.address)
+    const allowance = await dwavesToken.allowance(
+      signer.address,
+      ConcertTicketNFT.address,
+    )
+    console.log(allowance)
+  }
+
   const buyTicket = async () => {
     try {
+      await approveTransaction(230)
       const res = await axios.post(
         `${
           import.meta.env.VITE_APP_BACK_URL
