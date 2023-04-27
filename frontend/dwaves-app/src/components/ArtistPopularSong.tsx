@@ -1,50 +1,20 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-
-type MostPopularSong = {
-    name: string
-    type: string
-    listenings: number
-    src: string
-    artist: string
-    genre: string
-    albumName: string
-    albumCover: string
-    albumDate: Date
-}
+import { MostPopularSong } from "models";
 
 interface Props {
     setCurrentSong: React.Dispatch<React.SetStateAction<any>>
     setSongs: React.Dispatch<React.SetStateAction<any>>
+    mostPopularSong: MostPopularSong[]
 }
 
-export const ArtistPopularSong: React.FC<Props> = ({setCurrentSong, setSongs}) => {
-    const [mostPopularSong, setMostPopularSong] = useState<MostPopularSong[]>([])
+function convertDateToYearUTC(dateStr: Date) {
+    const date = new Date(dateStr);
+    const year = date.getUTCFullYear();
+    return year.toString();
+}
 
-    const getMostPopularSong = async () => {
-        try {
-            const res = await axios.get(
-                `${import.meta.env.VITE_APP_BACK_URL}/users/me/popular?limit=10`,
-                {
-                    withCredentials: true,
-                }
-            )
-            setMostPopularSong(res.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useEffect(() => {
-        getMostPopularSong()
-    }, [])
-
-    function convertDateToYearUTC(dateStr: Date) {
-        const date = new Date(dateStr);
-        const year = date.getUTCFullYear();
-        return year.toString();
-    }
-
+export const ArtistPopularSong: React.FC<Props> = ({setCurrentSong, setSongs, mostPopularSong}) => {
     return (
         <div>
             <div>
