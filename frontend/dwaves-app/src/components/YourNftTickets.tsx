@@ -13,9 +13,6 @@ declare const window: Window &
   }
 
 interface Props {
-  balance: string
-  chainName: string
-  chainId: string
   myTickets: {
     id: number
     name: string
@@ -28,23 +25,9 @@ interface Props {
   }[]
 }
 
-export const YourNftTickets: FC<Props> = ({
-  balance,
-  chainName,
-  chainId,
-  myTickets,
-}) => {
-
-
+export const YourNftTickets: FC<Props> = ({ myTickets }) => {
   return (
     <div className="h-[95%] overflow-scroll">
-      <div className="pl-5 pb-10">
-        Your balance : {balance} SepoliaETH
-        <div>
-          Chain : {chainName} - {chainId}
-        </div>
-      </div>
-
       <h2 className="text-center text-3xl">My Purchases - Concert Tickets</h2>
       <div className="flex flex-row flex-wrap">
         {myTickets.map((event, index) => (

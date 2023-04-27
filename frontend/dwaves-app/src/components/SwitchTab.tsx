@@ -12,7 +12,20 @@ export const SwitchTab: React.FC<Props> = ({
   showForm,
   setShowForm,
 }) => {
-  const widthOfComponent = `w-1/${values.length}`
+
+  let widthOfComponent: string;
+  switch (values.length) {
+    case 2:
+      widthOfComponent = 'w-1/2'
+      break;
+    case 3:
+      widthOfComponent = 'w-1/3'
+      break;
+    case 4:
+      widthOfComponent = 'w-1/4'
+      break;
+  }
+
   return (
     <div className="tabs">
       {values.map((value, index) => (
