@@ -44,6 +44,8 @@ function App() {
   const [connected, setConnected] = useState(false) // Temporary this value will be stored in the token
   const [wallet, setWallet] = useState<string>('')
   const [likedMusics, setLikedMusics] = useState<string[]>([])
+  const[dataUser, setDataUser]= useState<any>()
+  const [currentUser, setCurrentUser] = useState<any>()
 
   const envName = import.meta.env.VITE_NODE_ENV
   const buildDate = import.meta.env.VITE_APP_BUILD_DATE
@@ -137,6 +139,7 @@ function App() {
           withCredentials: true,
         },
       )
+      setDataUser(res.data)
     } catch (err) {
       console.log(err)
     }
@@ -167,6 +170,24 @@ function App() {
       setWallet(accounts)
     }
   }
+
+  const getCurrentUser = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_APP_BACK_URL}/users/me`,
+        {
+          withCredentials: true,
+        }
+      )
+      setCurrentUser(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(()=>{
+    connected && getCurrentUser()
+  },[connected])
 
   return loader ? (
     <Loader />
@@ -262,6 +283,7 @@ function App() {
                       setCurrentSong={setCurrentSong}
                       setSongs={setSongs}
                       setAlert={setAlert}
+                      currentUserData={currentUser}
                     />
                   }
                 />

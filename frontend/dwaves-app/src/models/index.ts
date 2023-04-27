@@ -56,3 +56,15 @@ export type FormattedEvents = {
   availableTickets: number
   ticketIdToBuy: ''
 }[];
+
+export type MostPopularSong = {
+  name: string
+  type: string
+  listenings: number
+  src: string
+  artist: string
+  genre: string
+  albumName: string
+  albumCover: string
+  albumDate: Date
+}
