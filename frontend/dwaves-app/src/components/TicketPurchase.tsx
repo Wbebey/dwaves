@@ -58,7 +58,6 @@ export const TicketPurchase: FC<Props> = ({
     const token_ = dwavesToken.connect(signer)
 
     console.log('Approve 535 tokens...')
-    // console.log(dwavesToken)
     const tx = await dwavesToken.approve(ConcertTicketNFT.address, 900, {
       gasLimit: 100000,
     })
