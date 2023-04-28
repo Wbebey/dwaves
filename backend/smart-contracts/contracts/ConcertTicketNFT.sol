@@ -251,7 +251,7 @@ contract ConcertTicketNFT is
         uint256 ticketId,
         uint256 tokenAmount
     ) internal {
-        token.transferFrom(buyer, artist, tokenAmount);
+        token.transferFrom(buyer, artist, tokenAmount * 10**token.decimals());
         _safeTransfer(artist, buyer, ticketId, "");
     }
 
