@@ -14,8 +14,8 @@ contract ICO is AccessControl {
     // X VIBES = X ETH * RATE
     // RATE = ETH IN $ * (1 - DISCOUNT)
     // DICSOUNT = 30%
-    // => RATE ~= 1300 * 0.7 = 910
-    uint256 public constant RATE = 910;
+    // => RATE ~= 1300 / 0.7 ~= 1860
+    uint256 public constant RATE = 1860;
     bytes32 public constant LIMITER_ROLE = keccak256("LIMITER_ROLE");
 
     uint256 public immutable cap;
