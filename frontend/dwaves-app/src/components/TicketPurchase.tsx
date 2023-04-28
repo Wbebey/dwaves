@@ -13,7 +13,8 @@ declare const window: Window &
   }
 
 type Props = {
-  balance: string
+  vibesBalance: string
+  sepoliaBalance: string
   chainName: string
   chainId: string
   formattedEvents: FormattedEvents
@@ -21,7 +22,8 @@ type Props = {
 }
 
 export const TicketPurchase: FC<Props> = ({
-  balance,
+  vibesBalance,
+  sepoliaBalance,
   chainName,
   chainId,
   formattedEvents,
@@ -103,16 +105,34 @@ export const TicketPurchase: FC<Props> = ({
   return (
     <div className="h-[95%] overflow-scroll">
       {openTransactionModalDone && <Confetti gravity={0.03} />}
-      <div className="pl-5">
-        Your balance : {balance} SepoliaETH
+      <div className="pl-5 w-44">
+        <h4 className="font-bold text-xl pl-3">Your Balance</h4>
         <div>
-          Chain : {chainId} - {chainName}
+          <div className="flex flex-row items-center pr-3.5 justify-end">
+            <p>{vibesBalance.toString()} VIBES</p>
+            <img
+              src="./../../public/VersionTokenLogo.png"
+              alt="ethereumLogo"
+              width={18}
+              style={{ marginLeft: 5 }}
+            />
+          </div>
+          <div className="flex flex-row items-center pr-2 justify-end">
+            <p>
+              {sepoliaBalance.substring(0, 5)} ETH
+            </p>
+            <img
+                src="./../../public/ethereumLogo.jpg"
+                alt="ethereumLogo"
+                width={30}
+            />
+          </div>
         </div>
       </div>
       <h2 className="text-center text-3xl">
         buy a ticket for one of these upcoming concerts !
       </h2>
-      <div className="flex flex-row flex-wrap">
+      <div className="flex flex-row flex-wrap justify-between mx-8">
         {formattedEvents.map((event, index) => (
           <div
             key={index}
@@ -121,7 +141,7 @@ export const TicketPurchase: FC<Props> = ({
               setTicketToOpen(index)
               setTicketToBuyId(+event.ticketIdToBuy)
             }}
-            className="w-1/2 cursor-pointer"
+            style={{ width: 500 }}
           >
             <TicketTemplate event={event} />
           </div>
