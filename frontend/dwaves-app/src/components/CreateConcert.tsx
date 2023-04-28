@@ -60,6 +60,8 @@ export const CreateConcert = ({
   const [date, setDate] = useState<DatepickerDate>()
   const [transactionInProgress, setTransactionInProgress] = useState(false)
   const [transactionIsDone, setTransactionIsDone] = useState(false)
+  const [openTransactionFailedModal, setOpenTransactionFailedModal] =
+    useState(false)
   const [txnHash, setTxnHash] = useState('')
   const [genres, setGenres] = useState([{ id: 0, name: '' }])
 
@@ -128,13 +130,18 @@ export const CreateConcert = ({
       setDate({ startDate: '' })
       console.log('fetch hey hey')
     } catch (err) {
+      setTransactionInProgress(false)
+      setTransactionIsDone(true)
+      setOpenTransactionFailedModal(true)
       console.log(err)
     }
   }
 
   return (
     <div>
-      {transactionIsDone && <Confetti gravity={0.03} />}
+      {transactionIsDone && !openTransactionFailedModal && (
+        <Confetti gravity={0.03} />
+      )}
       <h3 className="text-3xl text-center">
         Create a Decentralized Concert 🤯!
       </h3>
@@ -248,38 +255,64 @@ export const CreateConcert = ({
         className="modal-toggle"
         onChange={() => {
           setTransactionIsDone(false)
+          setOpenTransactionFailedModal(false)
         }}
       />
       <div className="modal w-full">
         <div className="modal-box flex items-center flex-col">
-          <h3 className="font-bold text-2xl text-center mb-4 text-white">
-            Hey ! Your virtual concert has been created 🥳 🎉 !
-          </h3>
-          <img
-            className="w-80"
-            src={`https://media.tenor.com/XnsvYVbmUIUAAAAC/p%C3%BAblico-concierto.gif`}
-            alt=""
-          />
+          {!openTransactionFailedModal ? (
+            <>
+              <h3 className="font-bold text-2xl text-center mb-4 text-white">
+                Hey ! Your virtual concert has been created 🥳 🎉 !
+              </h3>
+              <img
+                className="w-80"
+                src={`https://media.tenor.com/XnsvYVbmUIUAAAAC/p%C3%BAblico-concierto.gif`}
+                alt=""
+              />
 
-          <p className="mr-4 mt-7 text-justify text-white">
-            Great news! The virtual concert NFT tickets have been successfully
-            minted. Get ready for an unforgettable experience featuring Dwaves.
-            These NFT tickets are now available for purchase!
-          </p>
+              <p className="mr-4 mt-7 text-justify text-white">
+                Great news! The virtual concert NFT tickets have been
+                successfully minted. Get ready for an unforgettable experience
+                featuring Dwaves. These NFT tickets are now available for
+                purchase!
+              </p>
 
-          <a
-            href={`https://${chainName}.etherscan.io/tx/${txnHash}`}
-            target="_blank"
-            className="btn btn-ghost normal-case text-xl flex flex-row items-center mt-5"
-          >
-            <p className="text-white">View Transaction on Etherscan</p>
-          </a>
+              <a
+                href={`https://${chainName}.etherscan.io/tx/${txnHash}`}
+                target="_blank"
+                className="btn btn-ghost normal-case text-xl flex flex-row items-center mt-5"
+              >
+                <p className="text-white">View Transaction on Etherscan</p>
+              </a>
 
-          <div className="modal-action">
-            <label htmlFor="my-modal" className="btn">
-              PLUS ULTRA 💥 !
-            </label>
-          </div>
+              <div className="modal-action">
+                <label htmlFor="my-modal" className="btn">
+                  PLUS ULTRA 💥 !
+                </label>
+              </div>
+            </>
+          ) : (
+            <>
+              <h3 className="font-bold text-2xl text-center mb-4 text-white">
+                Sorry your transaction failed ️😔 ...
+              </h3>
+              <img
+                className="w-80"
+                src={`https://media.tenor.com/Hr98vjSz-V8AAAAC/cat-kitty.gif`}
+                alt=""
+              />
+              <p className="mr-4 mt-7 text-justify text-white">
+                Look at the error in the console for more details, and try again
+                later
+              </p>
+              <div className="modal-action">
+                <label htmlFor="my-modal" className="btn">
+                  Try later ... 😕
+                </label>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
