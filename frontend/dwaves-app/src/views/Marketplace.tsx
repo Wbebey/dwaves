@@ -11,6 +11,7 @@ import { FormattedEvents } from '../models'
 import { BrowserProvider, ethers } from 'ethers'
 
 import ConcertTicketNFT from '../abi/ConcertTicketNFT.json'
+import DwavesToken from '../abi/DwavesToken.json'
 import moment from 'moment'
 import axios from 'axios'
 
@@ -30,7 +31,8 @@ export const Marketplace: React.FC<Props> = ({
 }) => {
   const [myUsername, setMyUsername] = useState('')
   const [showTickets, setShowTickets] = useState('Ticket Counter')
-  const [balance, setBalance] = useState('')
+  const [sepoliaBalance, setSepoliaBalance] = useState('')
+  const [vibesBalance, setVibesBalance] = useState('')
   const [chainName, setChainName] = useState('')
   const [chainId, setChainId] = useState('')
 
@@ -75,9 +77,7 @@ export const Marketplace: React.FC<Props> = ({
     },
   ])
 
-  useEffect(() => {
-    getConnectedUsername()
-  }, [])
+  useEffect(() => {}, [])
 
   useEffect(() => {
     if (wallet) {
@@ -97,21 +97,32 @@ export const Marketplace: React.FC<Props> = ({
           withCredentials: true,
         },
       )
-      setMyUsername(res.data.username)
+      return res.data.username
     } catch (error) {
       console.log(error)
     }
   }
 
-  const fetchNetworkDetailsAndBalance = (provider: any) => {
+  const fetchNetworkDetailsAndBalance = async (provider: any) => {
     provider.getBalance(wallet[0]).then((result: any) => {
-      setBalance(ethers.formatEther(result))
+      setSepoliaBalance(ethers.formatEther(result))
     })
 
     provider.getNetwork().then((result: any) => {
       setChainName(result.name)
       setChainId(result.chainId.toString())
     })
+
+    const signer = await provider.getSigner()
+    const dwavesToken = new ethers.Contract(
+      DwavesToken.address,
+      DwavesToken.abi,
+      signer,
+    )
+    const vibesBalance = await dwavesToken.balanceOf(wallet[0])
+    const vibesBalanceFormatted =
+      parseFloat(vibesBalance) / parseFloat('1000000000000000000n')
+    setVibesBalance(vibesBalanceFormatted.toString())
   }
 
   const fetchAllEventDetails = async (provider: any) => {
@@ -152,9 +163,11 @@ export const Marketplace: React.FC<Props> = ({
       return falseCountsAndFirstFalse
     }
 
+    const userName = await getConnectedUsername()
+
     const formattedEvents: any = []
     uniqueEventsWithIdEvent.forEach((event: any) => {
-      if (event[6] !== myUsername) {
+      if (event[6] !== userName) {
         formattedEvents.push({
           id: event[1],
           name: event[2],
@@ -177,6 +190,7 @@ export const Marketplace: React.FC<Props> = ({
 
   const fetchMyTickets = async (provider: any) => {
     console.log('start fetch my tickets')
+    const userName = await getConnectedUsername()
     const signer = await provider.getSigner()
     const concertTicketNFT = new ethers.Contract(
       ConcertTicketNFT.address,
@@ -198,13 +212,14 @@ export const Marketplace: React.FC<Props> = ({
       // .filter((ticket: any) => ticket.daysUntilConcert >= 0)
       .filter(
         (ticket: any) =>
-          ticket.daysUntilConcert >= 0 && ticket.artist !== myUsername,
+          ticket.daysUntilConcert >= 0 && ticket.artist !== userName,
       )
     console.log(myTicketsFormatted)
     setMyTickets(myTicketsFormatted)
   }
 
   const fetchMyEvents = async (provider: any) => {
+    const userName = await getConnectedUsername()
     const signer = await provider.getSigner()
     const concertTicketNFT = new ethers.Contract(
       ConcertTicketNFT.address,
@@ -261,7 +276,8 @@ export const Marketplace: React.FC<Props> = ({
           <div className={'h-[97%] pt-[20px]'}>
             {showTickets === 'Ticket Counter' ? (
               <TicketPurchase
-                balance={balance}
+                vibesBalance={vibesBalance}
+                sepoliaBalance={sepoliaBalance}
                 chainName={chainName}
                 chainId={chainId}
                 formattedEvents={formattedEvents}

@@ -4,7 +4,7 @@ export const TicketTemplate = ({ event }: any) => {
   return (
     <div className="card bg-gray-50 border mx-2 my-4 hover:bg-teal-300">
       <div>
-        <div className="absolute pl-5 pt-3 w-80">
+        <div className="absolute pl-5 pt-1 w-80">
           <p className="italic text-3xl">{event.name}</p>
           <p className="text-xl pt-2">by {event.artist}</p>
           <div className="flex flex-row justify-between pt-2">
