@@ -16,22 +16,27 @@ type MostPopularSong = {
 interface Props {
   setCurrentSong: React.Dispatch<React.SetStateAction<any>>
   setSongs: React.Dispatch<React.SetStateAction<any>>
+  artistId: number
 }
 
 export const ArtistPopularSong: React.FC<Props> = ({
   setCurrentSong,
   setSongs,
+  artistId,
 }) => {
   const [mostPopularSong, setMostPopularSong] = useState<MostPopularSong[]>([])
 
   const getMostPopularSong = async () => {
+    const url = artistId
+      ? `${
+          import.meta.env.VITE_APP_BACK_URL
+        }/musics/popular?artistId=${artistId}&limit=10`
+      : `${import.meta.env.VITE_APP_BACK_URL}/users/me/popular?limit=10`
+
     try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_APP_BACK_URL}/users/me/popular?limit=10`,
-        {
-          withCredentials: true,
-        },
-      )
+      const res = await axios.get(url, {
+        withCredentials: true,
+      })
       setMostPopularSong(res.data)
     } catch (error) {
       console.log(error)
@@ -40,7 +45,7 @@ export const ArtistPopularSong: React.FC<Props> = ({
 
   useEffect(() => {
     getMostPopularSong()
-  }, [])
+  }, [artistId])
 
   function convertDateToYearUTC(dateStr: Date) {
     const date = new Date(dateStr)
@@ -51,7 +56,9 @@ export const ArtistPopularSong: React.FC<Props> = ({
   return (
     <div>
       <div>
-        <h1 className={'text-4xl pl-[5px] font-bold mb-5'}>My Popular Song</h1>
+        <h1 className={'text-4xl pl-[5px] font-bold mb-5'}>
+          {artistId ? 'Top Songs' : 'My Popular Song'}
+        </h1>
         {mostPopularSong.map((song, index) => (
           <div key={song.name}>
             <div
