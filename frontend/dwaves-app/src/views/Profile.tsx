@@ -24,7 +24,7 @@ export const Profile: React.FC<Props> = ({setCurrentSong, setSongs, setAlert}) =
           setShowForm={setShowForm}
         />
         {showForm === 'Overview' ? (
-          <div className={'h-[97%] pt-[30px] pl-[20px]'}>
+          <div className={'h-[100%] pt-[30px] pl-[20px]'}>
             <div className={`w-full h-[90%] overflow-scroll`}>
               <AlbumOfArtist setAlert={setAlert} />
               <ArtistPopularSong

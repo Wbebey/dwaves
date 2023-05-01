@@ -4,6 +4,7 @@ import {
   Player,
   Explorer,
   Album,
+  Artist,
   Download,
   ModalLogin,
   Profile,
@@ -249,7 +250,12 @@ function App() {
                 <Route path="/player" element={<Player />} />
                 <Route
                   path="/marketplace"
-                  element={<Marketplace wallet={wallet} requestConnectionMetamask={requestConnectionMetamask} />}
+                  element={
+                    <Marketplace
+                      wallet={wallet}
+                      requestConnectionMetamask={requestConnectionMetamask}
+                    />
+                  }
                 />
                 <Route
                   path="/download"
@@ -269,6 +275,7 @@ function App() {
                   path="/playlist"
                   element={<PlaylistPage setAlert={setAlert} />}
                 />
+                <Route path="/artist/:id" element={<Artist />} />
                 <Route path="/user" element={<div />} />
               </Routes>
             </Router>
