@@ -2,23 +2,23 @@ import axios, { AxiosResponse } from 'axios'
 import 'styles/SingleForm.scss'
 import { Icon } from 'components/shared'
 
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { responseRequest } from 'models'
 
 type Single = {
   title: string
   genre: string
-  cover: File
-  music: File
+  cover: File | null
+  music: File | null
 }
 
 interface Props {
   setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
 }
 
-export const SingleForm : React.FC<Props> = ({ setAlert }) => {
-  const { register, setValue, getValues, handleSubmit } = useForm<Single>()
+export const SingleForm: React.FC<Props> = ({ setAlert }) => {
+  const { register, setValue, getValues, handleSubmit, reset } = useForm<Single>()
   const [filesExist, setFilesExist] = useState({ music: false, cover: false })
 
   function handleFile(e: ChangeEvent<HTMLInputElement>) {
@@ -43,32 +43,32 @@ export const SingleForm : React.FC<Props> = ({ setAlert }) => {
     const form = new FormData()
     form.append('genre', data.genre)
     form.append('name', data.title)
-    form.append('cover', data.cover)
-    form.append('music', data.music)
+    form.append('cover', data.cover!)
+    form.append('music', data.music!)
     axios
       .post(`${import.meta.env.VITE_APP_BACK_URL}/musics/pinSingle`, form, {
         withCredentials: true,
       })
       .then((res) => {
         if (Array.isArray(res.data)) {
-          displayAlert(res.data[0].msg , res.status)
+          displayAlert(res.data[0].msg, res.status)
         } else {
-          displayAlert(res.data.message , res.status)
+          displayAlert(res.data.message, res.status)
         }
       })
       .catch((err) => {
         if (Array.isArray(err.response.data)) {
-          displayAlert(err.response.data[0].msg , err.response.status)
+          displayAlert(err.response.data[0].msg, err.response.status)
         } else {
-          displayAlert(err.response.data.message , err.response.status)
+          displayAlert(err.response.data.message, err.response.status)
         }
       })
   }
 
-  const displayAlert = (msg:string , status:number) => {
-    setAlert({response : msg , status : status, visible: true })
-    setTimeout(()=>{
-      setAlert({response : "" , status : 0, visible: false })
+  const displayAlert = (msg: string, status: number) => {
+    setAlert({ response: msg, status: status, visible: true })
+    setTimeout(() => {
+      setAlert({ response: "", status: 0, visible: false })
     }, 3000)
   }
 
@@ -82,7 +82,17 @@ export const SingleForm : React.FC<Props> = ({ setAlert }) => {
             <h1>Upload a new file</h1>
           </div>
           <div id="action" className="flex row">
-            <button className="clear">Clear</button>
+            <button
+              className="clear"
+              onClick={() => {
+                reset(formValues => ({
+                  ...formValues,
+                  genre: '',
+                  title: '',
+                  cover: null,
+                  music: null
+                }))
+              }}>Clear</button>
             <button type="submit" className="upload">
               Upload
             </button>
@@ -94,7 +104,14 @@ export const SingleForm : React.FC<Props> = ({ setAlert }) => {
               <Icon icon="song" />
             </div>
             {filesExist.music ? (
-              <span>{getValues('music').name}</span>
+              <span>
+                {
+                  getValues('music') ?
+                  getValues('music')?.name
+                  :
+                  'Upload Music'
+                }
+              </span>
             ) : (
               <span>Upload Music</span>
             )}
@@ -116,7 +133,14 @@ export const SingleForm : React.FC<Props> = ({ setAlert }) => {
               <Icon icon="upload" />
             </div>
             {filesExist.cover ? (
-              <span>{getValues('cover').name}</span>
+              <span>
+                {
+                  getValues('cover') ?
+                  getValues('cover')?.name
+                  :
+                  'Upload Cover'
+                }
+              </span>
             ) : (
               <span>Upload Cover</span>
             )}
