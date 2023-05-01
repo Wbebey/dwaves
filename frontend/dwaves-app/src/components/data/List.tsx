@@ -16,6 +16,7 @@ type Album = {
   artist: string
   subscribers: number
   cover: string
+  artistId: number
 }
 
 export const List = () => {
@@ -26,7 +27,7 @@ export const List = () => {
         `${import.meta.env.VITE_APP_BACK_URL}/albums`,
         {
           withCredentials: true,
-        }
+        },
       )
       setAlbums(res.data)
     } catch (error) {
@@ -75,7 +76,13 @@ export const List = () => {
                   >
                     <img src={album.cover} alt="" />
                     <h3>{album.name.substring(0, 17 - 3)}...</h3>
-                    <p>{album.artist}</p>
+                    <Link
+                        key={album.id}
+                        to={`/artist/${album.artistId}`}
+                        className="hover:underline underline-offset-2"
+                    >
+                      <p>{album.artist}</p>
+                    </Link>
                   </Link>
                 ))}
               </div>
