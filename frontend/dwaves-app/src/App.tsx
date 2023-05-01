@@ -295,7 +295,16 @@ function App() {
                   path="/playlist"
                   element={<PlaylistPage setAlert={setAlert} />}
                 />
-                <Route path="/artist/:id" element={<Artist />} />
+                <Route
+                  path="/artist/:id"
+                  element={
+                    <Artist
+                      setCurrentSong={setCurrentSong}
+                      setSongs={setSongs}
+                      setAlert={setAlert}
+                    />
+                  }
+                />
                 <Route path="/user" element={<div />} />
                 <Route
                   path="/settings"
