@@ -39,7 +39,7 @@ export type Playlists = {
   creatorId: number
   id: number
   likes: number
-  musics:string[]
+  musics:Test[]
   name: string
   updatedAt: string
   description:string
