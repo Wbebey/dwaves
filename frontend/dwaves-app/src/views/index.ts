@@ -1,4 +1,5 @@
 import { Album } from 'views/Album'
+import { Artist } from 'views/Artist'
 import { Download } from 'views/Download'
 import { Explorer } from 'views/Explorer'
 import { Profile } from 'views/Profile'
@@ -11,6 +12,7 @@ import { Settings } from './Settings'
 
 export {
   Album,
+  Artist,
   Download,
   Explorer,
   ModalLogin,
