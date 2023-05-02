@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Icon } from '../components/shared'
 import { AlbumDetail, responseRequest } from '../models'
 import axios from 'axios'
-import { ArtistPopularSong } from '../components'
+import { AlbumOfArtist, ArtistPopularSong } from '../components'
 
 interface Props {
   setCurrentSong: React.Dispatch<React.SetStateAction<any>>
@@ -64,11 +64,14 @@ export const Artist: React.FC<Props> = ({
       <div className={'h-[100%] pt-[30px] pl-[20px]'}>
         <div className={`w-full h-[90%] overflow-scroll`}>
           {artist.id && (
-            <ArtistPopularSong
-              artistId={artist.id}
-              setSongs={setSongs}
-              setCurrentSong={setCurrentSong}
-            />
+            <>
+              <AlbumOfArtist artistId={artist.id} setAlert={setAlert} />
+              <ArtistPopularSong
+                artistId={artist.id}
+                setSongs={setSongs}
+                setCurrentSong={setCurrentSong}
+              />
+            </>
           )}
         </div>
       </div>
