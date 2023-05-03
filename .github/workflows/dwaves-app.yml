@@ -6,7 +6,7 @@ on:
         - frontend/dwaves-app/**
     pull_request:
       types: [labeled]
-      branches: [staging, feature/**, bugfix/**, hotfix/**]
+      branches: [staging]
       paths:
         - frontend/dwaves-app/**
     workflow_dispatch:
