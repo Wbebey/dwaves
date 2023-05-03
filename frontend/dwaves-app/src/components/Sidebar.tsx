@@ -82,11 +82,13 @@ export const Sidebar: React.FC<Props> = ({
             <p>Item</p>
           </Link>
         </li>
-        <li>
-          <Link to={'/playlist'}>
-            <MusicFilter className="w-10 h-10 mx-auto" />
-          </Link>
-        </li>
+        {connected && (
+          <li>
+            <Link to={'/playlist'}>
+              <MusicFilter className="w-10 h-10 mx-auto" />
+            </Link>
+          </li>
+        )}
         {connected ? (
           <>
             <li>
@@ -109,20 +111,18 @@ export const Sidebar: React.FC<Props> = ({
         <li
           style={
             connected
-              ?
-              {
-                position: 'absolute',
-                bottom: '10%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)'
-              }
-              :
-              {
-                position: 'absolute',
-                bottom: '1%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)'
-              }
+              ? {
+                  position: 'absolute',
+                  bottom: '10%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                }
+              : {
+                  position: 'absolute',
+                  bottom: '1%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                }
           }
         >
           <div>
