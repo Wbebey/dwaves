@@ -79,6 +79,7 @@ export const Banner = () => {
                   (
                     i < 3 &&
                     <img
+                        key={i}
                       alt=""
                       className={`img ${NumberWords[i]}`}
                       src={`${music.albumCover}`}
