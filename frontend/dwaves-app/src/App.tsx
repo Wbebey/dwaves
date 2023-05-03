@@ -10,6 +10,7 @@ import {
   PlaylistPage,
   Playlist,
   Marketplace,
+  Settings,
 } from 'views'
 import { Loader, Sidebar, Alert, Footer } from 'components'
 import { PlayerWrapper } from 'components/player'
@@ -267,7 +268,12 @@ function App() {
                 <Route path="/player" element={<Player />} />
                 <Route
                   path="/marketplace"
-                  element={<Marketplace wallet={wallet} requestConnectionMetamask={requestConnectionMetamask} />}
+                  element={
+                    <Marketplace
+                      wallet={wallet}
+                      requestConnectionMetamask={requestConnectionMetamask}
+                    />
+                  }
                 />
                 <Route
                   path="/download"
@@ -289,6 +295,16 @@ function App() {
                   element={<PlaylistPage setAlert={setAlert} />}
                 />
                 <Route path="/user" element={<div />} />
+                <Route
+                  path="/settings"
+                  element={
+                    <Settings
+                      envName={envName}
+                      buildDate={buildDate}
+                      commitUrl={commitUrl}
+                    />
+                  }
+                />
               </Routes>
             </Router>
           </div>
