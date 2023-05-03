@@ -10,6 +10,7 @@ export type Music = {
   listenings: number;
   duration: string;
   progress: number;
+  currentTime: number;
   length: number;
 };
 
