@@ -6,7 +6,7 @@ on:
         - frontend/dwaves-app/**
     pull_request:
       types: [labeled]
-      branches: [staging]
+      branches: [staging, feature/**, bugfix/**, hotfix/**]
       paths:
         - frontend/dwaves-app/**
     workflow_dispatch:
@@ -33,6 +33,7 @@ env:
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
     PRODUCTION_URL: ${{ secrets.DWAVES_APP_PRODUCTION_URL }}
+    TEST_URL: ${{ secrets.DWAVES_APP_TEST_URL }}
     STAGING_URL: ${{ secrets.DWAVES_APP_STAGING_URL }}
     TOKEN_STG_DOPPLER: ${{ secrets.DWAVES_APP_DOPPLER_TOKEN_STG }}
     TOKEN_PRD_DOPPLER: ${{ secrets.DWAVES_APP_DOPPLER_TOKEN_PRD }}
