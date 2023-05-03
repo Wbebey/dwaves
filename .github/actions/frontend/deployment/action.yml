@@ -20,35 +20,36 @@ runs:
         run: |-
           npm install
 
-      - name: install doppler cli 
-        working-directory:  ${{ env.PROJECT_DIRECTORY }}
-        shell: bash
-        run: |-
-          sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
-          curl -sLf --retry 3 --tlsv1.2 --proto "=https" 'https://packages.doppler.com/public/cli/gpg.DE2A7741A397C129.key' | sudo apt-key add -
-          echo "deb https://packages.doppler.com/public/cli/deb/debian any-version main" | sudo tee /etc/apt/sources.list.d/doppler-cli.list
-          sudo apt-get update && sudo apt-get install doppler
-
-      - name: Download environment variables 🌎
-        working-directory:  ${{ env.PROJECT_DIRECTORY }}
-        shell: bash
-        run: |-
-          source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
-          echo "Downloading environment variables from doppler..."
-          cat $DOPPLER_TOKEN
-          doppler secrets download --config doppler.yaml --no-file --token $DOPPLER_TOKEN --format env > .env
-          cat .env
-          head .env
-          tail .env
-      # - name: Retrieve environment variables 🌎
+      # - name: install doppler cli 
       #   working-directory:  ${{ env.PROJECT_DIRECTORY }}
       #   shell: bash
       #   run: |-
-      #     source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
-      #     cat .env 
+      #     sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+      #     curl -sLf --retry 3 --tlsv1.2 --proto "=https" 'https://packages.doppler.com/public/cli/gpg.DE2A7741A397C129.key' | sudo apt-key add -
+      #     echo "deb https://packages.doppler.com/public/cli/deb/debian any-version main" | sudo tee /etc/apt/sources.list.d/doppler-cli.list
+      #     sudo apt-get update && sudo apt-get install doppler
+
+      # - name: Download environment variables 🌎
+      #   working-directory:  ${{ env.PROJECT_DIRECTORY }}
+      #   shell: bash
+      #   run: |-
+      #     source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
+      #     echo "Downloading environment variables from doppler..."
+      #     cat $DOPPLER_TOKEN
+      #     doppler secrets download --config doppler.yaml --no-file --token $DOPPLER_TOKEN --format env > .env
+      #     cat .env
       #     head .env
       #     tail .env
-      #     tail -n +4 .env > .new_env && mv .new_env .env
+      - name: Retrieve environment variables 🌎
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
+        shell: bash
+        run: |-
+          source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
+          cat .env 
+          echo "Remove first 3 lines from .env file..."
+          tail -n +4 .env > .new_env && mv .new_env .env
+          echo "New .env file:"
+          cat .env
 
       - name: Export build date 📅
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
