@@ -13,6 +13,7 @@ runs:
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
+          cat .env
 
       - name: Build 🏗
         working-directory:  ${{ env.PROJECT_DIRECTORY }}

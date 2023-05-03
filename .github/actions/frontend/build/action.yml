@@ -39,4 +39,5 @@ runs:
         shell: bash
         run: |-
           ls -la
+          cat .env
           CI="false" npm run deploy-build
