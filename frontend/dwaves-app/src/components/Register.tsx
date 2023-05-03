@@ -39,7 +39,7 @@ export const Register: React.FC<Props> = ({ setShowLogin, setAlert }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-center"
+      className="flex flex-col justify-center gap-4"
     >
       <div id="input-text" className="form-control w-full">
         <label className="label">

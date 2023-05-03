@@ -41,8 +41,8 @@ export const List = () => {
 
   return (
     <section className="contain-list-view">
-      {/* <header className="head">
-        <div style={{ width: '60%' }} className="relative z-0">
+      <header className="m-4">
+        {/* <div style={{ width: '60%' }} className="relative z-0">
           <input
             type="text"
             id="floating_standard"
@@ -60,8 +60,9 @@ export const List = () => {
         <div className="divider divider-horizontal" />
         <Button text="titres" size="Large" handleClick={() => {}} />
         <Button text="listes" size="Large" handleClick={() => {}} />
-        <Button text="artistes" size="Large" handleClick={() => {}} />
-      </header> */}
+        <Button text="artistes" size="Large" handleClick={() => {}} /> */}
+        <span className='font-bold text-4xl'>Featured albums</span>
+      </header>
       <div className="content-playlist">
         <div className="body">
           {/* modify flex with action button */}
