@@ -75,5 +75,8 @@ runs:
           source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
           export gcp_environment="${{ env.APP }}-$ENVIRONMENT"
           export deploy_url=$BUCKET_NAME
+          echo $deploy_url
+          echo $BUCKET_NAME
+          echo $ENVIRONMENT
           gsutil rsync -R build/ gs://$deploy_url
           echo "Deployed to $gcp_environment environment: $deploy_url"
