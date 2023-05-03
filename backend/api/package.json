@@ -5,11 +5,11 @@
   "main": "build/server.js",
   "scripts": {
     "build": "tsc",
-    "start": "doppler run -- TS_NODE_BASEURL=build node -r tsconfig-paths/register build/server.js",
+    "start": "doppler run -- npm run deploy-start",
     "dev": "doppler run -- nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "studio": "doppler run -- prisma studio",
-    "db:init": "doppler run -- prisma migrate deploy && prisma db seed",
+    "db:init": "doppler run -- prisma migrate && doppler run -- prisma migrate deploy && doppler run -- prisma db seed",
     "db:migrate": "doppler run -- prisma migrate dev",
     "db:deploy": "doppler run -- prisma migrate deploy",
     "deploy-start": "TS_NODE_BASEURL=build node -r tsconfig-paths/register build/server.js",
