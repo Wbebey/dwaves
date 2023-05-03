@@ -27,6 +27,9 @@ runs:
           source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
           docker build . \
             -f ${{ GITHUB.WORKSPACE }}/${{ env.PROJECT_DIRECTORY }}/Dockerfile \
+            --build-arg DOPPLER_TOKEN=$DOPPLER_TOKEN \
+            --build-arg APP=${{ env.APP }} \
+            --build-arg ENV_NAME=$ENV_NAME \
             -t $DOCKER_TAG \
 
       - name: Publish to Container registry 🛫

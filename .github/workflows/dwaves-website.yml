@@ -122,9 +122,7 @@ jobs:
 
     build:
       name: Build 🏗
-      if: github.ref == 'refs/heads/main' || 
-          github.ref == 'refs/heads/staging' || 
-          startsWith(github.ref, 'refs/heads/feature/') || 
+      if: startsWith(github.ref, 'refs/heads/feature/') || 
           startsWith(github.ref, 'refs/heads/bugfix/') || 
           startsWith(github.ref, 'refs/heads/hotfix/')
       runs-on: ubuntu-latest
@@ -151,7 +149,7 @@ jobs:
         permissions: 
             contents: read
             pull-requests: write
-        needs: [build]
+        needs: [unit-test, integration-test]
         steps:
             - name: Checkout 😇
               uses: actions/checkout@v3
