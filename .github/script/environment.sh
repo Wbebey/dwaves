@@ -8,20 +8,20 @@ function get_environment_properties() {
     then
         export ENVIRONMENT="production"
         export ENV_NAME="prd"
-        export DOPPLER_TOKEN="${DOPPLER_TOKEN_PRD}"
+        export DOPPLER_TOKEN="${TOKEN_PRD_DOPPLER}"
         export BUCKET_NAME="${PRODUCTION_URL}"
         export DOCKER_TAG="gcr.io/${GCP_PROJECT_ID}/${APP}-$ENVIRONMENT:$BRANCH_NAME-${GITHUB_SHA}"
     elif [[ ${GITHUB_REF} == refs/heads/staging ]]
     then
         export ENVIRONMENT="staging"
         export ENV_NAME="stg"
-        export DOPPLER_TOKEN="${DOPPLER_TOKEN_STG}"
+        export DOPPLER_TOKEN="${TOKEN_STG_DOPPLER}"
         export BUCKET_NAME="${STAGING_URL}"
         export DOCKER_TAG="gcr.io/${GCP_PROJECT_ID}/${APP}-$ENVIRONMENT:$BRANCH_NAME-${GITHUB_SHA}"
     else
         export ENVIRONMENT="test"
         export ENV_NAME="test"
-        export DOPPLER_TOKEN="${DOPPLER_TOKEN_TEST}"
+        export DOPPLER_TOKEN="${TOKEN_TEST_DOPPLER}"
         export BUCKET_NAME="${TEST_URL}"
         export DOCKER_TAG="gcr.io/${GCP_PROJECT_ID}/${APP}-$ENVIRONMENT:$BRANCH_NAME-${GITHUB_SHA}"
     fi
