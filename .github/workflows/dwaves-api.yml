@@ -9,6 +9,12 @@ on:
     branches: [staging]
     paths:
       - backend/api/**
+  workflow_dispatch:
+    inputs:
+      paths:
+        description: 'Paths to run the workflow on'
+        required: true
+        default: 'backend/api/**'
 
 env:
     APP: dwaves-api
