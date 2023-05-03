@@ -28,10 +28,6 @@ export const Banner = () => {
     }
   }
 
-  useEffect(()=>{
-    console.log(indexPlaylist)
-  },[indexPlaylist])
-
   useEffect(() => {
     getPlaylists()
   }, [])
