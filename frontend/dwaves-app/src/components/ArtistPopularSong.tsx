@@ -4,6 +4,7 @@ interface Props {
     setCurrentSong: React.Dispatch<React.SetStateAction<any>>
     setSongs: React.Dispatch<React.SetStateAction<any>>
     mostPopularSong: MostPopularSong[]
+    artistId?: number
 }
 
 function convertDateToYearUTC(dateStr: Date) {
@@ -12,11 +13,11 @@ function convertDateToYearUTC(dateStr: Date) {
     return year.toString();
 }
 
-export const ArtistPopularSong: React.FC<Props> = ({ setCurrentSong, setSongs, mostPopularSong }) => {
+export const ArtistPopularSong: React.FC<Props> = ({ setCurrentSong, setSongs, mostPopularSong, artistId }) => {
     return (
         <div>
             <div>
-                <h1 className={'text-4xl pl-[5px] font-bold mb-5'}>My Popular Song</h1>
+                <h1 className={'text-4xl pl-[5px] font-bold mb-5'}>{artistId ? 'Top Songs' : 'My Popular Song'}</h1>
                 {
                     mostPopularSong.map((song, index) => (
                         <div key={song.name}>
