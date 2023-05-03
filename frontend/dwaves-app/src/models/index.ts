@@ -8,6 +8,7 @@ export type Music = {
   src: string | undefined;
   name: string;
   listenings: number;
+  duration: string;
   progress: number;
   length: number;
 };
@@ -16,6 +17,7 @@ export type Test = {
   src: string | undefined;
   name: string;
   listenings: number;
+  duration: string
   artist?: string;
   albumName?: string
   albumCover?: string
