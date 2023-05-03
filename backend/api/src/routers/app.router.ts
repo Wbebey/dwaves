@@ -14,14 +14,14 @@ const appRouter = Router()
 
 appRouter.get('/', appController.healthcheck)
 appRouter.use('/auth', authRouter)
+appRouter.use('/albums', albumRouter)
+appRouter.use('/playlists', playlistRouter)
 
 appRouter.use(deserializeUser)
 
 appRouter.use('/users', userRouter)
-appRouter.use('/albums', albumRouter)
 appRouter.use('/musics', musicRouter)
 appRouter.use('/genres', genreRouter)
-appRouter.use('/playlists', playlistRouter)
 appRouter.use('/events', eventRouter)
 
 export default appRouter
