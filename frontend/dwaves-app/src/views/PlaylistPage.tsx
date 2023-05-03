@@ -1,8 +1,4 @@
 import {
-  AlbumOfArtist,
-  ArtistPopularSong,
-  SwitchTab,
-  CreatePlaylist,
   UserPlaylists,
 } from "../components";
 import React, { useState } from "react";
@@ -12,7 +8,7 @@ interface Props {
   setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>;
 }
 
-console.log("hello world");
+console.log("hello dwaves");
 
 export const PlaylistPage: React.FC<Props> = ({ setAlert }) => {
   return (
