@@ -1,4 +1,4 @@
-import { Banner, List, Suggestions } from "components/data";
+import { Banner, List, Suggestions } from 'components/data'
 
 export const ContentPlaylist = () => {
   return (
@@ -11,5 +11,5 @@ export const ContentPlaylist = () => {
         {/* <Suggestions /> */}
       </div>
     </div>
-  );
-};
+  )
+}

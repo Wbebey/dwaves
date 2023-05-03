@@ -193,9 +193,6 @@ export const PlayerWrapper: React.FC<Props> = ({
                     }
                   />
                 </button>
-                <div>
-                  <Icon icon="close" />
-                </div>
               </div>
             )}
           </div>
