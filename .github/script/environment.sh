@@ -50,9 +50,9 @@ function export_commit_url () {
     sed -i -e "s|${APP_COMMIT_URL}=.*|${APP_COMMIT_URL}=$GITHUB_COMMIT_URL|g" .env
 }
 
-function doppler_setup() {
+function doppler_token() {
     get_environment_properties
     echo "Setting up Doppler"
-    export HISTIGNORE='export DOPPLER_TOKEN*' # ignore this command in history
+    # export HISTIGNORE='export DOPPLER_TOKEN*' # ignore this command in history
     export DOPPLER_TOKEN="${DOPPLER_TOKEN}"
 }
