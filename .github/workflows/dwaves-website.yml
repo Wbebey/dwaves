@@ -29,9 +29,9 @@ env:
     PRODUCTION_URL: ${{ secrets.DWAVES_WEBSITE_PRODUCTION_URL }}
     STAGING_URL: ${{ secrets.DWAVES_WEBSITE_STAGING_URL }}
     TEST_URL: ${{ secrets.DWAVES_WEBSITE_TEST_URL }}
-    DOPPLER_TOKEN_STG: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_PRD }}
-    DOPPLER_TOKEN_PRD: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_PRD }}
-    DOPPLER_TOKEN_TEST: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_TEST }}
+    TOKEN_STG_DOPPLER: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_STG }}
+    TOKEN_PRD_DOPPLER: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_PRD }}
+    TOKEN_TEST_DOPPLER: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_TEST }}
     PROPERTIES_SCRIPT: ${{ GITHUB.WORKSPACE }}/.github/script/environment.sh
 
 defaults:
@@ -145,7 +145,7 @@ jobs:
         permissions: 
             contents: read
             pull-requests: write
-        needs: [integration-test, unit-test]
+        needs: [build]
         steps:
             - name: Checkout 😇
               uses: actions/checkout@v3
