@@ -11,12 +11,6 @@ on:
       - main
     paths:
       - backend/jobs/**
-  # pull_request:
-  #   types: [opened, synchronize, reopened]
-  #   branches:
-  #     - staging
-  #   paths:
-  #     - backend/jobs/**
 
 env:
     APP: dwaves-jobs

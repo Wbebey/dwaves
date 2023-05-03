@@ -11,12 +11,6 @@ on:
       - main
     paths:
       - backend/smart-contracts/**
-  # pull_request:
-  #   types: [opened, synchronize, reopened]
-  #   branches:
-  #     - staging
-  #   paths:
-  #     - backend/smart-contracts/**
 
 env:
     APP: dwaves-smart-contracts
