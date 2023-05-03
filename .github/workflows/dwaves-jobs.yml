@@ -11,6 +11,12 @@ on:
       - main
     paths:
       - backend/jobs/**
+  workflow_dispatch:
+    inputs:
+      paths:
+        description: 'Paths to run the workflow on'
+        required: true
+        default: 'backend/jobs/**'
 
 env:
     APP: dwaves-jobs
