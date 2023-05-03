@@ -1,0 +1,42 @@
+name: "Builld dwaves-app"
+description: "Builld dwaves-app"
+runs:
+    using: composite
+    steps:
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: NPM install
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
+        shell: bash
+        run: |-
+          npm install
+
+      - name: Retrieve environment variables 🌎
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
+        shell: bash
+        run: |-
+          source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
+          echo "Remove doppler variables from .env file..."
+          tail -n +4 .env > .new_env && mv .new_env .env
+
+      - name: Export build date 📅
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
+        shell: bash
+        run: |-
+          source ${{ env.PROPERTIES_SCRIPT }} && export_build_date
+
+      - name: Export commit url 📥
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
+        shell: bash
+        run: |-
+          source ${{ env.PROPERTIES_SCRIPT }} && export_commit_url
+
+      - name: Build 🏗
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
+        shell: bash
+        run: |-
+          ls -la
+          CI="false" npm run deploy-build
