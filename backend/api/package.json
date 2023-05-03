@@ -14,7 +14,7 @@
     "db:deploy": "doppler run -- prisma migrate deploy",
     "deploy-start": "TS_NODE_BASEURL=build node -r tsconfig-paths/register build/server.js",
     "deploy-db": "prisma migrate deploy",
-    "deploy-db:init": "prisma migrate deploy && prisma db seed"
+    "deploy-db:init": "prisma generate && prisma migrate deploy && prisma db seed"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

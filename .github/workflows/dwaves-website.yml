@@ -4,12 +4,11 @@ on:
     push:
         paths:
             - frontend/dwaves-website/**
-    # pull_request:
-    #     types: [opened, synchronize, reopened]
-    #     branches:
-    #         - staging
-    #     paths:
-    #         - frontend/dwaves-website/**
+    pull_request:
+      types: [labeled]
+      branches: [staging]
+      paths:
+        - frontend/dwaves-website/**
 
 env:
     APP: dwaves-website
@@ -17,6 +16,7 @@ env:
     APP_COMMIT_URL: ${{ secrets.APP_COMMIT_URL_FRONT }}
     APP_BUILD_DATE: ${{ secrets.APP_BUILD_DATE_FRONT }}
     GITHUB_REPOSITORY: ${{ github.repository }}
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     PROJECT_DIRECTORY: frontend/dwaves-website
     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }} 
@@ -28,8 +28,10 @@ env:
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
     PRODUCTION_URL: ${{ secrets.DWAVES_WEBSITE_PRODUCTION_URL }}
     STAGING_URL: ${{ secrets.DWAVES_WEBSITE_STAGING_URL }}
+    TEST_URL: ${{ secrets.DWAVES_WEBSITE_TEST_URL }}
     DOPPLER_TOKEN_STG: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_PRD }}
     DOPPLER_TOKEN_PRD: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_PRD }}
+    DOPPLER_TOKEN_TEST: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_TEST }}
     PROPERTIES_SCRIPT: ${{ GITHUB.WORKSPACE }}/.github/script/environment.sh
 
 defaults:
@@ -37,6 +39,42 @@ defaults:
         working-directory: "frontend/dwaves-website"
 
 jobs:
+    remove-label:
+      name: Remove Label
+      if: ${{ github.event.label.name == 'deploy-dwaves-front-test' }}
+      runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        pull-requests: write
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            ref: ${{ github.event.pull_request.head.sha }}
+
+        - name: Remove Label from PR
+          uses: actions-ecosystem/action-remove-labels@v1.3.0
+          with:
+            labels: ${{ github.event.label.name }}
+            github_token: ${{ env.GITHUB_TOKEN }}
+
+    deploy-test:
+      name: Deploy to test environment 🚀
+      if: ${{ github.event.label.name == 'deploy-dwaves-front-test' }}
+      runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        pull-requests: write
+      environment:
+        name: dwaves-website-test
+        url: https://dwaves-test.tonfrere.fr
+      steps:
+        - name: Checkout 😇
+          uses: actions/checkout@v3
+
+        - name: Deploy to GCP 🚀
+          uses: ./.github/actions/frontend/deployment
+
     integration-test:
         name: Integretion Test
         runs-on: ubuntu-latest
