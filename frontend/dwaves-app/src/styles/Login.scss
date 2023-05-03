@@ -10,11 +10,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     #modal{
         width: 30%;
         height: 70%;
         background-color: white;
         border-radius: 8px;
+        cursor: default;
         header {
             display: flex;
             flex-direction: column;

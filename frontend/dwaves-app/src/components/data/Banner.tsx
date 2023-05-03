@@ -6,6 +6,9 @@ import 'styles/data/Banner.scss'
 const NumberWords = ['one', 'two', 'three']
 
 export const Banner = () => {
+  const DWAVES_USER_ID = 10
+  const TIMER = 4000
+
   let timer: NodeJS.Timer
   const [playlists, setPlaylists] = useState<Playlists[]>([])
   const [activePlaylist, setActivePlaylist] = useState<Playlists>()
@@ -17,6 +20,9 @@ export const Banner = () => {
         `${import.meta.env.VITE_APP_BACK_URL}/playlists`,
         {
           withCredentials: true,
+          params: {
+            creatorId: DWAVES_USER_ID,
+          },
         },
       )
       setPlaylists(res.data)
@@ -33,7 +39,7 @@ export const Banner = () => {
     if (!timer) {
       timer = setInterval(() => {
         setIndexPlaylist((indexPlaylist) => ++indexPlaylist)
-      }, 2000)
+      }, TIMER)
     }
 
     setActivePlaylist(playlists[indexPlaylist])
@@ -42,7 +48,7 @@ export const Banner = () => {
       clearInterval(timer)
       setTimeout(() => {
         setIndexPlaylist(0)
-      }, 2000)
+      }, TIMER)
     }
 
     return () => clearInterval(timer)
