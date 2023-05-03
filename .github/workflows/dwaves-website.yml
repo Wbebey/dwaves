@@ -9,6 +9,12 @@ on:
       branches: [staging]
       paths:
         - frontend/dwaves-website/**
+    workflow_dispatch:
+      inputs:
+        paths:
+          description: 'Paths to run the workflow on'
+          required: true
+          default: 'frontend/dwaves-website/**'
 
 env:
     APP: dwaves-website
