@@ -2,7 +2,7 @@
 
 # Setup
 
-Start by installing all dependencies:::
+Start by installing all dependencies:
 
 `npm i`
 
