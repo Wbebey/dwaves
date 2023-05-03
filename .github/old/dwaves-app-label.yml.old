@@ -45,8 +45,8 @@ jobs:
           labels: ${{ github.event.label.name }}
           github_token: ${{ env.GITHUB_TOKEN }}
 
-  deploy:
-    name: Deploy
+  deploy-test:
+    name: Deploy to Test environment 🚀
     if: ${{ github.event.label.name == 'deploy-dwaves-front-test' }}
     runs-on: ubuntu-latest
     permissions:
