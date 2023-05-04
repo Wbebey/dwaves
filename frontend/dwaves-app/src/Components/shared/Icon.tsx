@@ -5,6 +5,7 @@ interface Props {
   icon: string;
   variant: "Linear" | "Outline" | "Broken" | "Bold" | "Bulk" | "TwoTone";
   size: "Small" | "Regular" | "Large";
+  small: boolean;
   color: string;
 }
 
