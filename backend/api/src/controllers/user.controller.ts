@@ -7,10 +7,6 @@ import { User } from '@prisma/client'
 import musicService from '@services/music.service'
 import { LimitRequestHandler } from '@@types/app.type'
 import albumService from '@services/album.service'
-import playlistService from '@services/playlist.service'
-import { ParamsDictionary } from 'express-serve-static-core'
-import { ParsedQs } from 'qs'
-import { UploadedFile } from 'express-fileupload'
 
 class UserController implements IUserController {
   get: RequestHandler = async (_, res) => {
@@ -71,28 +67,6 @@ class UserController implements IUserController {
     const albums = await albumService.findMany({ artistId: id })
 
     res.json(albums)
-  }
-
-  getMyPlaylists: RequestHandler = async (req, res) => {
-    const { id } = req.app.locals.user
-    const playlists = await playlistService.findMany({ creatorId: id })
-
-    res.json(playlists)
-  }
-
-  createPlaylist: RequestHandler = async (req, res) => {
-    const { id } = req.app.locals.user
-    const cover = req.files?.cover as UploadedFile | undefined
-    const { name } = req.body
-
-    const playlist = {
-      name,
-      creator: { connect: { id } },
-      likes: 0,
-    }
-    const createdPlaylist = await playlistService.create(playlist, cover)
-
-    res.json(createdPlaylist)
   }
 
   updateInfo: RequestHandler = async (req, res) => {

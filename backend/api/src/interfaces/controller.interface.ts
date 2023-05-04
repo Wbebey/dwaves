@@ -19,8 +19,6 @@ export interface IUserController extends IController {
   getMonthlyListenings: RequestHandler
   getMyPopularMusics: LimitRequestHandler
   getMyAlbums: RequestHandler
-  getMyPlaylists: RequestHandler
-  createPlaylist: RequestHandler
   updateInfo: RequestHandler
   updatePassword: RequestHandler
 }
