@@ -33,7 +33,7 @@ const ReadErc20 = ({ currentAccount }: any) => {
     const erc20 = new ethers.Contract(ContractICO.address, ContractICO.abi, signer)
 
 
-    const res = await erc20.buyTokens(currentAccount, { value: ethers.parseEther('0.1') });
+    const res = await erc20.buyTokens(currentAccount, ethers.parseEther('100'));
     
     await res.wait();
 
