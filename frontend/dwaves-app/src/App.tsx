@@ -36,7 +36,6 @@ function App() {
   const envName = import.meta.env.VITE_NODE_ENV
   const buildDate = import.meta.env.VITE_APP_BUILD_DATE
   const commitUrl = import.meta.env.VITE_APP_COMMIT_URL
-  const [listenings, setListenings] = useState<number>()
 
   const audioElmt = useRef<HTMLAudioElement>(null) ?? someOtherData()
 
@@ -59,7 +58,7 @@ function App() {
     getLikedMusics()
   }, [])
 
-  const onPlaying = async () => {
+  const onPlaying = () => {
     const duration: number = audioElmt.current?.duration as number
     const ct: number = audioElmt.current?.currentTime as number
     console.log(currentSong,'currentSong')
@@ -69,10 +68,6 @@ function App() {
         progress: (ct / duration) * 100,
         length: duration,
       })
-      if (currentSong) {
-        console.log(currentSong.listenings)
-        setListenings(currentSong.listenings)
-      }
     }
     if (repeat) {
       if (currentSong?.progress! >= 99) {
@@ -85,8 +80,6 @@ function App() {
         setTimeout(() => {
           playPause(audioElmt, false, setIsPlaying)
         }, 1000)
-        setListenings(listenings)
-        console.log(listenings)
       }
     }
   }
