@@ -26,11 +26,6 @@ import { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import axios from 'axios'
 
-declare const window: Window &
-  typeof globalThis & {
-    ethereum: any
-  }
-
 function App() {
   const [loader, setLoader] = useState(true)
   const [artist, setArtist] = useState<AlbumDetail | undefined>()
@@ -159,15 +154,6 @@ function App() {
     }
   }
 
-  const requestConnectionMetamask = async () => {
-    if (window.ethereum) {
-      const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
-      })
-      setWallet(accounts)
-    }
-  }
-
   return loader ? (
     <Loader />
   ) : (
@@ -208,7 +194,7 @@ function App() {
                 connected={connected}
                 setConnected={setConnected}
                 wallet={wallet}
-                requestConnectionMetamask={requestConnectionMetamask}
+                setWallet={setWallet}
               />
               {/* A <Routes> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
@@ -247,10 +233,7 @@ function App() {
                   }
                 />
                 <Route path="/player" element={<Player />} />
-                <Route
-                  path="/marketplace"
-                  element={<Marketplace wallet={wallet} requestConnectionMetamask={requestConnectionMetamask} />}
-                />
+                <Route path="/marketplace" element={<Marketplace wallet={wallet}/>} />
                 <Route
                   path="/download"
                   element={<Download setAlert={setAlert} />}
