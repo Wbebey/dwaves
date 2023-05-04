@@ -1,5 +1,2 @@
-node_modules/
-build/
-
-*.env
-
+.backend.env
+*/.env

@@ -38,18 +38,18 @@ describe('DwavesToken', () => {
       expect(await dwavesToken.symbol()).to.be.equal('VIBES')
     })
 
-    it('Has a valid decimal', async () => {
+    it('Has a valid decimal', async function () {
       const tokenDecimals = (await dwavesToken.decimals()).toString()
       expect(tokenDecimals).to.equal('18')
     })
 
-    it('Has a valid total supply', async () => {
+    it('Has a valid total supply', async function () {
       const expectedSupply = ethers.utils.parseUnits('300000000', decimals)
       const tokenSupply = (await dwavesToken.totalSupply()).toString()
       expect(tokenSupply).to.equal(expectedSupply)
     })
 
-    it('Is able to query account balances', async () => {
+    it('Is able to query account balances', async function () {
       const expectedBalance = ethers.utils.parseUnits('300000000', decimals)
       const ownerBalance = await dwavesToken.balanceOf(ownerAddress)
       expect(ownerBalance).to.equal(expectedBalance)
@@ -128,7 +128,7 @@ describe('DwavesToken', () => {
         .withArgs(recipientAddress, ownerAddress, transferAmount)
     })
 
-    it('Allows allowance to be increased and queried', async () => {
+    it('Allows allowance to be increased and queried', async function () {
       const initialAmount = ethers.utils.parseUnits('100', decimals)
       const incrementAmount = ethers.utils.parseUnits('10000', decimals)
 
