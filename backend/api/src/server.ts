@@ -5,7 +5,7 @@ import { PrismaClient } from '../client'
 dotenv.config()
 
 const app: Express = express()
-const { HOSTNAME, PORT } = process.env
+const { hostname, port } = process.env
 const prisma = new PrismaClient()
 
 app.get('/', (req: Request, res: Response) => {
@@ -17,6 +17,6 @@ app.get('/users', async (req: Request, res: Response) => {
   res.json(users)
 })
 
-app.listen(PORT, () => {
-  console.log(`⚡️[server]: Server is running at http://${HOSTNAME}:${PORT}`)
+app.listen(port, () => {
+  console.log(`⚡️[server]: Server is running at http://${hostname}:${port}`)
 })

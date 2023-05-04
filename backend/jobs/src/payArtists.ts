@@ -1,4 +1,4 @@
-// import { HttpFunction } from '@google-cloud/functions-framework'
+import { HttpFunction } from '@google-cloud/functions-framework'
 import { PrismaClient } from '../client'
 import ArtistPayer from '../../abi/ArtistPayer.json'
 import { Alchemy, Network } from 'alchemy-sdk'
@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv'
 
 dotenv.config()
 
-const main = async () => {
+export const payArtists: HttpFunction = async (_, res) => {
   const { ALCHEMY_API_KEY, DWAVES_PAYER_PRIVATE_KEY } = process.env
 
   if (!DWAVES_PAYER_PRIVATE_KEY || !ALCHEMY_API_KEY) {
@@ -82,17 +82,10 @@ const main = async () => {
   console.log('Artists to pay: ', addressesListenings)
 
   if (artistAddresses.length === 0) {
-    console.log('No artist to pay')
-    return 
+    return res.send('No artist to pay')
   }
 
   const transaction = await artistPayer.payArtists(artistAddresses, listenings)
-}
 
-main().then(() => {
-  console.log('Done')
-  process.exit(0)
-}).catch((e) => {
-  console.error(e)
-  process.exit(1)
-})
+  res.json({ transaction })
+}
