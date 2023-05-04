@@ -62,7 +62,7 @@ export const PlayerWrapper: React.FC<Props> = ({
     return likedMusics.includes(musicCID)
   }
 
-  let songIndex = songs?.findIndex(
+  let songIndex = songs?.musics?.findIndex(
     (x: { name: string }) => x.name == currentSong?.name,
   )
 
@@ -86,10 +86,10 @@ export const PlayerWrapper: React.FC<Props> = ({
     if (!songs) return
 
     if (songIndex === 0) {
-      setCurrentSong(songs[songs.length - 1])
-      songIndex = songs.length - 1
+      setCurrentSong(songs.musics[songs.musics.length - 1])
+      songIndex = songs.musics.length - 1
     } else {
-      setCurrentSong(songs[songIndex - 1])
+      setCurrentSong(songs.musics[songIndex - 1])
       songIndex = songIndex - 1
     }
     audioElmt.current!.currentTime = 0
@@ -102,11 +102,11 @@ export const PlayerWrapper: React.FC<Props> = ({
   const switchToNext = () => {
     if (!songs) return
 
-    if (songIndex === songs.length - 1) {
-      setCurrentSong(songs[0])
+    if (songIndex === songs.musics.length - 1) {
+      setCurrentSong(songs.musics[0])
       songIndex = 0
     } else {
-      setCurrentSong(songs[songIndex + 1])
+      setCurrentSong(songs.musics[songIndex + 1])
       songIndex = songIndex + 1
     }
     audioElmt.current!.currentTime = 0

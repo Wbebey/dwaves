@@ -61,7 +61,8 @@ function App() {
   const onPlaying = () => {
     const duration: number = audioElmt.current?.duration as number
     const ct: number = audioElmt.current?.currentTime as number
-    console.log(currentSong,'currentSong')
+
+    console.log(duration, 'duration')
     if (songs) {
       setCurrentSong({
         ...currentSong!,
