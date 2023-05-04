@@ -7,7 +7,6 @@
     "strict": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "rootDir": "src",
     "outDir": "build",
     "resolveJsonModule": true
   },

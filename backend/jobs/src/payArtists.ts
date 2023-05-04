@@ -1,6 +1,6 @@
 // import { HttpFunction } from '@google-cloud/functions-framework'
 import { PrismaClient } from '../client'
-import ArtistPayer from './abi/ArtistPayer.json'
+import ArtistPayer from '../abi/ArtistPayer.json'
 import { Alchemy, Network } from 'alchemy-sdk'
 import * as ethers from 'ethers'
 import * as dotenv from 'dotenv'
@@ -8,24 +8,10 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 
 const main = async () => {
-  const {
-    POSTGRES_USER,
-    POSTGRES_PASSWORD,
-    POSTGRES_DB,
-    POSTGRES_HOST,
-    POSTGRES_PORT,
-  } = process.env
-  const POSTGRES_URL = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`
-
-  if (POSTGRES_URL.includes('undefined')) {
-    console.error('💥 error loading DB env')
-    process.exit(1)
-  }
-
   const { ALCHEMY_API_KEY, DWAVES_PAYER_PRIVATE_KEY } = process.env
 
   if (!DWAVES_PAYER_PRIVATE_KEY || !ALCHEMY_API_KEY) {
-    console.error('💥 error loading CONTRACT env')
+    console.error('💥 error loading env')
     process.exit(1)
   }
 
@@ -97,18 +83,16 @@ const main = async () => {
 
   if (artistAddresses.length === 0) {
     console.log('No artist to pay')
-    return
+    return 
   }
 
   const transaction = await artistPayer.payArtists(artistAddresses, listenings)
 }
 
-main()
-  .then(() => {
-    console.log('Done')
-    process.exit(0)
-  })
-  .catch((e) => {
-    console.error(e)
-    process.exit(1)
-  })
+main().then(() => {
+  console.log('Done')
+  process.exit(0)
+}).catch((e) => {
+  console.error(e)
+  process.exit(1)
+})
