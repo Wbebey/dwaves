@@ -1,24 +1,14 @@
-import { PlayPause } from "songs/listenMusic";
-import { AlbumDetail, responseRequest } from "../models";
-import { Icon } from "./shared";
+import {AlbumDetail, responseRequest} from "../models";
+import {Icon} from "./shared";
 
 interface Props {
     songs: AlbumDetail
     setCurrentSong: React.Dispatch<React.SetStateAction<any>>
     setSongs: React.Dispatch<React.SetStateAction<any>>
-    audioElmt: React.RefObject<HTMLAudioElement>
-    isPlaying: boolean
-    setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const SongList: React.FC<Props> = ({
-    songs,
-    setCurrentSong,
-    setSongs,
-    audioElmt,
-    isPlaying,
-    setIsPlaying,
-}) => {
+export const SongList: React.FC<Props> = ({songs, setCurrentSong, setSongs}) => {
+
     return (
         <div className='container-list'>
             <ul className="list-song">
@@ -27,7 +17,6 @@ export const SongList: React.FC<Props> = ({
                         onClick={e => {
                             setCurrentSong(music)
                             setSongs(songs)
-                            PlayPause(audioElmt, isPlaying, setIsPlaying)
                         }}
                         key={i}
                         className="song-li cursor-pointer"
@@ -37,14 +26,14 @@ export const SongList: React.FC<Props> = ({
                                 <span className="text-xl">0{i + 1}</span>
                             </div>
                         </div>
-                        <div className="p-0 divider divider-horizontal" />
+                        <div className="p-0 divider divider-horizontal"/>
                         <div className="song-li-info">
                             <h4 style={{}}>{music.name}</h4>
                             <p>{songs.artist}</p>
                         </div>
                         <div className="song-li-action">
-                            <Icon icon="add" />
-                            <Icon icon="like" />
+                            <Icon icon="add"/>
+                            <Icon icon="like"/>
                             <p>2 : 30</p>
                         </div>
                     </li>
