@@ -1,7 +1,12 @@
-name: Dwaves-website  
+name: Test & Analyse - Dwaves-website  
 
 on:
     push:
+        branches: 
+            - feature/*
+            - bugfix/*
+            - hotfix/*
+            - release/*
         paths:
             - frontend/dwaves-website/**
     # pull_request:
@@ -13,20 +18,16 @@ on:
 
 env:
     APP: dwaves-website
-    NODE_VERSION: 16.x
+    PROJECT_DIRECTORY: frontend/dwaves-website
     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }} 
     SONAR_PROJECT_BASE_DIR: frontend/dwaves-website/
     SONAR_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_WEBSITE }}
     SONAR_PROJECT_KEY: ${{ secrets.DWAVES_WEBSITE_PROJECT_KEY }}
+    NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
-    PRODUCTION_URL: ${{ secrets.DWAVES_WEBSITE_PRODUCTION_URL }}
-    STAGING_URL: ${{ secrets.DWAVES_WEBSITE_STAGING_URL }}
-    DOPPLER_TOKEN_STG: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_PRD }}
-    DOPPLER_TOKEN_PRD: ${{ secrets.DOPPLER_DWAVES_WEBSITE_TOKEN_PRD }}
-    PROPERTIES_SCRIPT: ${{ GITHUB.WORKSPACE }}/.github/script/environment.sh
 
 defaults:
     run:
@@ -36,11 +37,6 @@ jobs:
     integration-test:
         name: Integretion Test
         runs-on: ubuntu-latest
-        if: github.ref == 'refs/heads/main' || 
-            github.ref == 'refs/heads/staging' || 
-            startsWith(github.ref, 'refs/heads/feature/') || 
-            startsWith(github.ref, 'refs/heads/bugfix/') || 
-            startsWith(github.ref, 'refs/heads/hotfix/')
         steps:
             - name: Checkout 😇
               uses: actions/checkout@v3
@@ -55,11 +51,6 @@ jobs:
     unit-test:
         name: Unit Test
         runs-on: ubuntu-latest
-        if: github.ref == 'refs/heads/main' || 
-            github.ref == 'refs/heads/staging' || 
-            startsWith(github.ref, 'refs/heads/feature/') || 
-            startsWith(github.ref, 'refs/heads/bugfix/') || 
-            startsWith(github.ref, 'refs/heads/hotfix/')
         steps:
 
             - name: Checkout 😇
@@ -75,11 +66,6 @@ jobs:
     code-analysis:
         name: Code Analysis
         runs-on: ubuntu-latest
-        if: github.ref == 'refs/heads/main' || 
-            github.ref == 'refs/heads/staging' || 
-            startsWith(github.ref, 'refs/heads/feature/') || 
-            startsWith(github.ref, 'refs/heads/bugfix/') || 
-            startsWith(github.ref, 'refs/heads/hotfix/')
         permissions: 
             contents: read
             pull-requests: write
@@ -90,34 +76,6 @@ jobs:
 
             - name: SonarCloud Scan
               uses: ./.github/actions/sonarcloud
-
-            - name: Discord notification on success
-              if: success()
-              uses: ./.github/actions/discord/notification-on-success
-
-            - name: Discord notification on failure
-              if: failure()
-              uses: ./.github/actions/discord/notification-on-failure
-
-    deploy:
-        name: Deploy to GCP 🚀
-        needs: [code-analysis]
-        if: (github.ref == 'refs/heads/main' ||
-            github.ref == 'refs/heads/staging' 
-        runs-on: ubuntu-latest
-        environment: dwaves-website
-        permissions:
-          contents: read
-          pull-requests: write
-        steps:
-            - name: Checkout 😇
-              uses: actions/checkout@v3
-
-            - name: Discord notification Deployment started
-              uses: ./.github/actions/discord/notification-on-start-deployment
-
-            - name: Deploy to GCP 🚀
-              uses: ./.github/actions/frontend/deployment/dwaves-frontend-deploy.yml
 
             - name: Discord notification on success
               if: success()

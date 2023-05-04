@@ -1,12 +1,40 @@
 # Dwaves 
 
-| Projet | Qualité | Sécurité | Vulnérabilités | Maintenabilité | Bugs |
-|--------|---------|----------|----------------|----------------|------|
-| Dwaves-app | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-app) | [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-app) | [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-app) | [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-app) | [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-app) |
-| Dwaves-website | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-website) | [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-website) | [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-website) | [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-website) | [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-website) |
-| Dwaves-api | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-api) | [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-api) | [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-api) | [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-api) | [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-api) |
-| Dwaves-smart-contracts | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts) | [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts) | [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts) | [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts) | [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts) |
-| Dwaves-jobs | - | [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs) | [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs) | [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs) | [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs) |
+## *Frontend*
+### Dwaves-app
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
+
+### Dwaves-website
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
+
+## *Backend*
+
+### Dwaves-jobs
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+
+### Dwaves-api
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
+
+### Dwaves-smart-contracts
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
 
 # About The Project
 

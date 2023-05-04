@@ -9,12 +9,12 @@ on:
 
 env:
     APP: dwaves-app
+    ENVIRONMENT: test
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
     TEST_URL: ${{ secrets.DWAVES_APP_TEST_URL }}
-    DOPPLER_TOKEN_TEST: ${{ secrets.DOPPLER_DWAVES_APP_TOKEN_TEST }}
-    PROPERTIES_SCRIPT: ${{ GITHUB.WORKSPACE }}/.github/script/environment.sh
+    ENV_VARS: ${{ secrets.DWAVES_APP_TEST_ENV }}
 
 defaults: 
     run:
@@ -54,8 +54,32 @@ jobs:
       - name: Checkout 😇
         uses: actions/checkout@v3
 
-      - name: Deploy to GCS 🚀
-        uses: ./.github/actions/frontend/deployment/dwaves-frontend-deploy.yml
+      - name: GCP authentification 🤑
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          service_account_key: ${{ env.GCP_SA_KEY }}
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
+        run: echo "${{ env.ENV_VARS }}" > .env
+
+      - name: Install dependencies 📦
+        run: npm install
+
+      - name: Build 🏗
+        run: CI="false" npm run build
+
+      - name: Deploy to ${{ env.ENVIRONMENT }} 🚀
+        run: |-
+          export environment="${{ env.APP }}-${{ env.ENVIRONMENT }}"
+          export deploy_url=${{ env.TEST_URL }}
+          gsutil rsync -R build/ gs://$deploy_url
+          echo "Deployed to $environment environment: $deploy_url"
 
       - name: Discord notification on failure
         if: failure()

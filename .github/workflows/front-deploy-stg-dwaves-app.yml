@@ -1,0 +1,127 @@
+name : Deploy Dwaves-app to Staging
+
+on:
+    push:
+        branches:
+            - staging
+        paths:
+            - frontend/dwaves-app/**
+
+env: 
+    APP: dwaves-app
+    ENVIRONMENT: staging
+    PROJECT_DIRECTORY: frontend/dwaves-app
+    DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }} 
+    SONAR_PROJECT_BASE_DIR: frontend/dwaves-app/
+    SONAR_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_APP }}
+    SONAR_PROJECT_KEY: ${{ secrets.DWAVES_APP_PROJECT_KEY }}
+    NODE_VERSION: 16.x
+    GCP_SA_KEY: ${{ secrets.TF_SA }}
+    GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
+    ENV_VARS: ${{ secrets.DWAVES_APP_STAGING_ENV }}
+    STAGING_URL: ${{ secrets.DWAVES_APP_STAGING_URL }}
+
+defaults:
+    run:
+        working-directory: "frontend/dwaves-app"
+
+jobs:
+    integration-test:
+        name: Integretion Test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout 😇
+              uses: actions/checkout@v3
+
+            - name: Integration Tests 🏗
+              uses: ./.github/actions/frontend/integration-test
+
+            - name: Discord notification on failure
+              if: failure()
+              uses: ./.github/actions/notification-on-failure
+
+    unit-test:
+        name: Unit Test
+        runs-on: ubuntu-latest
+        steps:
+
+            - name: Checkout 😇
+              uses: actions/checkout@v3
+
+            - name: Unit Test 🧪
+              uses: ./.github/actions/frontend/unit-test
+
+            - name: Discord notification on failure
+              if: failure()
+              uses: ./.github/actions/discord/notification-on-failure
+
+    code-analysis:
+        name: Code Analysis
+        runs-on: ubuntu-latest
+        permissions: 
+            contents: read
+            pull-requests: write
+        needs: [integration-test, unit-test]
+        steps:
+            - name: Checkout 😇
+              uses: actions/checkout@v3
+
+            - name: SonarCloud Scan
+              uses: ./.github/actions/sonarcloud
+
+            - name: Discord notification on failure
+              if: failure()
+              uses: ./.github/actions/discord/notification-on-failure
+
+    deploy:
+        name: Deploy to staging
+        needs: [code-analysis]
+        environment:
+            name: dwaves-app-staging
+            url: https://dwaves-app-staging.tonfrere.fr
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout 😇
+              uses: actions/checkout@v3
+
+            - name: Discord notification ${{ env.ENVIRONMENT }} Deployment started
+              uses: ./.github/actions/discord/notification-on-start-deployment
+
+            - name: GCP authentification 🤑
+              uses: google-github-actions/setup-gcloud@v0
+              with:
+                service_account_key: ${{ env.GCP_SA_KEY }}
+                project_id: ${{ env.GCP_PROJECT_ID }}
+
+            - name: Use Node.js ${{ env.NODE_VERSION }}
+              uses: actions/setup-node@v3
+              with:
+                node-version: ${{ env.NODE_VERSION }}
+
+            - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
+              run: echo "${{ env.ENV_VARS }}" > .env
+
+            - name: NPM install
+              run: npm install
+
+            - name: Build 🏗
+              run: |-
+                CI="false" npm run build
+
+            - name: Deploy to ${{ env.ENVIRONMENT }} 🚀
+              if: ${{ github.ref }} == 'refs/heads/staging'
+              run: |-
+                export environment="${{ env.APP }}-${{ env.ENVIRONMENT }}"
+                export deploy_url=${{ env.STAGING_URL }}
+                gsutil rsync -R build/ gs://$deploy_url
+                echo "Deployed to $environment environment: $deploy_url"
+
+            - name: Discord notification on success
+              if: success()
+              uses: ./.github/actions/discord/notification-on-success
+
+            - name: Discord notification on failure
+              if: failure()
+              uses: ./.github/actions/discord/notification-on-failure

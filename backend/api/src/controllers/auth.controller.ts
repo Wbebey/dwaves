@@ -22,7 +22,7 @@ const refreshTokenCookieOptions: CookieOptions = {
   sameSite: 'lax',
 }
 
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV === 'production') {
   accessTokenCookieOptions.secure = true
   refreshTokenCookieOptions.secure = true
   accessTokenCookieOptions.domain = '.tonfrere.fr'

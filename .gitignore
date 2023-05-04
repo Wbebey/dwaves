@@ -10,4 +10,3 @@ vcs.xml
 **.env
 **.env.old
 .ngrok.yml
-**/.cache*
