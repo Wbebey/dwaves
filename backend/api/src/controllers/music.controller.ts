@@ -11,13 +11,6 @@ import path from 'path'
 import nftService from '@services/nft.service'
 
 class MusicController implements IMusicController {
-
-  get: RequestHandler = async (req, res) => {
-    const allMusics = await pinataService.getMusicFromIPFS(req.query)
-    res.json(allMusics)
-
-  }
-
   uploadSingle: RequestHandler = async (req, res) => {
     const cover = req.files!.cover as UploadedFile
     const coverMetadata: CoverMetadata = { type: FileType.COVER }
@@ -55,46 +48,9 @@ class MusicController implements IMusicController {
     res.json({ coverUrl, musicUrl })
   }
 
-  uploadAllMusicOfAnAlbum: RequestHandler = async (req, res) => {
-
-    const cover = req.files!.cover as UploadedFile
-    const musics = req.files!.musics as UploadedFile[]
-    const artistId = res.locals.user.id
-    const genreId = req.body.genre.id
-    const albumName = req.body.albumName
-
-    //pin Cover on Pinata
-    const coverMetadata: CoverMetadata = { type: FileType.COVER }
-    const coverCID = await pinataService.pinFileToIPFS(cover, coverMetadata)
-    logger.log(`cover: ${cover.name} - CID: ${coverCID}`)
-    const coverUrl = `${env.pinataGatewayHost}/${coverCID}`
-
-    //create Album
-    const album = await albumService.create({
-      name: albumName,
-      type: AlbumType.ALBUM,
-      artist: { connect: { id: artistId } },
-      genre: { connect: { id: genreId } },
-    })
-
-    //pin each musics
-    const musicsUrl :string[] = await Promise.all(musics.map(async (music, index) => {
-
-      const musicMetadata: MusicMetadata = {
-        type: FileType.MUSIC,
-        albumId: album.id,
-        artistId,
-        genreId,
-        listenings: 0,
-      }
-
-      const musicCID = await pinataService.pinFileToIPFS(music, musicMetadata)
-      logger.log(`music: ${music.name} - CID: ${musicCID}`)
-
-      return `musicCID - ${index+1} : ${env.pinataGatewayHost}/${musicCID}`
-    }))
-
-    res.json({coverUrl, musicsUrl})
+  get: RequestHandler = async (req, res) => {
+    const allMusics = await pinataService.getMusicFromIPFS(req.query)
+    res.json(allMusics)
   }
 }
 
