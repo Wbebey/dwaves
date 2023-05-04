@@ -22,12 +22,5 @@ authRouter.post(
   userValidator.validate,
   authController.register
 )
-authRouter.post(
-  '/login',
-  body('email').notEmpty().withMessage('Email is required').normalizeEmail(),
-  body('password').notEmpty().withMessage('Password is required'),
-  userValidator.validate,
-  authController.login
-)
 
 export default authRouter
