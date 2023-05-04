@@ -41,7 +41,7 @@ class UserValidator extends AppValidator implements IUserValidator {
     return true
   }
 
-  toValidUserId: CustomSanitizer = async (userId: string) => {
+  toValidUserId: CustomSanitizer = async (userId: string): Promise<number> => {
     const user = await userService.findUnique({ id: +userId })
     if (!user) {
       throw new AppError('User not found', StatusCodes.UNPROCESSABLE_ENTITY)

@@ -23,6 +23,13 @@ class UserController implements IUserController {
     res.json(req.app.locals.user)
   }
 
+  show: RequestHandler = async (req, res) => {
+    const { id: userId } = req.params
+    const user = await userService.findUnique({ id: +userId })
+
+    res.json(user)
+  }
+
   addWallet: RequestHandler = async (req, res) => {
     const { address } = req.body
     const user = await userService.update(
