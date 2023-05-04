@@ -24,6 +24,7 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
 
 ### Dwaves-api
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
