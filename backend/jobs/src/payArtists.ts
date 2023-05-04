@@ -4,14 +4,22 @@ import ArtistPayer from './abi/ArtistPayer.json'
 import { Alchemy, Network } from 'alchemy-sdk'
 import * as ethers from 'ethers'
 import * as dotenv from 'dotenv'
+import console from 'console'
 
 dotenv.config()
 
 const main = async () => {
-  const { POSTGRES_URL } = process.env
-  console.log(  process.env )
+  const {
+    POSTGRES_USER,
+    POSTGRES_PASSWORD,
+    POSTGRES_DB,
+    POSTGRES_HOST,
+    POSTGRES_PORT,
+  } = process.env
+  const POSTGRES_URL = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`
+  console.log(POSTGRES_URL)
 
-  if (!POSTGRES_URL) {
+  if (POSTGRES_URL.includes('undefined')) {
     console.error('💥 error loading DB env')
     process.exit(1)
   }
