@@ -14,28 +14,28 @@ import { Loader, Sidebar, Alert, Footer } from 'components'
 import { PlayerWrapper } from 'components/player'
 import { Icon } from 'components/shared'
 
-import { responseRequest, Music, AlbumDetail } from 'models'
-import { PlayPause, PlayRandomSong } from 'songs/listenMusic'
+import { responseRequest, Music, AlbumDetail } from "models";
+import { PlayPause, PlayRandomSong } from "songs/listenMusic";
 
-import { useEffect, useRef, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import axios from 'axios'
+import { useEffect, useRef, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import axios from "axios";
 
 function App() {
-  const [loader, setLoader] = useState(true)
-  const [artist, setArtist] = useState<AlbumDetail | undefined>()
-  const [songs, setSongs] = useState<Music[] | undefined>()
-  const [repeat, setRepeat] = useState(false)
-  const [random, setRandom] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentSong, setCurrentSong] = useState<Music | undefined>()
-  const [loginDisplay, setLoginDisplay] = useState(false)
-  const [alert, setAlert] = useState<responseRequest>()
-  const [connected, setConnected] = useState(false) // Temporary this value will be stored in the token
-  const [likedMusics, setLikedMusics] = useState<string[]>([])
-  const envName = import.meta.env.VITE_NODE_ENV
-  const buildDate = import.meta.env.VITE_APP_BUILD_DATE
-  const commitUrl = import.meta.env.VITE_APP_COMMIT_URL
+  const [loader, setLoader] = useState(true);
+  const [artist, setArtist] = useState<AlbumDetail | undefined>();
+  const [songs, setSongs] = useState<Music[] | undefined>();
+  const [repeat, setRepeat] = useState(false);
+  const [random, setRandom] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentSong, setCurrentSong] = useState<Music | undefined>();
+  const [loginDisplay, setLoginDisplay] = useState(false);
+  const [alert, setAlert] = useState<responseRequest>();
+  const [connected, setConnected] = useState(false); // Temporary this value will be stored in the token
+  const [likedMusics, setLikedMusics] = useState<string[]>([]);
+  const envName = import.meta.env.VITE_NODE_ENV;
+  const buildDate = import.meta.env.VITE_APP_BUILD_DATE;
+  const commitUrl = import.meta.env.VITE_APP_COMMIT_URL;
 
   const audioElmt = useRef<HTMLAudioElement>(null) ?? someOtherData()
 
@@ -55,14 +55,14 @@ function App() {
     if (document.cookie.includes('loggedIn=true')) {
       setConnected(true)
     }
-    getLikedMusics()
-  }, [])
+    getLikedMusics();
+  }, []);
 
   const onPlaying = () => {
     const duration: number = audioElmt.current?.duration as number
     const ct: number = audioElmt.current?.currentTime as number
 
-    console.log(duration, 'duration')
+    console.log(duration, "duration");
     if (songs) {
       setCurrentSong({
         ...currentSong!,
@@ -72,22 +72,22 @@ function App() {
     }
     if (repeat) {
       if (currentSong?.progress! >= 99) {
-        PlayPause(audioElmt, false, setIsPlaying)
+        PlayPause(audioElmt, false, setIsPlaying);
       }
     }
     if (random) {
       if (currentSong?.progress! >= 99) {
-        setCurrentSong(PlayRandomSong(songs!))
+        setCurrentSong(PlayRandomSong(songs!));
         setTimeout(() => {
-          PlayPause(audioElmt, false, setIsPlaying)
-        }, 1000)
+          PlayPause(audioElmt, false, setIsPlaying);
+        }, 1000);
       }
     }
-  }
+  };
 
   const toggleModal = () => {
-    setLoginDisplay(!loginDisplay)
-  }
+    setLoginDisplay(!loginDisplay);
+  };
 
   const getLikedMusics = async () => {
     try {
@@ -95,51 +95,51 @@ function App() {
         `${import.meta.env.VITE_APP_BACK_URL}/users/me`,
         {
           withCredentials: true,
-        },
-      )
-      setLikedMusics(res.data.myLikedMusics)
+        }
+      );
+      setLikedMusics(res.data.myLikedMusics);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const foundCidMusic = (musicUrl: string) => {
-    const musicCIDArray = musicUrl.split('/')
-    return musicCIDArray[musicCIDArray.length - 1]
-  }
+    const musicCIDArray = musicUrl.split("/");
+    return musicCIDArray[musicCIDArray.length - 1];
+  };
 
   const updateLikedMusics = async (musics: string[]) => {
     try {
-      const data = { musics: musics }
+      const data = { musics: musics };
       const res = await axios.put(
         `${import.meta.env.VITE_APP_BACK_URL}/users/me/updateLikedMusics`,
         data,
         {
           withCredentials: true,
-        },
-      )
+        }
+      );
       // console.log(res.status)
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   const likeOrDislikeMusic = (music: string) => {
-    const musicCID = foundCidMusic(music)
-    const listOfLickedMusics = [...likedMusics]
+    const musicCID = foundCidMusic(music);
+    const listOfLickedMusics = [...likedMusics];
 
     if (likedMusics.includes(musicCID)) {
       const updatedLikedMusics = listOfLickedMusics.filter(
-        (element) => element !== musicCID,
-      )
-      setLikedMusics(updatedLikedMusics)
-      updateLikedMusics(updatedLikedMusics)
+        (element) => element !== musicCID
+      );
+      setLikedMusics(updatedLikedMusics);
+      updateLikedMusics(updatedLikedMusics);
     } else {
-      listOfLickedMusics.push(musicCID)
-      setLikedMusics(listOfLickedMusics)
-      updateLikedMusics(listOfLickedMusics)
+      listOfLickedMusics.push(musicCID);
+      setLikedMusics(listOfLickedMusics);
+      updateLikedMusics(listOfLickedMusics);
     }
-  }
+  };
 
   return loader ? (
     <Loader />
@@ -164,7 +164,8 @@ function App() {
         PlayRandomSong={PlayRandomSong}
         likedMusics={likedMusics}
         likeOrDislikeMusic={likeOrDislikeMusic}
-        planeSubdivisions={4}
+        planeSubdivisions={6}
+        playerStatus={currentSong ? "active" : "inactive"}
       />
       {alert?.visible && <Alert alert={alert} />}
       <section style={{ color: 'black', height: '75%' }}>

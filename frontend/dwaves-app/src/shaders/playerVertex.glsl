@@ -1,14 +1,15 @@
 precision lowp float;
 
 uniform float uTime;
-uniform float uAmplitude;
+uniform bool uIsPaused;
 
 void main() {
   vec3 pos = position;
+  float amplitude = uIsPaused ? 0.0005 : 0.005;
 
   vec3 res = vec3(
     pos.x,
-    pos.y + (1.0 + sin(uTime * 5.0 + pos.x * 35.0 + pos.y * 10.0) / 2.0) * uAmplitude,
+    pos.y + (1.0 + sin(uTime * 5.0 + pos.x * 35.0 + pos.y * 10.0) / 2.0) * amplitude,
     pos.z
   );
 

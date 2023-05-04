@@ -3,7 +3,7 @@ import 'styles/player/PlayerWrapper.scss'
 import { PlayerShader } from 'components/player'
 import { Icon } from 'components/shared'
 
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 
 interface Props {
@@ -16,6 +16,7 @@ interface Props {
   setSongs: React.Dispatch<React.SetStateAction<any>>
   // Shader properties
   planeSubdivisions: number
+  playerStatus: 'active' | 'paused' | 'inactive'
 }
 
 export const PlayerWrapper: React.FC<Props> = ({
@@ -28,14 +29,9 @@ export const PlayerWrapper: React.FC<Props> = ({
   setSongs,
   // Shader properties
   planeSubdivisions,
+  playerStatus,
 }) => {
   const clickRef = useRef<HTMLDivElement>(null)
-
-  let playerStatus: 'playing' | 'paused' | 'inactive' = 'inactive'
-  useEffect(() => {
-    if (!currentSong) playerStatus = 'inactive'
-    else playerStatus = isPlaying ? 'playing' : 'paused'
-  }, [currentSong, isPlaying])
 
   let songIndex = songs?.musics.findIndex(
     (x: { Title: string }) => x.Title == currentSong.Title,
@@ -47,8 +43,6 @@ export const PlayerWrapper: React.FC<Props> = ({
   }
 
   const updateProgressWidth = (e: any) => {
-    if (!currentSong) return
-
     const width: number = clickRef.current?.clientWidth as number
     const offset = e.nativeEvent.offsetX
 
@@ -90,18 +84,15 @@ export const PlayerWrapper: React.FC<Props> = ({
       </Canvas>
       <div className="player-explorer-content">
         <div className="player-bar">
-          <div className="widget-left">
-            {songs && (
-              <div className="flex row nowrap">
-                <img src={songs.cover} alt={currentSong.name} />
-                <p>
-                  {songs.artist} - {currentSong.name}
-                </p>
-              </div>
-            )}
-          </div>
-
-          <div className="widget-player">
+          {songs && (
+            <div id="contain-left-bar" className="flex row nowrap">
+              <img src={songs.cover} alt={currentSong.name} />
+              <p>
+                {songs.artist} - {currentSong.name}
+              </p>
+            </div>
+          )}
+          <div id="nav-widget-player" className="widget-player">
             <Icon icon="random" />
             <Icon icon="previous" onClick={switchToPrevious} />
             {isPlaying ? (
@@ -112,30 +103,27 @@ export const PlayerWrapper: React.FC<Props> = ({
             <Icon icon="next" onClick={switchToNext} />
             <Icon icon="loop" />
           </div>
-          <div className="widget-right">
-            {songs && (
-              <div className="flex row nowrap">
-                <p>01:21 / 02:03</p>
-                <Icon icon="dislike" />
-                <Icon icon="close" />
-              </div>
-            )}
-          </div>
+          {songs && (
+            <div id="contain-right-bar" className="flex row nowrap">
+              <p>01:21 / 02:03</p>
+              <Icon icon="dislike" />
+              <Icon icon="close" />
+            </div>
+          )}
         </div>
         <div>
-          <div
-            className="player-seekbar"
-            onClick={updateProgressWidth}
-            ref={clickRef}
-          >
+          {songs && (
             <div
-              className="time"
-              style={{
-                width: `${currentSong?.progress ?? 0}%`,
-                display: 'block',
-              }}
-            />
-          </div>
+              className="seekbar"
+              onClick={updateProgressWidth}
+              ref={clickRef}
+            >
+              <div
+                className="time"
+                style={{ width: `${currentSong.progress}%`, display: 'block' }}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

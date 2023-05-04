@@ -12,6 +12,12 @@ $primary : #33E0D6;
     position: relative;
 }
 
+.flex-row-nowrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
 .icon{
     width: 58px;
     height: 58px;
@@ -37,7 +43,7 @@ img {
     padding: 0 150px;
     margin: 0;
     .contain-explorer{
-        @extend %_ds-flex-row-nowrap;
+        @extend .flex-row-nowrap;
         margin-top: 16px;
         height: 100%;
         .content{
@@ -51,7 +57,7 @@ img {
                 height: 35%;
             }
             .container{
-                @extend %_ds-flex-row-nowrap;
+                @extend .flex-row-nowrap;
                 margin-top: 16px;
                 height: 62.5%;
                 width: 100%;

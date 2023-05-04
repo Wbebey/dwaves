@@ -8,7 +8,7 @@
     width: 85%;
     border-radius: 8px;
     .head{
-        @extend %_ds-flex-row-nowrap;
+        @extend .flex-row-nowrap;
         justify-content: space-around;
         color: black;
         p {
