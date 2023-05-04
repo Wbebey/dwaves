@@ -93,7 +93,7 @@ jobs:
     deploy:
         name: Deploy to GCP 🚀
         needs: [code-analysis]
-        if: github.ref == 'refs/heads/main' ||
+        if: (github.ref == 'refs/heads/main' ||
             github.ref == 'refs/heads/staging' 
         runs-on: ubuntu-latest
         environment: dwaves-app
