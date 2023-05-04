@@ -26,10 +26,6 @@
     align-self: start;
   }
 
-  &-center {
-    align-self: center;
-  }
-
   &-end {
     align-self: end;
   }
@@ -158,11 +154,9 @@
 
     &-l {
       font-size: 1.5rem; // 24px @16px
-      text-transform: uppercase;
     }
     &-s {
       font-size: 1rem; // 16px @16px
-      text-transform: uppercase;
     }
   }
   &-header {
@@ -173,11 +167,9 @@
 
     &-l {
       font-size: 3rem; // 48px @16px;
-      font-weight: 600;
     }
     &-s {
       font-size: 1.5rem; // 24px @16px;
-      font-weight: 600;
     }
   }
   &-tooltip {
