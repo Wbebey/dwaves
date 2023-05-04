@@ -62,13 +62,12 @@ jobs:
     #   with:
     #     path: '${{ github.workspace }}/out/'
     #     destination: '${{secrets.DWAVES_STAGING_BUCKET}}'
-    #   run: |-
-    #     gsutil rsync -R local-dir gs://www.cookingincloudhipster.com
+        # gsutil rsync -R local-dir gs://www.cookingincloudhipster.com
 
     - name: deploy 🧪
       working-directory: ./frontend/dwaves-player
       run: |-
-        gsutil rsync -R build/ gs://${{ secrets.STAGING_ADDRESS }}
+        gsutil rsync -R build/ gs://dwaves-staging.tonfrere.fr
 
     # Cleanup
     - name: Cleanup 🚿
