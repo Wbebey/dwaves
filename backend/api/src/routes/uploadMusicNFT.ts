@@ -97,6 +97,10 @@ async function getMusicNFT() {
         }))
 
         console.log('items', items)
+
+
+
+
     } catch (e) {
         console.log("Upload error" + e)
     }

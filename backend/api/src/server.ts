@@ -46,34 +46,6 @@ app.get('/', async (req: Request, res: Response) => {
 >>>>>>> chore: refactor api directory & remove web2backend
 })
 
-
-
-app.post('/createAlbum', async (req: Request, res: Response) => {
-
-    const newAlbum = await prisma.album.create({
-        data: {
-            name: req.body.name,
-            artistId: req.body.artistId
-        },
-    })
-
-    res.json(newAlbum)
-})
-
-
-app.get('/getNameAlbumOfArtist', async (req: Request, res: Response) => {
-
-    const listOfAlbums = await prisma.album.findMany({
-        where: {
-            artistId: req.body.artistId
-        },
-    })
-
-    res.json(listOfAlbums)
-})
-
-
-
 app.get('/uploadNFT', async (req: Request, res: Response) => {
 
     uploadMusicNFT()
@@ -99,7 +71,6 @@ app.post('/postMusic', (req: any, res: Response) => {
         });
     } else {
         let jsonMusic = JSON.parse(req.body.request)
-
         //console.log(jsonMusic)
 
         // Use the name of the input field (i.e. "cover") to retrieve the uploaded file
@@ -115,11 +86,6 @@ app.post('/postMusic', (req: any, res: Response) => {
                     //console.log(coverPinataUrl)
 
                     let music: any = req.files.music;
-
-                    if(jsonMusic.album===undefined) {
-                        jsonMusic.album = music.name + ' - Single'
-                    }
-
                     music.mv('./uploads/' + music.name).then(() => {
                         // @ts-ignore
                         uploadMusicToIPFS(jsonMusic, coverPinataUrl, fs.createReadStream('./uploads/' + music.name))
