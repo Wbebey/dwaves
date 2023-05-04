@@ -1,7 +1,7 @@
 import { Router } from 'express'
 
 import albumController from '@controllers/album.controller'
-import { body, param } from 'express-validator'
+import { body } from 'express-validator'
 import albumValidator from '@validators/album.validator'
 import musicValidator from '@validators/music.validator'
 import { FileType } from '@@types/pinata.type'
@@ -9,12 +9,6 @@ import { FileType } from '@@types/pinata.type'
 const albumRouter = Router()
 
 albumRouter.get('/', albumController.get)
-albumRouter.get(
-  '/:id',
-  param('id').isInt({ min: 0 }).withMessage('Invalid id'),
-  albumValidator.validate,
-  albumController.show
-)
 albumRouter.post(
   '/',
   body('name').notEmpty().withMessage('Name is required'),
