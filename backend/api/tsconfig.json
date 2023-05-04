@@ -12,11 +12,7 @@
     "resolveJsonModule": true,
     "baseUrl": "src",
     "paths": {
-      "@abi/*": ["abi/*"],
-      "@interfaces/*": ["interfaces/*"],
-      "@config/*": ["config/*"],
-      "@routers/*": ["routers/*"],
-      "@controllers/*": ["controllers/*"]
+      "@abi/*": ["abi/*"]
     }
   },
   "include": ["src/**/*"],
