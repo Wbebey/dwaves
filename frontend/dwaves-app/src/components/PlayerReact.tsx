@@ -3,13 +3,13 @@ import {Icon} from "components/shared"
 import { useRef } from "react";
 
 interface Props {
-  audioElmt: React.RefObject<HTMLAudioElement>;
+  audioElmt: any;
   isPlaying: boolean;
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsPlaying: any;
   currentSong: any;
-  setCurrentSong: React.Dispatch<React.SetStateAction<any>>;
+  setCurrentSong: any;
   songs: any;
-  setSongs: React.Dispatch<React.SetStateAction<any>>;
+  setSongs: any;
 }
 
 export const PlayerReact: React.FC<Props> = ({
@@ -23,7 +23,7 @@ export const PlayerReact: React.FC<Props> = ({
 }) => {
   const PlayPause = () => {
     setIsPlaying(!isPlaying);
-    audioElmt.current!.play();
+    audioElmt.current.play();
   };
 
   let index = songs.findIndex(
@@ -48,7 +48,7 @@ export const PlayerReact: React.FC<Props> = ({
       setCurrentSong(songs[index - 1]);
       index = index - 1;
     }
-    audioElmt.current!.currentTime = 0;
+    audioElmt.current.currentTime = 0;
   };
 
   const handleNext = () => {
@@ -59,7 +59,7 @@ export const PlayerReact: React.FC<Props> = ({
       setCurrentSong(songs[index + 1]);
       index = index + 1;
     }
-    audioElmt.current!.currentTime = 0;
+    audioElmt.current.currentTime = 0;
   };
 
   return (
