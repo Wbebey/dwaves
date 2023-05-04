@@ -31,7 +31,7 @@ export const writeABI = async (
     address: contract.address,
     abi: JSON.parse(contract.interface.format('json') as string),
   }
-  await fs.writeFile(`../api/src/abi/${filename}.json`, JSON.stringify(data))
+  await fs.writeFile(`../abi/${filename}.json`, JSON.stringify(data))
 }
 
 export const cleanup = () => process.exit(0)
