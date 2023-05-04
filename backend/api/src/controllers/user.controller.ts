@@ -1,7 +1,7 @@
 
 import { IUserController } from '@interfaces/controller.interface'
 import userService from 'services/user.service'
-import { RequestHandler } from "express";
+import {RequestHandler} from "express";
 
 class UserController implements IUserController {
   get: RequestHandler = async (_, res) => {

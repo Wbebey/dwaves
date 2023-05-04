@@ -12,7 +12,6 @@ export type CoverMetadata = {
 
 export type MusicMetadata = {
   type: FileType.MUSIC
-  name: string
   artistId: number
   albumId: number
   genreId: number

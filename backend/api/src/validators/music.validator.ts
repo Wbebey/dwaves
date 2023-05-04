@@ -25,16 +25,16 @@ class MusicValidator extends AppValidator implements IMusicValidator {
 
   hasFiles = (filetype: FileType): CustomValidator => (_, { req }) => this._hasFiles(req.files, filetype)
 
-  private _hasFiles = (files: FileArray, filetype: FileType) => {
-    if (!files || !files[filetype]) {
-      throw new AppError(
-        `${filetype} not found in request`,
-        StatusCodes.BAD_REQUEST
-      )
-    }
+    private _hasFiles = (files: FileArray, filetype: FileType) => {
+      if (!files || !files[filetype]) {
+        throw new AppError(
+          `${filetype} not found in request`,
+          StatusCodes.BAD_REQUEST
+        )
+      }
 
-    return true
-  }
+      return true
+    }
 }
 
 const musicValidator = new MusicValidator()
