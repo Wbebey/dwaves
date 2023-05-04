@@ -3,7 +3,6 @@ import { IMusicService } from '@interfaces/service.interface'
 import genreService from './genre.service'
 import pinataService from './pinata.service'
 import userService from './user.service'
-import albumService from "@services/album.service";
 
 class MusicService implements IMusicService {
   getPopularMusics = async (
@@ -26,19 +25,15 @@ class MusicService implements IMusicService {
   }
 
   private _toViewMusic = async (music: ViewMusic) => {
-    const [artist, genre, album] = await Promise.all([
+    const [artist, genre] = await Promise.all([
       userService.findUnique({ id: music.artistId }),
       genreService.findUnique({ id: music.genreId }),
-      albumService.findUnique({ id: music.albumId }),
     ])
 
     return {
       ...music,
       artist: artist?.username || 'Unknown',
       genre: genre?.name || 'Unknown',
-      albumName: album?.name || 'Unknown',
-      albumCover: album?.cover || 'Unknown',
-      albumDate: album?.createdAt || 'Unknown',
     }
   }
 }
