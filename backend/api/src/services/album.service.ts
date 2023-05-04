@@ -30,15 +30,15 @@ class AlbumService implements IAlbumService {
       select: viewAlbumSelect,
     })
 
-    return viewAlbums.map(this._toViewAlbum)
+    return viewAlbums.map(this.toViewAlbum)
   }
 
   findUnique = async (where: Prisma.AlbumWhereUniqueInput) => {
-    const album = await prisma.album.findUnique({
+    const albums = await prisma.album.findUnique({
       where,
       select: viewAlbumSelect,
     })
-    return album && this._toViewAlbum(album)
+    return albums && this.toViewAlbum(albums)
   }
 
   create = async (album: AlbumCreateInput, cover: UploadedFile) => {
@@ -52,15 +52,7 @@ class AlbumService implements IAlbumService {
     return prisma.album.create({ data })
   }
 
-  delete = async (where: Prisma.AlbumWhereUniqueInput) => {
-    const album = await prisma.album.delete({ where })
-
-    await pinataService.unpinFileFromIPFS(album.coverCID)
-
-    return album
-  }
-
-  private _toViewAlbum = (viewAlbumSelectResult: ViewAlbumSelectResult) => {
+  private toViewAlbum = (viewAlbumSelectResult: ViewAlbumSelectResult) => {
     const album = {
       ...viewAlbumSelectResult,
       cover: `${env.pinataGatewayHost}/${viewAlbumSelectResult.coverCID}`,

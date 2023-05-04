@@ -1,3 +1,4 @@
+import logger from '@config/logger.config'
 import ValidatorError from '@errors/validator.error'
 import { ErrorRequestHandler, RequestHandler } from 'express'
 import { ReasonPhrases, StatusCodes } from 'http-status-codes'

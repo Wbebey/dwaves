@@ -24,7 +24,6 @@ export interface IAlbumController extends IController {
   list: AlbumGetRequestHandler
   show: RequestHandler
   create: RequestHandler
-  delete: RequestHandler
 }
 
 export interface IGenreController extends IController {
