@@ -21,7 +21,7 @@ export const PlayerReact: React.FC<Props> = ({
   songs,
   setSongs,
 }) => {
-  const playPause = () => {
+  const PlayPause = () => {
     setIsPlaying(!isPlaying);
     audioElmt.current!.play();
   };
@@ -91,9 +91,9 @@ export const PlayerReact: React.FC<Props> = ({
               <Icon icon="random" />
               <Icon icon="previous" onClick={handlePrevious} />
               {isPlaying ? (
-                <Icon icon="pause" onClick={() => playPause()} />
+                <Icon icon="pause" onClick={() => PlayPause()} />
               ) : (
-                <Icon icon="play" onClick={() => playPause()} />
+                <Icon icon="play" onClick={() => PlayPause()} />
               )}
               <Icon icon="next" onClick={handleNext} />
               <Icon icon="loop" />

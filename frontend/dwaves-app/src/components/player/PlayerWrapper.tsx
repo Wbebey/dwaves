@@ -2,8 +2,6 @@ import 'styles/player/PlayerWrapper.scss'
 
 import { PlayerShader } from 'components/player'
 import { Icon } from 'components/shared'
-import { AlbumDetail, Music } from 'models'
-import { playPause } from 'songs/listenMusic'
 
 import { useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
@@ -12,18 +10,10 @@ interface Props {
   audioElmt: React.RefObject<HTMLAudioElement>
   isPlaying: boolean
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
-  currentSong: Music
-  setCurrentSong: React.Dispatch<React.SetStateAction<Music | undefined>>
+  currentSong: any
+  setCurrentSong: React.Dispatch<React.SetStateAction<any>>
   songs: any
-  setSongs: React.Dispatch<React.SetStateAction<Music[] | undefined>>
-  artist: AlbumDetail | undefined
-  setRepeat: React.Dispatch<React.SetStateAction<boolean>>
-  repeat: boolean
-  setRandom: React.Dispatch<React.SetStateAction<boolean>>
-  random: boolean
-  playRandomSong: (songs: Music[]) => Music
-  likedMusics: string[]
-  likeOrDislikeMusic: (music: string) => void
+  setSongs: React.Dispatch<React.SetStateAction<any>>
   // Shader properties
   planeSubdivisions: number
 }
@@ -36,38 +26,25 @@ export const PlayerWrapper: React.FC<Props> = ({
   setCurrentSong,
   songs,
   setSongs,
-  artist,
-  setRepeat,
-  repeat,
-  setRandom,
-  random,
-  playRandomSong,
-  likedMusics,
-  likeOrDislikeMusic,
   // Shader properties
   planeSubdivisions,
 }) => {
   const clickRef = useRef<HTMLDivElement>(null)
 
-  const foundCidMusic = (musicUrl: string) => {
-    const musicCIDArray = musicUrl.split('/')
-    return musicCIDArray[musicCIDArray.length - 1]
-  }
-
-  const isLikedMusics = (music: string) => {
-    const musicCID = foundCidMusic(music)
-    return likedMusics.includes(musicCID)
-  }
-
-  let songIndex = songs?.musics.findIndex(
-    (x: { name: string }) => x.name == currentSong.name,
-  )
   let playerStatus: 'playing' | 'paused' | 'inactive' = 'inactive'
-
   useEffect(() => {
     if (!currentSong) playerStatus = 'inactive'
     else playerStatus = isPlaying ? 'playing' : 'paused'
   }, [currentSong, isPlaying])
+
+  let songIndex = songs?.musics.findIndex(
+    (x: { Title: string }) => x.Title == currentSong.Title,
+  )
+
+  const togglePlayPlause = () => {
+    setIsPlaying(!isPlaying)
+    audioElmt.current!.play()
+  }
 
   const updateProgressWidth = (e: any) => {
     if (!currentSong) return
@@ -88,10 +65,6 @@ export const PlayerWrapper: React.FC<Props> = ({
       songIndex = songIndex - 1
     }
     audioElmt.current!.currentTime = 0
-
-    setTimeout(() => {
-      playPause(audioElmt, false, setIsPlaying)
-    }, 1000)
   }
 
   const switchToNext = () => {
@@ -103,10 +76,6 @@ export const PlayerWrapper: React.FC<Props> = ({
       songIndex = songIndex + 1
     }
     audioElmt.current!.currentTime = 0
-
-    setTimeout(() => {
-      playPause(audioElmt, false, setIsPlaying)
-    }, 1000)
   }
 
   return (
@@ -122,65 +91,33 @@ export const PlayerWrapper: React.FC<Props> = ({
       <div className="player-explorer-content">
         <div className="player-bar">
           <div className="widget-left">
-            {artist && (
+            {songs && (
               <div className="flex row nowrap">
-                <img src={artist.cover} alt={currentSong.name} />
+                <img src={songs.cover} alt={currentSong.name} />
                 <p>
-                  {artist.artist} - {currentSong.name}
+                  {songs.artist} - {currentSong.name}
                 </p>
               </div>
             )}
           </div>
 
           <div className="widget-player">
-            <Icon
-              icon="random"
-              color={random ? `blue` : '#191a24'}
-              onClick={() => {
-                setRandom(!random)
-              }}
-            />
+            <Icon icon="random" />
             <Icon icon="previous" onClick={switchToPrevious} />
             {isPlaying ? (
-              <Icon
-                icon="pause"
-                onClick={() => playPause(audioElmt, isPlaying, setIsPlaying)}
-              />
+              <Icon icon="pause" onClick={() => togglePlayPlause()} />
             ) : (
-              <Icon
-                icon="play"
-                onClick={() => playPause(audioElmt, isPlaying, setIsPlaying)}
-              />
+              <Icon icon="play" onClick={() => togglePlayPlause()} />
             )}
             <Icon icon="next" onClick={switchToNext} />
-            <Icon
-              icon="loop"
-              color={repeat ? `blue` : '#191a24'}
-              onClick={() => {
-                setRepeat(!repeat)
-              }}
-            />
+            <Icon icon="loop" />
           </div>
-
           <div className="widget-right">
             {songs && (
               <div className="flex row nowrap">
                 <p>01:21 / 02:03</p>
-                <button
-                  className="pb-6"
-                  onClick={() => likeOrDislikeMusic(currentSong.src!)}
-                >
-                  <Icon
-                    icon="like"
-                    color={isLikedMusics(currentSong.src!) ? 'red' : 'black'}
-                    variant={
-                      isLikedMusics(currentSong.src!) ? 'Bold' : 'Linear'
-                    }
-                  />
-                </button>
-                <div className="pt-1.5 pr-5">
-                  <Icon icon="close" />
-                </div>
+                <Icon icon="dislike" />
+                <Icon icon="close" />
               </div>
             )}
           </div>
