@@ -10,4 +10,3 @@ export type PopularMusicRequestHandler = RequestHandler<
   {},
   PopularMusicFilter
 >
-export type LimitRequestHandler = RequestHandler<{}, {}, {}, { limit?: number }>

@@ -14,8 +14,8 @@ const viewAlbumSelect = {
   type: true,
   name: true,
   createdAt: true,
-  genre: { select: { id: true, name: true } },
-  artist: { select: { id: true, username: true } },
+  genre: { select: { name: true } },
+  artist: { select: { username: true } },
   subscribers: { select: { _count: true } },
 }
 
@@ -65,9 +65,7 @@ class AlbumService implements IAlbumService {
       ...viewAlbumSelectResult,
       cover: `${env.pinataGatewayHost}/${viewAlbumSelectResult.coverCID}`,
       genre: viewAlbumSelectResult.genre.name,
-      genreId: viewAlbumSelectResult.genre.id,
       artist: viewAlbumSelectResult.artist.username,
-      artistId: viewAlbumSelectResult.artist.id,
       subscribers: viewAlbumSelectResult.subscribers.length,
     }
     const { coverCID, ...viewAlbum } = album

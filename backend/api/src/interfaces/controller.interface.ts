@@ -1,6 +1,5 @@
 import {
   AlbumGetRequestHandler,
-  LimitRequestHandler,
   MusicListRequestHandler,
 } from '@@types/app.type'
 import { Genre } from '@prisma/client'
@@ -17,8 +16,6 @@ export interface IUserController extends IController {
   me: RequestHandler
   addWallet: RequestHandler
   getMonthlyListenings: RequestHandler
-  getMyPopularMusics: LimitRequestHandler
-  getMyAlbums: RequestHandler
   updateInfo: RequestHandler
   updatePassword: RequestHandler
 }
