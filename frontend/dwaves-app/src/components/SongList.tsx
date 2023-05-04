@@ -240,7 +240,7 @@ export const SongList: React.FC<Props> = ({
                   variant={isLikedMusics(music.src!) ? "Bold" : "Linear"}
                 />
               </button>
-              <p className="pt-4 pl-5">{music.duration}</p>
+              <p className="pt-4 pl-5">2 : 30</p>
             </div>
           </div>
         ))}

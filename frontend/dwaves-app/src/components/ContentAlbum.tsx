@@ -3,8 +3,8 @@ import { Icon } from 'components/shared'
 import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState, Dispatch, RefObject } from 'react'
 import axios from 'axios'
-import { SongList } from './SongList'
-import { AlbumDetail, responseRequest } from 'models'
+import { SongList } from "./SongList";
+import {AlbumDetail, responseRequest} from "models";
 
 interface Props {
   setCurrentSong: Dispatch<React.SetStateAction<any>>
@@ -12,10 +12,10 @@ interface Props {
   audioElmt: RefObject<HTMLAudioElement>
   isPlaying: boolean
   setIsPlaying: Dispatch<React.SetStateAction<boolean>>
-  setArtist: Dispatch<React.SetStateAction<AlbumDetail | undefined>>
+  setArtist : Dispatch<React.SetStateAction<AlbumDetail|undefined>>
   setAlert: Dispatch<React.SetStateAction<responseRequest | undefined>>
-  likedMusics: string[]
-  likeOrDislikeMusic: (music: string) => void
+  likedMusics: string[];
+  likeOrDislikeMusic: (music: string)=> void
 }
 
 export const ContentAlbum: React.FC<Props> = ({
@@ -27,7 +27,7 @@ export const ContentAlbum: React.FC<Props> = ({
   setArtist,
   setAlert,
   likedMusics,
-  likeOrDislikeMusic,
+  likeOrDislikeMusic
 }) => {
   const { id } = useParams()
 
@@ -39,28 +39,9 @@ export const ContentAlbum: React.FC<Props> = ({
         `${import.meta.env.VITE_APP_BACK_URL}/albums/${id}`,
         {
           withCredentials: true,
-        },
+        }
       )
-      const musicsWithDuration = res.data.musics.map((music: any) => {
-        const audio = new Audio(music.src)
-        let formattedDuration: string = ''
-        const promise = new Promise<void>((resolve) => {
-          audio.addEventListener('loadedmetadata', () => {
-            const duration = audio.duration
-            const minutes = Math.floor(duration / 60)
-            const seconds = Math.floor(duration % 60)
-            formattedDuration = `${minutes} : ${
-              seconds < 10 ? '0' : ''
-            }${seconds}`
-            resolve()
-          })
-        })
-        return promise.then(() => ({ ...music, duration: formattedDuration }))
-      })
-
-      Promise.all(musicsWithDuration).then((result) => {
-        setAlbum({ ...res.data, musics: result })
-      })
+      setAlbum(res.data)
     } catch (error) {
       console.log(error)
     }
@@ -95,7 +76,7 @@ export const ContentAlbum: React.FC<Props> = ({
         setCurrentSong={setCurrentSong}
         audioElmt={audioElmt}
         isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
+        setIsPlaying={setIsPlaying} 
         setArtist={setArtist}
         setAlert={setAlert}
         likedMusics={likedMusics}

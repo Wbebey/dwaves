@@ -5,7 +5,7 @@ import { Icon } from 'components/shared'
 import { AlbumDetail, Music } from 'models'
 import { playPause } from 'songs/listenMusic'
 
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 
 interface Props {
@@ -65,14 +65,6 @@ export const PlayerWrapper: React.FC<Props> = ({
   let songIndex = songs?.findIndex(
     (x: { name: string }) => x.name == currentSong?.name,
   )
-
-  const calculationProgressTime = (progress: number) => {
-    console.log(progress)
-
-    const minutes = Math.floor(progress / 60)
-    const seconds = Math.floor(progress % 60)
-    return `${minutes} : ${seconds < 10 ? '0' : ''}${seconds}`
-  }
 
   useEffect(() => {
     if (!currentSong) setPlayerStatus('inactive')
@@ -182,10 +174,7 @@ export const PlayerWrapper: React.FC<Props> = ({
           <div className="widget-right">
             {songs && (
               <div className="widget-right-content">
-                <p>
-                  {calculationProgressTime(currentSong!.progress)} /{' '}
-                  {currentSong?.duration}
-                </p>
+                <p>01:21 / 02:03</p>
                 <button onClick={() => likeOrDislikeMusic(currentSong?.src!)}>
                   <Icon
                     icon="like"
