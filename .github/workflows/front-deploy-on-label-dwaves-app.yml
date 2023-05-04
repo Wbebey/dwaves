@@ -72,10 +72,10 @@ jobs:
         run: echo "${{ env.FRONT_ENV }}" > .env
 
       - name: Install dependencies 📦
-        run: npm install
+        run: npm ci --only=production
 
       - name: Build 🏗
-        run: CI="false" npm run build
+        run: npm run build
 
       - name: Deploy Production 🚀
         if: ${{ github.ref }} == 'refs/heads/staging'
