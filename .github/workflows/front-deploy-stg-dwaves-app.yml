@@ -110,7 +110,7 @@ jobs:
               run: |-
                 CI="false" npm run build
 
-            - name: Deploy to ${{ env.ENVIRONMENT }} 🚀
+            - name: Deploy to {{ env.ENVIRONMENT }} 🚀
               if: ${{ github.ref }} == 'refs/heads/staging'
               run: |-
                 export environment="${{ env.APP }}-${{ env.ENVIRONMENT }}"

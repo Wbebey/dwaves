@@ -74,7 +74,7 @@ jobs:
       - name: Build 🏗
         run: CI="false" npm run build
 
-      - name: Deploy to ${{ env.ENVIRONMENT }} 🚀
+      - name: Deploy to {{ env.ENVIRONMENT }} 🚀
         run: |-
           export environment="${{ env.APP }}-${{ env.ENVIRONMENT }}"
           export deploy_url=${{ env.TEST_URL }}

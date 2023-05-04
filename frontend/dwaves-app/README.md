@@ -1,3 +1,3 @@
 # DWAVES APP
 
-Dwaves player applicationnn
+Dwaves player application.
