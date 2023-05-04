@@ -1,4 +1,3 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { expect } from 'chai'
 import { ethers } from 'hardhat'
 import { DwavesToken, DwavesToken__factory } from '../typechain-types'
@@ -10,23 +9,22 @@ describe('DwavesToken', () => {
   let decimals: number
   let ownerAddress: string
   let recipientAddress: string
-  let recipient: SignerWithAddress
 
   before(async () => {
-    const [owner, spender] = await ethers.getSigners()
-    recipient = spender
-    ownerAddress = owner.address
-    recipientAddress = spender.address
-
-    dwavesTokenFactory = await ethers.getContractFactory('DwavesToken', owner)
+    dwavesTokenFactory = await ethers.getContractFactory('DwavesToken')
   })
 
   describe('When deploying the contract', () => {
     beforeEach(async () => {
-      dwavesToken = await dwavesTokenFactory.deploy()
+      const [owner, recipient] = await ethers.getSigners()
+      dwavesToken = await dwavesTokenFactory.deploy(owner.address)
       await dwavesToken.deployed()
 
       decimals = await dwavesToken.decimals()
+
+      ownerAddress = owner.address
+      recipientAddress = recipient.address
+
       recipientContract = dwavesToken.connect(recipient)
     })
 
@@ -240,43 +238,6 @@ describe('DwavesToken', () => {
       const burnAmount = ethers.utils.parseUnits('1000', decimals)
       const burn = dwavesToken.burnFrom(recipientAddress, burnAmount)
       await expect(burn).to.be.revertedWith('ERC20: insufficient allowance')
-    })
-
-    it('Attributes the admin role to deployer and allows it to give minter role to batch mint tokens', async () => {
-      const minterRole = await dwavesToken.MINTER_ROLE()
-      await dwavesToken.grantRole(minterRole, recipientAddress)
-      const recipientHasMinterRole = await dwavesToken.hasRole(
-        minterRole,
-        recipientAddress
-      )
-      expect(recipientHasMinterRole).to.be.true
-
-      const mintAmount = ethers.utils.parseUnits('1000', decimals)
-      const to_list = [ownerAddress, recipientAddress]
-      const amounts = Array(to_list.length).fill(mintAmount)
-      const batchMint = recipientContract.batchMint(to_list, amounts)
-
-      await expect(batchMint).to.changeTokenBalances(
-        dwavesToken,
-        to_list,
-        amounts
-      )
-    })
-
-    it('Prevents minting if address does not have the minter role', async () => {
-      const minterRole = await dwavesToken.MINTER_ROLE()
-      const recipientHasMinterRole = await dwavesToken.hasRole(
-        minterRole,
-        recipientAddress
-      )
-      expect(recipientHasMinterRole).to.be.false
-
-      const mintAmount = ethers.utils.parseUnits('1000', decimals)
-      const to_list = [ownerAddress, recipientAddress]
-      const amounts = Array(to_list.length).fill(mintAmount)
-      const batchMint = recipientContract.batchMint(to_list, amounts)
-
-      await expect(batchMint).to.be.revertedWith('Caller is not a minter')
     })
   })
 })
