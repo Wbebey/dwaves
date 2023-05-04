@@ -1,0 +1,58 @@
+name: Staging Deployment
+
+on:
+  push:
+    branches: 
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    environment: staging 
+    steps:
+
+    - name: Trigger Message 📥
+      run: |-
+        echo " The job was automatically triggered by a ${{ github.event_name }} event."
+        echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+        echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
+    - name: Checkout 😇
+      uses: actions/checkout@v3
+
+    # Build npm
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+          node-version: ${{ matrix.node-version }}
+
+    - name: Environment variables 🧪
+      working-directory: ./frontend/dwaves-player
+      run: |-
+        sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
+
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    - name: Build 🏗
+      working-directory: ./frontend/dwaves-player
+      run: |-
+        ls ${{ github.workspace }}
+        npm install
+        CI='false' npm run build 
+
+    # Cleanup
+    - name: Cleanup 🚿
+      run: |-
+        echo "🎉 This job's status is ${{ job.status }}."
