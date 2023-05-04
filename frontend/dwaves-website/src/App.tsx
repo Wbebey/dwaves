@@ -5,7 +5,8 @@ import { HeroSection } from './components/HeroSection'
 import { IcoSection } from './components/IcoSection'
 import { Wave } from './components/svg/Wave'
 
-const App = () => {
+const App = ({ children }: { children: React.ReactNode }) => {
+
   return (
     <section className="relative">
       <div className="navbar justify-between sticky z-50 left-0 right-0 top-4 translate-x-auto rounded w-[95%] mx-auto bg-base-100 static">
