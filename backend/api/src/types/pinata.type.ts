@@ -4,7 +4,6 @@ export enum FileType {
   COVER = 'cover',
   MUSIC = 'music',
   MUSICS = 'musics',
-  AVATAR = 'avatar',
 }
 
 export type CoverMetadata = {

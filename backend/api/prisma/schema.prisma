@@ -18,7 +18,6 @@ model User {
   username String
   email    String @unique
   password String
-  avatar   String @default("")
 
   subscribers       User[]             @relation("SubscriberArtist")
   likedArtists      User[]             @relation("SubscriberArtist")

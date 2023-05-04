@@ -129,11 +129,5 @@ currentUserRouter.put(
   userValidator.validate,
   userController.dislikePlaylist
 )
-currentUserRouter.put(
-  '/uploadAvatar',
-  body().custom(userValidator.hasOneFile(FileType.AVATAR)),
-  userValidator.validate,
-  userController.uploadAvatar
-)
 
 export default currentUserRouter

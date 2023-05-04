@@ -1,6 +1,5 @@
 import { AlbumCreateInput, ViewAlbum } from '@@types/album.type'
 import { ConcertEvent } from '@@types/event.type'
-import { Image } from '@@types/gcs.type'
 import {
   CoverMetadata,
   MusicFilter,
@@ -115,8 +114,4 @@ export interface IPlaylistService extends IService {
   ) => Promise<Playlist>
   create: (playlist: Prisma.PlaylistCreateInput) => Promise<Playlist>
   delete: (where: Prisma.PlaylistWhereUniqueInput) => Promise<Playlist>
-}
-
-export interface IGCSService extends IService {
-  uploadProfilePicture: (file: UploadedFile, path: string) => Promise<Image>
 }

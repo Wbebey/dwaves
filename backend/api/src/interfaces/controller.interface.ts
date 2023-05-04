@@ -31,7 +31,6 @@ export interface IUserController extends IController {
   dislikeAlbum: RequestHandler
   likePlaylist: RequestHandler
   dislikePlaylist: RequestHandler
-  uploadAvatar: RequestHandler
 }
 
 export interface IAlbumController extends IController {
