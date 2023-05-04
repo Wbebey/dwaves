@@ -12,34 +12,19 @@ contract DwavesToken is ERC20, ERC20Burnable, AccessControl {
     uint256 constant INITIAL_SUPPLY = 300_000_000 * 10**DECIMALS;
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    constructor(address _DwavesBank) ERC20(NAME, SYMBOL) {
-        _mint(_DwavesBank, INITIAL_SUPPLY);
+    constructor() ERC20(NAME, SYMBOL) {
+        _mint(msg.sender, INITIAL_SUPPLY);
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
-    function batchMint(address[] calldata _to_list, uint256[] calldata _amounts)
+    function batchMint(address[] calldata to_list, uint256[] calldata amounts)
         external
     {
-        _preValidateBatchMint(_to_list, _amounts);
-        _batchMint(_to_list, _amounts);
-    }
+        require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
+        require(to_list.length == amounts.length);
 
-    function _preValidateBatchMint(
-        address[] calldata _to_list,
-        uint256[] calldata _amounts
-    ) internal view onlyRole(MINTER_ROLE) {
-        require(
-            _to_list.length == _amounts.length,
-            "DwavesToken: addresses and amounts do not have same length"
-        );
-    }
-
-    function _batchMint(
-        address[] calldata _to_list,
-        uint256[] calldata _amounts
-    ) internal {
-        for (uint256 i = 0; i < _to_list.length; i++) {
-            _mint(_to_list[i], _amounts[i]);
+        for (uint256 i = 0; i < to_list.length; i++) {
+            _mint(to_list[i], amounts[i]);
         }
     }
 }
