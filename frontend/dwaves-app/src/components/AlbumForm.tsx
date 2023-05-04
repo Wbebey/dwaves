@@ -6,6 +6,7 @@ import axios from "axios";
 import { truncate } from "fs";
 
 interface Props {
+    coverExist: boolean
     setCoverExist: React.Dispatch<React.SetStateAction<boolean>>
     setCover: React.Dispatch<React.SetStateAction<File>>
     setValue: UseFormSetValue<File>
@@ -15,7 +16,7 @@ type File = {
     src: any
 }
 
-const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue }) => {
+const FormCover: React.FC<Props> = ({ coverExist, setCoverExist, setCover, setValue }) => {
 
     function handleFile(e: ChangeEvent<HTMLInputElement>) {
         if (!e.target.files) {
@@ -73,7 +74,7 @@ const AlbumCover = () => {
                     coverExist ?
                         <img src={cover.src.preview} alt="" />
                         :
-                        <FormCover setCoverExist={setCoverExist} setCover={setCover} setValue={setValue} />
+                        <FormCover coverExist={coverExist} setCoverExist={setCoverExist} setCover={setCover} setValue={setValue} />
                 }
             </div>
             <div className="contain-input">
