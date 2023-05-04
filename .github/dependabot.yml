@@ -16,6 +16,7 @@ updates:
     reviewers:
       - 'alexandre-pinon'
     target-branch: 'staging'
+    open_pull_requests_limit: 3
 
   - package-ecosystem: 'npm'
     directory: '/frontend'
@@ -35,6 +36,7 @@ updates:
       - 'alexandre-pinon'
       - 'BryanSeychelles'
     target-branch: 'staging'
+    open_pull_requests_limit: 2
 
 
   - package-ecosystem: 'gradle'
@@ -51,6 +53,7 @@ updates:
     reviewers:
       - 'Bolrung'
     target-branch: 'staging'
+    open_pull_requests_limit: 2
 
 
   - package-ecosystem: 'docker'
@@ -68,6 +71,7 @@ updates:
     reviewers:
       - 'Wbebey'
     target-branch: 'staging'
+    open_pull_requests_limit: 2
 
   - package-ecosystem: 'github-actions'
     directory: '/'
@@ -84,6 +88,7 @@ updates:
     reviewers:
       - 'Wbebey'
     target-branch: 'staging'
+    open_pull_requests_limit: 2
 
 
   - package-ecosystem: 'terraform'
@@ -101,3 +106,4 @@ updates:
     reviewers:
       - 'Wbebey'
     target-branch: 'staging'
+    open_pull_requests_limit: 2
