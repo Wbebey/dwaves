@@ -6,16 +6,15 @@ import { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Icon } from "components/shared";
 import { responseRequest, Music, AlbumDetail } from 'models'
-import { PlayPause, PlayRandomSong } from 'songs/listenMusic'
+import { PlayPause } from 'songs/listenMusic'
 
 function App() {
   const [loader, setLoader] = useState(true)
-  const [artist, setArtist] = useState<AlbumDetail | undefined>()
-  const [songs, setSongs] = useState<Music[] | undefined>()
-  const [repeat, setRepeat] = useState(false)
-  const [random, setRandom] = useState(false)
+  const [artist, setArtist] = useState<AlbumDetail|undefined>()
+  const [songs, setSongs] = useState<Music[]|undefined>()
+  const [repeat , setRepeat] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [currentSong, setCurrentSong] = useState<Music | undefined>()
+  const [currentSong, setCurrentSong] = useState<Music|undefined>()
   const [loginDisplay, setLoginDisplay] = useState(false)
   const [alert, setAlert] = useState<responseRequest>()
   // Temporary this value will be stored in the token
@@ -44,8 +43,8 @@ function App() {
   const onPlaying = () => {
     const duration: number = audioElmt.current?.duration as number
     const ct: number = audioElmt.current?.currentTime as number
-
-    console.log(duration, 'duration')
+    
+    console.log(duration,'duration')
     if (songs) {
       setCurrentSong({
         ...currentSong!,
@@ -57,15 +56,7 @@ function App() {
       if (currentSong?.progress! >= 99) {
         PlayPause(audioElmt, false, setIsPlaying)
       }
-    }
-    if (random) {
-      if (currentSong?.progress! >= 99) {
-        setCurrentSong(PlayRandomSong(songs!));
-        setTimeout(() => {
-          PlayPause(audioElmt, false, setIsPlaying)
-        }, 1000)
-      }
-    }
+    } 
   }
 
   const toggleModal = () => {
@@ -82,33 +73,30 @@ function App() {
       }
       {
         currentSong ?
-          <ExploPlayer
-            audioElmt={audioElmt}
-            isPlaying={isPlaying}
-            setIsPlaying={setIsPlaying}
-            currentSong={currentSong}
-            setCurrentSong={setCurrentSong}
-            songs={songs}
-            setSongs={setSongs}
-            artist={artist}
-            setRepeat={setRepeat}
-            repeat={repeat}
-            random={random}
-            setRandom={setRandom}
-            PlayRandomSong={PlayRandomSong}
-          />
-          :
-          <div id="contain-top-player">
-            <div id='player-bar' className="flex justify-center w-full">
-              <div id="nav-widget-player" className="flex row nowrap">
-                <Icon icon="random" />
-                <Icon icon="previous" />
-                <Icon icon="play" />
-                <Icon icon="next" />
-                <Icon icon="loop" />
-              </div>
-            </div>
+        <ExploPlayer
+          audioElmt={audioElmt}
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+          currentSong={currentSong}
+          setCurrentSong={setCurrentSong}
+          songs={songs}
+          setSongs={setSongs}
+          artist={artist}
+          setRepeat={setRepeat}
+          repeat={repeat}
+        />
+        :
+      <div id="contain-top-player">
+        <div id='player-bar' className="flex justify-center w-full">
+          <div id="nav-widget-player" className="flex row nowrap">
+            <Icon icon="random" />
+            <Icon icon="previous" />
+            <Icon icon="play" />
+            <Icon icon="next" />
+            <Icon icon="loop" />
           </div>
+        </div>
+      </div>
       }
       {
         alert?.visible &&
@@ -127,7 +115,7 @@ function App() {
             renders the first one that matches the current URL. */}
               <Routes>
                 <Route path="/" element={<Explorer />} />
-                <Route path="/album/:id" element={<Album setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt} isPlaying={isPlaying} setIsPlaying={setIsPlaying} setArtist={setArtist} />} />
+                <Route path="/album/:id" element={<Album setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt} isPlaying={isPlaying} setIsPlaying={setIsPlaying} setArtist= {setArtist} />} />
                 <Route path="/player" element={<Player />} />
                 <Route path="/download" element={<Download setAlert={setAlert} />} />
                 <Route path="/profile" element={<Profile setCurrentSong={setCurrentSong} setSongs={setSongs} setAlert={setAlert} />} />
