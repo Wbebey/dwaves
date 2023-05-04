@@ -15,10 +15,7 @@ class UserValidator extends AppValidator implements IUserValidator {
   }
   checkPasswordMatch: CustomValidator = (passwordConfirmation, { req }) => {
     if (passwordConfirmation !== req.body.password) {
-      throw new AppError(
-        'Password confirmation does not match password',
-        StatusCodes.UNPROCESSABLE_ENTITY
-      )
+      throw new AppError('Password confirmation does not match password', StatusCodes.UNPROCESSABLE_ENTITY)
     }
     return true
   }

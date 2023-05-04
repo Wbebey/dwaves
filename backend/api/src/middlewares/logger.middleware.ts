@@ -8,12 +8,7 @@ export const requestLoggerMiddleware: RequestHandler = (req, _, next) => {
   next()
 }
 
-export const errorLoggerMiddleware: ErrorRequestHandler = (
-  err,
-  _,
-  __,
-  next
-) => {
+export const errorLoggerMiddleware: ErrorRequestHandler = (err, _, __, next) => {
   const code = err.code || StatusCodes.INTERNAL_SERVER_ERROR
   const status = err.status || ReasonPhrases.INTERNAL_SERVER_ERROR
 
