@@ -62,7 +62,7 @@ export const AlbumOfArtist: React.FC<Props> = ({setAlert}) => {
             if (Array.isArray(res.data)) {
                 displayAlert(res.data[0].msg, res.status)
             } else {
-                displayAlert('Album deleted successfully', res.status)
+                displayAlert('Album deleted successfuly', res.status)
             }
         } catch (err) {
             console.log(err)

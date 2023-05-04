@@ -42,7 +42,7 @@ export const CreatePlaylist: React.FC<Props> = ({setAlert}) => {
             if (Array.isArray(res.data)) {
                 displayAlert(res.data[0].msg, res.status)
             } else {
-                displayAlert('Playlist created successfully', res.status)
+                displayAlert('Playlist created successfuly', res.status)
             }
         } catch (err) {
             console.log(err)

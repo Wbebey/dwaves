@@ -42,7 +42,7 @@ export const SongList: React.FC<Props> = ({
         }
     }
 
-    const getALlMusicsCidOfAPlaylist = async (playlistId: number) => {
+    const addSongToThePlaylist = async (playlistId: number, musicSrc: string) => {
         const musicsCid: string[] = []
         try {
             const res = await axios.get(`${import.meta.env.VITE_APP_BACK_URL}/playlists/${playlistId}`, {
@@ -54,28 +54,20 @@ export const SongList: React.FC<Props> = ({
                 const musicUrl = music.src.split('/')
                 musicsCid.push(musicUrl[musicUrl.length - 1])
             })
-            return musicsCid
-        } catch (err) {
-            console.log(err)
-        }
-    }
 
-    const addSongToThePlaylist = async (playlistId: number, musicSrc: string) => {
-        let musicsCid: string[] | undefined = []
-        try {
-            musicsCid = await getALlMusicsCidOfAPlaylist(playlistId)
             const newMusicUrl = musicSrc.split('/')
-            musicsCid!.push(newMusicUrl[newMusicUrl.length - 1])
+            musicsCid.push(newMusicUrl[newMusicUrl.length - 1])
 
             const data = {musics: musicsCid}
-            const res = await axios.put(`${import.meta.env.VITE_APP_BACK_URL}/playlists/${playlistId}`, data, {
+
+            const res2 = await axios.put(`${import.meta.env.VITE_APP_BACK_URL}/playlists/${playlistId}`, data, {
                     withCredentials: true,
                 }
             )
-            if (Array.isArray(res.data)) {
-                displayAlert(res.data[0].msg, res.status)
+            if (Array.isArray(res2.data)) {
+                displayAlert(res2.data[0].msg, res.status)
             } else {
-                displayAlert('Music added successfully to the playlist', res.status)
+                displayAlert('Music added successfuly to the playlist', res.status)
             }
         } catch (err) {
             console.log(err)

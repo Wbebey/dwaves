@@ -29,7 +29,7 @@ export const Login: React.FC<Props> = ({ toggleModal, setConnected, setAlert }) 
           if (Array.isArray(res.data)) {
             displayAlert(res.data[0].msg , res.status)
           } else {
-            displayAlert('connected successfully' , res.status)
+            displayAlert('connected successfuly' , res.status)
           }
         } else {
           displayAlert("cookie not set" , res.status)
