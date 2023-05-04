@@ -8,7 +8,6 @@ interface Props {
   size?: "Small" | "Regular" | "Large";
   color?: string;
   onClick?: MouseEventHandler;
-  contentBackground?: string;
 }
 
 export const Icon: React.FC<Props> = ({
@@ -16,7 +15,6 @@ export const Icon: React.FC<Props> = ({
   variant = "Linear",
   size = "Regular",
   color = styles.colMainDark,
-  contentBackground,
   onClick,
 }) => {
   const icons: { [key: string]: IconSax.Icon } = {
