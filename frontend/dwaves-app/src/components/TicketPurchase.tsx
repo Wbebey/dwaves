@@ -133,23 +133,26 @@ export const TicketPurchase: FC<Props> = ({
           </div>
         </div>
       </div>
-      <h2 className="text-center text-3xl">
-        buy a ticket for one of these upcoming concerts !
+      <h2 className="text-center text-3xl mt-7">
+        {formattedEvents[0]?.name
+          ? 'Buy a ticket for one of these upcoming concerts !'
+          : 'No decentralized concert available for the moment ...'}
       </h2>
       <div className="flex flex-row flex-wrap justify-between mx-8">
-        {formattedEvents.map((event, index) => (
-          <div
-            key={index}
-            onClick={() => {
-              setOpenModal(true)
-              setTicketToOpen(index)
-              setTicketToBuyId(+event.ticketIdToBuy)
-            }}
-            style={{ width: 500 }}
-          >
-            <TicketTemplate event={event} />
-          </div>
-        ))}
+        {formattedEvents[0]?.name &&
+          formattedEvents.map((event, index) => (
+            <div
+              key={index}
+              onClick={() => {
+                setOpenModal(true)
+                setTicketToOpen(index)
+                setTicketToBuyId(+event.ticketIdToBuy)
+              }}
+              style={{ width: 500 }}
+            >
+              <TicketTemplate event={event} />
+            </div>
+          ))}
       </div>
 
       <input
@@ -220,7 +223,9 @@ export const TicketPurchase: FC<Props> = ({
                 It's time for you 🤯 !
               </h3>
 
-              <TicketTemplate event={formattedEvents[ticketToOpen]} />
+              {formattedEvents[0]?.name && (
+                <TicketTemplate event={formattedEvents[ticketToOpen]} />
+              )}
               {transactionInProgress ? (
                 <div className="mt-5 w-1/3 bg-primary h-12 rounded-lg flex justify-center items-center">
                   <progress className="progress progress-secondary w-9/12"></progress>
