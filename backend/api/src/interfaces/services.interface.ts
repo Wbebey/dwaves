@@ -16,3 +16,8 @@ export interface IPinataService extends IService {
     pinFileToIPFS: (file: ReadStream, metadata: Metadata) => Promise<string>
 }
 
+// export interface INFTService extends IService {
+//     get: RequestHandler
+//     getMonthlyListenings: RequestHandler
+// }
+

@@ -25,6 +25,4 @@ class AlbumController implements IAlbumController {
   }
 }
 
-const albumController = new AlbumController()
-
-export default albumController
+export default AlbumController
