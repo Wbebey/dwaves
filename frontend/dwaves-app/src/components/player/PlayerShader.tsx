@@ -5,8 +5,9 @@ import vertexShader from "shaders/playerVertex.glsl";
 import fragmentShader from "shaders/playerFragment.glsl";
 
 import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import glsl from "glslify";
 
 interface Props {
   planeSubdivisions: number;
@@ -21,6 +22,8 @@ export const PlayerShader: React.FC<Props> = ({
   const subdivs = Math.max(planeSubdivisions, 4);
   const ratio = 192 / window.innerWidth;
 
+  // const mesh = new THREE.Mesh(plane, material);
+  // const ref = useRef<THREE.Mesh>(null!);
   const meshRef = useRef<THREE.Mesh>(null!);
   const materialRef = useRef<THREE.ShaderMaterial>(null!);
 
@@ -38,7 +41,8 @@ export const PlayerShader: React.FC<Props> = ({
         ref={materialRef}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
-        uniforms={{ uTime: { value: 0.0 }, uIsPaused: { value: false } }}
+        uniforms={{ uTime: { value: 0.0 } }}
+        // wireframe
       />
     </mesh>
   );
