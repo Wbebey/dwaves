@@ -1,18 +1,18 @@
-name : Deploy Dwaves-app to Staging
+name : Deploy Dwaves-app to staging
 
 on:
     push:
         branches:
             - staging
-            # - feature/*
+            - feature/*
         paths:
             - frontend/dwaves-app/**
-    # pull_request: 
-    #     types: [opened, synchronize, reopened]
-    #     branches:
-    #         - staging
-    #     paths:
-    #         - frontend/dwaves-app/**
+    pull_request: 
+        types: [opened, synchronize, reopened]
+        branches:
+            - staging
+        paths:
+            - frontend/dwaves-app/**
 
 env: 
     APP: dwaves-app
@@ -85,7 +85,7 @@ jobs:
         name: Deploy to staging
         needs: [code-analysis]
         environment:
-            name: dwaves-app-staging
+            name: dwaves-app-production
             url: ${{ env.DWAVES_STAGING_URL }}
         runs-on: ubuntu-latest
         steps:
