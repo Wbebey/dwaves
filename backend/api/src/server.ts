@@ -1,7 +1,6 @@
 import express from 'express'
 import fileUpload from 'express-fileupload'
 import bodyParser from 'body-parser'
-import cors from 'cors'
 
 import env from '@config/env.config'
 import appRouter from '@routers/app.router'
@@ -12,7 +11,6 @@ const { port, appName } = env
 const app = express()
 app.disable("x-powered-by")
 
-app.use(cors())
 // enable files upload
 app.use(fileUpload({
     createParentPath: true
