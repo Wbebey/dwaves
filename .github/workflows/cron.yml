@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run generate
+      - name: Run script
         run: npm run generate
 
       - name: Cache prisma client
@@ -85,12 +85,10 @@ jobs:
       - name: Build script 
         run: npm run build
 
-      # - name: Retrieve prisma client
-      #   run: mv ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}/client ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}/build
+      - name: Retrieve prisma client
+        run: mv ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}/client ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}/build
 
       - run: ls -al
-
-      - run: cat .env
 
       - run: ls build/
 
