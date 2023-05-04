@@ -10,7 +10,7 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		t6C2YzsnrNhli2Zg/erFdHwOTT0=
+		VDZzNCTFYLEqsRnzXgWfsLe56h4=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -18,31 +18,15 @@
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
-		1GlOib4RTvC7JQG9S3p8amQTcOA=
-		</data>
-		<key>flutter_assets/assets/images/Iconsax/Linear/Next.png</key>
-		<data>
-		mzLGIV2RODGrHUqmvx/obMAluWc=
-		</data>
-		<key>flutter_assets/assets/images/Iconsax/Linear/Previous.png</key>
-		<data>
-		Cbyy8daWikCdoXKSGYoAmt/B67A=
-		</data>
-		<key>flutter_assets/assets/images/Iconsax/Linear/_DesignPictureAlbumSmall.png</key>
-		<data>
-		0R/OvfzMv6NnajUxsdFWGoyDRjY=
-		</data>
-		<key>flutter_assets/assets/images/Iconsax/Linear/play.png</key>
-		<data>
-		W2V4ewJX6orX2x1YmVXb0xlEd00=
+		7NlQoN0afHwmfmqyMedEiKgUEjI=
 		</data>
 		<key>flutter_assets/assets/images/MetaMask_Fox.png</key>
 		<data>
 		Z9PMPEYb8P5CiQPgACe4Wjv0WJ4=
 		</data>
-		<key>flutter_assets/assets/images/Player-Background.png</key>
+		<key>flutter_assets/assets/images/Seaflux_logo.png</key>
 		<data>
-		usR1cIjOhiTr/crl/POcWutFTPA=
+		9vl0VFDIgi4RabYGVKd/W6bXi10=
 		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -54,7 +38,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		3jMRmrONQ3I/cXOEZHtLSBRF69M=
+		Ea8CooxdAIjXkuv78EfxoGFUywo=
 		</data>
 		<key>flutter_assets/shaders/ink_sparkle.frag</key>
 		<data>
@@ -71,7 +55,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			6w1todi0+NM/xNzG29oIwQ5p6S3kGnbgTeCBetcfhLQ=
+			WHT1XTob9Nj1FlMmoIdQ+3J8Euk1aoyDTsLd04Hnyb4=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -85,35 +69,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Sz80ZfR0lpdCsoPboit/dkfmu90R8Qjn65Q3DR1L/Gk=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/images/Iconsax/Linear/Next.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			RrvJ0i4CuwQj2VPZjH1e98LAW4UsnUBpJEiw8MeEY0M=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/images/Iconsax/Linear/Previous.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			8DVwNuOggn8S54Mf33fZLe3Z2vn2msqm4FfIg+44EkA=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/images/Iconsax/Linear/_DesignPictureAlbumSmall.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			pc44Xb/Td9FSXW+VO0ndQN/NOEzIbvUr4tY3CdLXf3k=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/images/Iconsax/Linear/play.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			xfRBT3Fogsq4cvaaTNe+bCyCj4BGDI6wlzyPC578dLs=
+			aZhJXMES3jNt1Jt4EyjbfuTe77pzqbXav3nUr81jPrQ=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/MetaMask_Fox.png</key>
@@ -123,11 +79,11 @@
 			50fdvCABbE/SXOw7ZoL1Bf1l0wysl7L3iEfk3xWjIw0=
 			</data>
 		</dict>
-		<key>flutter_assets/assets/images/Player-Background.png</key>
+		<key>flutter_assets/assets/images/Seaflux_logo.png</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			CsIw4XUr4RghnMcEJDbABwWuB5eAPn3dAUmubDLzHpQ=
+			80AW/iudqLl5p2xO+Jcs+o603tCop9xq6p7kUsA5pIY=
 			</data>
 		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -148,7 +104,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			yIp7Mwv5jnZYCysU34IpoeR3WfsPzYJaSSo5bTe1SRE=
+			I57LcwqcV+ZKDSpW2O0pRhatrCPiVsmQ6e/SX1j00MQ=
 			</data>
 		</dict>
 		<key>flutter_assets/shaders/ink_sparkle.frag</key>

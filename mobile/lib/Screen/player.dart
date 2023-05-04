@@ -1,77 +1,154 @@
-// import 'package:flutter/material.dart';
-// import 'package:just_audio/just_audio.dart';
 
-// class Playermusictest extends StatefulWidget {
-//   const Playermusictest(AudioPlayer audioPlayer, {Key? key}) : super(key: key);
+import 'package:flutter/material.dart';
+import 'package:dwaves_mobile/domain/audio_metadata.dart';
+import 'package:dwaves_mobile/Screen/player_buttons.dart';
+import 'package:dwaves_mobile/Screen/playlist.dart';
+import 'package:just_audio/just_audio.dart';
 
-//   @override
-//   State<Playermusictest> createState() => _PlayermusicState();
-// }
+class Player extends StatefulWidget {
+  @override
+  _PlayerState createState() => _PlayerState();
+}
 
-// class _PlayermusicState extends State<Playermusictest> {
-//   late AudioPlayer _audioPlayer;
+class _PlayerState extends State<Player> {
+  late AudioPlayer _audioPlayer;
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _audioPlayer = AudioPlayer();
-//   }
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
 
-//   void dispose() {
-//     _audioPlayer.dispose();
-//     super.dispose();
-//   }
+    _audioPlayer
+        .setAudioSource(
+      ConcatenatingAudioSource(
+        children: [
+          AudioSource.uri(
+            Uri.parse(
+                "https://archive.org/download/IGM-V7/IGM%20-%20Vol.%207/25%20Diablo%20-%20Tristram%20%28Blizzard%29.mp3"),
+            tag: AudioMetadata(
+              title: "Tristram",
+              artwork:
+                  "https://upload.wikimedia.org/wikipedia/en/3/3a/Diablo_Coverart.png",
+            ),
+          ),
+          AudioSource.uri(
+            Uri.parse(
+                "https://archive.org/download/igm-v8_202101/IGM%20-%20Vol.%208/15%20Pokemon%20Red%20-%20Cerulean%20City%20%28Game%20Freak%29.mp3"),
+            tag: AudioMetadata(
+              title: "Cerulean City",
+              artwork:
+                  "https://upload.wikimedia.org/wikipedia/en/f/f1/Bulbasaur_pokemon_red.png",
+            ),
+          ),
+          AudioSource.uri(
+            Uri.parse(
+                "https://scummbar.com/mi2/MI1-CD/01%20-%20Opening%20Themes%20-%20Introduction.mp3"),
+            tag: AudioMetadata(
+              title: "The secret of Monkey Island - Introduction",
+              artwork:
+                  "https://upload.wikimedia.org/wikipedia/en/a/a8/The_Secret_of_Monkey_Island_artwork.jpg",
+            ),
+          ),
+          AudioSource.uri(
+            Uri.parse(
+                "https://rose-defeated-whippet-102.mypinata.cloud/ipfs/QmZn4v1UXBMYwqKHmDZbHGjZqVdDfdix4qRhWfLCFfKhFJ"),
+            tag: AudioMetadata(
+              title: "Kevin Music",
+              artwork:
+                  "https://upload.wikimedia.org/wikipedia/en/f/f1/Bulbasaur_pokemon_red.png",
+            ),
+          ),
+          AudioSource.uri(
+            Uri.parse(
+                "https://rose-defeated-whippet-102.mypinata.cloud/ipfs/QmZn4v1UXBMYwqKHmDZbHGjZqVdDfdix4qRhWfLCFfKhFJ"),
+            tag: AudioMetadata(
+              title: "Kevin Music",
+              artwork:
+                  "https://upload.wikimedia.org/wikipedia/en/f/f1/Bulbasaur_pokemon_red.png",
+            ),
+          ),
+          AudioSource.uri(
+            Uri.parse(
+                "https://rose-defeated-whippet-102.mypinata.cloud/ipfs/QmZn4v1UXBMYwqKHmDZbHGjZqVdDfdix4qRhWfLCFfKhFJ"),
+            tag: AudioMetadata(
+              title: "Kevin Music",
+              artwork:
+                  "https://upload.wikimedia.org/wikipedia/en/f/f1/Bulbasaur_pokemon_red.png",
+            ),
+          ),
+          AudioSource.uri(
+            Uri.parse(
+                "https://rose-defeated-whippet-102.mypinata.cloud/ipfs/QmZn4v1UXBMYwqKHmDZbHGjZqVdDfdix4qRhWfLCFfKhFJ"),
+            tag: AudioMetadata(
+              title: "Kevin Music",
+              artwork:
+                  "https://upload.wikimedia.org/wikipedia/en/f/f1/Bulbasaur_pokemon_red.png",
+            ),
+          ),
+          AudioSource.uri(
+            Uri.parse(
+                "https://rose-defeated-whippet-102.mypinata.cloud/ipfs/QmZn4v1UXBMYwqKHmDZbHGjZqVdDfdix4qRhWfLCFfKhFJ"),
+            tag: AudioMetadata(
+              title: "Kevin Music",
+              artwork:
+                  "https://upload.wikimedia.org/wikipedia/en/f/f1/Bulbasaur_pokemon_red.png",
+            ),
+          ),
+          AudioSource.uri(
+            Uri.parse(
+                "https://rose-defeated-whippet-102.mypinata.cloud/ipfs/QmZn4v1UXBMYwqKHmDZbHGjZqVdDfdix4qRhWfLCFfKhFJ"),
+            tag: AudioMetadata(
+              title: "Kevin Music",
+              artwork:
+                  "https://upload.wikimedia.org/wikipedia/en/f/f1/Bulbasaur_pokemon_red.png",
+            ),
+          ),
+          AudioSource.uri(
+            Uri.parse(
+                "https://rose-defeated-whippet-102.mypinata.cloud/ipfs/QmZn4v1UXBMYwqKHmDZbHGjZqVdDfdix4qRhWfLCFfKhFJ"),
+            tag: AudioMetadata(
+              title: "Kevin Music",
+              artwork:
+                  "https://upload.wikimedia.org/wikipedia/en/f/f1/Bulbasaur_pokemon_red.png",
+            ),
+          ),
+          AudioSource.uri(
+            Uri.parse(
+                "https://rose-defeated-whippet-102.mypinata.cloud/ipfs/QmZn4v1UXBMYwqKHmDZbHGjZqVdDfdix4qRhWfLCFfKhFJ"),
+            tag: AudioMetadata(
+              title: "Kevin Music",
+              artwork:
+                  "https://upload.wikimedia.org/wikipedia/en/f/f1/Bulbasaur_pokemon_red.png",
+            ),
+          ),
+        ],
+      ),
+    )
+        .catchError((error) {
+      // catch load errors: 404, invalid url ...
+      print("An error occured $error");
+    });
+  }
 
-//   Widget build(BuildContext? context) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         IconButton(
-//           onPressed: () {
-//             _audioPlayer.play();
-//           },
-//           icon: const Icon(Icons.play_arrow),
-//         ),
-//         // StreamBuilder<PlayerState>(
-//         //   stream: _audioPlayer.playerStateStream,
-//         //   builder: (_, snapshot) {
-//         //     final playerState = snapshot.data;
-//         //     return _playPauseButton(playerState!);
-//         //   },
-//         // ),
-//       ],
-//     );
-//   }
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
 
-//   Widget _playPauseButton(PlayerState playerState) {
-//     final processingState = playerState.processingState;
-//     if (processingState == ProcessingState.loading ||
-//         processingState == ProcessingState.buffering) {
-//       return Container(
-//         margin: EdgeInsets.all(8.0),
-//         width: 64.0,
-//         height: 64.0,
-//         child: CircularProgressIndicator(),
-//       );
-//     } else if (_audioPlayer.playing != true) {
-//       return IconButton(
-//         icon: Icon(Icons.play_arrow),
-//         iconSize: 64.0,
-//         onPressed: _audioPlayer.play,
-//       );
-//     } else if (processingState != ProcessingState.completed) {
-//       return IconButton(
-//         icon: Icon(Icons.pause),
-//         iconSize: 64.0,
-//         onPressed: _audioPlayer.pause,
-//       );
-//     } else {
-//       return IconButton(
-//         icon: Icon(Icons.replay),
-//         iconSize: 64.0,
-//         onPressed: () => _audioPlayer.seek(Duration.zero,
-//             index: _audioPlayer.effectiveIndices!.first),
-//       );
-//     }
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(child: Playlist(_audioPlayer)),
+              PlayerButtons(_audioPlayer),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
