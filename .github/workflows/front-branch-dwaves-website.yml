@@ -1,4 +1,4 @@
-name: Test & Analyse - Dwaves-website  
+name: TAB - Dwaves-website  
 
 on:
     push:
