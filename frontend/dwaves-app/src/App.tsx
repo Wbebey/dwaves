@@ -6,13 +6,11 @@ import { useEffect, useRef, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Icon } from "components/shared";
 import { responseRequest, Music, AlbumDetail } from 'models'
-import { PlayPause } from 'songs/listenMusic'
 
 function App() {
   const [loader, setLoader] = useState(true)
   const [artist, setArtist] = useState<AlbumDetail|undefined>()
   const [songs, setSongs] = useState<Music[]|undefined>()
-  const [repeat , setRepeat] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentSong, setCurrentSong] = useState<Music|undefined>()
   const [loginDisplay, setLoginDisplay] = useState(false)
@@ -43,8 +41,7 @@ function App() {
   const onPlaying = () => {
     const duration: number = audioElmt.current?.duration as number
     const ct: number = audioElmt.current?.currentTime as number
-    
-    console.log(duration,'duration')
+
     if (songs) {
       setCurrentSong({
         ...currentSong!,
@@ -52,11 +49,6 @@ function App() {
         length: duration,
       })
     }
-    if (repeat) {
-      if (currentSong?.progress! >= 99) {
-        PlayPause(audioElmt, false, setIsPlaying)
-      }
-    } 
   }
 
   const toggleModal = () => {
@@ -82,8 +74,6 @@ function App() {
           songs={songs}
           setSongs={setSongs}
           artist={artist}
-          setRepeat={setRepeat}
-          repeat={repeat}
         />
         :
       <div id="contain-top-player">

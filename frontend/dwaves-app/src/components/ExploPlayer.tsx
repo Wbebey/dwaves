@@ -1,6 +1,5 @@
 import "styles/Explorer.scss";
 import { Icon } from "components/shared";
-import styles from "styles/global/styles.module.scss";
 
 import { useRef } from "react";
 import { PlayPause } from "songs/listenMusic";
@@ -11,12 +10,10 @@ interface Props {
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   currentSong: Music;
-  setCurrentSong: React.Dispatch<React.SetStateAction<Music | undefined>>;
+  setCurrentSong: React.Dispatch<React.SetStateAction<Music|undefined>>;
   songs: any;
-  setSongs: React.Dispatch<React.SetStateAction<Music[] | undefined>>;
-  artist: AlbumDetail | undefined
-  setRepeat: React.Dispatch<React.SetStateAction<boolean>>;
-  repeat: boolean;
+  setSongs: React.Dispatch<React.SetStateAction<Music[]|undefined>>;
+  artist : AlbumDetail|undefined
 }
 
 export const ExploPlayer: React.FC<Props> = ({
@@ -27,9 +24,7 @@ export const ExploPlayer: React.FC<Props> = ({
   setCurrentSong,
   songs,
   setSongs,
-  artist,
-  setRepeat,
-  repeat
+  artist
 }) => {
 
   let index = songs.findIndex(
@@ -55,7 +50,7 @@ export const ExploPlayer: React.FC<Props> = ({
       index = index - 1;
     }
     audioElmt.current!.currentTime = 0;
-    setTimeout(() => {
+    setTimeout(()=>{
       PlayPause(audioElmt, false, setIsPlaying)
     }, 1000)
   };
@@ -65,13 +60,14 @@ export const ExploPlayer: React.FC<Props> = ({
       setCurrentSong(songs[0]);
       index = 0;
     } else {
+      console.log(songs[index + 1], index);
       setCurrentSong(songs[index + 1]);
       index = index + 1;
     }
     audioElmt.current!.currentTime = 0;
-    setTimeout(() => {
+    setTimeout(()=>{
       PlayPause(audioElmt, false, setIsPlaying)
-    }, 1000)
+    },1000)
   };
 
   return (
@@ -88,17 +84,12 @@ export const ExploPlayer: React.FC<Props> = ({
           <Icon icon="random" />
           <Icon icon="previous" onClick={handlePrevious} />
           {isPlaying ? (
-            <Icon icon="pause" onClick={() => PlayPause(audioElmt, isPlaying, setIsPlaying)} />
+            <Icon icon="pause" onClick={() => PlayPause(audioElmt , isPlaying, setIsPlaying)} />
           ) : (
-            <Icon icon="play" onClick={() => PlayPause(audioElmt, isPlaying, setIsPlaying)} />
+            <Icon icon="play" onClick={() => PlayPause(audioElmt , isPlaying, setIsPlaying)} />
           )}
           <Icon icon="next" onClick={handleNext} />
-          <Icon
-            icon="loop"
-            color={repeat ? `blue` : '#191a24'}
-            onClick={() => {
-              setRepeat(true)
-            }} />
+          <Icon icon="loop" />
         </div>
         {
           songs &&
