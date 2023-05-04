@@ -1,7 +1,4 @@
-# https://codeball.ai/
 # https://github.com/marketplace/actions/codeball-ai-code-review
-# https://github.com/sturdy-dev/codeball-action/blob/v2/action.yml
-
 name: Codeball AI Code Review
 on:
   pull_request:
@@ -26,4 +23,3 @@ jobs:
           labelPullRequestsWhenApproved: "true"
           labelPullRequestsWhenReviewNeeded: "true"
           failJobsWhenReviewNeeded: "false"
-          codeSuggestionsFromComments: "true"
