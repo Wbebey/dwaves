@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - staging
+            # - feature/*
         paths:
             - frontend/dwaves-app/**
     # pull_request: 
