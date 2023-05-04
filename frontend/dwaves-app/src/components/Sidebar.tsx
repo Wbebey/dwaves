@@ -109,20 +109,8 @@ export const Sidebar: React.FC<Props> = ({
         <li
           style={
             connected
-              ?
-              {
-                position: 'absolute',
-                bottom: '10%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)'
-              }
-              :
-              {
-                position: 'absolute',
-                bottom: '1%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)'
-              }
+              ? { position: 'absolute', bottom: '10%' }
+              : { position: 'absolute', bottom: '1%' }
           }
         >
           <div>
@@ -132,12 +120,7 @@ export const Sidebar: React.FC<Props> = ({
         {connected ? (
           <li
             onClick={disconect}
-            style={{
-              position: 'absolute',
-              bottom: '1%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
+            style={{ position: 'absolute', bottom: '1%' }}
           >
             <div>
               <Logout color="red" className="w-10 h-10" />
