@@ -1,5 +1,6 @@
 import { Previous, Next, Play, Pause, ArrowSwapHorizontal, ArrowRotateLeft } from 'iconsax-react';
 import { useRef } from 'react'
+import { Center } from '@mantine/core'
 
 interface Props {
     audioElmt: any,
@@ -55,15 +56,15 @@ export const PlayerReact: React.FC<Props> = ({ audioElmt, isPlaying, setIsPlayin
 
 
     return (
-        <div style={{ height: window.innerHeight , overflowY: 'hidden' }}>
+        <Center style={{ height: window.innerHeight , overflowY: 'hidden' }}>
             <section className='circle-player'>
                 <div style={{ width: '70%', height: '70%' , marginTop: '150px' }}>
                     <p>2:16</p>
-                    <div>
+                    <Center>
                         <div className="seekbar" onClick={checkWidth} ref={clickRef}>
                             <div className="time" style={{ width: `${currentSong.progress}%`, display: 'block' }} />
                         </div>
-                    </div>
+                    </Center>
                     <div className='info-song'>
                         <img className='cover-player' src={currentSong.Cover} alt={currentSong.Title} />
                         <div style={{ minWidth: '30%' }}>
@@ -88,7 +89,7 @@ export const PlayerReact: React.FC<Props> = ({ audioElmt, isPlaying, setIsPlayin
                     </div>
                 </div>
             </section>
-        </div>
+        </Center>
 
     )
 }

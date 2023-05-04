@@ -50,7 +50,7 @@ export const Input = () => {
 
 
 /*         useEffect(()=>{
-            axios.post(`http://localhost:3000/`, () => {
+            axios.post(`${process.env.REACT_APP_URL}`, () => {
     
             })
         },[]) */
