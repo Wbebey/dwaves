@@ -1,9 +1,9 @@
 name: Cron scheduled
 
 on:
-  push:
-    # paths:
-      # - "backend/jobs/**"
+  # push:
+  #   paths:
+  #     - "backend/jobs/**"
   schedule:
     - cron: "0 0 1 * *" # Run at 00:00 on day-of-month 1
 
@@ -16,19 +16,65 @@ env:
   DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }}
 
 jobs:
+  setup-database:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.DATABASE_DIRECTORY }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run generate
+        run: npm run generate
+
+      - name: Cache prisma client
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.DATABASE_DIRECTORY }}/client/
+          key: dwaves-prisma-client-${{ GITHUB.RUN_ID }}
+          restore-keys: |
+            dwaves-prisma-client-
+
+      - name: Discord notification on failure
+        if: failure()
+        uses: ./.github/actions/discord/notification-on-failure
+
   execute-script:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ${{ env.JOBS_DIRECTORY }}
+    needs: setup-database
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Cache prisma client
+        id: prisma-client
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.DATABASE_DIRECTORY }}/client/
+          key: dwaves-prisma-client-${{ GITHUB.RUN_ID }}
+
+      - name: Cancel if prisma client is not cached
+        if: ${{ steps.prisma-client.outputs.cache-hit != 'true' }}
+        continue-on-error: false
+        run: echo "prisma client not found" && exit 1
+
       - name: Retrieve environment for jobs
         run: echo "${{ env.ULTIMATE_ENV }}" > .env
+
+      - name: Retrieve prisma client
+        run: mv ${{ GITHUB.WORKSPACE }}/${{ env.DATABASE_DIRECTORY }}/client ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}
 
       - name: Install dependencies
         run: npm install
@@ -37,7 +83,7 @@ jobs:
         run: npm run build
 
       - name: Run script
-        run: npm run start build/payArtists.js
+        run: npm run start
 
       - name: Discord notification on success
         if: success()
