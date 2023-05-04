@@ -5,13 +5,12 @@ import { HeroSection } from './components/HeroSection'
 import { IcoSection } from './components/IcoSection'
 import { Wave } from './components/svg/Wave'
 
-
 const App = () => {
   return (
     <section className="relative">
       <div className="navbar justify-between sticky z-50 left-0 right-0 top-4 translate-x-auto rounded w-[95%] mx-auto bg-base-100 static">
         <a className="btn btn-ghost normal-case text-xl">
-          <img className="w-28" src={`./../public/logo-dwaves-white.png`} alt="" />
+          <img className="w-28" src={`${import.meta.env.VITE_APP_URL}/logo-dwaves-white.png`} alt="" />
         </a>
         <div className='w-4/5'>
           <a className="" href="https://dwaves-app-staging.tonfrere.fr/">

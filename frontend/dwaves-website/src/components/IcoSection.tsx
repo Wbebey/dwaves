@@ -29,8 +29,6 @@ export const IcoSection = () => {
     const closingTime = await contract.closingTime();
     const remainingTokens = await contract.remainingTokens();
     const icoCap = await contract.cap();
-    console.log(icoCap);
-    console.log(remainingTokens);
     setClosingTime(closingTime.toString());
     setRemainingTokens(remainingTokens.toString());
   };
@@ -48,30 +46,31 @@ export const IcoSection = () => {
     }
   };
 
+
   const buyTokens = async () => {
     try {
       const provider = new AlchemyProvider("goerli", alchemyApiKey);
-
-
-      // Signer
-      // const signer = new ethers.Wallet(alchemyApiKey, provider)
-
-
       const contract = new ethers.Contract(
-        ContractICO.address,
-        ContractICO.abi,
-        provider
+          ContractICO.address,
+          ContractICO.abi,
+          provider
       );
-      // console.log(provider.getBalance(wallet))
 
-      console.log(wallet, {value: ethers.parseEther('100')})
+      // Get the current account
+      const accounts = await provider.listAccounts();
+      const account = accounts[0];
 
-      const res = await contract.buyTokens(wallet, {value: ethers.parseEther('100')});
-      await res.wait();
+
+      const tx2 = await contract.buyTokens(account, { value: 10 });
+      await tx2.wait();
+
+
+      // const res = await contract.closingTime();
+
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
   return (
     <section className="container mx-auto flex flex-col justify-center h-auto ">
@@ -124,9 +123,7 @@ export const IcoSection = () => {
                 <button
                   onClick={buyTokens}
                   className="btn btn-primary w-64 btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-                >
-                  buy !!!!
-                </button>
+                >buy !!!!</button>
               </div>
             </div>
           </div>
@@ -163,7 +160,7 @@ export const IcoSection = () => {
             <div className="w-full ms:h-[500px] mm:h-[600px] ml:h-[700px] md:h-[800px] md:w-96 relative block md:mx-auto">
               <img
                 className="w-full h-full absolute z-20 top-0"
-                src={`./../../public/iphone.png`}
+                src={`${import.meta.env.VITE_APP_URL}/iphone.png`}
                 alt=""
               />
               <div className="absolute bg-primary z-10 w-[calc(100%-20px)] h-[calc(100%-15px)] left-[10px] top-[5px] rounded-[12%]">
@@ -233,7 +230,11 @@ export const IcoSection = () => {
           id="side-right"
           className="lg:flex lg:justify-center lg:col-span-2 "
         >
-          <img src={`./../../public/env-dwaves.png`} alt="" className="w-1/2" />
+          <img
+            src={`${import.meta.env.VITE_APP_URL}/env-dwaves.png`}
+            alt=""
+            className="w-1/2"
+          />
         </div>
       </div>
     </section>
