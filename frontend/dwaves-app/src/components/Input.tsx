@@ -1,59 +1,58 @@
-import axios from 'axios'
-import 'styles/SingleForm.scss'
-import { Icon } from 'components/shared'
+import axios from "axios"
+import "styles/SingleForm.scss";
+import { Icon } from "components/shared";
 
-import { ChangeEvent, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { ChangeEvent, useState } from "react";
+import { useForm } from "react-hook-form";
 
 type Single = {
-  title: string
-  genre: string
-  cover: File
-  music: File
-}
+  title: string;
+  album: string;
+  genre: string;
+  artist: string;
+  cover: string;
+  src: string;
+};
 
 export const SingleForm = () => {
-  const { register, setValue, getValues, handleSubmit } = useForm<Single>()
-  const [filesExist, setFilesExist] = useState({ music: false, cover: false })
+  const { register, setValue, getValues, handleSubmit } = useForm<Single>();
+  const [filesExist, setFilesExist] = useState({ src: false, cover: false });
 
   function handleFile(e: ChangeEvent<HTMLInputElement>) {
-    if (!e.target.files) {
-      return
-    }
     switch (e.currentTarget.name) {
-      case 'music':
-        setFilesExist({ ...filesExist, music: true })
-        break
-      case 'cover':
-        setFilesExist({ ...filesExist, cover: true })
-        break
+      case "src":
+        if (!e.target.files) {
+          return;
+        } else {
+          setValue("src", e.target.files[0].name);
+          setFilesExist({ src: true, cover: filesExist.cover });
+        }
+        break;
+      case "cover":
+        if (!e.target.files) {
+          return;
+        } else {
+          setValue("cover", e.target.files[0].name);
+          setFilesExist({ src: filesExist.src, cover: true });
+        }
+        break;
       default:
-        console.warn('invalid input name')
-        break
+        break;
     }
-    setValue(e.currentTarget.name as keyof Single, e.target.files[0])
   }
 
-  const onSubmit = (data: Single) => {
+  const onSubmit = (data: any) => {
     const form = new FormData()
-    form.append('genre', data.genre)
-    form.append('name', data.title)
-    form.append('cover', data.cover)
-    form.append('music', data.music)
-    axios
-      .post(`${import.meta.env.VITE_APP_BACK_URL}/musics/pinSingle`, form, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    form.append('request', JSON.stringify({ genre: data.genre, artistId: "2" }))
+    form.append("cover", data.cover)
+    form.append("music", data.src)
+    axios.post(`${import.meta.env.VITE_APP_BACK_URL}/musics/pinSingle`, form, {withCredentials: true} )
+      .then()
+      .catch()
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
       <section className="section-download">
         <div className="header">
           <div id="contain-title" className="flex row nowrap">
@@ -73,16 +72,16 @@ export const SingleForm = () => {
             <div className="logo-upload">
               <Icon icon="song" />
             </div>
-            {filesExist.music ? (
-              <span>{getValues('music').name}</span>
+            {filesExist.src ? (
+              <span>{getValues("src")}</span>
             ) : (
               <span>Upload Music</span>
             )}
             <input
               type="file"
-              name="music"
+              name="src"
               onChange={(e) => {
-                handleFile(e)
+                handleFile(e);
               }}
               className="input-file"
             />
@@ -96,7 +95,7 @@ export const SingleForm = () => {
               <Icon icon="upload" />
             </div>
             {filesExist.cover ? (
-              <span>{getValues('cover').name}</span>
+              <span>{getValues("cover")}</span>
             ) : (
               <span>Upload Cover</span>
             )}
@@ -104,7 +103,7 @@ export const SingleForm = () => {
               type="file"
               name="cover"
               onChange={(e) => {
-                handleFile(e)
+                handleFile(e);
               }}
               className="input-file"
             />
@@ -118,7 +117,18 @@ export const SingleForm = () => {
             </label>
             <input
               type="text"
-              {...register('title')}
+              {...register("title")}
+              placeholder="Type here"
+              className="input input-ghost"
+            />
+          </div>
+          <div id="input-text" className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Album</span>
+            </label>
+            <input
+              type="text"
+              {...register("album")}
               placeholder="Type here"
               className="input input-ghost"
             />
@@ -129,7 +139,7 @@ export const SingleForm = () => {
             </label>
             <input
               type="text"
-              {...register('genre')}
+              {...register("genre")}
               placeholder="Type here"
               className="input input-ghost"
             />
@@ -137,5 +147,5 @@ export const SingleForm = () => {
         </div>
       </section>
     </form>
-  )
-}
+  );
+};
