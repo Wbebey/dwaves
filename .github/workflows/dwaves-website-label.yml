@@ -56,5 +56,5 @@ jobs:
       - name: Checkout 😇
         uses: actions/checkout@v3
 
-      - name: Deploy to GCP 🚀
+      - name: Deploy to GCS 🚀
         uses: ./.github/actions/frontend/deployment

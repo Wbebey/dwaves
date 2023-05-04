@@ -25,6 +25,7 @@ runs:
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
+          pwd && ls -la
           docker build . \
             -f ${{ GITHUB.WORKSPACE }}/${{ env.PROJECT_DIRECTORY }}/Dockerfile \
             -t $DOCKER_TAG \
@@ -38,7 +39,7 @@ runs:
           gcloud auth configure-docker --quiet
           docker push $DOCKER_TAG
 
-      - name: Deploy 🚀
+      - name: Deploy to cloud run 🚀
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
