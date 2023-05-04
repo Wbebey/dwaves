@@ -2,7 +2,7 @@ import { HardhatUserConfig } from 'hardhat/config'
 import '@nomicfoundation/hardhat-toolbox'
 import * as dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config({ path: `${__dirname}/../.backend.env` })
 
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY
 const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY
