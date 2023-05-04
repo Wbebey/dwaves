@@ -15,9 +15,12 @@ on:
   #   paths:
   #     - ${{ env.WORKING_DIRECTORY }}/**
 
+env:
+  WORKING_DIRECTORY: "frontend/dwaves-app"
+
 defaults:
   run:
-    working-directory: "./frontend/dwaves-app"
+    working-directory: $WORKING_DIRECTORY
 
 jobs:
   integration-tests:
