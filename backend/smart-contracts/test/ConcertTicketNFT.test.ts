@@ -24,7 +24,6 @@ describe('ConcertTicketNFT', () => {
   let minterRole: string
 
   const concertEvent1 = {
-    artistAddress: '',
     name: 'Test Concert 1',
     date: new Date().getTime(),
     location: 'Test Location 1',
@@ -32,10 +31,8 @@ describe('ConcertTicketNFT', () => {
     artistName: 'Test Artist 1',
     ticketCount: 5,
     ticketPrice: 100,
-    ticketSold: 0,
   } satisfies ConcertTicketNFT.EventStruct
   const concertEvent2 = {
-    artistAddress: '',
     name: 'Test Concert 2',
     date: new Date().getTime(),
     location: 'Test Location 2',
@@ -43,7 +40,6 @@ describe('ConcertTicketNFT', () => {
     artistName: 'Test Artist 2',
     ticketCount: 3,
     ticketPrice: 200,
-    ticketSold: 0,
   } satisfies ConcertTicketNFT.EventStruct
 
   const deployContract = async () => {
@@ -55,21 +51,6 @@ describe('ConcertTicketNFT', () => {
     concertTicketNFT = concertTicketNFT.connect(payer)
   }
 
-  const compareEvents = (
-    event1: ConcertTicketNFT.EventStruct,
-    event2: ConcertTicketNFT.EventStruct
-  ) => {
-    expect(event1.artistAddress).to.be.equal(event2.artistAddress)
-    expect(event1.name).to.be.equal(event2.name)
-    expect(event1.date).to.be.equal(event2.date)
-    expect(event1.location).to.be.equal(event2.location)
-    expect(event1.genre).to.be.equal(event2.genre)
-    expect(event1.artistName).to.be.equal(event2.artistName)
-    expect(event1.ticketCount).to.be.equal(event2.ticketCount)
-    expect(event1.ticketPrice).to.be.equal(event2.ticketPrice)
-    expect(event1.ticketSold).to.be.equal(event2.ticketSold)
-  }
-
   before(async () => {
     const [deployer_, payer_, artist1_, artist2_, listener_] =
       await ethers.getSigners()
@@ -78,9 +59,6 @@ describe('ConcertTicketNFT', () => {
     artist1 = artist1_
     artist2 = artist2_
     listener = listener_
-
-    concertEvent1.artistAddress = artist1.address
-    concertEvent2.artistAddress = artist2.address
 
     concertTicketNFTFactory = await ethers.getContractFactory(
       'ConcertTicketNFT',
@@ -115,7 +93,10 @@ describe('ConcertTicketNFT', () => {
     })
 
     it('Allows the artist to create a concert event', async () => {
-      const tx = await concertTicketNFT.createEvent(concertEvent1)
+      const tx = await concertTicketNFT.createEvent(
+        artist1.address,
+        concertEvent1
+      )
 
       expect(tx)
         .to.changeTokenBalance(
@@ -130,8 +111,8 @@ describe('ConcertTicketNFT', () => {
     describe('When a concert event has been created', () => {
       beforeEach(async () => {
         await Promise.all([
-          concertTicketNFT.createEvent(concertEvent1),
-          concertTicketNFT.createEvent(concertEvent2),
+          concertTicketNFT.createEvent(artist1.address, concertEvent1),
+          concertTicketNFT.createEvent(artist2.address, concertEvent2),
         ])
       })
 
@@ -203,28 +184,6 @@ describe('ConcertTicketNFT', () => {
 
         const ticketInfo = await concertTicketNFT.getTicketInfo(1)
         expect(ticketInfo.isSold).to.be.equal(true)
-      })
-
-      it('Allows to retrieve events by address', async () => {
-        const events = await concertTicketNFT.getEventsByAddress(
-          artist1.address
-        )
-
-        expect(events.length).to.be.equal(1)
-        compareEvents(events[0], concertEvent1)
-      })
-
-      it('Allows to retrieve my events', async () => {
-        const events = await concertTicketNFT.connect(artist2).getMyEvents()
-
-        expect(events.length).to.be.equal(1)
-        compareEvents(events[0], concertEvent2)
-      })
-
-      it('Allows to retrieve event info', async () => {
-        const eventInfo = await concertTicketNFT.getEventInfo(1)
-
-        compareEvents(eventInfo, concertEvent1)
       })
     })
   })

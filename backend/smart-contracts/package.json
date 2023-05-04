@@ -8,11 +8,8 @@
     "dev": "doppler run -- hardhat node",
     "test": "doppler run -- hardhat test",
     "deploy": "npm run deploy:token && npm run deploy:nft",
-    "deploy:local": "npm run deploy:token:local && npm run deploy:nft:local",
-    "deploy:token": "doppler run -- hardhat run scripts/deployToken.ts --network sepolia",
-    "deploy:nft": "doppler run -- hardhat run scripts/deployMusicNFT.ts --network sepolia",
-    "deploy:token:local": "doppler run -- hardhat run scripts/deployToken.ts",
-    "deploy:nft:local": "doppler run -- hardhat run scripts/deployMusicNFT.ts"
+    "deploy:token": "doppler run -- hardhat run scripts/deployToken.ts --network goerli",
+    "deploy:nft": "doppler run -- hardhat run scripts/deployMusicNFT.ts --network goerli"
   },
   "keywords": [],
   "author": "",

@@ -38,7 +38,6 @@ contract ConcertTicketNFT is
     }
 
     struct Event {
-        address artistAddress;
         string name;
         uint256 date;
         string location;
@@ -46,12 +45,9 @@ contract ConcertTicketNFT is
         string artistName;
         uint256 ticketCount;
         uint256 ticketPrice;
-        uint256 ticketSold;
     }
 
-    mapping(uint256 => Ticket) private _ticketInfos;
-    mapping(uint256 => Event) private _eventInfos;
-    mapping(address => uint256) private _artistEventCount;
+    mapping(uint256 => Ticket) private ticketInfos;
 
     DwavesToken public token;
 
@@ -69,6 +65,7 @@ contract ConcertTicketNFT is
     }
 
     function createEvent(
+        address artistAddress,
         Event memory eventInfo
     ) external onlyRole(MINTER_ROLE) returns (uint256[] memory) {
         _eventIds.increment();
@@ -77,11 +74,8 @@ contract ConcertTicketNFT is
 
         uint256[] memory tokenIds = new uint256[](eventInfo.ticketCount);
         for (uint256 i = 0; i < eventInfo.ticketCount; i++) {
-            tokenIds[i] = _createTicket(eventId, eventInfo);
+            tokenIds[i] = _createTicket(artistAddress, eventId, eventInfo);
         }
-
-        _setEventInfo(eventId, eventInfo);
-        _artistEventCount[eventInfo.artistAddress]++;
 
         return tokenIds;
     }
@@ -91,7 +85,7 @@ contract ConcertTicketNFT is
         Ticket[] memory ticketList = new Ticket[](ticketCount);
 
         for (uint256 i = 0; i < ticketCount; i++) {
-            ticketList[i] = _ticketInfos[tokenByIndex(i)];
+            ticketList[i] = ticketInfos[tokenByIndex(i)];
         }
 
         return ticketList;
@@ -100,37 +94,7 @@ contract ConcertTicketNFT is
     function getTicketInfo(
         uint256 ticketId
     ) external view returns (Ticket memory) {
-        return _ticketInfos[ticketId];
-    }
-
-    function getEventInfo(
-        uint256 eventId
-    ) external view returns (Event memory) {
-        return _eventInfos[eventId];
-    }
-
-    function getMyEvents() external view returns (Event[] memory) {
-        return getEventsByAddress(msg.sender);
-    }
-
-    function getEventsByAddress(
-        address artistAddress
-    ) public view returns (Event[] memory) {
-        uint256 i = 0;
-        uint256 eventCount = _eventIds.current();
-        Event[] memory eventList = new Event[](
-            _artistEventCount[artistAddress]
-        );
-
-        for (uint256 j = 0; j < eventCount; j++) {
-            Event memory event_ = _eventInfos[j + 1];
-            if (event_.artistAddress == artistAddress) {
-                eventList[i] = event_;
-                i++;
-            }
-        }
-
-        return eventList;
+        return ticketInfos[ticketId];
     }
 
     function getEventTickets(
@@ -140,7 +104,7 @@ contract ConcertTicketNFT is
         Ticket[] memory ticketList = new Ticket[](ticketCount);
 
         for (uint256 i = 0; i < ticketCount; i++) {
-            Ticket memory ticket = _ticketInfos[tokenByIndex(i)];
+            Ticket memory ticket = ticketInfos[tokenByIndex(i)];
             if (ticket.eventId == eventId) {
                 ticketList[i] = ticket;
             }
@@ -160,7 +124,7 @@ contract ConcertTicketNFT is
         Ticket[] memory ticketList = new Ticket[](ticketCount);
 
         for (uint256 i = 0; i < ticketCount; i++) {
-            ticketList[i] = _ticketInfos[tokenOfOwnerByIndex(user, i)];
+            ticketList[i] = ticketInfos[tokenOfOwnerByIndex(user, i)];
         }
 
         return ticketList;
@@ -174,22 +138,24 @@ contract ConcertTicketNFT is
 
         _prevalidatePurchase(buyer, artist, ticketId);
 
-        Ticket memory ticket = _ticketInfos[ticketId];
+        Ticket memory ticket = ticketInfos[ticketId];
+        ticket.isSold = true;
 
         _processPurchase(buyer, artist, ticketId, ticket.price);
         emit TicketSold(buyer, ticketId, ticket.eventId);
 
-        _updatePurchasingState(ticket);
+        _setTicketInfo(ticketId, ticket);
     }
 
     function _createTicket(
+        address artistAddress,
         uint256 eventId,
         Event memory eventInfo
     ) internal onlyRole(MINTER_ROLE) returns (uint256) {
         _tokenIds.increment();
 
         uint256 ticketId = _tokenIds.current();
-        _safeMint(eventInfo.artistAddress, ticketId);
+        _safeMint(artistAddress, ticketId);
 
         Ticket memory newTicket = Ticket(
             ticketId,
@@ -208,12 +174,8 @@ contract ConcertTicketNFT is
         return ticketId;
     }
 
-    function _setEventInfo(uint256 eventId, Event memory event_) internal {
-        _eventInfos[eventId] = event_;
-    }
-
     function _setTicketInfo(uint256 ticketId, Ticket memory ticket) internal {
-        _ticketInfos[ticketId] = ticket;
+        ticketInfos[ticketId] = ticket;
     }
 
     function _prevalidatePurchase(
@@ -222,7 +184,7 @@ contract ConcertTicketNFT is
         uint256 ticketId
     ) internal view {
         require(
-            !_ticketInfos[ticketId].isSold,
+            !ticketInfos[ticketId].isSold,
             "ConcertTicketNFT: ticket is already sold"
         );
         require(
@@ -230,19 +192,9 @@ contract ConcertTicketNFT is
             "ConcertTicketNFT: buyer cannot be the artist"
         );
         require(
-            token.balanceOf(buyer) >= _ticketInfos[ticketId].price,
+            token.balanceOf(buyer) >= ticketInfos[ticketId].price,
             "ConcertTicketNFT: buyer does not have enough tokens"
         );
-    }
-
-    function _updatePurchasingState(Ticket memory ticket) internal {
-        Event memory event_ = _eventInfos[ticket.eventId];
-
-        ticket.isSold = true;
-        event_.ticketSold += 1;
-
-        _setTicketInfo(ticket.ticketId, ticket);
-        _setEventInfo(ticket.eventId, event_);
     }
 
     function _processPurchase(

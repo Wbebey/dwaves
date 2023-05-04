@@ -1,12 +1,7 @@
 import { ethers } from 'hardhat'
 
 import { deploy, writeABI, cleanup, handleError } from '../utils/deployHelpers'
-import {
-  ArtistPayer,
-  ConcertTicketNFT,
-  DwavesToken,
-  ICO,
-} from '../typechain-types'
+import { ArtistPayer, DwavesToken, ICO } from '../typechain-types'
 
 const main = async () => {
   const [deployer, payer, bank] = await ethers.getSigners()
@@ -25,12 +20,6 @@ const main = async () => {
     deployer,
     dwavesToken.address
   )) as ArtistPayer
-  const concertName = 'ConcertTicketNFT'
-  const concertTicketNFT = (await deploy(
-    concertName,
-    deployer,
-    dwavesToken.address
-  )) as ConcertTicketNFT
 
   const now = new Date()
   const openingDate = new Date(
@@ -57,14 +46,12 @@ const main = async () => {
   await Promise.all([
     dwavesToken.grantRole(MINTER_ROLE, artistPayer.address),
     artistPayer.grantRole(PAYER_ROLE, payer.address),
-    concertTicketNFT.grantRole(MINTER_ROLE, payer.address),
   ])
 
   await Promise.all([
     writeABI(dwavesToken, tokenName),
     writeABI(artistPayer, payerName),
     writeABI(ico, icoName),
-    writeABI(concertTicketNFT, concertName),
   ])
 
   console.log('😎 DONE')
