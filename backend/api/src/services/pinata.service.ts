@@ -54,7 +54,7 @@ class PinataService implements IPinataService {
 
   getMusicFromIPFS = async (musicFilter: MusicFilter) => {
     const { genre, albumId, artistId } = musicFilter
-    const baseUrl = `${env.pinataApiHost}/data/pinList?status=pinned&pageLimit=100&metadata[keyvalues]`
+    const baseUrl = `${env.pinataApiHost}/data/pinList?status=pinned&metadata[keyvalues]`
 
     let filter: PinataQueryFilter = { type: { value: 'music', op: 'eq' } }
     if (genre) {
