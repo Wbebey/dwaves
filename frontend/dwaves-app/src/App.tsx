@@ -12,7 +12,7 @@ function App() {
   const [loader, setLoader] = useState(true)
   const [songs, setSongs] = useState(datasong)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [currentSong, setCurrentSong] = useState<any>(datasong.musics[0])
+  const [currentSong, setCurrentSong] = useState(datasong[0])
   const [loginDisplay, setLoginDisplay] = useState(false)
   const [alert , setAlert]= useState<responseRequest>()
   // Temporary this value will be stored in the token
@@ -57,7 +57,7 @@ function App() {
     <Loader />
   ) : (
     <section style={{ color: 'black', height: window.innerHeight }}>
-      <audio src={currentSong.src} ref={audioElmt} onTimeUpdate={onPlaying} />
+      <audio src={currentSong.Src} ref={audioElmt} onTimeUpdate={onPlaying} />
       <ExploPlayer
         audioElmt={audioElmt}
         isPlaying={isPlaying}
@@ -84,7 +84,7 @@ function App() {
             renders the first one that matches the current URL. */}
               <Routes>
                 <Route path="/" element={<Explorer />} />
-                <Route path="/album/:id" element={<Album setCurrentSong={setCurrentSong} setSongs={setSongs} />} />
+                <Route path="/album/:id" element={<Album />} />
                 <Route path="/player" element={<Player />} />
                 <Route path="/download" element={<Download setAlert={setAlert} />} />
                 <Route path="/user" element={<div />} />

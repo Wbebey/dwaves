@@ -1,22 +1,53 @@
-export default {
-  artist : "brysey",
-  cover: "iohgroewhg",
-  createdAt: "iugvfrieu",
-  genre: "rap",
-  id: 1,
-  musics: [
+export default [
+  {
+    Artist: "Dinos",
+    Title: "Diptyque",
+    featuring: "",
+    likes: 190,
+    progress: 0,
+    length: 0,
+    UsersLiked: [
       {
-          src:"https://dwavesforever.mypinata.cloud/ipfs/Qme5k6qrnbbK1qbY4Ka5L8EXuEyLA9KxC4ehLeidn4zDtR",
-          name: "uivbqeroubv",
-          listenings: 0
+        Name: "",
+        Avatar: "https://via.placeholder.com/360x360",
       },
+    ],
+    Src: `/audiotest1.mp3`,
+    Cover: `/stamina1.jpg`,
+    outDate: "",
+  },
+  {
+    Artist: "Dinos",
+    Title: "Moins un",
+    featuring: "Nekfeu",
+    likes: 190,
+    progress: 0,
+    length: 0,
+    UsersLiked: [
       {
-          src:"adfbadfabf",
-          name: "oijiopbgof",
-          listenings: 0
-      }
-  ],
-  name: 'Imany',
-  subscribers: 0,
-  type: 'Album'
-}
+        Name: "",
+        Avatar: "https://via.placeholder.com/360x360",
+      },
+    ],
+    Src: `/audiotest2.mp3`,
+    Cover: `/stamina2.jpg`,
+    outDate: "",
+  },
+  {
+    Artist: "Dinos",
+    Title: "Paranoiaque",
+    featuring: "",
+    likes: 190,
+    progress: 0,
+    length: 0,
+    UsersLiked: [
+      {
+        Name: "",
+        Avatar: "https://via.placeholder.com/360x360",
+      },
+    ],
+    Src: `/audiotest3.mp3`,
+    Cover: `/stamina3.jpg`,
+    outDate: "",
+  },
+];

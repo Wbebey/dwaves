@@ -1,6 +1,9 @@
 import 'styles/ContentAlbum.scss'
 import { Icon } from 'components/shared'
+
 import { Link, useParams } from 'react-router-dom'
+
+import datasongs from 'songs/datasongs'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
@@ -9,7 +12,6 @@ type Music = {
   name: string
   listenings: number
 }
-
 type AlbumDetail = {
   id: number
   type: string
@@ -22,12 +24,7 @@ type AlbumDetail = {
   musics: Music[]
 }
 
-interface Props {
-  setCurrentSong: React.Dispatch<React.SetStateAction<any>>
-  setSongs: React.Dispatch<React.SetStateAction<any>>
-}
-
-export const ContentAlbum: React.FC<Props> = ({ setCurrentSong, setSongs }) => {
+export const ContentAlbum = () => {
   const { id } = useParams()
 
   const [album, setAlbum] = useState<AlbumDetail>()
@@ -72,14 +69,7 @@ export const ContentAlbum: React.FC<Props> = ({ setCurrentSong, setSongs }) => {
       </header>
       <ul className="list-song">
         {album?.musics.map((music, i) => (
-          <li
-            onClick={e => {
-              setCurrentSong(music)
-              setSongs(album)
-            }}
-            key={i}
-            className="song-li cursor-pointer"
-          >
+          <li key={i} className="song-li">
             <div className="avatar placeholder">
               <div className="text-neutral-content rounded-full w-10">
                 <span className="text-xl">0{i + 1}</span>
