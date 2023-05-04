@@ -117,7 +117,7 @@ export const TicketPurchase: FC<Props> = ({
           <div className="flex flex-row items-center pr-3.5 justify-end">
             <p>{vibesBalance.toString()} VIBES</p>
             <img
-              src="./../../public/VersionTokenLogo.png"
+              src="/VersionTokenLogo.png"
               alt="ethereumLogo"
               width={18}
               style={{ marginLeft: 5 }}
@@ -126,7 +126,7 @@ export const TicketPurchase: FC<Props> = ({
           <div className="flex flex-row items-center pr-2 justify-end">
             <p>{sepoliaBalance.substring(0, 5)} ETH</p>
             <img
-              src="./../../public/ethereumLogo.jpg"
+              src="/ethereumLogo.jpg"
               alt="ethereumLogo"
               width={30}
             />
