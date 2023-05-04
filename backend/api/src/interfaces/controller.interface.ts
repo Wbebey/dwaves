@@ -33,7 +33,6 @@ export interface IMusicController extends IController {
   get: MusicListRequestHandler
   uploadSingle: RequestHandler
   uploadAlbum: RequestHandler
-  incrementListeningsMetadata: RequestHandler
 }
 
 export interface IAuthController extends IController {

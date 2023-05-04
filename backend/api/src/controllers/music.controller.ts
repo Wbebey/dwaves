@@ -91,14 +91,6 @@ class MusicController implements IMusicController {
 
     res.json({ coverUrl, musicUrls })
   }
-
-
-  incrementListeningsMetadata: RequestHandler = async (req, res) => {
-    const { musicUrl, listeningsValue } = req.body
-    const resPinata = await pinataService.updateListeningsMetadata(musicUrl, listeningsValue)
-
-    res.json(resPinata)
-  }
 }
 
 const musicController = new MusicController()

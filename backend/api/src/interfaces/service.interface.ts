@@ -52,7 +52,6 @@ export interface IPinataService extends IService {
     file: UploadedFile,
     metadata: CoverMetadata | MusicMetadata
   ) => Promise<string>
-  updateListeningsMetadata: (musicCID: string, newListeningsValue: number) => Promise<string>
 }
 
 export interface INFTService extends IService {
