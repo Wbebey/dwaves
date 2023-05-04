@@ -1,7 +1,6 @@
 import "styles/Explorer.scss";
 import { ContentAlbum } from "components";
-import {AlbumDetail, responseRequest} from "models";
-import React from "react";
+import { AlbumDetail } from "models";
 
 interface Props {
   setCurrentSong: React.Dispatch<React.SetStateAction<any>>
@@ -9,8 +8,7 @@ interface Props {
   audioElmt: React.RefObject<HTMLAudioElement>
   isPlaying: boolean
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
-  setArtist : React.Dispatch<React.SetStateAction<AlbumDetail|undefined>>
-  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+  setArtist : React.Dispatch<React.SetStateAction<AlbumDetail|undefined>>;
 }
 
 export const Album: React.FC<Props> = ({
@@ -19,9 +17,7 @@ export const Album: React.FC<Props> = ({
   audioElmt,
   isPlaying,
   setIsPlaying,
-  setArtist,
-  setAlert
-}) => {
+  setArtist }) => {
   return <ContentAlbum
     setCurrentSong={setCurrentSong}
     setSongs={setSongs}
@@ -29,7 +25,5 @@ export const Album: React.FC<Props> = ({
     isPlaying={isPlaying}
     setIsPlaying={setIsPlaying}
     setArtist={setArtist}
-    setAlert={setAlert}
-
   />;
 };

@@ -1,19 +1,18 @@
 import 'styles/ContentAlbum.scss'
 import { Icon } from 'components/shared'
 import { Link, useParams } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { SongList } from "./SongList";
-import {AlbumDetail, responseRequest} from "models";
+import { AlbumDetail } from "models";
 
 interface Props {
   setCurrentSong: React.Dispatch<React.SetStateAction<any>>
   setSongs: React.Dispatch<React.SetStateAction<any>>
-  audioElmt: React.RefObject<HTMLAudioElement>
-  isPlaying: boolean
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
-  setArtist : React.Dispatch<React.SetStateAction<AlbumDetail|undefined>>
-  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+  audioElmt: React.RefObject<HTMLAudioElement>;
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  setArtist : React.Dispatch<React.SetStateAction<AlbumDetail|undefined>>;
 }
 
 export const ContentAlbum: React.FC<Props> = ({
@@ -22,8 +21,7 @@ export const ContentAlbum: React.FC<Props> = ({
   audioElmt,
   isPlaying,
   setIsPlaying,
-  setArtist,
-  setAlert
+  setArtist
 }) => {
   const { id } = useParams()
 
@@ -74,7 +72,6 @@ export const ContentAlbum: React.FC<Props> = ({
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying} 
         setArtist={setArtist}
-        setAlert={setAlert}
       />
     </div>
   )

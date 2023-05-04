@@ -51,7 +51,7 @@ export const PopularSongOfArtist: React.FC<Props> = ({setCurrentSong, setSongs})
                 <h1 className={'text-4xl pl-[5px] font-bold mb-5'}>My Popular Song</h1>
                 {
                     mostPopularSong.map((song, index) => (
-                        <div key={song.name}>
+                        <>
                             <div key={index} className={'flex flex-row mb-5 cursor-pointerno hover:bg-teal-300'}
                                  onClick={e => {
                                      //setCurrentSong(song)
@@ -72,7 +72,7 @@ export const PopularSongOfArtist: React.FC<Props> = ({setCurrentSong, setSongs})
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </>
                     ))
                 }
             </div>
