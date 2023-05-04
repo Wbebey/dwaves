@@ -2,15 +2,19 @@ name: Test & Analyse - Dwaves-api
 
 on:
   push:
+    branches: 
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+      - release/*
     paths:
       - backend/api/**
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - staging
-      - main
-    paths:
-      - backend/api/**
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #   branches:
+  #     - staging
+  #   paths:
+  #     - backend/api/**
 
 env:
     APP: dwaves-api
@@ -30,7 +34,6 @@ defaults:
 jobs:
   integration-test:
     name: Integretion Test
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/bugfix/') || startsWith(github.ref, 'refs/heads/hotfix/')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 😇
@@ -45,7 +48,6 @@ jobs:
 
   unit-test:
     name: Unit Test
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/bugfix/') || startsWith(github.ref, 'refs/heads/hotfix/')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 😇
@@ -60,14 +62,6 @@ jobs:
 
   code-analysis:
     name: Code Analysis
-    if: github.ref in 
-      [
-        'refs/heads/main',
-        'refs/heads/staging', 
-        'refs/heads/feature/', 
-        'refs/heads/bugfix/', 
-        'refs/heads/hotfix/'
-      ]
     runs-on: ubuntu-latest
     needs: [integration-test, unit-test]
     permissions: 
