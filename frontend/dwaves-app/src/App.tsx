@@ -31,10 +31,7 @@ function App() {
       audioElmt.current?.pause();
     }
 
-    console.log(document.cookie)  
-
     if (log == "true") {
-      console.log(log)
       setConnected(true)
     } else {
       setConnected(false)
