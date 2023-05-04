@@ -25,7 +25,7 @@ interface Props {
   likeOrDislikeMusic: (music: string)=> void
 }
 
-export const PlayerExplorer: React.FC<Props> = ({
+export const ExploPlayer: React.FC<Props> = ({
   audioElmt,
   isPlaying,
   setIsPlaying,

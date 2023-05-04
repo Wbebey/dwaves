@@ -19,10 +19,6 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "./src/images"),
       },
       {
-        find: "shaders",
-        replacement: path.resolve(__dirname, "./src/shaders"),
-      },
-      {
         find: "songs",
         replacement: path.resolve(__dirname, "./src/songs"),
       },

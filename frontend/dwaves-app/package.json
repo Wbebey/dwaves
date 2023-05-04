@@ -14,22 +14,19 @@
     "daisyui": "^2.31.0",
     "dotenv": "^16.0.3",
     "ethers": "^5.7.2",
-    "glslify": "^7.1.1",
     "howler": "^2.2.3",
     "iconsax-react": "^0.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.38.0",
     "react-icons": "^4.8.0",
-    "react-router-dom": "^6.4.1",
-    "three": "^0.150.1"
+    "react-router-dom": "^6.4.1"
   },
   "devDependencies": {
     "@types/howler": "^2.2.7",
     "@types/node": "^16.11.64",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
-    "@types/three": "^0.149.0",
     "@vitejs/plugin-react": "^2.2.0",
     "autoprefixer": "^10.4.12",
     "postcss": "^8.4.18",
