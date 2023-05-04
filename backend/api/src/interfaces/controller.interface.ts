@@ -25,8 +25,6 @@ export interface IUserController extends IController {
   updateInfo: RequestHandler
   updatePassword: RequestHandler
   updateLikedMusics: RequestHandler
-  followArtist: RequestHandler
-  unfollowArtist: RequestHandler
 }
 
 export interface IAlbumController extends IController {
