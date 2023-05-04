@@ -1,8 +1,10 @@
-# https://debricked.com/app/
-
 name: Debricked scan
 
-on: [push]
+on: 
+  push:
+  pull_request:
+    branches:
+      - staging
 
 env:
   DEBRICKED_TOKEN: ${{ secrets.DEBRICKED_TOKEN }}
