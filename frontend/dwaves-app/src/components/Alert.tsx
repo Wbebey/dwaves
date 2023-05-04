@@ -1,25 +1,25 @@
-import { responseRequest } from "models"
+type responseRequest = {
+    response:string
+    status:number
+  }
 
 interface Props {
     alert: responseRequest | undefined
   }
-
 /* 400 422 409 401 500 */
-
 export const Alert : React.FC<Props> = ({ alert }) => {
 
     let color:string
     if (alert?.status == 400 || alert?.status == 422 || alert?.status == 409 || alert?.status == 401 || alert?.status == 500) {
-        color =  "-red-500"
+        color =  "-error"
     } else if(alert?.status == 200) {
-        // TODO : this way not working
-        color= "-green-500"
-    }else {
+        color= "-success"
+    }else{
         color= ""
     }
 
     return (
-        <div className={`absolute bottom-2 z-30 alert bg${color} shadow-lg`}>
+        <div className={`absolute bottom-2 z-30 alert alert${color} shadow-lg`}>
             <div>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

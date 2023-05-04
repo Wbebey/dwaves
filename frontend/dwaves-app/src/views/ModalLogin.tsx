@@ -1,15 +1,13 @@
 import 'styles/Login.scss'
 import { Login, Register } from 'components'
-import { responseRequest } from 'models'
-import { useState } from 'react'
 
+import { useState } from 'react'
 interface Props {
   toggleModal: () => void
   setConnected: React.Dispatch<React.SetStateAction<boolean>>
-  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
 }
 
-export const ModalLogin: React.FC<Props> = ({ toggleModal, setConnected, setAlert }) => {
+export const ModalLogin: React.FC<Props> = ({ toggleModal, setConnected }) => {
   const [showLogin, setShowLogin] = useState(true)
 
   return (
@@ -43,9 +41,9 @@ export const ModalLogin: React.FC<Props> = ({ toggleModal, setConnected, setAler
         </header>
         <div className="content px-8">
           {showLogin ? (
-            <Login setAlert={setAlert} toggleModal={toggleModal} setConnected={setConnected} />
+            <Login toggleModal={toggleModal} setConnected={setConnected} />
           ) : (
-            <Register setAlert={setAlert} setShowLogin={setShowLogin} />
+            <Register setShowLogin={setShowLogin} />
           )}
         </div>
       </div>
