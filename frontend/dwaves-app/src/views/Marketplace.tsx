@@ -81,6 +81,7 @@ export const Marketplace: React.FC<Props> = ({
   useEffect(() => {
     if (wallet) {
       const provider = new BrowserProvider(window.ethereum)
+
       fetchNetworkDetailsAndBalance(provider)
       fetchAllEventDetails(provider)
       fetchMyTickets(provider)
@@ -244,17 +245,12 @@ export const Marketplace: React.FC<Props> = ({
       ) : (
         <>
           <SwitchTab
-            values={[
-              'Ticket Counter',
-              'Your NFT Tickets',
-              'Your future shows',
-              'Create a concert',
-            ]}
+            values={['NFT Tickets', 'Your future shows', 'Create a concert']}
             showForm={showTickets}
             setShowForm={setShowTickets}
           />
           <div className={'h-[97%] pt-[20px]'}>
-            {showTickets === 'Ticket Counter' ? (
+            {showTickets === 'NFT Tickets' ? (
               <NftTickets
                 balance={balance}
                 chainName={chainName}

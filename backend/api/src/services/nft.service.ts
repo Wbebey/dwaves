@@ -40,8 +40,6 @@ class NFTService implements INFTService {
   }
 
   buyTicket = async (buyerAddress: string, ticketId: number) => {
-    console.log(buyerAddress)
-    console.log(ticketId)
     const concertTicketNFT = await this._getContract(NFTType.CONCERT_TICKET)
     const tx = await concertTicketNFT.buyTicket(buyerAddress, ticketId)
 
