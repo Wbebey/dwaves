@@ -11,10 +11,8 @@ env:
     APP: dwaves-app
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
-    PROJECT_DIRECTORY: frontend/dwaves-app
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
     TEST_URL: ${{ secrets.DWAVES_APP_TEST_URL }}
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     DOPPLER_TOKEN_TEST: ${{ secrets.DOPPLER_DWAVES_APP_TOKEN_TEST }}
     PROPERTIES_SCRIPT: ${{ GITHUB.WORKSPACE }}/.github/script/environment.sh
 
@@ -40,7 +38,7 @@ jobs:
         uses: actions-ecosystem/action-remove-labels@v1.3.0
         with:
           labels: ${{ github.event.label.name }}
-          github_token: ${{ env.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     name: Deploy

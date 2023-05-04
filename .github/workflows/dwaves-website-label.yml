@@ -10,8 +10,6 @@ on:
 env:
     APP: dwaves-website
     NODE_VERSION: 16.x
-    PROJECT_DIRECTORY: frontend/dwaves-website
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
     TEST_URL: ${{ secrets.DWAVES_WEBSITE_TEST_URL }}
@@ -40,7 +38,7 @@ jobs:
         uses: actions-ecosystem/action-remove-labels@v1.3.0
         with:
           labels: ${{ github.event.label.name }}
-          github_token: ${{ env.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     name: Deploy

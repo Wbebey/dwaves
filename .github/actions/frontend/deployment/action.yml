@@ -4,26 +4,20 @@ runs:
     using: composite
     steps:
       - name: Retrieve environment variables 🌎
-        working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
 
       - name: NPM install
-        working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
-        run: |-
-          pwd && ls -la
-          npm install
+        run: npm install
 
       - name: Build 🏗
-        working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
           CI="false" npm run build
 
       - name: Deploy Production 🚀
-        working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup

@@ -17,7 +17,6 @@ env:
     NODE_VERSION: 16.x
     GITHUB_REF: ${{ github.ref }}
     GITHUB_SHA: ${{ github.sha }}
-    PROJECT_DIRECTORY: backend/api
     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }} 
     SONAR_PROJECT_BASE_DIR: backend/api/

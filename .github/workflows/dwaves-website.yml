@@ -14,7 +14,6 @@ on:
 env:
     APP: dwaves-website
     NODE_VERSION: 16.x
-    PROJECT_DIRECTORY: frontend/dwaves-website
     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }} 
     SONAR_PROJECT_BASE_DIR: frontend/dwaves-website/
