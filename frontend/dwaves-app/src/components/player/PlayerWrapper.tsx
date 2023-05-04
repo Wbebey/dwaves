@@ -141,7 +141,7 @@ export const PlayerWrapper: React.FC<Props> = ({
               <div className="widget-left-content">
                 <img src={currentSong?.albumCover ? currentSong.albumCover : artist.cover} alt={currentSong!.name} />
                 <p>
-                  {currentSong?.artist ? currentSong?.artist : artist?.artist} - {currentSong?.name}
+                  {artist?.artist} - {currentSong?.name}
                 </p>
               </div>
             )}
