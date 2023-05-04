@@ -1,5 +1,6 @@
 import '../Styles/ContentAlbum.scss'
-import { AddCircle, Back, Heart} from "iconsax-react"
+import { AddCircle, Back, Heart, SearchNormal1 } from "iconsax-react"
+import { Center } from '@mantine/core'
 
 import datasongs from '../Musics/datasongs'
 import { Link } from 'react-router-dom'
@@ -20,7 +21,7 @@ export const ContentAlbum = () => {
                 </div>
                 <div className="avatar">
                     <div className="w-14 h-14 rounded-full">
-                        <img src="https://placeimg.com/192/192/people" alt="" />
+                        <img src="https://placeimg.com/192/192/people" />
                     </div>
                 </div>
             </header>

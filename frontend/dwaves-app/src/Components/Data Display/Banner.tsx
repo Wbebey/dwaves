@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import "../../Styles/Data Display/Banner.scss"
 
 const playlists:{title:string}[] = [

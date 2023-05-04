@@ -1,5 +1,5 @@
 import '../../Styles/Data Display/List.scss'
-import { SearchNormal1 } from "iconsax-react"
+import { Back, SearchNormal1 } from "iconsax-react"
 
 import playlists from '../../Musics/playlist'
 import { Link } from 'react-router-dom'
