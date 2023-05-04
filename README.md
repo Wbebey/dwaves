@@ -8,11 +8,11 @@
         </tr>
         <tr>
             <td>Staging</td>
-            <td><a href="https://github.com/Wbebey/dwaves/actions"><img src="https://github.com/Wbebey/dwaves/workflows/pipeline/badge.svg?branch=staging" /></td>
+            <td><a href="https://github.com/Wbebey/dwaves/actions?query=workflow%3Apipeline"><img src="https://github.com/Wbebey/dwaves/workflows/pipeline/badge.svg?branch=staging" /></td>
         </tr>
         <tr>
             <td>Production</td>
-            <td><a href="https://github.com/Wbebey/dwaves/actions"><img src="https://github.com/Wbebey/dwaves/workflows/pipeline/badge.svg?branch=main" /></td>
+            <td><a href="https://github.com/Wbebey/dwaves/actions?query=workflow%3Apipeline"><img src="https://github.com/Wbebey/dwaves/workflows/pipeline/badge.svg?branch=main" /></td>
         </tr>
     </table>
 </p>
