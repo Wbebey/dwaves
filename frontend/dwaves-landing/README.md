@@ -1,1 +1,1 @@
-# Dwaves Landing pag
+# Dwaves Landing page
