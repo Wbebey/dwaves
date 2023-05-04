@@ -31,8 +31,6 @@ export const TicketPurchase: FC<Props> = ({
 }) => {
   const [transactionInProgress, setTransactionInProgress] = useState(false)
   const [openModal, setOpenModal] = useState(false)
-  const [openTransactionFailedModal, setOpenTransactionFailedModal] =
-    useState(false)
   const [openTransactionModalDone, setOpenTransactionModalDone] =
     useState(false)
   const [txnHash, setTxnHash] = useState('')
@@ -101,17 +99,12 @@ export const TicketPurchase: FC<Props> = ({
       setOpenTransactionModalDone(true)
     } catch (error) {
       console.log(error)
-      setTransactionInProgress(false)
-      setOpenTransactionFailedModal(true)
-      setOpenTransactionModalDone(true)
     }
   }
 
   return (
     <div className="h-[95%] overflow-scroll">
-      {openTransactionModalDone && !openTransactionFailedModal && (
-        <Confetti gravity={0.03} />
-      )}
+      {openTransactionModalDone && <Confetti gravity={0.03} />}
       <div className="pl-5 w-44">
         <h4 className="font-bold text-xl pl-3">Your Balance</h4>
         <div>
@@ -125,11 +118,13 @@ export const TicketPurchase: FC<Props> = ({
             />
           </div>
           <div className="flex flex-row items-center pr-2 justify-end">
-            <p>{sepoliaBalance.substring(0, 5)} ETH</p>
+            <p>
+              {sepoliaBalance.substring(0, 5)} ETH
+            </p>
             <img
-              src="./../../public/ethereumLogo.jpg"
-              alt="ethereumLogo"
-              width={30}
+                src="./../../public/ethereumLogo.jpg"
+                alt="ethereumLogo"
+                width={30}
             />
           </div>
         </div>
@@ -159,62 +154,40 @@ export const TicketPurchase: FC<Props> = ({
         id="my-modal"
         className="modal-toggle"
         onChange={() => {
+          console.log('hey')
           setOpenModal(false)
           setOpenTransactionModalDone(false)
-          setOpenTransactionFailedModal(false)
         }}
       />
       <div className="modal">
         <div className="modal-box flex items-center flex-col modal-box w-9/12 max-w-5xl">
           {openTransactionModalDone ? (
-            !openTransactionFailedModal ? (
-              <>
-                <h3 className="font-bold text-2xl text-center mb-4 text-white">
-                  Congratulations on your purchase 🥳 🎉 !
-                </h3>
-                <img
-                  className="w-80"
-                  src={`https://media.tenor.com/aKFaZBrZFYcAAAAC/excited-spin.gif`}
-                  alt=""
-                />
-                <p className="mr-4 mt-7 text-justify text-white">
-                  Congratulations! Your ticket is now available and can be used
-                  to access the event.
-                </p>
-                <a
-                  href={`https://${chainName}.etherscan.io/tx/${txnHash}`}
-                  target="_blank"
-                  className="btn btn-ghost normal-case text-xl flex flex-row items-center mt-5"
-                >
-                  <p className="text-white">View Transaction on Etherscan</p>
-                </a>
-                <div className="modal-action">
-                  <label htmlFor="my-modal" className="btn">
-                    PLUS ULTRA 💥 !
-                  </label>
-                </div>
-              </>
-            ) : (
-              <>
-                <h3 className="font-bold text-2xl text-center mb-4 text-white">
-                  Sorry your transaction failed ️😔 ...
-                </h3>
-                <img
-                  className="w-80"
-                  src={`https://media.tenor.com/Hr98vjSz-V8AAAAC/cat-kitty.gif`}
-                  alt=""
-                />
-                <p className="mr-4 mt-7 text-justify text-white">
-                  Look at the error in the console for more details, and try
-                  again later
-                </p>
-                <div className="modal-action">
-                  <label htmlFor="my-modal" className="btn">
-                    Try later ... 😕
-                  </label>
-                </div>
-              </>
-            )
+            <>
+              <h3 className="font-bold text-2xl text-center mb-4 text-white">
+                Congratulations on your purchase 🥳 🎉 !
+              </h3>
+              <img
+                className="w-80"
+                src={`https://media.tenor.com/aKFaZBrZFYcAAAAC/excited-spin.gif`}
+                alt=""
+              />
+              <p className="mr-4 mt-7 text-justify text-white">
+                Congratulations! Your ticket is now available and can be used to
+                access the event.
+              </p>
+              <a
+                href={`https://${chainName}.etherscan.io/tx/${txnHash}`}
+                target="_blank"
+                className="btn btn-ghost normal-case text-xl flex flex-row items-center mt-5"
+              >
+                <p className="text-white">View Transaction on Etherscan</p>
+              </a>
+              <div className="modal-action">
+                <label htmlFor="my-modal" className="btn">
+                  PLUS ULTRA 💥 !
+                </label>
+              </div>
+            </>
           ) : (
             <>
               <h3 className="font-bold text-2xl text-center mb-4 text-white">
