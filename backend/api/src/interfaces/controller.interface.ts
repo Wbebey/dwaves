@@ -1,4 +1,3 @@
-import { AlbumGetRequestHandler } from '@@types/app.type'
 import { Genre } from '@prisma/client'
 import { RequestHandler } from 'express'
 
@@ -16,7 +15,7 @@ export interface IUserController extends IController {
 }
 
 export interface IAlbumController extends IController {
-  list: AlbumGetRequestHandler
+  get: RequestHandler
   show: RequestHandler
   create: RequestHandler
 }
