@@ -15,7 +15,6 @@ import { SongList } from "components/SongList";
 import { CreatePlaylist } from "components/CreatePlaylist";
 import { UserPlaylists } from "./UserPlaylists";
 import { PlaylistContent } from "./PlaylistContent";
-import { CreateConcert } from "./CreateConcert";
 import { Footer } from "components/Footer";
 
 export {
@@ -36,6 +35,5 @@ export {
   CreatePlaylist,
   UserPlaylists,
   PlaylistContent,
-  CreateConcert,
   Footer
 };

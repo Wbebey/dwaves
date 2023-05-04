@@ -1,11 +1,5 @@
 import React, { useState } from 'react'
-import {
-  AlbumForm, CreateConcert,
-  CreatePlaylist,
-  SingleForm,
-  SwitchTab,
-  UserPlaylists,
-} from '../components'
+import { SwitchTab, UserPlaylists } from '../components'
 
 interface Props {
   wallet: string
@@ -16,7 +10,7 @@ export const Marketplace: React.FC<Props> = ({
   wallet,
   requestConnectionMetamask,
 }) => {
-  const [showTickets, setShowTickets] = useState('Upcoming concerts')
+  const [showForm, setShowForm] = useState('Overview')
 
   return (
     <div
@@ -40,15 +34,11 @@ export const Marketplace: React.FC<Props> = ({
         <>
           <SwitchTab
             values={['Upcoming concerts', 'Create a concert']}
-            showForm={showTickets}
-            setShowForm={setShowTickets}
+            showForm={showForm}
+            setShowForm={setShowForm}
           />
           <div className={'h-[97%] pt-[30px] pl-[20px]'}>
-            {showTickets === 'Upcoming concerts' ? (
-              <div>HEY HEY</div>
-            ) : (
-              <CreateConcert />
-            )}{' '}
+            <div className={`w-full h-[90%] overflow-scroll`}>{wallet}</div>
           </div>
         </>
       )}
