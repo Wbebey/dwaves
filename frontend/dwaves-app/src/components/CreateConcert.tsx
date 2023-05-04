@@ -1,5 +1,7 @@
 import { Path, useForm, UseFormRegister, SubmitHandler } from 'react-hook-form'
 
+import ticketTemplate from './../../public/ticketTemplate.png'
+
 interface IFormValues {
   'Event name': string
   Date: string
@@ -14,16 +16,14 @@ type InputProps = {
   label: Path<IFormValues>
   register: UseFormRegister<IFormValues>
   type?: string
-  step?:  number
   required: boolean
 }
 
-const Input = ({ label, register, required, type = '', step= 0 }: InputProps) => (
+const Input = ({ label, register, required, type = '' }: InputProps) => (
   <div className="flex flex-col items-center mb-2">
     <label className="text-lg">{label}</label>
     <input
       type={type}
-      step={step}
       className="bg-white h-9 w-72 mt-2 rounded-lg border-2 border-teal-300 text-center px-3"
       placeholder={label}
       {...register(label, { required })}
@@ -60,11 +60,11 @@ export const CreateConcert = () => {
                   <p className="text-xl">{watch('Genre')}</p>
                   <p className="text-xl text-blue-600 font-bold">
                     {watch('Ticket price in VIBES')}{' '}
-                    {watch('Ticket price in VIBES') && 'VIBES'}
+                    {watch('Ticket price in VIBES') !== null && 'VIBES'}
                   </p>
                 </div>
               </div>
-              <img src="./../../ticketTemplate.png" alt="" />
+              <img src={ticketTemplate} alt="" />
             </div>
 
             <button
@@ -92,8 +92,7 @@ export const CreateConcert = () => {
               label={'Ticket price in VIBES'}
               register={register}
               required={true}
-              type={''}
-              step={0.01}
+              type={'number'}
             />
             <div className="flex flex-col items-center mb-2">
               <label className="text-lg">Event place</label>
