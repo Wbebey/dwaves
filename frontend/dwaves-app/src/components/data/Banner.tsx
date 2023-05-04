@@ -25,11 +25,11 @@ export const Banner = () => {
   const getPlaylist = async (playlist:Playlists) => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_APP_BACK_URL}/playlists/`,
+        `${import.meta.env.VITE_APP_BACK_URL}/playlists/${playlist.id}`,
         {
           withCredentials: true,
         }
-      )
+      );
       setPlaylists(res.data);
     } catch (err) {
       console.log(err);
