@@ -1,6 +1,6 @@
 import '../styles/AlbumForm.scss'
 import { Icon } from 'components/shared'
-import { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { useForm, UseFormSetValue } from 'react-hook-form'
 import axios from 'axios'
 import { responseRequest } from 'models'
@@ -14,12 +14,19 @@ interface Props {
 
 interface AlertProps {
   setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+  genres: {
+    id: number
+    name: string
+  }[]
 }
-
 
 interface AlbumProps {
   arraySong: SongData[]
   setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+  genres: {
+    id: number
+    name: string
+  }[]
 }
 
 type CoverFile = {
@@ -32,7 +39,12 @@ type Album = {
   src: any
 }
 
-const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue, setAlert }) => {
+const FormCover: React.FC<Props> = ({
+  setCoverExist,
+  setCover,
+  setValue,
+  setAlert,
+}) => {
   function handleFile(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) {
       return
@@ -67,7 +79,7 @@ const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue, setAler
   )
 }
 
-const AlbumCover: React.FC<AlbumProps> = ({ arraySong, setAlert }) => {
+const AlbumCover: React.FC<AlbumProps> = ({ arraySong, setAlert, genres }) => {
   const { register, setValue, getValues, handleSubmit } = useForm<Album>()
   const [cover, setCover] = useState<CoverFile>({ src: {} })
   const [coverExist, setCoverExist] = useState(false)
@@ -91,21 +103,21 @@ const AlbumCover: React.FC<AlbumProps> = ({ arraySong, setAlert }) => {
         withCredentials: true,
       })
       .then((res) => {
-        displayAlert("downloaded successfully" , res.status)
+        displayAlert('downloaded successfully', res.status)
       })
       .catch((err) => {
         if (Array.isArray(err.response.data)) {
-          displayAlert(err.response.data[0].msg , err.response.status)
+          displayAlert(err.response.data[0].msg, err.response.status)
         } else {
-          displayAlert(err.response.data.message , err.response.status)
+          displayAlert(err.response.data.message, err.response.status)
         }
       })
   }
 
-  const displayAlert = (msg:string , status:number) => {
-    setAlert({response : msg , status : status, visible: true })
-    setTimeout(()=>{
-      setAlert({response : "" , status : 0, visible: false })
+  const displayAlert = (msg: string, status: number) => {
+    setAlert({ response: msg, status: status, visible: true })
+    setTimeout(() => {
+      setAlert({ response: '', status: 0, visible: false })
     }, 3000)
   }
 
@@ -136,12 +148,20 @@ const AlbumCover: React.FC<AlbumProps> = ({ arraySong, setAlert }) => {
           />
         </div>
         <div className="contain-input">
-          <input
+          <select
+            className="input input-ghost w-full"
             {...register('genre')}
-            type="text"
-            placeholder="Genre"
-            className="input input-ghost w-full "
-          />
+            defaultValue={''}
+          >
+            <option value="" disabled hidden>
+              Choose the genre
+            </option>
+            {genres.map((genre) => (
+              <option key={genre.id} value={genre.name}>
+                {genre.name}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
       <div className="contain-button">
@@ -153,7 +173,7 @@ const AlbumCover: React.FC<AlbumProps> = ({ arraySong, setAlert }) => {
 
 type SongData = { title: string; src: File | null }
 
-export const AlbumForm: React.FC<AlertProps> = ({ setAlert }) => {
+export const AlbumForm: React.FC<AlertProps> = ({ setAlert, genres }) => {
   const [arraySong, setArraySong] = useState<SongData[]>([
     { title: '', src: null },
   ])
@@ -166,7 +186,7 @@ export const AlbumForm: React.FC<AlertProps> = ({ setAlert }) => {
         }
         const src = e.target.files === null ? null : e.target.files[0]
         return { ...song, src }
-      })
+      }),
     )
   }
 
@@ -177,7 +197,7 @@ export const AlbumForm: React.FC<AlertProps> = ({ setAlert }) => {
           return song
         }
         return { ...song, title: e.target.value }
-      })
+      }),
     )
   }
 
@@ -188,7 +208,7 @@ export const AlbumForm: React.FC<AlertProps> = ({ setAlert }) => {
   return (
     <section className="contain-album-form">
       <div className="header">
-        <AlbumCover arraySong={arraySong} setAlert={setAlert} />
+        <AlbumCover arraySong={arraySong} setAlert={setAlert} genres={genres} />
       </div>
       <div className="content-form-album">
         <ul className="list-form-album">

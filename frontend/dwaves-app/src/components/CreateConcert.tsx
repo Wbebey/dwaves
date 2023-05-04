@@ -77,7 +77,6 @@ export const CreateConcert = ({
           withCredentials: true,
         },
       )
-      console.log(res.data)
       setGenres(res.data)
     } catch (error) {
       console.log(error)
