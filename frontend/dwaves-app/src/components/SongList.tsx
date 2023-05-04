@@ -1,5 +1,5 @@
 import { PlayPause } from "songs/listenMusic";
-import { AlbumDetail } from "../models";
+import { AlbumDetail, responseRequest } from "../models";
 import { Icon } from "./shared";
 
 interface Props {
@@ -9,7 +9,6 @@ interface Props {
     audioElmt: React.RefObject<HTMLAudioElement>
     isPlaying: boolean
     setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
-    setArtist : React.Dispatch<React.SetStateAction<AlbumDetail|undefined>>;
 }
 
 export const SongList: React.FC<Props> = ({
@@ -19,7 +18,6 @@ export const SongList: React.FC<Props> = ({
     audioElmt,
     isPlaying,
     setIsPlaying,
-    setArtist
 }) => {
     return (
         <div className='container-list'>
@@ -28,8 +26,7 @@ export const SongList: React.FC<Props> = ({
                     <li
                         onClick={e => {
                             setCurrentSong(music)
-                            setSongs(songs.musics)
-                            setArtist(songs)
+                            setSongs(songs)
                             PlayPause(audioElmt, isPlaying, setIsPlaying)
                         }}
                         key={i}

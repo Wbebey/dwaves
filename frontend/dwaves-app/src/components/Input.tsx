@@ -50,6 +50,7 @@ export const SingleForm : React.FC<Props> = ({ setAlert }) => {
         withCredentials: true,
       })
       .then((res) => {
+        console.log(res)
         if (Array.isArray(res.data)) {
           displayAlert(res.data[0].msg , res.status)
         } else {

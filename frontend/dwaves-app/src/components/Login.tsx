@@ -17,6 +17,8 @@ interface Props {
 export const Login: React.FC<Props> = ({ toggleModal, setConnected, setAlert }) => {
   const { register, setValue, getValues, handleSubmit } = useForm<User>()
 
+  console.log(document.cookie, 'document.cookie')
+
   const onSubmit = (data: any) => {
     axios
       .post(`${import.meta.env.VITE_APP_BACK_URL}/auth/login`, data, {
