@@ -14,6 +14,10 @@ export const CreatePlaylist: React.FC<Props> = ({ setAlert }) => {
   const [imageURL, setImageURL] = useState<string>();
 
   useEffect(() => {
+    foundUserId();
+  }, []);
+
+  useEffect(() => {
     if (image.length < 1) return;
 
     setImageURL(URL.createObjectURL(image[0]));
@@ -32,7 +36,7 @@ export const CreatePlaylist: React.FC<Props> = ({ setAlert }) => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_APP_BACK_URL}/users/me/playlists`,
+        `${import.meta.env.VITE_APP_BACK_URL}/playlists`,
         form,
         {
           withCredentials: true,
@@ -57,6 +61,21 @@ export const CreatePlaylist: React.FC<Props> = ({ setAlert }) => {
     setTimeout(() => {
       setAlert({ response: "", status: 0, visible: false });
     }, 3000);
+  };
+
+  const foundUserId = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_APP_BACK_URL}/users/me`,
+        {
+          withCredentials: true,
+        }
+      );
+      setUserId(res.data.id);
+    } catch (err) {
+      console.log(err);
+    }
+    console.log(userId);
   };
 
   return (

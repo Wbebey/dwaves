@@ -68,7 +68,7 @@ export const PlaylistContent: React.FC<Props> = ({
 
       res.data.musics.forEach((music: any) => {
         const musicUrl = music.src.split("/");
-        musicsCid!.push(musicUrl[musicUrl.length - 1]);
+        musicsCid!.push(musicUrl[musicUrl.length - 1])
       });
 
       const newMusicUrl = musicSrc.split("/");
@@ -143,7 +143,7 @@ export const PlaylistContent: React.FC<Props> = ({
   return (
     <div className="content-album">
       <header className="head">
-        <Link to={"/playlist"}>
+        <Link to={"/"}>
           <Icon icon="return" size="Large" />
         </Link>
         <div className="divider divider-horizontal" />
@@ -161,7 +161,6 @@ export const PlaylistContent: React.FC<Props> = ({
           </div>
         </div>
       </header>
-      {playlist?.description && <p className="mx-20 mt-4 text-justify">{playlist.description}</p>}
       <SongList
         songs={playlist}
         setSongs={setSongs}
