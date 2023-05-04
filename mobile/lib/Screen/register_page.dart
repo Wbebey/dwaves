@@ -8,10 +8,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dwaves_mobile/Screen/Login_page.dart';
 
 
-var username = 'sofian3';
-var email = 'sofian3@gmail.com';
-var password = "12345678";
-var password_confirmation = "12345678";
+var username = '';
+var email = '';
+var password = "";
+var password_confirmation = "";
 
 class register extends StatelessWidget {
   register({Key? key, this.cookies}) : super(key: key);
@@ -35,7 +35,7 @@ class MyregisterPage extends StatefulWidget {
 
 class _MyregisterPageState extends State<MyregisterPage> {
   void sendRegister() async {
-    var url = Uri.parse('http://0.0.0.0:8080/api/v1/auth/register');
+    var url = Uri.parse('https://dwaves-api.tonfrere.fr/api/v1/auth/register');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final response =
         await http.post(url, body: {

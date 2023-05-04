@@ -68,7 +68,7 @@ class PageManager {
     };
 
     final response = await http.get(
-      Uri.parse('http://localhost:8080/api/v1/albums/$id'),
+      Uri.parse('https://dwaves-api.tonfrere.fr/api/v1/albums/$id'),
       headers: headers,
     );
 

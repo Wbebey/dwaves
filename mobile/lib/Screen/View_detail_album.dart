@@ -16,7 +16,6 @@ class Music extends StatefulWidget {
   final String name;
   final String src;
 
-
   factory Music.fromJson(Map<String, dynamic> json) {
     return Music(
       name: json['name'],
@@ -29,7 +28,7 @@ class Music extends StatefulWidget {
 }
 
 class MusicFetcher {
-  int _id = 33;
+  int _id = 3;
 
   int get id => _id;
 
@@ -58,7 +57,7 @@ class _ViewMusicState extends State<Music> {
     String? token = await getToken();
 
     final id = ModalRoute.of(context)!.settings.arguments as int;
-
+    print("id : $id");
     // faire un setter pour id
 
     final headers = {
@@ -67,7 +66,7 @@ class _ViewMusicState extends State<Music> {
     };
 
     final response = await http.get(
-      Uri.parse('http://localhost:8080/api/v1/albums/$id'),
+      Uri.parse('https://dwaves-api.tonfrere.fr/api/v1/albums/$id'),
       headers: headers,
     );
 
@@ -98,9 +97,10 @@ class _ViewMusicState extends State<Music> {
                     subtitle: Text('${music.src} listenings'),
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Manager()));
+                          MaterialPageRoute(builder: (context) => Manager()                    )
+                        
+                          );
                     },
-
                   );
                 },
               );

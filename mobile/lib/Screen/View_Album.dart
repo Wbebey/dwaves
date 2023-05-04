@@ -47,6 +47,7 @@ class Album extends StatefulWidget {
 }
 
 
+
 class _ViewAlbumState extends State<Album> {
   late final PageManager _pageManager;
   late final AudioPlayer _player;
@@ -84,7 +85,7 @@ class _ViewAlbumState extends State<Album> {
     };
 
     final response = await http.get(
-      Uri.parse('http://localhost:8080/api/v1/albums'),
+      Uri.parse('https://dwaves-api.tonfrere.fr/api/v1/albums'),
       headers: headers,
     );
     if (response.statusCode == 200) {
@@ -98,6 +99,9 @@ class _ViewAlbumState extends State<Album> {
       throw Exception('Failed to load albums');
     }
   }
+  
+
+
   
 
 

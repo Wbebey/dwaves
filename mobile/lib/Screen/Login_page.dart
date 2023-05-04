@@ -11,8 +11,6 @@ import 'package:dwaves_mobile/Screen/register_page.dart';
 
 import 'View_Album.dart';
 
-var email = 'sofian32@gmail.com';
-var password = "12345678";
 
 
 class Login extends StatelessWidget {
@@ -37,7 +35,9 @@ class MyLoginPage extends StatefulWidget {
 
 class _MyLoginPageState extends State<MyLoginPage> {
   sendLogin() async {
-    var url = Uri.parse('http://0.0.0.0:8080/api/v1/auth/login');
+
+
+    var url = Uri.parse('https://dwaves-api.tonfrere.fr/api/v1/auth/login');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final response =
         await http.post(url, body: {"email": email, "password": password});
@@ -90,7 +90,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       color: const Color.fromRGBO(236, 236, 254, 1),
                       fontSize: 20.0),
                   onChanged: (val) {
-                    print(val);
                     setState(() => email = val);
                   },
                   validator: (val) => val!.isEmpty ? 'Email manquant' : null,
@@ -127,7 +126,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   enableSuggestions: false,
                   autocorrect: false,
                   onChanged: (val) {
-                    print(val);
 
                     setState(() => password = val);
                   },
