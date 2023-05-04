@@ -9,7 +9,7 @@ import {
   Logout,
   BitcoinConvert,
 } from 'iconsax-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import datasongs from 'songs/datasongs'
 
@@ -33,6 +33,7 @@ export const Sidebar: React.FC<Props> = ({
   setConnected,
   currentUser,
 }) => {
+  const navigate = useNavigate()
   const disconect = () => {
     axios
       .post(
@@ -42,6 +43,7 @@ export const Sidebar: React.FC<Props> = ({
       )
       .then((res) => {
         setConnected(false)
+        navigate('/')
       })
       .catch((err) => {
         console.log(err)
