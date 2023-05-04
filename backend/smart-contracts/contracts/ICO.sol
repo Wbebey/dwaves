@@ -1,34 +1,23 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/utils/math/Math.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import {DwavesToken} from "./DwavesToken.sol";
 
-contract ICO is AccessControl {
+contract ICO is Ownable {
     using SafeMath for uint256;
-
-    // TARGET: 1 VIBES ~= 1$
-    // X VIBES = X ETH * RATE
-    // RATE = ETH IN $ * (1 - DISCOUNT)
-    // DICSOUNT = 30%
-    // => RATE ~= 1300 * 0.7 = 910
-    uint256 public constant RATE = 910;
-    bytes32 public constant LIMITER_ROLE = keccak256("LIMITER_ROLE");
-
-    uint256 public immutable cap;
-    uint256 public immutable individual_cap;
 
     mapping(address => uint256) public contributions;
     mapping(address => uint256) public caps;
 
-    DwavesToken public token;
-    address payable public dwavesBank;
-    uint256 public weiRaised;
-    uint256 public openingTime;
-    uint256 public closingTime;
+    DwavesToken token;
+    address payable wallet;
+    uint256 rate;
+    uint256 cap;
+    uint256 weiRaised;
+    uint256 openingTime;
+    uint256 closingTime;
 
     event TokenPurchase(
         address indexed purchaser,
@@ -38,39 +27,32 @@ contract ICO is AccessControl {
     );
 
     modifier onlyWhileOpen() {
-        require(isOpen(), "ICO: not open");
+        require(
+            block.timestamp >= openingTime && block.timestamp <= closingTime
+        );
         _;
     }
 
     constructor(
-        DwavesToken token_,
-        address payable dwavesBank_,
-        uint256 openingTime_,
-        uint256 closingTime_
+        DwavesToken _token,
+        address payable _wallet,
+        uint256 _rate,
+        uint256 _cap,
+        uint256 _openingTime,
+        uint256 _closingTime
     ) {
-        require(address(token_) != address(0), "ICO: token is zero address");
-        require(dwavesBank_ != address(0), "ICO: dwavesBank is zero address");
-        require(
-            openingTime_ >= block.timestamp,
-            "ICO: opening time is before current time"
-        );
-        require(
-            closingTime_ >= openingTime_,
-            "ICO: opening time is not before closing time"
-        );
+        require(_wallet != address(0));
+        require(_rate > 0);
+        require(_cap > 0);
+        require(_openingTime >= block.timestamp);
+        require(_closingTime >= _openingTime);
 
-        token = token_;
-        dwavesBank = dwavesBank_;
-        openingTime = openingTime_;
-        closingTime = closingTime_;
-
-        uint8 decimals = token_.decimals();
-        // cap = 25% * VIBES_cap = 0.25 * 1e9 = 2.5e8 (* decimals)
-        cap = 2.5e8 * 10**decimals;
-        // individual_cap = 0.1% * VIBES_cap = 1e-3 * 1e9 = 1e6 (* decimals)
-        individual_cap = 1e6 * 10**decimals;
-
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        token = _token;
+        wallet = _wallet;
+        rate = _rate;
+        cap = _cap;
+        openingTime = _openingTime;
+        closingTime = _closingTime;
     }
 
     receive() external payable {
@@ -85,80 +67,32 @@ contract ICO is AccessControl {
         return block.timestamp > closingTime;
     }
 
-    function setUserCap(address investor) external onlyRole(LIMITER_ROLE) {
-        caps[investor] = individual_cap;
+    function setUserCap(address _investor, uint256 _cap) external onlyOwner {
+        caps[_investor] = _cap;
     }
 
-    function setGroupCap(address[] calldata investors)
+    function setGroupCap(address[] calldata _investors, uint256 _cap)
         external
-        onlyRole(LIMITER_ROLE)
+        onlyOwner
     {
-        for (uint256 i = 0; i < investors.length; i++) {
-            caps[investors[i]] = individual_cap;
+        for (uint256 i = 0; i < _investors.length; i++) {
+            caps[_investors[i]] = _cap;
         }
     }
 
-    function remainingTokens() external view returns (uint256) {
-        return
-            Math.min(
-                token.balanceOf(dwavesBank),
-                token.allowance(dwavesBank, address(this))
-            );
-    }
-
-    function isOpen() public view returns (bool) {
-        return block.timestamp >= openingTime && block.timestamp <= closingTime;
-    }
-
-    function buyTokens(address investor) public payable {
+    function buyTokens(address _investor) public payable onlyWhileOpen {
         uint256 weiAmount = msg.value;
 
-        _preValidatePurchase(investor, weiAmount);
+        require(_investor != address(0));
+        require(weiAmount != 0);
+        require(weiRaised.add(weiAmount) <= cap);
+        require(contributions[_investor].add(weiAmount) <= caps[_investor]);
 
-        uint256 tokenAmount = _getTokenAmount(weiAmount);
+        uint256 tokens = weiAmount.mul(rate);
         weiRaised = weiRaised.add(weiAmount);
 
-        _processPurchase(investor, tokenAmount);
-        emit TokenPurchase(msg.sender, investor, weiAmount, tokenAmount);
-
-        _updatePurchasingState(investor, weiAmount);
-
-        _forwardFunds();
-    }
-
-    function _getTokenAmount(uint256 weiAmount)
-        internal
-        pure
-        returns (uint256)
-    {
-        return weiAmount.mul(RATE);
-    }
-
-    function _preValidatePurchase(address investor, uint256 weiAmount)
-        internal
-        view
-        onlyWhileOpen
-    {
-        require(investor != address(0), "ICO: investor is the zero address");
-        require(weiAmount != 0, "ICO: wei amount is 0");
-        require(weiRaised.add(weiAmount) <= cap, "ICO: cap exceeded");
-        require(
-            contributions[investor].add(weiAmount) <= caps[investor],
-            "ICO: investor's cap exceeded"
-        );
-    }
-
-    function _processPurchase(address investor, uint256 tokenAmount) internal {
-        token.transferFrom(dwavesBank, investor, tokenAmount);
-    }
-
-    function _updatePurchasingState(address investor, uint256 weiAmount)
-        internal
-    {
-        contributions[investor] = contributions[investor].add(weiAmount);
-    }
-
-    function _forwardFunds() internal {
-        dwavesBank.transfer(msg.value);
+        token.transfer(_investor, tokens);
+        emit TokenPurchase(msg.sender, _investor, weiAmount, tokens);
+        wallet.transfer(weiAmount);
     }
 }
