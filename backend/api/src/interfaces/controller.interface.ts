@@ -17,13 +17,8 @@ export interface IAlbumController extends IController {
   create: RequestHandler
 }
 
-export interface IGenreController extends IController {
-  get: RequestHandler
-  create: RequestHandler
-}
-
 export interface IMusicController extends IController {
-  create: RequestHandler
+  createSingleMusic: RequestHandler
 }
 
 export interface IAuthController extends IController {

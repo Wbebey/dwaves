@@ -6,7 +6,6 @@ import musicRouter from '@routers/music.router'
 import authRouter from '@routers/auth.router'
 import appController from '@controllers/app.controller'
 import { deserializeUser, requireUser } from '@middlewares/auth.middleware'
-import genreRouter from './genre.router'
 
 const appRouter = Router()
 
@@ -18,6 +17,5 @@ appRouter.use(deserializeUser, requireUser)
 appRouter.use('/users', userRouter)
 appRouter.use('/albums', albumRouter)
 appRouter.use('/musics', musicRouter)
-appRouter.use('/genres', genreRouter)
 
 export default appRouter

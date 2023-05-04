@@ -61,7 +61,7 @@ model Playlist {
 model Genre {
   id Int @id @default(autoincrement())
 
-  name String @unique
+  name String
 }
 
 model MonthlyListening {
