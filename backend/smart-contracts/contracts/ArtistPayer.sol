@@ -1,27 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "./DwavesToken.sol";
+import {DwavesToken} from "./DwavesToken.sol";
 
 contract ArtistPayer is AccessControl {
-    using SafeMath for uint256;
-
     DwavesToken token;
     bytes32 public constant PAYER_ROLE = keccak256("PAYER_ROLE");
-    uint256 public rate;
 
     event TokenPayments(address[] addresses, uint256[] amounts);
 
     constructor(DwavesToken _token) {
-        require(address(_token) != address(0));
-
         token = _token;
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-
-        // 0.06 * token decimals
-        rate = 6 * (10**_token.decimals() / 10**2);
     }
 
     function payArtists(
@@ -66,7 +57,8 @@ contract ArtistPayer is AccessControl {
         view
         returns (uint256)
     {
-        return _listenings.mul(rate);
+        // 0.06 * token decimals
+        return _listenings * 6 * (10**token.decimals() / 10**2);
     }
 
     function _processPayments(

@@ -6,32 +6,28 @@ import { DwavesToken, DwavesToken__factory } from '../typechain-types'
 describe('DwavesToken', () => {
   let dwavesTokenFactory: DwavesToken__factory
   let dwavesToken: DwavesToken
-  let userToken: DwavesToken
+  let recipientContract: DwavesToken
   let decimals: number
-  let deployer: SignerWithAddress
-  let bank: SignerWithAddress
-  let user: SignerWithAddress
+  let ownerAddress: string
+  let recipientAddress: string
+  let recipient: SignerWithAddress
 
   before(async () => {
-    const [_deployer, _, _bank, _user] = await ethers.getSigners()
-    deployer = _deployer
-    bank = _bank
-    user = _user
+    const [owner, spender] = await ethers.getSigners()
+    recipient = spender
+    ownerAddress = owner.address
+    recipientAddress = spender.address
 
-    dwavesTokenFactory = await ethers.getContractFactory(
-      'DwavesToken',
-      deployer
-    )
+    dwavesTokenFactory = await ethers.getContractFactory('DwavesToken', owner)
   })
 
   describe('When deploying the contract', () => {
     beforeEach(async () => {
-      const _dwavesToken = await dwavesTokenFactory.deploy(bank.address)
-      await _dwavesToken.deployed()
+      dwavesToken = await dwavesTokenFactory.deploy()
+      await dwavesToken.deployed()
 
-      decimals = await _dwavesToken.decimals()
-      dwavesToken = _dwavesToken.connect(bank)
-      userToken = _dwavesToken.connect(user)
+      decimals = await dwavesToken.decimals()
+      recipientContract = dwavesToken.connect(recipient)
     })
 
     it('Creates a token with a name', async () => {
@@ -55,42 +51,45 @@ describe('DwavesToken', () => {
 
     it('Is able to query account balances', async () => {
       const expectedBalance = ethers.utils.parseUnits('300000000', decimals)
-      const balance = await dwavesToken.balanceOf(bank.address)
-      expect(balance).to.equal(expectedBalance)
+      const ownerBalance = await dwavesToken.balanceOf(ownerAddress)
+      expect(ownerBalance).to.equal(expectedBalance)
     })
 
     it('Transfers the right amount of tokens to/from an account', async () => {
       const transferAmount = 1_000
-      const transfer = dwavesToken.transfer(user.address, transferAmount)
+      const transfer = dwavesToken.transfer(recipientAddress, transferAmount)
       await expect(transfer).to.changeTokenBalances(
         dwavesToken,
-        [bank.address, user.address],
+        [ownerAddress, recipientAddress],
         [-transferAmount, transferAmount]
       )
     })
 
     it("Emits a 'Transfer' event with the right arguments", async () => {
       const transferAmount = ethers.utils.parseUnits('100000', decimals)
-      const transfer = dwavesToken.transfer(user.address, transferAmount)
+      const transfer = dwavesToken.transfer(recipientAddress, transferAmount)
       await expect(transfer)
         .to.emit(dwavesToken, 'Transfer')
-        .withArgs(bank.address, user.address, transferAmount)
+        .withArgs(ownerAddress, recipientAddress, transferAmount)
     })
 
     it('Allows for allowance approvals and queries', async () => {
       const approveAmount = ethers.utils.parseUnits('10000', decimals)
-      await userToken.approve(bank.address, approveAmount)
+      await recipientContract.approve(ownerAddress, approveAmount)
 
-      const allowance = await dwavesToken.allowance(user.address, bank.address)
+      const allowance = await dwavesToken.allowance(
+        recipientAddress,
+        ownerAddress
+      )
       expect(allowance).to.equal(approveAmount)
     })
 
     it("Emits an 'Approval' event with the right arguments", async () => {
       const approveAmount = ethers.utils.parseUnits('10000', decimals)
-      const approval = userToken.approve(bank.address, approveAmount)
+      const approval = recipientContract.approve(ownerAddress, approveAmount)
       await expect(approval)
         .to.emit(dwavesToken, 'Approval')
-        .withArgs(user.address, bank.address, approveAmount)
+        .withArgs(recipientAddress, ownerAddress, approveAmount)
     })
 
     it('Allows an approved spender to transfer from owner', async () => {
@@ -99,76 +98,86 @@ describe('DwavesToken', () => {
         rawTransferAmount.toString(),
         decimals
       )
-      await dwavesToken.transfer(user.address, transferAmount)
-      await userToken.approve(bank.address, transferAmount)
+      await dwavesToken.transfer(recipientAddress, transferAmount)
+      await recipientContract.approve(ownerAddress, transferAmount)
 
       const transferFrom = dwavesToken.transferFrom(
-        user.address,
-        bank.address,
+        recipientAddress,
+        ownerAddress,
         rawTransferAmount
       )
       await expect(transferFrom).to.changeTokenBalances(
         dwavesToken,
-        [bank.address, user.address],
+        [ownerAddress, recipientAddress],
         [rawTransferAmount, -rawTransferAmount]
       )
     })
 
     it("Emits a 'Transfer' event with the right arguments when conducting an approved transfer", async () => {
       const transferAmount = ethers.utils.parseUnits('10000', decimals)
-      await dwavesToken.transfer(user.address, transferAmount)
-      await userToken.approve(bank.address, transferAmount)
+      await dwavesToken.transfer(recipientAddress, transferAmount)
+      await recipientContract.approve(ownerAddress, transferAmount)
 
       const transferFrom = dwavesToken.transferFrom(
-        user.address,
-        bank.address,
+        recipientAddress,
+        ownerAddress,
         transferAmount
       )
       await expect(transferFrom)
         .to.emit(dwavesToken, 'Transfer')
-        .withArgs(user.address, bank.address, transferAmount)
+        .withArgs(recipientAddress, ownerAddress, transferAmount)
     })
 
     it('Allows allowance to be increased and queried', async () => {
       const initialAmount = ethers.utils.parseUnits('100', decimals)
       const incrementAmount = ethers.utils.parseUnits('10000', decimals)
 
-      await userToken.approve(bank.address, initialAmount)
+      await recipientContract.approve(ownerAddress, initialAmount)
       const previousAllowance = await dwavesToken.allowance(
-        user.address,
-        bank.address
+        recipientAddress,
+        ownerAddress
       )
-      await userToken.increaseAllowance(bank.address, incrementAmount)
-      const expectedAllowance = previousAllowance.add(incrementAmount)
+      await recipientContract.increaseAllowance(ownerAddress, incrementAmount)
+      const expectedAllowance = ethers.BigNumber.from(previousAllowance).add(
+        ethers.BigNumber.from(incrementAmount)
+      )
 
-      const allowance = await dwavesToken.allowance(user.address, bank.address)
+      const allowance = await dwavesToken.allowance(
+        recipientAddress,
+        ownerAddress
+      )
       expect(allowance).to.equal(expectedAllowance)
     })
 
     it("Emits 'Approval' event when alllowance is increased", async () => {
       const incrementAmount = ethers.utils.parseUnits('10000', decimals)
-      const allowanceIncrease = userToken.increaseAllowance(
-        bank.address,
+      const allowanceIncrease = recipientContract.increaseAllowance(
+        ownerAddress,
         incrementAmount
       )
       await expect(allowanceIncrease)
         .to.emit(dwavesToken, 'Approval')
-        .withArgs(user.address, bank.address, incrementAmount)
+        .withArgs(recipientAddress, ownerAddress, incrementAmount)
     })
 
     it('Allows allowance to be decreased and queried', async () => {
       const initialAmount = ethers.utils.parseUnits('100', decimals)
       const decrementAmount = ethers.utils.parseUnits('10', decimals)
 
-      await userToken.approve(bank.address, initialAmount)
+      await recipientContract.approve(ownerAddress, initialAmount)
       const previousAllowance = await dwavesToken.allowance(
-        user.address,
-        bank.address
+        recipientAddress,
+        ownerAddress
       )
-      await userToken.decreaseAllowance(bank.address, decrementAmount)
-      const expectedAllowance = previousAllowance.sub(decrementAmount)
+      await recipientContract.decreaseAllowance(ownerAddress, decrementAmount)
+      const expectedAllowance = ethers.BigNumber.from(previousAllowance).sub(
+        ethers.BigNumber.from(decrementAmount)
+      )
 
-      const allowance = await dwavesToken.allowance(user.address, bank.address)
+      const allowance = await dwavesToken.allowance(
+        recipientAddress,
+        ownerAddress
+      )
       expect(allowance).to.equal(expectedAllowance)
     })
 
@@ -176,16 +185,18 @@ describe('DwavesToken', () => {
       const initialAmount = ethers.utils.parseUnits('100', decimals)
       const decrementAmount = ethers.utils.parseUnits('10', decimals)
 
-      await userToken.approve(bank.address, initialAmount)
-      const expectedAllowance = initialAmount.sub(decrementAmount)
+      await recipientContract.approve(ownerAddress, initialAmount)
+      const expectedAllowance = ethers.BigNumber.from(initialAmount).sub(
+        ethers.BigNumber.from(decrementAmount)
+      )
 
-      const allowanceDecrease = userToken.decreaseAllowance(
-        bank.address,
+      const allowanceDecrease = recipientContract.decreaseAllowance(
+        ownerAddress,
         decrementAmount
       )
       await expect(allowanceDecrease)
         .to.emit(dwavesToken, 'Approval')
-        .withArgs(user.address, bank.address, expectedAllowance)
+        .withArgs(recipientAddress, ownerAddress, expectedAllowance)
     })
 
     it('Allows burning own tokens', async () => {
@@ -194,11 +205,11 @@ describe('DwavesToken', () => {
       await expect(burn)
         .to.changeTokenBalance(
           dwavesToken,
-          bank.address,
+          ownerAddress,
           ethers.BigNumber.from(`-${burnAmount}`)
         )
         .and.to.emit(dwavesToken, 'Transfer')
-        .withArgs(bank.address, ethers.constants.AddressZero, burnAmount)
+        .withArgs(ownerAddress, ethers.constants.AddressZero, burnAmount)
     })
 
     it('Prevents burning if insufficient funds', async () => {
@@ -211,58 +222,61 @@ describe('DwavesToken', () => {
 
     it('Allows an approved spender to burn tokens', async () => {
       const burnAmount = ethers.utils.parseUnits('1000', decimals)
-      await dwavesToken.transfer(user.address, burnAmount)
-      await userToken.approve(bank.address, burnAmount)
+      await dwavesToken.transfer(recipientAddress, burnAmount)
+      await recipientContract.approve(ownerAddress, burnAmount)
 
-      const burnFrom = dwavesToken.burnFrom(user.address, burnAmount)
+      const burnFrom = dwavesToken.burnFrom(recipientAddress, burnAmount)
       await expect(burnFrom)
         .to.changeTokenBalance(
           dwavesToken,
-          user.address,
+          recipientAddress,
           ethers.BigNumber.from(`-${burnAmount}`)
         )
         .and.to.emit(dwavesToken, 'Transfer')
-        .withArgs(user.address, ethers.constants.AddressZero, burnAmount)
+        .withArgs(recipientAddress, ethers.constants.AddressZero, burnAmount)
     })
 
     it('Prevents spender to burn if unapproved', async () => {
       const burnAmount = ethers.utils.parseUnits('1000', decimals)
-      const burn = dwavesToken.burnFrom(user.address, burnAmount)
+      const burn = dwavesToken.burnFrom(recipientAddress, burnAmount)
       await expect(burn).to.be.revertedWith('ERC20: insufficient allowance')
     })
 
-    it('Attributes the admin role to bank and allows it to give minter role to batch mint tokens', async () => {
-      const _dwavesToken = dwavesToken.connect(deployer)
-      const minterRole = await _dwavesToken.MINTER_ROLE()
-      await _dwavesToken.grantRole(minterRole, user.address)
-      const hasMinterRole = await _dwavesToken.hasRole(minterRole, user.address)
-      expect(hasMinterRole).to.be.true
+    it('Attributes the admin role to deployer and allows it to give minter role to batch mint tokens', async () => {
+      const minterRole = await dwavesToken.MINTER_ROLE()
+      await dwavesToken.grantRole(minterRole, recipientAddress)
+      const recipientHasMinterRole = await dwavesToken.hasRole(
+        minterRole,
+        recipientAddress
+      )
+      expect(recipientHasMinterRole).to.be.true
 
       const mintAmount = ethers.utils.parseUnits('1000', decimals)
-      const to_list = [bank.address, user.address]
+      const to_list = [ownerAddress, recipientAddress]
       const amounts = Array(to_list.length).fill(mintAmount)
-      const batchMint = userToken.batchMint(to_list, amounts)
+      const batchMint = recipientContract.batchMint(to_list, amounts)
 
       await expect(batchMint).to.changeTokenBalances(
-        _dwavesToken,
+        dwavesToken,
         to_list,
         amounts
       )
     })
 
-    it('Prevents minting if account does not have the minter role', async () => {
+    it('Prevents minting if address does not have the minter role', async () => {
       const minterRole = await dwavesToken.MINTER_ROLE()
-      const hasMinterRole = await dwavesToken.hasRole(minterRole, user.address)
-      expect(hasMinterRole).to.be.false
+      const recipientHasMinterRole = await dwavesToken.hasRole(
+        minterRole,
+        recipientAddress
+      )
+      expect(recipientHasMinterRole).to.be.false
 
       const mintAmount = ethers.utils.parseUnits('1000', decimals)
-      const to_list = [bank.address, user.address]
+      const to_list = [ownerAddress, recipientAddress]
       const amounts = Array(to_list.length).fill(mintAmount)
-      const batchMint = userToken.batchMint(to_list, amounts)
+      const batchMint = recipientContract.batchMint(to_list, amounts)
 
-      await expect(batchMint).to.be.revertedWith(
-        `AccessControl: account ${user.address.toLowerCase()} is missing role ${minterRole}`
-      )
+      await expect(batchMint).to.be.revertedWith('Caller is not a minter')
     })
   })
 })

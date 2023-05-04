@@ -15,40 +15,35 @@ describe('ArtistPayer', () => {
   let artistPayerFactory: ArtistPayer__factory
   let artistPayer: ArtistPayer
   let decimals: number
-  let rate: BigNumber
-
-  let deployer: SignerWithAddress
-  let payer: SignerWithAddress
-  let bank: SignerWithAddress
-  let artistAddresses: string[]
-
+  let ownerAddress: string
+  let recipientAddress: string
+  let recipient: SignerWithAddress
   let minterRole: string
   let payerRole: string
+  let recipientContract: ArtistPayer
+  let tokensPerListening: BigNumber
 
   before(async () => {
-    const [_deployer, _payer, _bank, _artist1, _artist2] =
-      await ethers.getSigners()
-    deployer = _deployer
-    payer = _payer
-    bank = _bank
-    artistAddresses = [_artist1.address, _artist2.address]
+    const [owner, spender] = await ethers.getSigners()
+    recipient = spender
+    ownerAddress = owner.address
+    recipientAddress = spender.address
 
-    const [_f1, _f2] = await Promise.all([
-      ethers.getContractFactory('DwavesToken', deployer),
-      ethers.getContractFactory('ArtistPayer', deployer),
-    ])
-    dwavesTokenFactory = _f1
-    artistPayerFactory = _f2
+    const f1 = ethers.getContractFactory('DwavesToken', owner)
+    const f2 = ethers.getContractFactory('ArtistPayer', owner)
+    const factories = await Promise.all([f1, f2])
+    dwavesTokenFactory = factories[0]
+    artistPayerFactory = factories[1]
 
-    dwavesToken = await dwavesTokenFactory.deploy(bank.address)
+    dwavesToken = await dwavesTokenFactory.deploy()
     await dwavesToken.deployed()
 
-    const [_decimals, _minterRole] = await Promise.all([
+    const results = await Promise.all([
       dwavesToken.decimals(),
       dwavesToken.MINTER_ROLE(),
     ])
-    decimals = _decimals
-    minterRole = _minterRole
+    decimals = results[0]
+    minterRole = results[1]
   })
 
   describe('When deploying the contract', () => {
@@ -56,52 +51,55 @@ describe('ArtistPayer', () => {
       artistPayer = await artistPayerFactory.deploy(dwavesToken.address)
       await artistPayer.deployed()
 
+      recipientContract = artistPayer.connect(recipient)
       payerRole = await artistPayer.PAYER_ROLE()
 
-      const [_rate] = await Promise.all([
-        artistPayer.rate(),
-        dwavesToken.grantRole(minterRole, artistPayer.address),
-        artistPayer.grantRole(payerRole, payer.address),
-      ])
-      rate = _rate
+      const p1 = dwavesToken.grantRole(minterRole, artistPayer.address)
+      const p2 = artistPayer.grantRole(payerRole, ownerAddress)
+      const p3 = artistPayer.tokens_per_listening()
+      const res = await Promise.all([p1, p2, p3])
+      tokensPerListening = res[2]
     })
 
-    it("Allows payers to pay artists and emits a 'TokenPayments' event with the right arguments", async () => {
-      const _artistPayer = artistPayer.connect(payer)
-      const hasPayerRole = await _artistPayer.hasRole(payerRole, payer.address)
-      expect(hasPayerRole).to.be.true
+    it('Allows payers to pay artists', async () => {
+      const ownerHasPayerRole = await artistPayer.hasRole(
+        payerRole,
+        ownerAddress
+      )
+      expect(ownerHasPayerRole).to.be.true
 
       const listenings = [45345, 53577]
-      const payments = _artistPayer.payArtists(artistAddresses, listenings)
-      const amounts = listenings.map((v) => rate.mul(v))
+      const artistAddresses = [ownerAddress, recipientAddress]
+      const payments = artistPayer.payArtists(artistAddresses, listenings)
+      const amounts = listenings.map((v) => tokensPerListening.mul(v))
 
-      await expect(payments)
-        .to.changeTokenBalances(dwavesToken, artistAddresses, amounts)
-        .and.to.emit(_artistPayer, 'TokenPayments')
-        .withArgs(artistAddresses, amounts)
+      await expect(payments).to.changeTokenBalances(
+        dwavesToken,
+        artistAddresses,
+        amounts
+      )
     })
 
     it('Reverts transaction if invalid arguments', async () => {
-      const _artistPayer = artistPayer.connect(payer)
-      const payments = _artistPayer.payArtists(artistAddresses, [45345])
+      const listenings = [45345]
+      const artistAddresses = [ownerAddress, recipientAddress]
+      const payments = artistPayer.payArtists(artistAddresses, listenings)
 
-      await expect(payments).to.be.revertedWith(
-        'ArtistPayer: addresses and listenings do not have same length'
-      )
+      await expect(payments).to.be.revertedWithoutReason()
     })
 
     it('Prevents non-payers to pay artists', async () => {
-      const hasPayerRole = await artistPayer.hasRole(
+      const recipientHasPayerRole = await artistPayer.hasRole(
         payerRole,
-        deployer.address
+        recipientAddress
       )
-      expect(hasPayerRole).to.be.false
+      expect(recipientHasPayerRole).to.be.false
 
-      const payments = artistPayer.payArtists(artistAddresses, [345345, 0])
+      const listenings = [45345, 53577]
+      const artistAddresses = [ownerAddress, recipientAddress]
+      const payments = recipientContract.payArtists(artistAddresses, listenings)
 
-      await expect(payments).to.be.revertedWith(
-        `AccessControl: account ${deployer.address.toLowerCase()} is missing role ${payerRole}`
-      )
+      await expect(payments).to.be.revertedWith('Caller is not a payer')
     })
   })
 })
