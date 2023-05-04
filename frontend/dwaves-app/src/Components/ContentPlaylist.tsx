@@ -1,6 +1,6 @@
-import { Banner } from "./data/Banner"
-import { List } from "./data/ListCard"
-import { Suggestions } from "./data/Suggestions"
+import { Banner } from "./Data Display/Banner"
+import { List } from "./Data Display/ListCard"
+import { Suggestions } from "./Data Display/Suggestions"
 
 export const ContentPlaylist = () => {
     return (

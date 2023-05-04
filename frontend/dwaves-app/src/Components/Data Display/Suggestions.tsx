@@ -1,5 +1,5 @@
-import '../../styles/data/Suggestions.scss'
-import datasongs from '../../songs/datasongs'
+import '../../Styles/Data Display/Suggestions.scss'
+import datasongs from '../../Musics/datasongs'
 
 export const Suggestions = () => {
     return (

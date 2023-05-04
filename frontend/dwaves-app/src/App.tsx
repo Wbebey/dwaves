@@ -6,17 +6,17 @@ import {
   Route,
 } from "react-router-dom"
 
-import { Loader } from './components/Loader'
-import { ExploPlayer } from './components/ExploPlayer';
-import { Sidebar } from './components/Sidebar';
+import { Loader } from './Components/Loader'
+import { ExploPlayer } from './Components/ExploPlayer';
+import { Sidebar } from './Components/Sidebar';
 
-import { Player } from './views/Player'
-import { Explorer } from './views/Explorer'
-import { Album } from './views/Album'
-import { Download } from './views/Download'
-import { ModalLogin } from './views/Login'
+import { Player } from './Pages/Player'
+import { Explorer } from './Pages/Explorer'
+import { Album } from './Pages/Album'
+import { Download } from './Pages/Download'
+import { ModalLogin } from './Pages/Login'
 
-import datasong from './songs/datasongs';
+import datasong from './Musics/datasongs';
 
 function App() {
 

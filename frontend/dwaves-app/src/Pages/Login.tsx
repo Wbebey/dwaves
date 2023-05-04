@@ -1,7 +1,7 @@
-import "../styles/Login.scss"
+import "../Styles/Login.scss"
 import { useState } from "react"
-import { Login } from "../components/Login"
-import { Register } from "../components/Register"
+import { Login } from "../Components/Login"
+import { Register } from "../Components/Register"
 interface Props {
     displayModal: (e: any) => void
 }

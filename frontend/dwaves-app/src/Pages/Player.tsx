@@ -1,10 +1,10 @@
-import "../styles/Player.scss"
+import "../Styles/Player.scss"
 import logoDeep from '../Images/logo-deep.png'
-import {AnimateBulles} from "../components/AnimationBulles"
-import {PlayerReact} from "../components/PlayerReact";
+import {AnimateBulles} from "../Components/AnimationBulles"
+import {PlayerReact} from "../Components/PlayerReact";
 import { useEffect, useRef, useState } from "react";
 
-import datasong from '../songs/datasongs'
+import datasong from '../Musics/datasongs'
 
 export const Player = () => {
 

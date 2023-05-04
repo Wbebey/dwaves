@@ -1,4 +1,4 @@
-import "../styles/Loader.scss"
+import "../Styles/Loader.scss"
 
 import logo from '../Images/logo.png'
 
