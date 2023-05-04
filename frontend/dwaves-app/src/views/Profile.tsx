@@ -41,17 +41,17 @@ export const Profile: React.FC<Props> = ({ setCurrentSong, setSongs, setAlert, c
   const [mostPopularSong, setMostPopularSong] = useState<MostPopularSong[]>([])
 
   const getMostPopularSong = async () => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_APP_BACK_URL}/users/me/popular?limit=10`,
-        {
-          withCredentials: true,
-        }
-      )
-      setMostPopularSong(res.data)
-    } catch (error) {
-      console.log(error)
-    }
+      try {
+          const res = await axios.get(
+              `${import.meta.env.VITE_APP_BACK_URL}/users/me/popular?limit=10`,
+              {
+                  withCredentials: true,
+              }
+          )
+          setMostPopularSong(res.data)
+      } catch (error) {
+          console.log(error)
+      }
   }
 
   const options = {
@@ -66,37 +66,21 @@ export const Profile: React.FC<Props> = ({ setCurrentSong, setSongs, setAlert, c
       },
     },
   };
-
-  const labels = ['January', 'February', 'March', 'April', 'May'];
-
+  
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  
   const data = {
     labels,
     datasets: [
       {
         label: mostPopularSong[0] && mostPopularSong[0].name,
-        data: labels.map((_, i) => {
-          if (mostPopularSong[0]) {
-            if (i < mostPopularSong[0].listenings) {
-              return i + 1
-            } else {
-              return mostPopularSong[0].listenings
-            }
-          }
-        }),
+        data: labels.map(() => faker.datatype.number({ min: 0, max: 100 })),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: mostPopularSong[1] && mostPopularSong[1].name,
-        data: labels.map((_, i) => {
-          if (mostPopularSong[1]) {
-            if (i < mostPopularSong[1].listenings) {
-              return i + 1
-            } else {
-              return mostPopularSong[1].listenings
-            }
-          }
-        }),
+        data: labels.map(() => faker.datatype.number({ min: 0, max: 100 })),
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
@@ -132,7 +116,7 @@ export const Profile: React.FC<Props> = ({ setCurrentSong, setSongs, setAlert, c
 
   useEffect(() => {
     getMostPopularSong()
-  }, [])
+}, [])
 
   const [showForm, setShowForm] = useState('Overview')
   return (
@@ -180,8 +164,16 @@ export const Profile: React.FC<Props> = ({ setCurrentSong, setSongs, setAlert, c
               <Pie data={dataPie} />
             </div>
           </div>
+          <div>
+            <div className="flex nowrap justify-around">
+              <h3 className="text-xl">
+                Modifier mes informations
+              </h3>
+            </div>
+          </div>
         </div>
-      )}
+      )
+      }
     </div>
   )
 };

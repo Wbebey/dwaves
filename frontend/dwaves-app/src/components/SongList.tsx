@@ -39,7 +39,7 @@ export const SongList: React.FC<Props> = ({
   likeOrDislikeMusic,
   setPlaylist,
 }) => {
-  const [allPlaylists, setAllPlaylists] = useState<Playlists[]>([]);
+  const [allPlaylists, setAllPlaylists] = useState<Playlists>([]);
 
   const getAllPlaylistsOfTheUser = async () => {
     try {
