@@ -41,7 +41,7 @@ export const Login: React.FC<Props> = ({ toggleModal, setConnected }) => {
     >
       <div id="input-text" className="form-control w-full">
         <label className="label">
-          <span className="label-text">Email</span>
+          <span className="label-text">Username</span>
         </label>
         <input
           type="email"
