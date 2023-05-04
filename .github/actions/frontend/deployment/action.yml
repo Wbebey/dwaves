@@ -33,10 +33,8 @@ runs:
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
-          source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
-          echo "Downloading environment variables from doppler..."
-          cat $DOPPLER_TOKEN
-          doppler secrets download --config doppler.yaml --no-file --token $DOPPLER_TOKEN --format env > .env
+          source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
+          doppler secrets download --no-file --format env > .env
           cat .env
           head .env
           tail .env
