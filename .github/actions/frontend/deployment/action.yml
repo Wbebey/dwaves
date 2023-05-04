@@ -19,20 +19,11 @@ runs:
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
-          tail -n +4 .env > .new_env && mv .new_env .env
-
-      - name: Export build date 📅
-        working-directory:  ${{ env.PROJECT_DIRECTORY }}
-        shell: bash
-        run: |-
-          source ${{ env.PROPERTIES_SCRIPT }} && export_build_date
-
-      - name: Export commit url 📥
-        working-directory:  ${{ env.PROJECT_DIRECTORY }}
-        shell: bash
-        run: |-
-          source ${{ env.PROPERTIES_SCRIPT }} && export_commit_url
-
+          tail -n +4 .env > .new_env
+          cp .new_env .show
+          mv .new_env .env
+          cat .env  
+          cat .show
 
       - name: NPM install
         working-directory:  ${{ env.PROJECT_DIRECTORY }}

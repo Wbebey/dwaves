@@ -18,8 +18,6 @@ env:
     GITHUB_REF: ${{ github.ref }}
     GITHUB_SHA: ${{ github.sha }}
     PROJECT_DIRECTORY: backend/api
-    APP_COMMIT_URL: ${{ secrets.APP_COMMIT_URL_BACK }}
-    APP_BUILD_DATE: ${{ secrets.APP_BUILD_DATE_BACK }}
     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }} 
     SONAR_PROJECT_BASE_DIR: backend/api/

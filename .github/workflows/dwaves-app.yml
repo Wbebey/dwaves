@@ -8,8 +8,6 @@ on:
 env: 
     APP: dwaves-app
     NODE_VERSION: 16.x
-    APP_COMMIT_URL: ${{ secrets.APP_COMMIT_URL_FRONT }}
-    APP_BUILD_DATE: ${{ secrets.APP_BUILD_DATE_FRONT }}
     PROJECT_DIRECTORY: frontend/dwaves-app
     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }} 

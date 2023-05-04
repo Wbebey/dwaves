@@ -10,8 +10,6 @@ on:
 env:
     APP: dwaves-app
     NODE_VERSION: 16.x
-    APP_COMMIT_URL: ${{ secrets.APP_COMMIT_URL_FRONT }}
-    APP_BUILD_DATE: ${{ secrets.APP_BUILD_DATE_FRONT }}
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
     PROJECT_DIRECTORY: frontend/dwaves-app
