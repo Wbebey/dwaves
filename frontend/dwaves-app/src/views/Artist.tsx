@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Icon } from '../components/shared'
-import { AlbumDetail, MostPopularSong, responseRequest } from '../models'
+import { AlbumDetail, responseRequest } from '../models'
 import axios from 'axios'
 import { AlbumOfArtist, ArtistPopularSong } from '../components'
 
@@ -23,23 +23,9 @@ export const Artist: React.FC<Props> = ({
     username: '',
   })
 
-  const [mostPopularSong, setMostPopularSong] = useState<MostPopularSong[]>([])
-
-  const getMostPopularSong = async (userId: number) => {
-    try {
-      const res = await axios.get(
-        `${
-          import.meta.env.VITE_APP_BACK_URL
-        }/musics/popular?artistId=${userId}&limit=10`,
-        {
-          withCredentials: true,
-        },
-      )
-      setMostPopularSong(res.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  useEffect(() => {
+    getArtistDetails(id!)
+  }, [])
 
   const getArtistDetails = async (id: string) => {
     try {
@@ -53,17 +39,12 @@ export const Artist: React.FC<Props> = ({
         (user: { id: string }) => user.id.toString() === id,
       )
       setArtist(selectedUser)
-      await getMostPopularSong(selectedUser.id)
+      console.log(selectedUser)
+      // setArtist(res.data)
     } catch (error) {
       console.log(error)
     }
   }
-
-  useEffect(() => {
-    getArtistDetails(id!)
-      .then((r) => console.log(r))
-      .catch((r) => console.log(r))
-  }, [])
 
   return (
     <div
@@ -80,8 +61,8 @@ export const Artist: React.FC<Props> = ({
           <h3 className="text-4xl font-bold">{artist.username}</h3>
         </div>
       </header>
-      <div className={'h-[93%] pt-[30px] pl-[20px]'}>
-        <div className={`w-full h-[99%] overflow-scroll`}>
+      <div className={'h-[100%] pt-[30px] pl-[20px]'}>
+        <div className={`w-full h-[90%] overflow-scroll`}>
           {artist.id && (
             <>
               <AlbumOfArtist artistId={artist.id} setAlert={setAlert} />
@@ -89,7 +70,6 @@ export const Artist: React.FC<Props> = ({
                 artistId={artist.id}
                 setSongs={setSongs}
                 setCurrentSong={setCurrentSong}
-                mostPopularSong={mostPopularSong}
               />
             </>
           )}
