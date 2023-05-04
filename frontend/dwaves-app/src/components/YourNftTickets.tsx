@@ -30,11 +30,12 @@ export const YourNftTickets: FC<Props> = ({ myTickets }) => {
     <div className="h-[95%] overflow-scroll">
       <h2 className="text-center text-3xl">My Purchases - Concert Tickets</h2>
       <div className="flex flex-row flex-wrap justify-between mx-8">
-        {myTickets.map((event, index) => (
-          <div key={index} style={{width: 500}}>
-            <TicketTemplate event={event} />
-          </div>
-        ))}
+        {myTickets.length > 0 &&
+          myTickets.map((event, index) => (
+            <div key={index} style={{ width: 500 }}>
+              <TicketTemplate event={event} />
+            </div>
+          ))}
       </div>
     </div>
   )
