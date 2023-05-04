@@ -1,7 +1,9 @@
 import { KeyType, TokenType } from '@@types/token.type'
-import env from '@config/env.config'
+import config from '@config/env.config'
 import logger from '@config/logger.config'
+import AppError from '@errors/app.error'
 import { ITokenService } from '@interfaces/service.interface'
+import { StatusCodes } from 'http-status-codes'
 import jwt, { JwtPayload, SignOptions } from 'jsonwebtoken'
 
 class TokenService implements ITokenService {
@@ -38,12 +40,12 @@ class TokenService implements ITokenService {
 const getKey = (tokenType: TokenType, keyType: KeyType): string => {
   const typeToKey = {
     access: {
-      private: env.accessTokenPrivateKey,
-      public: env.accessTokenPublicKey,
+      private: config.accessTokenPrivateKey,
+      public: config.accessTokenPublicKey,
     },
     refresh: {
-      private: env.refreshTokenPrivateKey,
-      public: env.refreshTokenPublicKey,
+      private: config.refreshTokenPrivateKey,
+      public: config.refreshTokenPublicKey,
     },
   }
 

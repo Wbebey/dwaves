@@ -1,8 +1,6 @@
-import { IPFSMetadata } from '@@types/pinata.type'
 import { TokenType } from '@@types/token.type'
 import { ViewUser } from '@@types/user.type'
 import { Prisma, User } from '@prisma/client'
-import { ReadStream } from 'fs'
 import { JwtPayload, SignOptions } from 'jsonwebtoken'
 
 interface IService {}
@@ -23,10 +21,6 @@ export interface IUserService extends IService {
     hashedPassword: string,
     candidatePassword: string
   ) => Promise<boolean>
-}
-
-export interface IPinataService extends IService {
-  pinFileToIPFS: (file: ReadStream, metadata: IPFSMetadata) => Promise<string>
 }
 
 export interface ITokenService extends IService {
