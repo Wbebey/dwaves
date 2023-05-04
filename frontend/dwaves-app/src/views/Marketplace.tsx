@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
   CreateConcert,
   Kitsune,
-  TicketPurchase,
-  YourNftTickets,
+  NftTickets,
   SwitchTab,
   YourConcerts,
 } from '../components'
@@ -29,7 +28,7 @@ export const Marketplace: React.FC<Props> = ({
   requestConnectionMetamask,
 }) => {
   const [myUsername, setMyUsername] = useState('')
-  const [showTickets, setShowTickets] = useState('Ticket Counter')
+  const [showTickets, setShowTickets] = useState('NFT Tickets')
   const [balance, setBalance] = useState('')
   const [chainName, setChainName] = useState('')
   const [chainId, setChainId] = useState('')
@@ -194,11 +193,8 @@ export const Marketplace: React.FC<Props> = ({
         artist: ticket[6],
         price: parseFloat(ticket[8]),
       }))
-      // .filter((ticket: any) => ticket.daysUntilConcert >= 0)
-      .filter(
-        (ticket: any) =>
-          ticket.daysUntilConcert >= 0 && ticket.artist !== myUsername,
-      )
+      .filter((ticket: any) => ticket.daysUntilConcert >= 0)
+    // .filter((ticket: any) => ticket.daysUntilConcert >= 0 && ticket.artist !== myUsername)
     // console.log(myTicketsFormatted)
     setMyTickets(myTicketsFormatted)
   }
@@ -259,12 +255,11 @@ export const Marketplace: React.FC<Props> = ({
           />
           <div className={'h-[97%] pt-[20px]'}>
             {showTickets === 'Ticket Counter' ? (
-              <TicketPurchase formattedEvents={formattedEvents} />
-            ) : showTickets === 'Your NFT Tickets' ? (
-              <YourNftTickets
+              <NftTickets
                 balance={balance}
                 chainName={chainName}
                 chainId={chainId}
+                formattedEvents={formattedEvents}
                 myTickets={myTickets}
               />
             ) : showTickets === 'Your future shows' ? (
