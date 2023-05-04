@@ -12,7 +12,7 @@ playlistRouter.get(
   query('creatorId')
     .if(query('creatorId').exists())
     .isInt({ min: 1 })
-    .withMessage('Creator id must be a strictly positive int')
+    .withMessage('Album id must be a strictly positive int')
     .bail()
     .customSanitizer(userValidator.toValidUserId),
   playlistValidator.validate,
@@ -30,7 +30,7 @@ playlistRouter.post(
   '/',
   body('creatorId')
     .isInt({ min: 1 })
-    .withMessage('Creator id must be a strictly positive int')
+    .withMessage('Album id must be a strictly positive int')
     .bail()
     .customSanitizer(userValidator.toValidUserId),
   body('name').notEmpty().withMessage('Name is required'),
