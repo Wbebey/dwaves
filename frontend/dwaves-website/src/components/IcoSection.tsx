@@ -7,8 +7,6 @@ import ContractICO from "../abi/ICO.json";
 import ClosingTimeCounter from "./ClosingTimeCounter";
 import ConnectWallet from "./ConnectWallet";
 import MakeTheTransaction from "./MakeTheTransaction";
-import RaisedProgress from "./RaisedProgress";
-import { AnimateBulles } from "./AnimateBulles";
 
 declare const window: Window &
   typeof globalThis & {
@@ -23,7 +21,7 @@ export const IcoSection = () => {
 
   const [openingTime, setOpeningTime] = useState(null);
   const [closingTime, setClosingTime] = useState(null);
-  const [rate, setRate] = useState<number>();
+  const [rate, setRate] = useState<bigint>(0n);
   const [remainingTokens, setRemainingTokens] = useState(null);
   const [cap, setCap] = useState(null);
 
@@ -41,7 +39,7 @@ export const IcoSection = () => {
     const icoCap = await contract.cap();
     setOpeningTime(openingTime);
     setClosingTime(closingTime.toString());
-    setRate(Number(rate))
+    setRate(rate);
     setRemainingTokens(remainingTokens.toString());
     setCap(icoCap);
   };
@@ -66,7 +64,6 @@ export const IcoSection = () => {
 
   return (
     <section className="container mx-auto flex flex-col justify-center h-auto ">
-      {/*<AnimateBulles/>*/}
       <div className="w-full mt-80">
         <div className="w-full">
           <h1 className="text-9xl mb-11">ICO of Dwaves 😎</h1>
@@ -95,19 +92,11 @@ export const IcoSection = () => {
             you're an artist or a fan, Dwaves has something for you !
           </p>
         </div>
-        <h2 className="text-7xl mt-20">Buy Vibes Now ! 🤑</h2>
+        <h2 className="text-7xl mt-20">BUY VIBES NOW !</h2>
       </div>
       <div id="timer" className="w-full">
         <ClosingTimeCounter closingTime={closingTime} />
       </div>
-
-      <ul className="steps w-full mb-14">
-        <li className="step step-primary">Login with Metamask</li>
-        <li className="step step-primary">Choose the number of Ethers to change</li>
-        <li className="step step-primary">Confirm Transaction</li>
-        <li className="step step-primary">Discover the power of Dwaves</li>
-      </ul>
-
       <div>
         <MakeTheTransaction
           wallet={wallet}
@@ -115,11 +104,89 @@ export const IcoSection = () => {
           balance={balance}
           chainName={chainName}
           chainId={chainId}
-          rate={rate}
+          rate={rate!}
         />
       </div>
-      <div>
-        <RaisedProgress />
+      <div className="flex flex-row nowrap items-center">
+        <progress
+          className="progress progress-primary w-full"
+          value="80"
+          max="100"
+        />
+      </div>
+      <div className="w-full mt-8">
+        <div className="mt-8 none grid sm:grid-rows-1 lg:grid-cols-4">
+          <div id="side-left" className="block lg:col-span-2">
+            <div className="w-full ms:h-[500px] mm:h-[600px] ml:h-[700px] md:h-[800px] md:w-96 relative block md:mx-auto">
+              <img
+                className="w-full h-full absolute z-20 top-0"
+                src={`./../../public/iphone.png`}
+                alt=""
+              />
+              <div className="absolute bg-primary z-10 w-[calc(100%-20px)] h-[calc(100%-15px)] left-[10px] top-[5px] rounded-[12%]">
+                <img
+                  className="w-full h-full rounded-[10%] md:rounded-[50px]"
+                  src="http://via.placeholder.com/420x852"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            id="side-right"
+            className="lg:flex lg:justify-center lg:col-span-2 "
+          >
+            <div className="md:card-rounded w-full my-auto md:px-4 z-30">
+              <div className="md:card w-full bg-white-100 shadow-xl">
+                <div className="md:card-body">
+                  <h2 className="card-title mt-8 sm:mt-0 text-4xl">
+                    What do we do{" "}
+                  </h2>
+                  <p className="text-justify mt-8 sm:mt-0 text-xl ">
+                    Connecting your Metamask wallet is necessary to buy VIBES
+                    tokens as it allows for a secure and seamless transaction on
+                    the Ethereum blockchain
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="mt-8 none grid sm:grid-rows-1 lg:grid-cols-4 p-4">
+        <div id="side-left" className="block lg:col-span-2">
+          <h2 className="text-5xl text-center">How to participate</h2>
+          <div className="flex flex-row justify-between nowrap h-full">
+            <ul className="steps steps-vertical">
+              <li className="step step-primary">Register</li>
+              <li className="step ">Choose plan</li>
+            </ul>
+            <div className="w-4/5 my-auto h-4/5 ">
+              <div className="grid grid-rows-2 h-full">
+                <p className="self-start">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Tortor posuere ac ut consequat semper viverra. Faucibus
+                  scelerisque eleifend donec pretium. Nunc sed blandit libero
+                  volutpat sed.
+                </p>
+                <p className="self-end">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Tortor posuere ac ut consequat semper viverra. Faucibus
+                  scelerisque eleifend donec pretium. Nunc sed blandit libero
+                  volutpat sed.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          id="side-right"
+          className="lg:flex lg:justify-center lg:col-span-2 "
+        >
+          <img src={`./../../public/env-dwaves.png`} alt="" className="w-1/2" />
+        </div>
       </div>
     </section>
   );

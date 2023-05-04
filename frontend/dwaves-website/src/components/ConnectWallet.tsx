@@ -32,7 +32,7 @@ const ConnectWallet = ({
 
   return (
     <div className="w-full flex justify-end">
-      <div className="pt-20">
+      <div className="pt-14">
         {!wallet ? (
           <button
             className="btn btn-primary w-48 text-lg"
