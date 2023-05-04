@@ -3,7 +3,7 @@ import { Genre } from '@prisma/client'
 export enum FileType {
   COVER = 'cover',
   MUSIC = 'music',
-  MUSICS = 'musics',
+  MUSICS = 'musics'
 }
 
 export type CoverMetadata = {
@@ -38,14 +38,16 @@ export type MusicQuery = {
   genre?: Genre
 }
 
+
 type PinataMusic = {
   metadata: {
     name: string
     keyvalues: MusicMetadata
-  }
+  },
   ipfs_pin_hash: string
 }
 export type PinataPinListResponse = {
   count: number
   rows: PinataMusic[]
+
 }
