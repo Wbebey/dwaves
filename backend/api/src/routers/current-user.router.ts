@@ -50,6 +50,7 @@ currentUserRouter.put(
     .bail()
     .normalizeEmail()
     .custom(userValidator.isNewEmailTaken),
+  body().custom(userValidator.hasOneFileOptional(FileType.AVATAR)),
   userValidator.validate,
   userController.updateInfo
 )
