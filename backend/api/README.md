@@ -1,4 +1,4 @@
-# DWAVES api
+# DWAVES API
 
 # Setup
 
