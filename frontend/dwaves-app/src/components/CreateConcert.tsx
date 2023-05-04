@@ -2,7 +2,6 @@ import { Path, useForm, UseFormRegister, SubmitHandler } from 'react-hook-form'
 import React, { useEffect, useState } from 'react'
 import Datepicker from 'react-tailwindcss-datepicker'
 import axios from 'axios'
-import Confetti from 'react-confetti'
 
 interface IFormValues {
   'Event name': string
@@ -47,8 +46,6 @@ const Input = ({
 
 export const CreateConcert = () => {
   const [date, setDate] = useState<DatepickerDate>()
-  const [transactionInProgress, setTransactionInProgress] = useState(false)
-  const [transactionIsDone, setTransactionIsDone] = useState(false)
   const [genres, setGenres] = useState([{ id: 0, name: '' }])
 
   const handleValueChange = (newValue: any) => {
@@ -79,7 +76,6 @@ export const CreateConcert = () => {
     handleSubmit,
     watch,
     formState: { errors, isDirty, isValid },
-    reset,
   } = useForm<IFormValues>()
 
   const onSubmit: SubmitHandler<IFormValues> = (data) => {
@@ -89,36 +85,29 @@ export const CreateConcert = () => {
       location: data['Event place'],
       genre: data.Genre,
       ticketCount: data['Number of available tickets'],
-      ticketPrice: data['Ticket price in VIBES'],
+      ticketPrice: data['Ticket price in VIBES']
     }
     console.log(eventsDetails)
     mintEventNft(eventsDetails)
   }
 
   const mintEventNft = async (eventsDetails: any) => {
-    setTransactionInProgress(true)
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_APP_BACK_URL}/events`,
-        eventsDetails,
-        {
-          withCredentials: true,
-        },
-      )
+          `${import.meta.env.VITE_APP_BACK_URL}/events`,
+          eventsDetails,
+          {
+            withCredentials: true,
+          }
+      );
       console.log(res)
-      setTransactionInProgress(false)
-      setTransactionIsDone(true)
-      reset()
-      // @ts-ignore
-      setDate({startDate: ""})
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 
   return (
     <div>
-      {transactionIsDone && <Confetti gravity={0.03} />}
       <h3 className="text-3xl text-center">
         Create a Decentralized Concert 🤯!
       </h3>
@@ -144,7 +133,6 @@ export const CreateConcert = () => {
               </div>
               <img src="./../../ticketTemplate.png" alt="" />
             </div>
-
             <button
               className={
                 'disabled:opacity-50 mt-10 self-center w-1/3 bg-teal-300 h-16 rounded-lg'
@@ -152,13 +140,7 @@ export const CreateConcert = () => {
               type="submit"
               disabled={!isDirty || !isValid}
             >
-              {transactionInProgress ? (
-                <>
-                  <progress className="progress progress-primary w-9/12"></progress>
-                </>
-              ) : (
-                <>Mint {watch('Number of available tickets')} tickets NFTs</>
-              )}
+              Mint {watch('Number of available tickets')} tickets NFTs
             </button>
           </div>
           <div className="w-1/3 flex items-center flex-wrap">
@@ -174,7 +156,19 @@ export const CreateConcert = () => {
                 onChange={handleValueChange}
               />
             </div>
-
+            <Input
+              label={'Number of available tickets'}
+              register={register}
+              required={true}
+              type={'number'}
+            />
+            <Input
+              label={'Ticket price in VIBES'}
+              register={register}
+              required={true}
+              type={''}
+              step={0.01}
+            />
             <div className="flex flex-col items-center mb-2">
               <label className="text-lg">Event place</label>
               <select
@@ -207,57 +201,9 @@ export const CreateConcert = () => {
                 ))}
               </select>
             </div>
-
-            <Input
-              label={'Number of available tickets'}
-              register={register}
-              required={true}
-              type={'number'}
-            />
-            <Input
-              label={'Ticket price in VIBES'}
-              register={register}
-              required={true}
-              type={''}
-              step={0.01}
-            />
           </div>
         </div>
       </form>
-
-      <input
-        type="checkbox"
-        checked={transactionIsDone}
-        id="my-modal"
-        className="modal-toggle"
-        onChange={() => {
-          setTransactionIsDone(false)
-        }}
-      />
-      <div className="modal w-full">
-        <div className="modal-box flex items-center flex-col">
-          <h3 className="font-bold text-2xl text-center mb-4 text-white">
-            Hey ! Your virtual concert has been created 🥳 🎉 !
-          </h3>
-          <img
-            className="w-80"
-            src={`https://media.tenor.com/XnsvYVbmUIUAAAAC/p%C3%BAblico-concierto.gif`}
-            alt=""
-          />
-
-          <p className="mr-4 mt-7 text-justify text-white">
-            Great news! The virtual concert NFT tickets have been successfully
-            minted. Get ready for an unforgettable experience featuring Dwaves.
-            These NFT tickets are now available for purchase!
-          </p>
-
-          <div className="modal-action">
-            <label htmlFor="my-modal" className="btn">
-              PLUS ULTRA 💥 !
-            </label>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
