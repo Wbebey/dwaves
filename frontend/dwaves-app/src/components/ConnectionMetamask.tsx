@@ -1,18 +1,14 @@
 import axios from "axios"
-import React, { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 declare const window: Window &
     typeof globalThis & {
         ethereum: any
     }
 
+export const ConnectMetamask = () => {
 
-type PropsMetamask = {
-    wallet: string,
-    setWallet: React.Dispatch<React.SetStateAction<string>>
-}
-export const ConnectMetamask = ({wallet,setWallet}: PropsMetamask) => {
-
+    const [wallet, setWallet] = useState()
 
     const requestConnection = async () => {
         if (window.ethereum) {

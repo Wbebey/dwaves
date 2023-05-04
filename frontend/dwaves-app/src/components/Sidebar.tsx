@@ -7,7 +7,6 @@ import {
   Setting2,
   User,
   Logout,
-  BitcoinConvert,
 } from 'iconsax-react'
 import { Link } from 'react-router-dom'
 
@@ -18,16 +17,12 @@ import { ConnectMetamask } from './ConnectionMetamask'
 interface Props {
   toggleModal: () => void
   connected: boolean
-  wallet: string
   setConnected: React.Dispatch<React.SetStateAction<boolean>>
-  setWallet: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const Sidebar: React.FC<Props> = ({
   toggleModal,
   connected,
-  wallet,
-  setWallet,
   setConnected,
 }) => {
   const disconect = () => {
@@ -35,7 +30,7 @@ export const Sidebar: React.FC<Props> = ({
       .post(
         `${import.meta.env.VITE_APP_BACK_URL}/auth/logout`,
         {},
-        { withCredentials: true },
+        { withCredentials: true }
       )
       .then((res) => {
         setConnected(false)
@@ -47,10 +42,7 @@ export const Sidebar: React.FC<Props> = ({
 
   return (
     <aside className="sidebar">
-      <ul
-        style={{ height: '100%', position: 'relative' }}
-        className="menu bg-white p-2"
-      >
+      <ul style={{ height: '100%', position: "relative" }} className="menu bg-white p-2">
         <li>
           {connected ? (
             <Link to={'/profile'} className="py-0">
@@ -68,11 +60,7 @@ export const Sidebar: React.FC<Props> = ({
           )}
         </li>
         <div className="divider m-0" />
-        {connected ? (
-          <ConnectMetamask wallet={wallet} setWallet={setWallet} />
-        ) : (
-          <div />
-        )}
+        {connected ? <ConnectMetamask /> : <div />}
         <li>
           <Link to={'/'}>
             <Home2 className="w-10 h-10 mx-auto" />
@@ -85,25 +73,16 @@ export const Sidebar: React.FC<Props> = ({
           </Link>
         </li>
         {connected ? (
-          <>
-            <li>
-              <Link to={'/marketplace'}>
-                <BitcoinConvert className="w-10 h-10 mx-auto" />
-                <p>Item</p>
-              </Link>
-            </li>
-            <li>
-              <Link to={'/download'}>
-                <AddCircle className="w-10 h-10 mx-auto" />
-                <p>Item</p>
-              </Link>
-            </li>
-          </>
+          <li>
+            <Link to={'/download'}>
+              <AddCircle className="w-10 h-10 mx-auto" />
+              <p>Item</p>
+            </Link>
+          </li>
         ) : (
           <div />
         )}
-        <div className="divider m-0" />
-        {/* 
+        <div className="divider m-0" />{/* 
         {datasongs.map((song) => (
           <li key={song.Title}>
             <Link to={'/album'}>
