@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Playlists, Test } from 'models'
+import { Playlists, MusicDetail } from 'models'
 import { useEffect, useState } from 'react'
 import 'styles/data/Banner.scss'
 

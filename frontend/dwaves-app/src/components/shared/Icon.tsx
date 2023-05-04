@@ -45,7 +45,8 @@ export const Icon: React.FC<Props> = ({
     upload: IconSax.DocumentUpload,
     trash: IconSax.Trash,
     save: IconSax.Add,
-    star: IconSax.Star1
+    star: IconSax.Star1,
+    profileCircle: IconSax.ProfileCircle
   };
   const Icon: IconSax.Icon = icons[icon];
 

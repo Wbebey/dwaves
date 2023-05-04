@@ -2,7 +2,7 @@ import axios from 'axios'
 import { responseRequest } from 'models'
 import { useForm } from 'react-hook-form'
 
-type User = {
+type UserRegisterFormInput = {
   username: string
   email: string
   password: string
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const Register: React.FC<Props> = ({ setShowLogin, setAlert }) => {
-  const { register, setValue, getValues, handleSubmit } = useForm<User>()
+  const { register, setValue, getValues, handleSubmit } = useForm<UserRegisterFormInput>()
 
   const onSubmit = (data: any) => {
     axios

@@ -167,7 +167,10 @@ export const SongList: React.FC<Props> = ({
             >
               <div className="avatar placeholder">
                 <div className="text-neutral-content rounded-full w-10">
-                  <span className="text-xl">0{i + 1}</span>
+                  <span className="text-xl">
+                    {i + 1 < 10 && 0}
+                    {i + 1}
+                  </span>
                 </div>
               </div>
               <div className="p-0 divider divider-horizontal" />

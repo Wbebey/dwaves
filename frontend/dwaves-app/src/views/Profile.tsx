@@ -23,6 +23,8 @@ import {
 import { Line, Pie } from 'react-chartjs-2'
 import { faker } from '@faker-js/faker'
 import axios from 'axios'
+import ProfileInfoForm from 'components/ProfileInfoForm'
+import ProfilePasswordForm from 'components/ProfilePasswordForm'
 
 ChartJS.register(
   CategoryScale,
@@ -39,7 +41,7 @@ interface Props {
   setCurrentSong: React.Dispatch<React.SetStateAction<any>>
   setSongs: React.Dispatch<React.SetStateAction<any>>
   setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
-  currentUserData?: any
+  currentUserData: any
   audioElmt: RefObject<HTMLAudioElement>
   isPlaying: boolean
   setIsPlaying: Dispatch<React.SetStateAction<boolean>>
@@ -209,7 +211,13 @@ export const Profile: React.FC<Props> = ({
             <div className="py-0">
               <div className="avatar mx-auto item-end">
                 <div className="w-24 rounded-full">
-                  <img src="https://placeimg.com/192/192/people" alt="" />
+                  <img
+                    src={
+                      currentUserData.avatar ||
+                      'https://placeimg.com/192/192/people'
+                    }
+                    alt=""
+                  />
                 </div>
               </div>
             </div>
@@ -228,6 +236,10 @@ export const Profile: React.FC<Props> = ({
             <div className="w-1/3 p-10">
               <Pie data={dataPie} />
             </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 p-4 items-start">
+            <ProfileInfoForm currentUser={currentUserData} />
+            <ProfilePasswordForm currentUser={currentUserData} />
           </div>
         </div>
       )}

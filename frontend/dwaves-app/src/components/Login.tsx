@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { responseRequest } from 'models'
 
-type User = {
+type UserLoginFormInput = {
   username: string
   email: string
   password: string
@@ -14,8 +14,13 @@ interface Props {
   setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
 }
 
-export const Login: React.FC<Props> = ({ toggleModal, setConnected, setAlert }) => {
-  const { register, setValue, getValues, handleSubmit } = useForm<User>()
+export const Login: React.FC<Props> = ({
+  toggleModal,
+  setConnected,
+  setAlert,
+}) => {
+  const { register, setValue, getValues, handleSubmit } =
+    useForm<UserLoginFormInput>()
 
   const onSubmit = (data: any) => {
     axios
@@ -27,30 +32,29 @@ export const Login: React.FC<Props> = ({ toggleModal, setConnected, setAlert }) 
           setConnected(true)
           toggleModal()
           if (Array.isArray(res.data)) {
-            displayAlert(res.data[0].msg , res.status)
+            displayAlert(res.data[0].msg, res.status)
           } else {
-            displayAlert('connected successfully' , res.status)
+            displayAlert('connected successfully', res.status)
           }
         } else {
-          displayAlert("cookie not set" , res.status)
+          displayAlert('cookie not set', res.status)
         }
       })
       .catch((err) => {
         if (Array.isArray(err.response.data)) {
-          displayAlert(err.response.data[0].msg , err.response.status)
+          displayAlert(err.response.data[0].msg, err.response.status)
         } else {
-          displayAlert(err.response.data.message , err.response.status)
+          displayAlert(err.response.data.message, err.response.status)
         }
       })
   }
 
-  const displayAlert = (msg:string , status:number) => {
-    setAlert({response : msg , status : status, visible: true })
-    setTimeout(()=>{
-      setAlert({response : "" , status : 0, visible: false })
+  const displayAlert = (msg: string, status: number) => {
+    setAlert({ response: msg, status: status, visible: true })
+    setTimeout(() => {
+      setAlert({ response: '', status: 0, visible: false })
     }, 3000)
   }
-
 
   return (
     <form
