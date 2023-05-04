@@ -1,27 +1,13 @@
 # Dwaves 
-![staging](https://github.com/Wbebey/dwaves/workflows/tab-dwaves-app.yml/badge.svg?branch=feature/pipeline)
+![staging](https://github.com/Wbebey/dwaves/workflows/stg-dwaves-website.yml/badge.svg?branch=staging)
 
-## Dwaves-app
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=coverage)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
 
-## Dwaves-website
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=coverage)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
 
 <p align="center">
     <table>
         <tr>
             <td>Environment</td>
-            <td>Status</td>
+            <td>Pipeline</td>
         </tr>
         <tr>
             <td>Staging</td>
