@@ -63,7 +63,7 @@ function uploadMusicToIPFS(musicJson: any, coverFile: any, musicFile: any) {
 
     const metadata = JSON.stringify({
         keyvalues: {
-            tartist: musicJson.artist,
+            artist: musicJson.artist,
             album: musicJson.album,
             genre: musicJson.genre,
             cover: coverFile,
