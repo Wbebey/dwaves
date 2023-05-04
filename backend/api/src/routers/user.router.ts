@@ -10,7 +10,12 @@ const userRouter = Router()
 userRouter.get('/', userController.get)
 userRouter.get('/monthlyListenings', userController.getMonthlyListenings)
 
-
 userRouter.use('/me', currentUserRouter)
+userRouter.get(
+  '/:id',
+  param('id').customSanitizer(userValidator.toValidUserId),
+  userValidator.validate,
+  userController.show
+)
 
 export default userRouter
