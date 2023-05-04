@@ -115,11 +115,15 @@ class UserController implements IUserController {
   }
 
   updateInfo: RequestHandler = async (req, res) => {
+    const { id, avatar } = req.app.locals.user
     const { username, email } = req.body
 
+    const newAvatar = req.files?.avatar as UploadedFile | undefined
+    const url = newAvatar ? await this._uploadAvatar(newAvatar, avatar) : ''
+
     const user = await userService.update(
-      { id: req.app.locals.user.id },
-      { username, email }
+      { id },
+      { username, email, avatar: url }
     )
 
     res.json(user)
@@ -224,14 +228,23 @@ class UserController implements IUserController {
     const { id, avatar } = req.app.locals.user
     const newAvatar = req.files!.avatar as UploadedFile
 
-    const uploadedImage = await gcsService.uploadProfilePicture(
-      newAvatar,
-      avatar
-    )
+    const url = await this._uploadAvatar(newAvatar, avatar)
 
-    const user = await userService.update({ id }, { avatar: uploadedImage.url })
+    const user = await userService.update({ id }, { avatar: url })
 
     res.json(user)
+  }
+
+  private _uploadAvatar = async (
+    newAvatar: UploadedFile,
+    oldAvatarUrl: string
+  ) => {
+    const uploadedImage = await gcsService.uploadProfilePicture(
+      newAvatar,
+      oldAvatarUrl
+    )
+
+    return uploadedImage.url
   }
 }
 
