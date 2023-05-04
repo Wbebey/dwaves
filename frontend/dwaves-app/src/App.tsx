@@ -75,9 +75,11 @@ function App() {
 
   useEffect(() => {
     setListenings(currentSong?.listenings)
+    console.log(songs, 'songs')
   }, [songs])
 
   useEffect(() => {
+    console.log('request', listenings)
     currentSong && incrementlisteningsMusic(currentSong, listenings)
   }, [listenings])
 
@@ -85,6 +87,7 @@ function App() {
     listenings && setListenings(listenings + 1)
     repeat && playPause(audioElmt, false, setIsPlaying)
     if (random) {
+      console.log("in random")
       setCurrentSong(playRandomSong(songs!));
       setTimeout(() => {
         playPause(audioElmt, false, setIsPlaying)
