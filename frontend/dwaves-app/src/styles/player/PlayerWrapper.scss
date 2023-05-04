@@ -30,13 +30,13 @@
             &-left {
               display: flex;
               align-items: center;
-              justify-content: flex-start;
+              justify-content: start;
               width: 33%;
 
               &-content {
                 display: flex;
                 align-items: center;
-                justify-content: flex-start;
+                justify-content: start;
 
                 > * {
                   margin: 0px 8px;
@@ -65,13 +65,13 @@
             &-right {
               display: flex;
               align-items: center;
-              justify-content: flex-end;
+              justify-content: end;
               width: 33%;
 
               &-content {
                 display: flex;
                 align-items: center;
-                justify-content: flex-end;
+                justify-content: end;
 
                 > * {
                   margin: 0px 8px;

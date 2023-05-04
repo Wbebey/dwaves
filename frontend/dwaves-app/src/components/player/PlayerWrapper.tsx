@@ -72,13 +72,13 @@ export const PlayerWrapper: React.FC<Props> = ({
   }, [currentSong, isPlaying])
 
   const updateProgressWidth = (e: any) => {
-    if (!currentSong || !audioElmt.current) return
+    if (!currentSong) return
 
     const width: number = clickRef.current?.clientWidth as number
     const offset = e.nativeEvent.offsetX
 
     const divprogress = (offset / width) * 100
-    audioElmt.current.currentTime = (divprogress / 100) * (currentSong.length ?? 0)
+    audioElmt.current!.currentTime = (divprogress / 100) * currentSong.length
   }
 
   const switchToPrevious = () => {
