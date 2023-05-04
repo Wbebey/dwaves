@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "doppler run -- vite",
-    "build": "doppler run -- tsc && doppler run -- vite build",
+    "build": "doppler run -- tsc && vite build",
     "preview": "doppler run -- vite preview",
     "deploy-build": "tsc && vite build"
   },
