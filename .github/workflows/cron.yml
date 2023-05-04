@@ -1,9 +1,9 @@
 name: Cron scheduled
 
 on:
-  # push:
-  #   paths:
-  #     - "backend/jobs/**"
+  push:
+    paths:
+      - "backend/jobs/**"
   schedule:
     - cron: "0 0 1 * *" # Run at 00:00 on day-of-month 1
 
@@ -46,12 +46,12 @@ jobs:
         if: failure()
         uses: ./.github/actions/discord/notification-on-failure
 
-  execute-script:
+  cron:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ${{ env.JOBS_DIRECTORY }}
-    needs: setup-database
+    needs: database
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
