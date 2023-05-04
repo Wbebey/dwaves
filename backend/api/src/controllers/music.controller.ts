@@ -78,16 +78,14 @@ class MusicController implements IMusicController {
 
       logger.log(`music: ${music.name} - CID: ${musicCID}`)
 
-      return musicCID
+      await nftService.mint(artistAddress, musicCID)
+
+      return `${env.pinataGatewayHost}/${musicCID}`
     })
-    const musicCIDs = await Promise.all(uploads)
-
-    await nftService.batchMint(artistAddress, musicCIDs)
-
-    const musicUrls = musicCIDs.map((cid) => `${env.pinataGatewayHost}/${cid}`)
+    const musicsUrl = await Promise.all(uploads)
     const coverUrl = `${env.pinataGatewayHost}/${createdAlbum.coverCID}`
 
-    res.json({ coverUrl, musicUrls })
+    res.json({ coverUrl, musicsUrl })
   }
 }
 

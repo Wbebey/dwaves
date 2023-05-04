@@ -61,7 +61,6 @@ export interface IPinataService extends IService {
 
 export interface INFTService extends IService {
   mint: (artistAddress: string, musicCID: string) => Promise<string>
-  batchMint: (artistAddress: string, musicCIDs: string[]) => Promise<string[]>
 }
 
 export interface ITokenService extends IService {

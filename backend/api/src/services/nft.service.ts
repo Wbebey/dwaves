@@ -25,13 +25,6 @@ class NFTService implements INFTService {
 
     return tokenId
   }
-
-  batchMint = async (artistAddress: string, musicCIDs: string[]) => {
-    const dwavesMusicNFT = await this.getContract()
-    const tokenId = await dwavesMusicNFT.batch_mint(artistAddress, musicCIDs)
-
-    return tokenId
-  }
 }
 
 const nftService = new NFTService()
