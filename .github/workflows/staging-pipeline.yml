@@ -4,7 +4,7 @@ on:
   push:
     branches: 
       - staging
-      # - feature/*
+      - feature/*
 
 env:
   PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
