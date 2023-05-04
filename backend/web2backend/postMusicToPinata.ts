@@ -8,12 +8,12 @@ const key = process.env.REACT_APP_PINATA_KEY;
 const secret = process.env.REACT_APP_PINATA_SECRET;
 
 
-function uploadCoverToIPFS(coverFile: any) {
-    //const coverFile = fs.createReadStream('/Users/tharick/Desktop/MSc2/Dwaves/SPYxFAMILYOP1Cover.png')
+function uploadCoverToIPFS(coverFile) {
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
     //making axios POST request to Pinata ⬇️
     let data = new FormData();
     data.append('file', coverFile);
+
     //pinataOptions are optional
     const pinataOptions = JSON.stringify({
         cidVersion: 0,
@@ -39,13 +39,13 @@ function uploadCoverToIPFS(coverFile: any) {
             pinata_api_key: key,
             pinata_secret_api_key: secret,
         }
-    }).then(function (response: { data: { IpfsHash: string; }; }) {
-        console.log("cover uploaded", response.data.IpfsHash)
+    }).then(function (response) {
+        console.log("image uploaded", response.data.IpfsHash)
         return {
             success: true,
             pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash
         };
-    }).catch(function (error: { message: any; }) {
+    }).catch(function (error) {
         console.log(error)
         return {
             success: false,
@@ -55,18 +55,18 @@ function uploadCoverToIPFS(coverFile: any) {
 
 }
 
-function uploadMusicToIPFS(musicJson: any, coverFile: any, musicFile: any) {
+function uploadMusicToIPFS(musicJson) {
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
     //making axios POST request to Pinata ⬇️
     let data = new FormData();
-    data.append('file', musicFile);
+    data.append('file', musicJson.music);
 
     const metadata = JSON.stringify({
         keyvalues: {
             artist: musicJson.artist,
             album: musicJson.album,
             genre: musicJson.genre,
-            cover: coverFile,
+            cover: musicJson.cover,
             listenings: 21990
         }
     });
@@ -97,13 +97,13 @@ function uploadMusicToIPFS(musicJson: any, coverFile: any, musicFile: any) {
             pinata_api_key: key,
             pinata_secret_api_key: secret,
         }
-    }).then(function (response: { data: { IpfsHash: string; }; }) {
-        console.log("music uploaded", response.data.IpfsHash)
+    }).then(function (response) {
+        console.log("image uploaded", response.data.IpfsHash)
         return {
             success: true,
             pinataURL: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash
         };
-    }).catch(function (error: { message: any; }) {
+    }).catch(function (error) {
         console.log(error)
         return {
             success: false,
@@ -113,23 +113,20 @@ function uploadMusicToIPFS(musicJson: any, coverFile: any, musicFile: any) {
 
 }
 
-export { uploadCoverToIPFS, uploadMusicToIPFS };
 
 
-
-/*async function uploadMusicWithMetadataToIPFS(musicJson: any, coverFile: any, musicFile: any) {
-
+async function uploadMusicWithMetadataToIPFS() {
     try {
         //upload the metadata JSON to IPFS
         const response = await uploadCoverToIPFS(coverFile);
-        if (response.success) {
+        if (response.success === true) {
             console.log("Uploaded File to Pinata: ", response)
             musicJson.cover = response.pinataURL;
 
             try {
                 //upload the metadata JSON to IPFS
-                const response = await uploadMusicToIPFS(musicFile, musicJson);
-                if (response.success) {
+                const response = await uploadMusicToIPFS(musicJson);
+                if (response.success === true) {
                     console.log("Uploaded JSON to Pinata: ", response)
                     return response.pinataURL;
                 }
@@ -142,7 +139,9 @@ export { uploadCoverToIPFS, uploadMusicToIPFS };
     }
 }
 
+
 const musicFile = fs.createReadStream('/Users/tharick/Desktop/MSc2/Dwaves/SPYxFAMILYOP1.mp3')
+const coverFile = fs.createReadStream('/Users/tharick/Desktop/MSc2/Dwaves/SPYxFAMILYOP1Cover.png')
 
 let musicJson = {
     title: "SPY x FAMILY OP1",
@@ -152,4 +151,8 @@ let musicJson = {
     genre: "j-pop",
     music: musicFile
 }
-*/
+
+uploadMusicWithMetadataToIPFS()
+    .then(res => console.log(res))
+    .catch(error => console.log(error.message));
+
