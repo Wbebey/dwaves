@@ -19,7 +19,6 @@ interface Props {
   repeat: boolean;
   setRandom: React.Dispatch<React.SetStateAction<boolean>>;
   random: boolean;
-  PlayRandomSong: (songs: Music[]) => Music;
 }
 
 export const ExploPlayer: React.FC<Props> = ({
@@ -35,7 +34,6 @@ export const ExploPlayer: React.FC<Props> = ({
   repeat,
   setRandom,
   random,
-  PlayRandomSong
 }) => {
 
   let index = songs.findIndex(
@@ -99,7 +97,7 @@ export const ExploPlayer: React.FC<Props> = ({
             icon="random"
             color={random ? `blue` : '#191a24'}
             onClick={() => {
-              setRandom(!random)
+              setRandom(true)
             }}
           />
           <Icon icon="previous" onClick={handlePrevious} />
@@ -113,7 +111,7 @@ export const ExploPlayer: React.FC<Props> = ({
             icon="loop"
             color={repeat ? `blue` : '#191a24'}
             onClick={() => {
-              setRepeat(!repeat)
+              setRepeat(true)
             }} />
         </div>
         {
