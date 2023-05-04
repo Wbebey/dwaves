@@ -34,16 +34,9 @@ export type AlbumDetail = {
 };
 
 export type Playlists = {
-  coverCID: string
-  createdAt: string
-  creatorId: number
-  id: number
-  likes: number
-  musics:string[]
-  name: string
-  updatedAt: string
-  description:string
-};
+  id: number;
+  name: string;
+}[];
 
 export type FormattedEvents = {
   id: number
