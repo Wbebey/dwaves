@@ -3,6 +3,7 @@ name: Deploy - Dwaves-api
 on:
   push:
     branches: 
+      - feature/*
       - staging
     paths:
       - backend/api/**
@@ -98,26 +99,17 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       
-      #TODO: remove this step when we find a new way to manage env file is ready
-      # - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
-      #   run: |-
-      #     export APP_ENV = env_${{ env.APP }}_${{ env.ENVIRONMENT }}
-      #     cat $APP_ENV
-      #     echo "$APP_ENV" > .env
-
       - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
-        run: echo "${{ env.ULTIMATE_ENV }}" > .env
+        run: |-
+          export APP_ENV = env_${{ env.APP }}_${{ env.ENVIRONMENT }}
+          cat $APP_ENV
+          echo "$APP_ENV" > .env
 
       - name: Build 🏗
         run: |-
           docker build . \
             -f ${{ GITHUB.WORKSPACE }}/${{ env.PROJECT_DIRECTORY }}/Dockerfile \
-            -t ${{ env.DOCKER_TAG }} \
-            --build-arg ENVIRONMENT=${{ env.ENVIRONMENT }} \
-            --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-            --build-arg BUILD_NUMBER=${{ github.run_number }} \
-            --build-arg BUILD_URL=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
+            -t ${{ env.DOCKER_TAG }}
 
       - name: Publish to Container registry 🛫
         run: |-
