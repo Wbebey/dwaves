@@ -14,7 +14,7 @@ export const ModalLogin: React.FC<Props> = ({ toggleModal, setConnected, setAler
 
   return (
     <div onClick={toggleModal} id="contain-modal">
-      <div onClick={(e) => e.stopPropagation()} id="modal" className='grid grid-rows-[1fr_2fr]'>
+      <div onClick={(e) => e.stopPropagation()} id="modal" className='grid grid-rows-[1fr_2fr] h-[80%]'>
         <header className='gap-4'>
           <img src="/logo-dwaves.png" alt="" />
           <div className="tabs">
