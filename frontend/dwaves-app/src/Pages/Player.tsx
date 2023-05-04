@@ -4,7 +4,7 @@ import {AnimateBulles} from "../Components/AnimationBulles"
 import {NavPlayerReact} from "../Components/NavPlayerReact";
 import { useEffect, useRef, useState } from "react";
 
-import datasong from '../Musics/datasongs'
+import datasong from '../Musics/datasongs.json'
 
 export const Player = () => {
 
@@ -22,7 +22,7 @@ export const Player = () => {
         else {
             audioElmt.current?.pause()
         }
-    },[audioElmt, isPlaying])
+    },[isPlaying])
 
     const onPlaying = () => {
 
@@ -33,10 +33,34 @@ export const Player = () => {
 
     }
 
+    const clickRef= useRef<HTMLDivElement>(null)
+
+    const checkWidth = (e: any) => {
+        let _width:number = clickRef.current?.clientWidth as number;
+        const offset = e.nativeEvent.offsetX 
+
+        const divprogress = offset / _width * 100
+        audioElmt.current!.currentTime = divprogress / 100 * currentSong.length
+    }
+
+    const backTenSecondBefore = () => {
+        audioElmt.current!.currentTime = audioElmt.current!.currentTime - 10
+    }
+
+    const goTenSecondLater = () => {
+        audioElmt.current!.currentTime = audioElmt.current!.currentTime + 10
+    }
+
     return (
-        <section className="contain-player-bg" style={{ width: '100vw', height: window.innerHeight , overflowY: 'hidden' }} >
+        <section className="contain-player-bg" >
             <img className="logo-player" src={logoDeep} alt="" />
             <div className="blur-effect">
+                <div className="contain-cover">
+                    <img src={currentSong.Cover} alt="stamina" style={{ width: "100%" }} />
+                    <div className="seekbar" onClick={checkWidth} ref={clickRef}>
+                        <div className="time" style={{width: `${currentSong.progress}%` , display: 'block'}} />
+                    </div>
+                </div>
                 <audio src={currentSong.Src} ref={audioElmt} onTimeUpdate={onPlaying}/>
                 <NavPlayerReact 
                     audioElmt={audioElmt}
@@ -46,9 +70,12 @@ export const Player = () => {
                     setCurrentSong={setCurrentSong}
                     songs={songs}
                     setSongs={setSongs}
+                    goTenSecondLater={goTenSecondLater}
+                    backTenSecondBefore={backTenSecondBefore}
                 />
                 <AnimateBulles />
             </div>
+            
         </section>
     )
 }
