@@ -7,7 +7,6 @@ import logger from '@config/logger.config'
 const { port, appName } = env
 
 const app = express()
-app.disable("x-powered-by")
 
 app.use(appRouter)
 
