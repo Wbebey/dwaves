@@ -1,13 +1,12 @@
 import { Router } from 'express'
 
-import { deserializeUser } from '@middlewares/auth.middleware'
 import userRouter from '@routers/user.router'
 import albumRouter from '@routers/album.router'
 import musicRouter from '@routers/music.router'
 import authRouter from '@routers/auth.router'
 import genreRouter from '@routers/genre.router'
 import appController from '@controllers/app.controller'
-import playlistRouter from './playlist.router'
+import { deserializeUser } from '@middlewares/auth.middleware'
 
 const appRouter = Router()
 
@@ -20,6 +19,5 @@ appRouter.use('/users', userRouter)
 appRouter.use('/albums', albumRouter)
 appRouter.use('/musics', musicRouter)
 appRouter.use('/genres', genreRouter)
-appRouter.use('/playlists', playlistRouter)
 
 export default appRouter

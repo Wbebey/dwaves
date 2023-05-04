@@ -31,7 +31,6 @@ export type MusicFilter = {
   genre?: Genre
   albumId?: number
   artistId?: number
-  musicCID?: string
 }
 
 export type PopularMusicFilter = MusicFilter & {

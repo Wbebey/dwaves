@@ -53,11 +53,21 @@ class PinataService implements IPinataService {
   }
 
   getMusicFromIPFS = async (musicFilter: MusicFilter) => {
-    const { genre, albumId, artistId, musicCID } = musicFilter
+    const { genre, albumId, artistId } = musicFilter
+    const baseUrl = `${env.pinataApiHost}/data/pinList?status=pinned&pageLimit=100&metadata[keyvalues]`
 
-    const url = musicCID
-      ? this._getPinataCIDUrl(musicCID)
-      : this._getPinataFilterUrl({ genre, albumId, artistId })
+    let filter: PinataQueryFilter = { type: { value: 'music', op: 'eq' } }
+    if (genre) {
+      filter.genreId = { value: genre.id.toString(), op: 'eq' }
+    }
+    if (albumId) {
+      filter.albumId = { value: albumId.toString(), op: 'eq' }
+    }
+    if (artistId) {
+      filter.artistId = { value: artistId.toString(), op: 'eq' }
+    }
+
+    const url = `${baseUrl}=${JSON.stringify(filter)}`
 
     const res = await axios.get<PinataPinListResponse>(url, {
       headers: {
@@ -96,27 +106,6 @@ class PinataService implements IPinataService {
 
     return res.data
   }
-
-  private _getPinataFilterUrl = (filterBy: Omit<MusicFilter, 'musicCID'>) => {
-    const { genre, albumId, artistId } = filterBy
-    const baseUrl = `${env.pinataApiHost}/data/pinList?status=pinned&pageLimit=100&metadata[keyvalues]`
-
-    let filter: PinataQueryFilter = { type: { value: 'music', op: 'eq' } }
-    if (genre) {
-      filter.genreId = { value: genre.id.toString(), op: 'eq' }
-    }
-    if (albumId) {
-      filter.albumId = { value: albumId.toString(), op: 'eq' }
-    }
-    if (artistId) {
-      filter.artistId = { value: artistId.toString(), op: 'eq' }
-    }
-
-    return `${baseUrl}=${JSON.stringify(filter)}`
-  }
-
-  private _getPinataCIDUrl = (musicCID: string) =>
-    `${env.pinataApiHost}/data/pinList?hashContains=${musicCID}&status=pinned`
 }
 
 const pinataService = new PinataService()

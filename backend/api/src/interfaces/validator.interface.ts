@@ -14,7 +14,6 @@ export interface IUserValidator extends IAppValidator {
   isNewEmailTaken: CustomValidator
   toValidAddress: CustomSanitizer
   doesPasswordMatch: CustomValidator
-  toValidUserId: CustomSanitizer
 }
 
 export interface IMusicValidator extends IAppValidator {
@@ -28,10 +27,9 @@ export interface IAlbumValidator extends IAppValidator {
   toValidGenreIfExist: CustomSanitizer
   isValidName: (type: AlbumType) => CustomValidator
   toValidMusicNames: CustomSanitizer
+  toValidArtistIdIfExist: CustomSanitizer
 }
 
 export interface IGenreValidator extends IAppValidator {
   doesGenreExist: CustomValidator
 }
-
-export interface IPlaylistValidator extends IAppValidator {}
