@@ -39,7 +39,6 @@ function doppler_setup() {
 function export_build_date() {
     echo "Setting build date"
     get_environment_properties
-    export TZ="Europe/Paris"  # set Paris timezone
     export GITHUB_BUILD_DATE=$(date +"%Y-%m-%dT%H:%M:%SZ")
     sed -i "s/${APP_BUILD_DATE}=.*/${APP_BUILD_DATE}=$GITHUB_BUILD_DATE/g" .env
 }

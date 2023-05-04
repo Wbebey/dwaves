@@ -45,8 +45,11 @@ runs:
         shell: bash
         run: |-
           source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
-          echo "Remove doppler variables from .env file..."
+          cat .env 
+          echo "Remove first 3 lines from .env file..."
           tail -n +4 .env > .new_env && mv .new_env .env
+          echo "New .env file:"
+          cat .env
 
       - name: Export build date 📅
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
@@ -66,6 +69,9 @@ runs:
         run: |-
           ls -la
           cat .env
+          cp .env .new_env
+          cat .new_env
+          head .new_env
           CI="false" npm run deploy-build
 
       - name: Deploy  🚀
