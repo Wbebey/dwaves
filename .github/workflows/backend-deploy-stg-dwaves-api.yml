@@ -3,7 +3,6 @@ name: Deploy - Dwaves-api
 on:
   push:
     branches: 
-      - feature/*
       - staging
     paths:
       - backend/api/**
@@ -100,10 +99,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       
       - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
-        run: |-
-          export APP_ENV = env_${{ env.APP }}_${{ env.ENVIRONMENT }}
-          cat $APP_ENV
-          echo "$APP_ENV" > .env
+        run: echo "${{ env.ULTIMATE_ENV }}" > .env
 
       - name: Build 🏗
         run: |-
