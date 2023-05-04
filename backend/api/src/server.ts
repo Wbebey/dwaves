@@ -20,11 +20,7 @@ import {
 const app = express()
 app.disable('x-powered-by')
 
-app.use(cors({
-  origin: env.frontHost,
-  preflightContinue: true,
-  credentials: true
-}))
+app.use(cors({ origin: env.frontHost }))
 app.use(fileUpload({ createParentPath: true }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
