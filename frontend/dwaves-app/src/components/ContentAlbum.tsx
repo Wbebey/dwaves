@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState, Dispatch, RefObject } from 'react'
 import axios from 'axios'
 import { SongList } from './SongList'
-import { AlbumDetail, responseRequest } from 'models'
+import { AlbumDetail, CurrentUser, responseRequest } from 'models'
 
 interface Props {
   setCurrentSong: Dispatch<React.SetStateAction<any>>
@@ -32,6 +32,8 @@ export const ContentAlbum: React.FC<Props> = ({
   const { id } = useParams()
 
   const [album, setAlbum] = useState<AlbumDetail>()
+  const [avatar, setAvatar] = useState('')
+  const [artistId, setArtistId] = useState(0)
 
   const getAlbumDetails = async (id: string) => {
     try {
@@ -41,6 +43,17 @@ export const ContentAlbum: React.FC<Props> = ({
           withCredentials: true,
         },
       )
+
+      const resUser = await axios.get(
+        `${import.meta.env.VITE_APP_BACK_URL}/users/${res.data.artistId}`,
+        {
+          withCredentials: true,
+        },
+      )
+
+      setAvatar(resUser.data.avatar)
+      setArtistId(resUser.data.id)
+
       const musicsWithDuration = res.data.musics.map((newMusic: any) => {
         const newAudio = new Audio(newMusic.src)
         let formattedDuration: string = ''
@@ -50,12 +63,15 @@ export const ContentAlbum: React.FC<Props> = ({
             const newMinutes = Math.floor(newDuration / 60)
             const newSeconds = Math.floor(newDuration % 60)
             formattedDuration = `${newMinutes} : ${
-                newSeconds < 10 ? '0' : ''
+              newSeconds < 10 ? '0' : ''
             }${newSeconds}`
             resolve()
           })
         })
-        return promise.then(() => ({ ...newMusic, duration: formattedDuration }))
+        return promise.then(() => ({
+          ...newMusic,
+          duration: formattedDuration,
+        }))
       })
 
       Promise.all(musicsWithDuration)
@@ -85,11 +101,16 @@ export const ContentAlbum: React.FC<Props> = ({
           <img src={album?.cover} alt="" />
           <h3>{album?.name}</h3>
         </div>
-        <div className="avatar">
-          <div className="w-14 h-14 rounded-full">
-            <img src="https://placeimg.com/192/192/people" alt="" />
+        <Link to={`/artist/${artistId}`}>
+          <div className="avatar">
+            <div className="w-14 h-14 rounded-full">
+              <img
+                src={avatar || 'https://placeimg.com/192/192/people'}
+                alt=""
+              />
+            </div>
           </div>
-        </div>
+        </Link>
       </header>
       <SongList
         songs={album!}

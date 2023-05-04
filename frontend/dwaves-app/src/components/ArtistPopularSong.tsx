@@ -9,7 +9,7 @@ interface Props {
   artistId?: number
   isPlaying: boolean
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
-  setArtist: React.Dispatch<React.SetStateAction<AlbumDetail | undefined>>
+  setAlbum: React.Dispatch<React.SetStateAction<AlbumDetail | undefined>>
   audioElmt: React.RefObject<HTMLAudioElement>
 }
 
@@ -26,7 +26,7 @@ export const ArtistPopularSong: React.FC<Props> = ({
   artistId,
   isPlaying,
   setIsPlaying,
-  setArtist,
+  setAlbum,
   audioElmt,
 }) => {
   return (
@@ -45,7 +45,7 @@ export const ArtistPopularSong: React.FC<Props> = ({
               onClick={(e) => {
                 setCurrentSong(song)
                 setSongs(mostPopularSong)
-                setArtist({
+                setAlbum({
                   artist: song.artist,
                   cover: '',
                   createdAt: new Date(),

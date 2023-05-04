@@ -1,24 +1,75 @@
+import axios, { AxiosError } from 'axios'
 import { ProfileCircle } from 'iconsax-react'
-import { CurrentUser } from 'models'
+import { CurrentUser, responseRequest } from 'models'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 type UserInfoFormInput = {
   username: string
   email: string
-  avatar: File
+  avatar: File[]
 }
 
 interface Props {
   currentUser: CurrentUser
+  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+  getCurrentUser: () => Promise<void>
 }
 
-const ProfileInfoForm: React.FC<Props> = ({ currentUser }) => {
+const ProfileInfoForm: React.FC<Props> = ({
+  currentUser,
+  setAlert,
+  getCurrentUser,
+}) => {
   const { register, handleSubmit } = useForm<UserInfoFormInput>()
 
   const [avatarURL, setAvatarURL] = useState('')
 
-  const onSubmit: SubmitHandler<UserInfoFormInput> = (data) => {}
+  const updateInfo = async (formData: FormData) => {
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_APP_BACK_URL}/users/me/updateInfo`,
+        formData,
+        {
+          withCredentials: true,
+        },
+      )
+      displayAlert('Profile updated successfully', res.status)
+    } catch (err) {
+      if (!(err instanceof AxiosError)) {
+        displayAlert('An error occured', 500)
+        return
+      }
+
+      if (Array.isArray(err?.response?.data)) {
+        displayAlert(err?.response?.data[0].msg, err?.response?.status || 500)
+      } else {
+        displayAlert(err?.response?.data.message, err?.response?.status || 500)
+      }
+    }
+  }
+
+  const displayAlert = (msg: string, status: number) => {
+    setAlert({ response: msg, status: status, visible: true })
+    setTimeout(() => {
+      setAlert({ response: '', status: 0, visible: false })
+    }, 3000)
+  }
+
+  const onSubmit: SubmitHandler<UserInfoFormInput> = async (data) => {
+    console.log(data)
+    const formData = new FormData()
+
+    formData.append('username', data.username)
+    formData.append('email', data.email)
+
+    if (data.avatar.length > 0) {
+      formData.append('avatar', data.avatar[0])
+    }
+
+    await updateInfo(formData)
+    await getCurrentUser()
+  }
 
   return (
     <form

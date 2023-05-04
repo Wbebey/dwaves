@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { SongList } from './SongList'
-import { AlbumDetail, responseRequest } from '../models'
+import { AlbumDetail, CurrentUser, responseRequest } from '../models'
 
 interface Props {
   setCurrentSong: React.Dispatch<React.SetStateAction<any>>
@@ -45,6 +45,7 @@ export const PlaylistContent: React.FC<Props> = ({
       )
 
       const resPlaylist = res.data
+
       const coverUrl = `${import.meta.env.VITE_PINATA_GATEWAY_HOST}/${
         res.data.coverCID
       }`
@@ -183,11 +184,6 @@ export const PlaylistContent: React.FC<Props> = ({
               <h3>{playlist?.name}</h3>
             </>
           )}
-        </div>
-        <div className="avatar">
-          <div className="w-14 h-14 rounded-full">
-            <img src="https://placeimg.com/192/192/people" alt="" />
-          </div>
         </div>
       </header>
       {playlist?.description && (

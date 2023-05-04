@@ -1,4 +1,5 @@
-import { CurrentUser } from 'models'
+import axios, { AxiosError } from 'axios'
+import { responseRequest } from 'models'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 type UserPasswordFormInput = {
@@ -8,13 +9,49 @@ type UserPasswordFormInput = {
 }
 
 interface Props {
-  currentUser: CurrentUser
+  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+  getCurrentUser: () => Promise<void>
 }
 
-const ProfilePasswordForm: React.FC<Props> = () => {
-  const { register, handleSubmit } = useForm<UserPasswordFormInput>()
+const ProfilePasswordForm: React.FC<Props> = ({ setAlert, getCurrentUser }) => {
+  const { register, handleSubmit, reset } = useForm<UserPasswordFormInput>()
 
-  const onSubmit: SubmitHandler<UserPasswordFormInput> = (data) => {}
+  const updatePassword = async (data: UserPasswordFormInput) => {
+    try {
+      const res = await axios.put(
+        `${import.meta.env.VITE_APP_BACK_URL}/users/me/updatePassword`,
+        data,
+        {
+          withCredentials: true,
+        },
+      )
+      displayAlert('Password updated successfully', res.status)
+      reset()
+    } catch (err) {
+      if (!(err instanceof AxiosError)) {
+        displayAlert('An error occured', 500)
+        return
+      }
+
+      if (Array.isArray(err?.response?.data)) {
+        displayAlert(err?.response?.data[0].msg, err?.response?.status || 500)
+      } else {
+        displayAlert(err?.response?.data.message, err?.response?.status || 500)
+      }
+    }
+  }
+
+  const displayAlert = (msg: string, status: number) => {
+    setAlert({ response: msg, status: status, visible: true })
+    setTimeout(() => {
+      setAlert({ response: '', status: 0, visible: false })
+    }, 3000)
+  }
+
+  const onSubmit: SubmitHandler<UserPasswordFormInput> = async (data) => {
+    await updatePassword(data)
+    await getCurrentUser()
+  }
 
   return (
     <form

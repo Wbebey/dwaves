@@ -1,6 +1,6 @@
 import "styles/Explorer.scss";
 import { ContentAlbum } from "components";
-import {AlbumDetail, responseRequest} from "models";
+import {AlbumDetail, CurrentUser, responseRequest} from "models";
 import React from "react";
 
 interface Props {
@@ -36,6 +36,5 @@ export const Album: React.FC<Props> = ({
     setAlert={setAlert}
     likedMusics={likedMusics}
     likeOrDislikeMusic={likeOrDislikeMusic}
-
   />;
 };
