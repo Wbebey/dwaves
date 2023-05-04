@@ -1,7 +1,4 @@
-import {
-  AlbumGetRequestHandler,
-  MusicListRequestHandler,
-} from '@@types/app.type'
+import { AlbumGetRequestHandler } from '@@types/app.type'
 import { Genre } from '@prisma/client'
 import { RequestHandler } from 'express'
 
@@ -30,7 +27,7 @@ export interface IGenreController extends IController {
 }
 
 export interface IMusicController extends IController {
-  get: MusicListRequestHandler
+  get: RequestHandler<{}, {}, {}, { genre?: Genre }>
   uploadSingle: RequestHandler
   uploadAlbum: RequestHandler
 }

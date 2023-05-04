@@ -4,8 +4,8 @@ import FormData from 'form-data'
 import env from '@config/env.config'
 import {
   CoverMetadata,
-  MusicFilter,
   MusicMetadata,
+  MusicQuery,
   PinataPinListResponse,
   PinataPinResponse,
   PinataQueryFilter,
@@ -39,16 +39,17 @@ class PinataService implements IPinataService {
     return cid
   }
 
-  getMusicFromIPFS = async (musicFilter: MusicFilter) => {
-    const { genre, albumId } = musicFilter
+  getMusicFromIPFS = async (query: MusicQuery) => {
+    const { genreId, albumId } = query
+
     const baseUrl = `${env.pinataApiHost}/data/pinList?status=pinned&metadata[keyvalues]`
 
     let filter: PinataQueryFilter = { type: { value: 'music', op: 'eq' } }
-    if (genre) {
-      filter.genreId = { value: genre.id.toString(), op: 'eq' }
+    if (genreId) {
+      filter.genreId = { value: genreId, op: 'eq' }
     }
     if (albumId) {
-      filter.albumId = { value: albumId.toString(), op: 'eq' }
+      filter.albumId = { value: albumId, op: 'eq' }
     }
 
     const url = `${baseUrl}=${JSON.stringify(filter)}`

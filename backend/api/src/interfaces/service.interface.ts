@@ -1,8 +1,14 @@
 import { AlbumCreateInput, ViewAlbum } from '@@types/album.type'
-import { CoverMetadata, MusicFilter, MusicMetadata, ViewMusic } from '@@types/pinata.type'
+import {
+  CoverMetadata,
+  MusicMetadata,
+  ViewMusic,
+  MusicQuery,
+} from '@@types/pinata.type'
 import { TokenType } from '@@types/token.type'
 import { UserAddressAndMonthlyListenings, ViewUser } from '@@types/user.type'
 import { Album, Genre, Prisma, User } from '@prisma/client'
+import { Contract } from 'ethers'
 import { UploadedFile } from 'express-fileupload'
 import { JwtPayload, SignOptions } from 'jsonwebtoken'
 
@@ -47,7 +53,7 @@ export interface IGenreService extends IService {
 }
 
 export interface IPinataService extends IService {
-  getMusicFromIPFS: (musicFilter: MusicFilter) => Promise<ViewMusic[]>
+  getMusicFromIPFS: (query: MusicQuery) => Promise<ViewMusic[]>
   pinFileToIPFS: (
     file: UploadedFile,
     metadata: CoverMetadata | MusicMetadata

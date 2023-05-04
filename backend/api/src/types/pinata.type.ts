@@ -1,5 +1,3 @@
-import { Genre } from '@prisma/client'
-
 export enum FileType {
   COVER = 'cover',
   MUSIC = 'music',
@@ -27,8 +25,8 @@ export type PinataPinResponse = {
   Timestamp: string
 }
 
-export type MusicFilter = {
-  genre?: Genre
+export type MusicQuery = {
+  genreId?: number
   albumId?: number
 }
 
@@ -37,7 +35,10 @@ export type PinataPinListResponse = {
   rows: PinataMusic[]
 }
 
-export type PinataQueryFilter = Record<string, { value: string; op: string }>
+export type PinataQueryFilter = Record<
+  string,
+  { value: string | number; op: string }
+>
 
 type PinataMusic = {
   metadata: {
