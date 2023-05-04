@@ -71,6 +71,8 @@ export const ContentAlbum: React.FC<Props> = ({ setCurrentSong, setSongs }) => {
           </div>
         </div>
       </header>
+
+
       <SongList songs={album!} setSongs={setSongs} setCurrentSong={setCurrentSong} />
     </div>
   )
