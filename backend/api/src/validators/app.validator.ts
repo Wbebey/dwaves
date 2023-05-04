@@ -8,7 +8,7 @@ export class AppValidator implements IAppValidator {
   validate: RequestHandler = (req, _, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw new ValidatorError(errors.array(), StatusCodes.BAD_REQUEST)
+      throw new ValidatorError(errors.array(), StatusCodes.UNPROCESSABLE_ENTITY)
     }
     next()
   }

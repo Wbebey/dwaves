@@ -1,8 +1,8 @@
-import { CoverMetadata, MusicMetadata } from '@@types/pinata.type'
+import { IPFSMetadata } from '@@types/pinata.type'
 import { TokenType } from '@@types/token.type'
 import { UserAddressAndMonthlyListenings, ViewUser } from '@@types/user.type'
 import { Album, Genre, Prisma, User } from '@prisma/client'
-import { UploadedFile } from 'express-fileupload'
+import { ReadStream } from 'fs'
 import { JwtPayload, SignOptions } from 'jsonwebtoken'
 
 interface IService {}
@@ -41,10 +41,7 @@ export interface IGenreService extends IService {
 }
 
 export interface IPinataService extends IService {
-  pinFileToIPFS: (
-    file: UploadedFile,
-    metadata: CoverMetadata | MusicMetadata
-  ) => Promise<string>
+  pinFileToIPFS: (file: ReadStream, metadata: IPFSMetadata) => Promise<string>
 }
 
 export interface ITokenService extends IService {

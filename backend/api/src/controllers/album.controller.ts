@@ -10,12 +10,9 @@ class AlbumController implements IAlbumController {
     res.json(albums)
   }
   create: RequestHandler = async (req, res) => {
-    const { name, type, genre } = req.body
     const createdAlbum = await albumService.create({
-      name,
-      type,
+      name: req.body.name,
       artist: { connect: { id: res.locals.user.id } },
-      genre: { connect: { name: genre } },
     })
 
     res.json(createdAlbum)

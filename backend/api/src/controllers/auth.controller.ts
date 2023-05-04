@@ -40,10 +40,7 @@ class AuthController implements IAuthController {
     const user = (await userService.findFirst({ email }, true)) as User | null
 
     if (!user || !(await userService.verifyPassword(user.password, password))) {
-      throw new AppError(
-        'Invalid email or password',
-        StatusCodes.UNPROCESSABLE_ENTITY
-      )
+      throw new AppError('Invalid email or password', StatusCodes.UNAUTHORIZED)
     }
 
     const { accessToken, refreshToken } = userService.signToken(user)
@@ -74,17 +71,14 @@ class AuthController implements IAuthController {
       TokenType.REFRESH
     )
     if (!decoded) {
-      throw new AppError(
-        'Invalid refresh token',
-        StatusCodes.UNPROCESSABLE_ENTITY
-      )
+      throw new AppError('Invalid refresh token', StatusCodes.UNAUTHORIZED)
     }
 
     const user = await userService.findFirst({ id: +decoded.sub })
     if (!user) {
       throw new AppError(
         'User with that token no longer exist',
-        StatusCodes.UNPROCESSABLE_ENTITY
+        StatusCodes.UNAUTHORIZED
       )
     }
 

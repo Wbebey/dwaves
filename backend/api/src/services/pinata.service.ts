@@ -2,32 +2,23 @@ import axios from 'axios'
 import { IPinataService } from '@interfaces/service.interface'
 import FormData from 'form-data'
 import env from '@config/env.config'
-import {
-  CoverMetadata,
-  MusicMetadata,
-  PinataPinResponse,
-} from '@@types/pinata.type'
-import { Readable } from 'stream'
-import { UploadedFile } from 'express-fileupload'
+import { ReadStream } from 'fs'
+import { IPFSMetadata, PinataPinResponse } from '@@types/pinata.type'
 
 class PinataService implements IPinataService {
-  pinFileToIPFS = async (
-    file: UploadedFile,
-    metadata: CoverMetadata | MusicMetadata
-  ) => {
+  pinFileToIPFS = async (file: ReadStream, metadata: IPFSMetadata) => {
     const url = `${env.pinataApiHost}/pinning/pinFileToIPFS`
 
     let data = new FormData()
     const metadataPinata = JSON.stringify({ keyvalues: metadata })
     data.append('pinataMetadata', metadataPinata)
-    const stream = Readable.from(file.data)
-    data.append('file', stream, { filepath: file.name })
+    data.append('file', file)
 
     const res = await axios.post<PinataPinResponse>(url, data, {
       headers: {
-        'Content-Type': 'multipart/form-data',
-        pinata_api_key: env.pinataApiKey,
-        pinata_secret_api_key: env.pinataApiSecret,
+        'Content-Type': `multipart/form-data`,
+        pinata_api_key: `${env.pinataApiKey}`,
+        pinata_secret_api_key: `${env.pinataApiSecret}`,
       },
     })
 
