@@ -13,7 +13,7 @@ class EventController implements IEventController {
       name,
       date: Date.parse(date),
       location,
-      genre: genre.name,
+      genre,
       artistName: username,
       ticketCount,
       ticketPrice,
@@ -29,9 +29,9 @@ class EventController implements IEventController {
 
   buyTicket: RequestHandler = async (req, res) => {
     const { address } = req.app.locals.user
-    const { id: ticketId } = req.params
+    const { ticketId } = req.body
 
-    const tx = await nftService.buyTicket(address, +ticketId)
+    const tx = await nftService.buyTicket(address, ticketId)
 
     console.log({ tx })
 
