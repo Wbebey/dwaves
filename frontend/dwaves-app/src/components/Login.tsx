@@ -11,7 +11,7 @@ export const Login = () => {
   const { register, setValue, getValues, handleSubmit } = useForm<User>();
 
   const onSubmit = (data: any) => {
-    axios.post(`${import.meta.env.VITE_APP_BACK_URL}/auth/login`, data, {withCredentials: true})
+    axios.post(`${import.meta.env.VITE_APP_BACK_URL}/api/v1/auth/login`, data, {withCredentials: true})
       .then(res => { 
         window.location.reload()
       })

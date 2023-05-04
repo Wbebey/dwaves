@@ -13,7 +13,7 @@ export const Register = () => {
 
 
   const onSubmit = (data: any) => {
-    axios.post(`${import.meta.env.VITE_APP_BACK_URL}/auth/register`, data)
+    axios.post(`${import.meta.env.VITE_APP_BACK_URL}/api/v1/auth/register`, data)
       .then()
       .catch()
   }
