@@ -67,10 +67,10 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies 📦
-        run: npm install
+        run: npm ci
 
       - name: Build 🏗
-        run: CI='false' npm run build
+        run: npm run build
 
       - name: Deploy Production 🚀
         if: ${{ github.ref }} == 'refs/heads/staging'
