@@ -3,18 +3,18 @@ name: TAB - Dwaves-app
 on:
     push:
         branches: 
-            # - feature/*
+            - feature/*
             - bugfix/*
             - hotfix/*
             - release/*
         paths:
             - frontend/dwaves-app/**
-    # pull_request:
-    #     types: [opened, synchronize, reopened]
-    #     branches:
-    #         - staging
-    #     paths:
-    #         - frontend/dwaves-app/**
+    pull_request:
+        types: [opened, synchronize, reopened]
+        branches:
+            - staging
+        paths:
+            - frontend/dwaves-app/**
 
 env:
     APP: dwaves-app
@@ -34,7 +34,7 @@ defaults:
         working-directory: "frontend/dwaves-app"
 
 jobs:
-    integration-test:
+    integration-tests:
         name: Integretion Test
         runs-on: ubuntu-latest
         steps:
@@ -46,7 +46,7 @@ jobs:
 
             - name: Discord notification on failure
               if: failure()
-              uses: ./.github/actions/discord/notification-on-failure
+              uses: ./.github/actions/notification-on-failure
 
     unit-test:
         name: Unit Test
@@ -56,12 +56,18 @@ jobs:
             - name: Checkout 😇
               uses: actions/checkout@v3
 
+            - name: Use Node.js ${{ env.NODE_VERSION }}
+              uses: actions/setup-node@v3
+              with:
+                node-version: ${{ env.NODE_VERSION }}
+
             - name: Unit Test 🧪
-              uses: ./.github/actions/frontend/unit-test
+              run: |-
+                echo "Running  unit tests..."
 
             - name: Discord notification on failure
               if: failure()
-              uses: ./.github/actions/discord/notification-on-failure
+              uses: ./.github/actions/notification-on-failure
 
     code-analysis:
         name: Code Analysis
@@ -69,7 +75,7 @@ jobs:
         permissions: 
             contents: read
             pull-requests: write
-        needs: [integration-test, unit-test]
+        needs: [integration-tests, unit-test]
         steps:
             - name: Checkout 😇
               uses: actions/checkout@v3
@@ -79,8 +85,8 @@ jobs:
 
             - name: Discord notification on success
               if: success()
-              uses: ./.github/actions/discord/notification-on-success
+              uses: ./.github/actions/notification-on-success
 
             - name: Discord notification on failure
               if: failure()
-              uses: ./.github/actions/discord/notification-on-failure
+              uses: ./.github/actions/notification-on-failure

@@ -9,7 +9,6 @@ runs:
             node-version: ${{ env.NODE_VERSION }}
 
         - name: Integartion Tests 🏗
-          working-directory:  ${{ env.PROJECT_DIRECTORY }}
           shell: bash
           run: |-
             echo "Running  integration tests..."

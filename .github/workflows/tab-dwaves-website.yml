@@ -1,0 +1,120 @@
+name: TAB - Dwaves-website 
+# run-name: ${{ github.actor }} - ${{ github.workflow }} - ${{ github.ref_name }}
+
+on:
+  push:
+    branches: 
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+    paths:
+      - "frontend/dwaves-website/**"
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #   branches:
+  #     - staging
+  #   paths:
+  #     - "frontend/dwaves-website/**"
+
+defaults:
+  run:
+    working-directory: "frontend/dwaves-website"
+
+jobs:
+  integration-tests:
+    name: Integretion Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #       node-version: ${{ matrix.node-version }}
+
+      # - name: Environment variables 🧪
+      #   run: |-
+      #     sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
+
+      - name: Integartion Tests 🏗
+        run: |-
+          echo "Running  integration tests..."
+
+  unit-test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #       node-version: ${{ matrix.node-version }}
+
+      # - name: Environment variables 🧪
+      #   run: |-
+      #     sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
+
+      - name: Unit Test 🧪
+        run: |-
+          echo "Running  unit tests..."
+
+
+  code-analysis:
+    name: Code Analysis
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      pull-requests: write
+    needs: [integration-tests, unit-test]
+    steps:
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      # - name: SonarCloud Scan
+      #   uses: SonarSource/sonarcloud-github-action@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_WEBSITE }}
+      #   with:
+      #     projectBaseDir: frontend/dwaves-website/
+      #     args: >
+      #       -Dsonar.projectKey=${{ secrets.DWAVES_WEBSITE_PROJECT_KEY }}
+      #       -Dsonar.organization=wbebey
+      #       -Dsonar.host.url=https://sonarcloud.io
+      #       -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+      #       -Dsonar.pullrequest.branch=${{ github.head_ref }}
+      #       -Dsonar.pullrequest.base=${{ github.base_ref }}
+      #       -Dsonar.pullrequest.provider=GitHub
+      #       -Dsonar.pullrequest.github.repository=${{ github.repository }}
+      #       -Dsonar.pullrequest.github.endpoint=https://api.github.com/
+
+  # build:
+  #   name: Build
+  #   runs-on: ubuntu-latest
+  #   needs: [code-analysis]
+  #   strategy:
+  #     matrix:
+  #       node-version: [16.x]
+  #   steps:
+  #     - name: Checkout 😇
+  #       uses: actions/checkout@v3
+
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+
+  #     - name: Build 🏗
+  #       run: |-
+  #         npm install
+  #         CI='false' npm run build 
