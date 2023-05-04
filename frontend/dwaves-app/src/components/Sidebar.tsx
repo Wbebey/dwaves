@@ -43,7 +43,7 @@ export const Sidebar: React.FC<Props> = ({
 
   return (
     <aside className="sidebar">
-      <ul style={{ height: '100%', position: "relative" }} className="menu bg-white p-2">
+      <ul style={{ height: '100%' }} className="menu bg-white p-2">
         <li>
           {connected ? (
             <Link to={'/profil'} className="py-0">
@@ -99,8 +99,8 @@ export const Sidebar: React.FC<Props> = ({
         <li
           style={
             connected
-              ? { position: 'absolute', bottom: '10%' }
-              : { position: 'absolute', bottom: '1%' }
+              ? { position: 'absolute', bottom: '11%' }
+              : { position: 'absolute', bottom: '4%' }
           }
         >
           <div>
@@ -110,7 +110,7 @@ export const Sidebar: React.FC<Props> = ({
         {connected ? (
           <li
             onClick={disconect}
-            style={{ position: 'absolute', bottom: '1%' }}
+            style={{ position: 'absolute', bottom: '4%' }}
           >
             <div>
               <Logout color="red" className="w-10 h-10" />

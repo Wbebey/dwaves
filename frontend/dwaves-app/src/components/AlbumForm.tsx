@@ -91,7 +91,12 @@ const AlbumCover: React.FC<AlbumProps> = ({ arraySong, setAlert }) => {
         withCredentials: true,
       })
       .then((res) => {
-        displayAlert("downloaded successfully" , res.status)
+        console.log(res)
+        if (Array.isArray(res.data)) {
+          displayAlert(res.data[0].msg , res.status)
+        } else {
+          displayAlert(res.data.message , res.status)
+        }
       })
       .catch((err) => {
         if (Array.isArray(err.response.data)) {

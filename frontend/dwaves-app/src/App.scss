@@ -98,7 +98,7 @@ img {
     @extend .seekbar;
     .time{
         @extend .time;
-        width: 0;
+        width: 50%;
     }
 }
 
