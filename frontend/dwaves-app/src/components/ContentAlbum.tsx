@@ -41,28 +41,26 @@ export const ContentAlbum: React.FC<Props> = ({
           withCredentials: true,
         },
       )
-      const musicsWithDuration = res.data.musics.map((newMusic: any) => {
-        const newAudio = new Audio(newMusic.src)
+      const musicsWithDuration = res.data.musics.map((music: any) => {
+        const audio = new Audio(music.src)
         let formattedDuration: string = ''
         const promise = new Promise<void>((resolve) => {
-          newAudio.addEventListener('loadedmetadata', () => {
-            const newDuration = newAudio.duration
-            const newMinutes = Math.floor(newDuration / 60)
-            const newSeconds = Math.floor(newDuration % 60)
-            formattedDuration = `${newMinutes} : ${
-                newSeconds < 10 ? '0' : ''
-            }${newSeconds}`
+          audio.addEventListener('loadedmetadata', () => {
+            const duration = audio.duration
+            const minutes = Math.floor(duration / 60)
+            const seconds = Math.floor(duration % 60)
+            formattedDuration = `${minutes} : ${
+              seconds < 10 ? '0' : ''
+            }${seconds}`
             resolve()
           })
         })
-        return promise.then(() => ({ ...newMusic, duration: formattedDuration }))
+        return promise.then(() => ({ ...music, duration: formattedDuration }))
       })
 
-      Promise.all(musicsWithDuration)
-        .then((result) => {
-          setAlbum({ ...res.data, musics: result })
-        })
-        .catch((r) => console.log(r))
+      Promise.all(musicsWithDuration).then((result) => {
+        setAlbum({ ...res.data, musics: result })
+      })
     } catch (error) {
       console.log(error)
     }
