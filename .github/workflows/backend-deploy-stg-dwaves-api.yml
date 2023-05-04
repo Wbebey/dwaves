@@ -3,6 +3,7 @@ name: Deploy - Dwaves-api
 on:
   push:
     branches: 
+      - feature/*
       - staging
     paths:
       - backend/api/**
@@ -103,6 +104,11 @@ jobs:
 
       - name: Retrieve environment for databases
         run: echo "${{ env.ULTIMATE_ENV }}" > db/.env
+        working-directory: ${{ env.BACKEND_DIRECTORY }}
+
+      - run: ls -la
+      - run: cat .env
+      - run: cat db/.env
         working-directory: ${{ env.BACKEND_DIRECTORY }}
 
       - name: Build 🏗
