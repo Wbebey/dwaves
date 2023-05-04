@@ -4,7 +4,8 @@ import { IMusicValidator } from '@interfaces/validator.interface'
 import { CustomValidator } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
 import { AppValidator } from '@validators/app.validator'
-import { FileArray } from 'express-fileupload'
+import { FileArray } from "express-fileupload";
+
 
 class MusicValidator extends AppValidator implements IMusicValidator {
   hasOneFile =
@@ -22,10 +23,7 @@ class MusicValidator extends AppValidator implements IMusicValidator {
       return true
     }
 
-  hasFiles =
-    (filetype: FileType): CustomValidator =>
-    (_, { req }) =>
-      this._hasFiles(req.files, filetype)
+  hasFiles = (filetype: FileType): CustomValidator => (_, { req }) => this._hasFiles(req.files, filetype)
 
   private _hasFiles = (files: FileArray, filetype: FileType) => {
     if (!files || !files[filetype]) {

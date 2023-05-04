@@ -6,15 +6,16 @@ import musicValidator from '@validators/music.validator'
 import { FileType } from '@@types/pinata.type'
 import albumValidator from '@validators/album.validator'
 import { requireUserWallet } from '@middlewares/auth.middleware'
-import { AlbumType } from '@prisma/client'
 
 const musicRouter = Router()
 
 musicRouter.get(
-  '/',
-  query('genre').bail().customSanitizer(albumValidator.toValidGenreIfExist),
-  musicValidator.validate,
-  musicController.get
+    '/',
+    query('genre')
+        .bail()
+        .customSanitizer(albumValidator.toValidGenreIfExist),
+    musicValidator.validate,
+    musicController.get
 )
 
 musicRouter.use(requireUserWallet)
@@ -28,9 +29,9 @@ musicRouter.post(
     .customSanitizer(albumValidator.toValidGenre),
   body('name')
     .notEmpty()
-    .withMessage('Name is required')
+    .withMessage('the name of the music is required')
     .bail()
-    .custom(albumValidator.isValidName(AlbumType.SINGLE)),
+    .custom(albumValidator.isValidSingleName),
   body().custom(musicValidator.hasOneFile(FileType.COVER)),
   body().custom(musicValidator.hasOneFile(FileType.MUSIC)),
   musicValidator.validate,
@@ -38,26 +39,26 @@ musicRouter.post(
 )
 
 musicRouter.post(
-  '/pinAlbum',
-  body('genre')
-    .notEmpty()
-    .withMessage('Genre is required')
-    .bail()
-    .customSanitizer(albumValidator.toValidGenre),
-  body('albumName')
-    .notEmpty()
-    .withMessage('AlbumName is required')
-    .bail()
-    .custom(albumValidator.isValidName(AlbumType.ALBUM)),
-  body('musicNames')
-    .notEmpty()
-    .withMessage('MusicNames is required')
-    .bail()
-    .customSanitizer(albumValidator.toValidMusicNames),
-  body().custom(musicValidator.hasOneFile(FileType.COVER)),
-  body().custom(musicValidator.hasFiles(FileType.MUSICS)),
-  musicValidator.validate,
-  musicController.uploadAlbum
+    '/pinAlbum',
+    body('genre')
+        .notEmpty()
+        .withMessage('Genre is required')
+        .bail()
+        .customSanitizer(albumValidator.toValidGenre),
+    body('albumName')
+        .notEmpty()
+        .withMessage('albumName is required')
+        .bail()
+        .custom(albumValidator.isValidAlbumName),
+    body('musicNames')
+        .notEmpty()
+        .withMessage('musicNames is required')
+        .bail()
+        .customSanitizer(albumValidator.toValidMusicNames),
+    body().custom(musicValidator.hasOneFile(FileType.COVER)),
+    body().custom(musicValidator.hasFiles(FileType.MUSICS)),
+    musicValidator.validate,
+    musicController.uploadAlbum
 )
 
 export default musicRouter

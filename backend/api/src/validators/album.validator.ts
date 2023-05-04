@@ -5,7 +5,7 @@ import genreService from '@services/genre.service'
 import { CustomSanitizer, CustomValidator, Meta } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
 import { AppValidator } from '@validators/app.validator'
-import albumService from '@services/album.service'
+import albumService from "@services/album.service";
 
 class AlbumValidator extends AppValidator implements IAlbumValidator {
   isValidType: CustomValidator = (type: string) => {
@@ -15,7 +15,7 @@ class AlbumValidator extends AppValidator implements IAlbumValidator {
     return true
   }
 
-  toValidGenre: CustomSanitizer = (name: string) =>
+  toValidGenre: CustomSanitizer = async (name: string) =>
     this._toValidGenre(name, StatusCodes.CONFLICT)
 
   toValidGenreIfExist: CustomSanitizer = (name: string) =>
@@ -29,39 +29,34 @@ class AlbumValidator extends AppValidator implements IAlbumValidator {
     return genre
   }
 
-  isValidName =
-    (type: AlbumType): CustomValidator =>
-    async (name: string, { req }) => {
-      const album = await albumService.findMany({
-        name,
-        artistId: req.app.locals.user.id,
-        type,
-      })
+  isValidSingleName: CustomValidator = async (name: string, {req}) =>
+      this._isValidName(name, req.app.locals.user.id, AlbumType.SINGLE)
 
-      if (album.length > 0) {
-        throw new AppError(
-          `You already have a ${type} with this name`,
-          StatusCodes.CONFLICT
-        )
+  isValidAlbumName: CustomValidator = async (name: string, {req}) =>
+      this._isValidName(name, req.app.locals.user.id, AlbumType.ALBUM)
+
+  private _isValidName = async (name: string, artistId: number, albumType: AlbumType) => {
+    const album = await albumService.findMany({
+      name: name, artistId, type: albumType
+    })
+
+    if (album.length > 0) {
+      if (albumType===AlbumType.SINGLE) {
+        throw new AppError('You already have a single music with this name', StatusCodes.CONFLICT)
+      } else {
+        throw new AppError('You already have an album with this name', StatusCodes.CONFLICT)
       }
-      return true
+    }
+    return true
+  }
+
+  toValidMusicNames: CustomSanitizer = async (name: string) => {
+    const musicNames = JSON.parse(name);
+    if (!Array.isArray(musicNames)) {
+      throw new AppError('musicNames is not an array', StatusCodes.CONFLICT)
     }
 
-  toValidMusicNames: CustomSanitizer = async (names: string) => {
-    const error = new AppError(
-      'musicNames is not a valid array',
-      StatusCodes.UNPROCESSABLE_ENTITY
-    )
-
-    try {
-      const musicNames = JSON.parse(names)
-      if (!Array.isArray(musicNames)) {
-        throw error
-      }
-      return musicNames
-    } catch (_) {
-      throw error
-    }
+    return musicNames
   }
 }
 
