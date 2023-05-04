@@ -106,6 +106,3 @@ This project exists thanks to all the people who contribute.
 <a href="https://github.com/BryanSeychelles">
   <img src="https://github.com/BryanSeychelles.png?size=100">
 </a>
-<a href="https://github.com/TharickABDUL">
-  <img src="https://github.com/TharickABDUL.png?size=100">
-</a>
