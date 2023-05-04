@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 import 'styles/SingleForm.scss'
 import { Icon } from 'components/shared'
 
-import { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { responseRequest } from 'models'
 
@@ -15,10 +15,15 @@ type Single = {
 
 interface Props {
   setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+  genres: {
+    id: number
+    name: string
+  }[]
 }
 
-export const SingleForm: React.FC<Props> = ({ setAlert }) => {
-  const { register, setValue, getValues, handleSubmit, reset } = useForm<Single>()
+export const SingleForm: React.FC<Props> = ({ setAlert, genres }) => {
+  const { register, setValue, getValues, handleSubmit, reset } =
+    useForm<Single>()
   const [filesExist, setFilesExist] = useState({ music: false, cover: false })
 
   function handleFile(e: ChangeEvent<HTMLInputElement>) {
@@ -68,7 +73,7 @@ export const SingleForm: React.FC<Props> = ({ setAlert }) => {
   const displayAlert = (msg: string, status: number) => {
     setAlert({ response: msg, status: status, visible: true })
     setTimeout(() => {
-      setAlert({ response: "", status: 0, visible: false })
+      setAlert({ response: '', status: 0, visible: false })
     }, 3000)
   }
 
@@ -85,14 +90,17 @@ export const SingleForm: React.FC<Props> = ({ setAlert }) => {
             <button
               className="clear"
               onClick={() => {
-                reset(formValues => ({
+                reset((formValues) => ({
                   ...formValues,
                   genre: '',
                   title: '',
                   cover: null,
-                  music: null
+                  music: null,
                 }))
-              }}>Clear</button>
+              }}
+            >
+              Clear
+            </button>
             <button type="submit" className="upload">
               Upload
             </button>
@@ -105,12 +113,7 @@ export const SingleForm: React.FC<Props> = ({ setAlert }) => {
             </div>
             {filesExist.music ? (
               <span>
-                {
-                  getValues('music') ?
-                  getValues('music')?.name
-                  :
-                  'Upload Music'
-                }
+                {getValues('music') ? getValues('music')?.name : 'Upload Music'}
               </span>
             ) : (
               <span>Upload Music</span>
@@ -134,12 +137,7 @@ export const SingleForm: React.FC<Props> = ({ setAlert }) => {
             </div>
             {filesExist.cover ? (
               <span>
-                {
-                  getValues('cover') ?
-                  getValues('cover')?.name
-                  :
-                  'Upload Cover'
-                }
+                {getValues('cover') ? getValues('cover')?.name : 'Upload Cover'}
               </span>
             ) : (
               <span>Upload Cover</span>
@@ -171,12 +169,20 @@ export const SingleForm: React.FC<Props> = ({ setAlert }) => {
             <label className="label">
               <span className="label-text">Genre</span>
             </label>
-            <input
-              type="text"
-              {...register('genre')}
-              placeholder="Type here"
+            <select
               className="input input-ghost"
-            />
+              {...register('genre')}
+              defaultValue={''}
+            >
+              <option value="" disabled hidden>
+                Choose the genre
+              </option>
+              {genres.map((genre) => (
+                <option key={genre.id} value={genre.name}>
+                  {genre.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </section>
