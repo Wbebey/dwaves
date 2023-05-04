@@ -1,39 +1,36 @@
 export type responseRequest = {
-  response: string;
-  status: number;
-  visible: boolean;
-};
+    response: string
+    status: number
+    visible: boolean
+}
 
 export type Music = {
-  src: string | undefined;
-  name: string;
-  listenings: number;
-  progress: number;
-  length: number;
-};
+    src: string|undefined
+    name: string
+    listenings: number
+    progress: number
+    length:number
+}
 
 export type Test = {
-  src: string | undefined;
-  name: string;
-  listenings: number;
-  artist?: string;
-  albumName?: string
-  albumCover?: string
-};
+    src: string|undefined
+    name: string
+    listenings: number
+}
 
 export type AlbumDetail = {
-  id: number;
-  type: string;
-  name: string;
-  createdAt: Date;
-  genre: string;
-  artist: string;
-  subscribers: number;
-  cover: string;
-  musics: Test[];
-};
+    id: number
+    type: string
+    name: string
+    createdAt: Date
+    genre: string
+    artist: string
+    subscribers: number
+    cover: string
+    musics: Test[]
+}
 
 export type Playlists = {
-  id: number;
-  name: string;
-}[];
+    id: number
+    name: string
+}[]
