@@ -126,7 +126,7 @@ class UserController implements IUserController {
     const { username, email } = req.body
 
     const newAvatar = req.files?.avatar as UploadedFile | undefined
-    const url = newAvatar ? await this._uploadAvatar(newAvatar, avatar) : ''
+    const url = newAvatar && (await this._uploadAvatar(newAvatar, avatar))
 
     const user = await userService.update(
       { id },
