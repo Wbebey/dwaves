@@ -1,5 +1,3 @@
-import { Genre } from '@prisma/client'
-
 export enum FileType {
   COVER = 'cover',
   MUSIC = 'music',
@@ -17,12 +15,13 @@ export type MusicMetadata = {
   listenings: number
 }
 
-export type ViewMusic = {
-  name: string
-  src: string
-  albumName: string
-  genreName: string
-  artistName: string
+export type MusicWithMetadata = {
+  musicName: string
+  musicUrl: string
+  album: string
+  coverUrl: string
+  genre: string
+  artist: string
   listenings: number
 }
 
@@ -33,19 +32,24 @@ export type PinataPinResponse = {
 }
 
 export type MusicQuery = {
-  genre?: Genre | null
+  genre?: {
+    name: string,
+    id: number
+  } | null
 }
 
 
-type MusicWithMetadata = {
-  metadata: {
-    name: string
-    keyvalues: MusicMetadata
-  },
-  ipfs_pin_hash: string
-}
-export type PinataPinListResponse = {
-  count: number
-  rows: MusicWithMetadata[]
+export type PinataGetResponse = {
+    metadata: {
+      name: string
+      keyvalues: {
+        artistId: number
+        albumId: number
+        cover: string
+        listenings: number
+        genreId: number
+      }
+    },
+    ipfs_pin_hash: string,
 
 }

@@ -2,9 +2,9 @@ import AppError from '@errors/app.error'
 import { IAlbumValidator } from '@interfaces/validator.interface'
 import { AlbumType } from '@prisma/client'
 import genreService from '@services/genre.service'
-import { CustomSanitizer, CustomValidator, Meta } from 'express-validator'
-import { StatusCodes } from 'http-status-codes'
-import { AppValidator } from '@validators/app.validator'
+import {CustomSanitizer, CustomValidator, Meta} from 'express-validator'
+import {StatusCodes} from 'http-status-codes'
+import {AppValidator} from '@validators/app.validator'
 
 class AlbumValidator extends AppValidator implements IAlbumValidator {
   isValidType: CustomValidator = (type: string) => {
