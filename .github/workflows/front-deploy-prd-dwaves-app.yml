@@ -1,4 +1,3 @@
-# TODO replace FRONT_ENV by an env with the name of the environment
 name : Deploy Dwaves-app to Production
 
 on:
@@ -99,16 +98,13 @@ jobs:
               uses: actions/setup-node@v3
               with:
                 node-version: ${{ env.NODE_VERSION }}
-            
-            - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
-              run: echo "${{ env.FRONT_ENV }}" > .env
 
             - name: NPM install
-              run: npm ci --only=production
+              run: npm install
 
             - name: Build 🏗
               run: |-
-                npm run build
+                CI='false' npm run build
 
             - name: Deploy Production 🚀
               if: ${{ github.ref }} == 'refs/heads/main'

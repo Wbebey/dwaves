@@ -16,8 +16,6 @@ env:
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
     TEST_URL: ${{ secrets.DWAVES_APP_TEST_URL }}
-    FRONT_ENV: ${{ secrets.FRONT_ENV }}
-
 
 defaults: 
     run:
@@ -67,15 +65,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-      
-      - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
-        run: echo "${{ env.FRONT_ENV }}" > .env
 
       - name: Install dependencies 📦
-        run: npm ci --only=production
+        run: npm install
 
       - name: Build 🏗
-        run: npm run build
+        run: CI='false' npm run build
 
       - name: Deploy Production 🚀
         if: ${{ github.ref }} == 'refs/heads/staging'

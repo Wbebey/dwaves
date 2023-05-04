@@ -16,13 +16,6 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
 
 ## *Backend*
-
-### Dwaves-jobs
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
-
 ### Dwaves-api
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-api&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-api)
@@ -36,6 +29,13 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-smart-contracts&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-smart-contracts)
+
+### Dwaves-jobs
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-jobs&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-jobs)
 
 # About The Project
 
