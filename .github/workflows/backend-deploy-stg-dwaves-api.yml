@@ -3,13 +3,13 @@ name: Deploy - Dwaves-api
 on:
   push:
     branches: 
-      - feature/*
       - staging
     paths:
       - backend/api/**
 
 env:
     APP: dwaves-api
+
     ENVIRONMENT: staging
     NODE_VERSION: 16.x
     BACKEND_DIRECTORY: backend
@@ -22,7 +22,7 @@ env:
     SONAR_PROJECT_KEY: ${{ secrets.DWAVES_API_PROJECT_KEY }}
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
-    DOCKER_TAG: gcr.io/${{ secrets.DWAVES_PROJECT_ID }}/dwaves-api:${{ github.sha }}
+    DOCKER_TAG: gcr.io/${{ secrets.DWAVES_PROJECT_ID }}/${{ env.APP }}:${{ github.sha }}
 
 defaults:
   run:
@@ -115,20 +115,15 @@ jobs:
           gcloud auth configure-docker --quiet
           docker push ${{ env.DOCKER_TAG }}
 
-      - name: Deploy to cloud run 🚀
-        run: |-
-          gcloud run deploy ${{ env.APP }}-${{ env.ENVIRONMENT }} \
-            --image ${{ env.DOCKER_TAG }} \
-            --platform managed \
-            --region europe-west1 \
-            --allow-unauthenticated \
-            --cpu 1000m \
-            --memory 512Mi \
-            --timeout 300 \
-            --restart-on-failure \
-            --liveness-probe-type http \
-            --liveness-probe-http-path / \
-            --liveness-probe-interval 30s \
-            --liveness-probe-timeout 30s \
-            --project ${{ env.GCP_PROJECT_ID }} 
+      # - name: Deploy to cloud run 🚀
+      #   run: |-
+      #     gcloud run deploy ${{ env.APP }} \
+      #       --image ${{ env.DOCKER_TAG }} \
+      #       --platform managed \
+      #       --region europe-west1 \
+      #       --allow-unauthenticated \
+      #       --memory 2G \
+      #       --timeout 300 \
+      #       --restart-on-failure \
+      #       --project ${{ env.GCP_PROJECT_ID }} 
 
