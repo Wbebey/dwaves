@@ -18,7 +18,7 @@ interface Props {
     setSongs: React.Dispatch<React.SetStateAction<any>>
 }
 
-export const ArtistPopularSong: React.FC<Props> = ({setCurrentSong, setSongs}) => {
+export const PopularSongOfArtist: React.FC<Props> = ({setCurrentSong, setSongs}) => {
     const [mostPopularSong, setMostPopularSong] = useState<MostPopularSong[]>([])
 
     const getMostPopularSong = async () => {

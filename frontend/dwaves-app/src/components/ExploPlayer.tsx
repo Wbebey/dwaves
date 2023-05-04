@@ -135,7 +135,7 @@ export const ExploPlayer: React.FC<Props> = ({
           songs &&
           <div id="contain-right-bar" className="flex row nowrap">
             <p>01:21 / 02:03</p>
-            <button className="pb-6" onClick={() => likeOrDislikeMusic(currentSong.src!)}>
+            <button className="pb-5" onClick={() => likeOrDislikeMusic(currentSong.src!)}>
               <Icon icon="like" color={isLikedMusics(currentSong.src!) ? "red" : "black"}
                     variant={isLikedMusics(currentSong.src!) ? "Bold" : "Linear"}/>
             </button>

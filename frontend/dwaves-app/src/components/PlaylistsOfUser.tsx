@@ -10,7 +10,7 @@ interface Props {
     setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
 }
 
-export const UserPlaylists: React.FC<Props> = ({setAlert}) => {
+export const PlaylistsOfUser: React.FC<Props> = ({setAlert}) => {
 
     const [playlists, setPlaylists] = useState<any>([])
 

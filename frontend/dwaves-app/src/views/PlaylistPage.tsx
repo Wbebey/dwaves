@@ -1,4 +1,4 @@
-import {AlbumOfArtist, ArtistPopularSong, SwitchTab, CreatePlaylist, UserPlaylists} from "../components";
+import {AlbumOfArtist, PopularSongOfArtist, SwitchTab, CreatePlaylist, PlaylistsOfUser} from "../components";
 import React, {useState} from "react";
 import {responseRequest} from "../models";
 
@@ -15,7 +15,7 @@ export const PlaylistPage: React.FC<Props> = ({setAlert}) => {
             {showForm ?
                 <div className={'h-[97%] pt-[30px] pl-[20px]'}>
                     <div className={`w-full h-[90%] overflow-scroll`}>
-                        <UserPlaylists setAlert={setAlert}/>
+                        <PlaylistsOfUser setAlert={setAlert}/>
                     </div>
                 </div>
                 :

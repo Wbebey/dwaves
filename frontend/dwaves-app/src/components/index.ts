@@ -10,13 +10,13 @@ import { Register } from "components/Register";
 import { Sidebar } from "components/Sidebar";
 import { AlbumForm } from "components/AlbumForm";
 import { Alert } from "components/Alert";
-import { ArtistPopularSong} from "components/ArtistPopularSong";
+import { PopularSongOfArtist} from "components/PopularSongOfArtist";
 import { AlbumOfArtist } from "components/AlbumOfArtist";
 import { SwitchTab } from "components/SwitchTab";
 import { SongList } from "components/SongList";
 import { CreatePlaylist } from "components/CreatePlaylist";
-import { UserPlaylists } from "./UserPlaylists";
-import { PlaylistContent } from "./PlaylistContent";
+import { PlaylistsOfUser } from "./PlaylistsOfUser";
+import { ContentOfPlaylist } from "./ContentOfPlaylist";
 import { Footer } from "components/Footer";
 
 export {
@@ -32,12 +32,12 @@ export {
   Register,
   Sidebar,
   Alert,
-  ArtistPopularSong,
+  PopularSongOfArtist,
   AlbumOfArtist,
   SwitchTab,
   SongList,
   CreatePlaylist,
-  UserPlaylists,
-  PlaylistContent,
+  PlaylistsOfUser,
+  ContentOfPlaylist,
   Footer
 };

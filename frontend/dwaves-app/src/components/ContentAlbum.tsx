@@ -1,19 +1,19 @@
 import 'styles/ContentAlbum.scss'
 import { Icon } from 'components/shared'
 import { Link, useParams } from 'react-router-dom'
-import { useEffect, useState, Dispatch, RefObject } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { SongList } from "./SongList";
 import {AlbumDetail, responseRequest} from "models";
 
 interface Props {
-  setCurrentSong: Dispatch<React.SetStateAction<any>>
-  setSongs: Dispatch<React.SetStateAction<any>>
-  audioElmt: RefObject<HTMLAudioElement>
+  setCurrentSong: React.Dispatch<React.SetStateAction<any>>
+  setSongs: React.Dispatch<React.SetStateAction<any>>
+  audioElmt: React.RefObject<HTMLAudioElement>
   isPlaying: boolean
-  setIsPlaying: Dispatch<React.SetStateAction<boolean>>
-  setArtist : Dispatch<React.SetStateAction<AlbumDetail|undefined>>
-  setAlert: Dispatch<React.SetStateAction<responseRequest | undefined>>
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
+  setArtist : React.Dispatch<React.SetStateAction<AlbumDetail|undefined>>
+  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
   likedMusics: string[];
   likeOrDislikeMusic: (music: string)=> void
 }
