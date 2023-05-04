@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y apt-transport-https ca-certificates cur
     apt-get update && \
     apt-get -y install doppler
 
+
 USER node
 
 # Copy the remaining application files
@@ -79,9 +80,12 @@ RUN apt-get update && apt-get install -y apt-transport-https ca-certificates cur
     apt-get update && \
     apt-get -y install doppler
 
+
 USER node
 
 COPY --chown=node:node --from=build /usr/src/app/api/build ./build
+
+# COPY --chown=node:node --from=build /usr/src/app/api/.env ./.env
 
 COPY --chown=node:node --from=build /usr/src/app/api/tsconfig.json ./tsconfig.json
 

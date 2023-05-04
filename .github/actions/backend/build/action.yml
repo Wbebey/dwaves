@@ -3,16 +3,16 @@ description: "Build dwaves-api"
 runs:
     using: composite
     steps:
-      # - name: Use Node.js ${{ env.NODE_VERSION }}
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ env.NODE_VERSION }}
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
-      # - name: Retrieve environment variables 🌎
-      #   working-directory:  ${{ env.PROJECT_DIRECTORY }}
-      #   shell: bash
-      #   run: |-
-      #     source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
+      - name: Retrieve environment variables 🌎
+        working-directory:  ${{ env.PROJECT_DIRECTORY }}
+        shell: bash
+        run: |-
+          source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
 
       - name: Build 🏗
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
@@ -21,7 +21,4 @@ runs:
           source ${{ env.PROPERTIES_SCRIPT }} && get_environment_properties
           docker build . \
             -f ${{ GITHUB.WORKSPACE }}/${{ env.PROJECT_DIRECTORY }}/Dockerfile \
-            --build-arg DOPPLER_TOKEN=$DOPPLER_TOKEN \
-            --build-arg APP=${{ env.APP }} \
-            --build-arg ENV_NAME=$ENV_NAME \
             -t $DOCKER_TAG \
