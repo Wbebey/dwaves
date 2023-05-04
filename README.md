@@ -13,7 +13,7 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dwaves-website&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-website)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dwaves-app&metric=bugs)](https://sonarcloud.io/summary/new_code?id=dwaves-app)
 
 ## *Backend*
 
