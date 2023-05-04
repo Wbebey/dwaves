@@ -19,7 +19,6 @@ env:
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
     ENV_VARS: ${{ secrets.DWAVES_API_TEST_ENV }}
-    DOCKER_TAG: gcr.io/${{ secrets.DWAVES_PROJECT_ID }}/dwaves-api-test:${{ github.sha }}
 
 defaults: 
     run:
@@ -76,7 +75,7 @@ jobs:
         run: |-
           docker build . \
             -f ${{ GITHUB.WORKSPACE }}/${{ env.PROJECT_DIRECTORY }}/Dockerfile \
-            -t {{ env.DOCKER_TAG }} \
+            -t gcr.io/${{ env.GCP_PROJECT_ID }}/{{ env.APP }}-{{ env.ENVIRONMENT }}:${{ github.sha }} \
             --build-arg ENVIRONMENT=${{ env.ENVIRONMENT }} \
             --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
             --build-arg BUILD_NUMBER=${{ github.run_number }} \
@@ -84,14 +83,14 @@ jobs:
 
       - name: Publish to Container registry 🛫
         run: |-
-          echo "Pushing image {{ env.DOCKER_TAG }} to google cloud container registry..."
+          echo "Pushing image to google cloud container registry..."
           gcloud auth configure-docker --quiet
-          docker push {{ env.DOCKER_TAG }}
+          docker push gcr.io/${{ env.GCP_PROJECT_ID }}/{{ env.APP }}-{{ env.ENVIRONMENT }}:${{ github.sha }}
 
       - name: Deploy to cloud run 🚀
         run: |-
           gcloud run deploy ${{ env.APP }}-${{ env.ENVIRONMENT }} \
-            --image {{ env.DOCKER_TAG }} \
+            --image gcr.io/${{ env.GCP_PROJECT_ID }}/{{ env.APP }}-{{ env.ENVIRONMENT }}:${{ github.sha }} \
             --platform managed \
             --region europe-west1 \
             --allow-unauthenticated \

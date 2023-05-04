@@ -25,7 +25,7 @@ defaults:
 jobs:
   remove-label:
     name: Remove Label
-    if: ${{ github.event.label.name == 'deploy-dwaves-front-test' }}
+    if: ${{ github.event.label.name == 'deploy-test' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -44,7 +44,7 @@ jobs:
 
   deploy:
     name: Deploy
-    if: ${{ github.event.label.name == 'deploy-dwaves-front-test' }}
+    if: ${{ github.event.label.name == 'deploy-test' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
