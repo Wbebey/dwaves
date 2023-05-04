@@ -40,7 +40,7 @@ You can browse the database with prisma's builtin studio:
 
 # Deployment (afer updated smart contract)
 
-For every deployment, you have to update [version.txt](version.txt) file with semantic versioning.
+For every deployment, you have to update [version.txt](version.txt) file with semantic versioning..
 
 # Prisma
 

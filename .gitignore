@@ -9,4 +9,3 @@ vcs.xml
 .vscode
 **.env
 **.env.old
-.ngrok.yml
