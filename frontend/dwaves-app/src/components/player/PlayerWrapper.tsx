@@ -7,7 +7,6 @@ import { playPause } from 'songs/listenMusic'
 
 import { useEffect, useRef, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { OrthographicCamera } from 'three'
 
 interface Props {
   audioElmt: React.RefObject<HTMLAudioElement>
@@ -79,8 +78,7 @@ export const PlayerWrapper: React.FC<Props> = ({
     const offset = e.nativeEvent.offsetX
 
     const divprogress = (offset / width) * 100
-    audioElmt.current.currentTime =
-      (divprogress / 100) * (currentSong.length ?? 0)
+    audioElmt.current.currentTime = (divprogress / 100) * (currentSong.length ?? 0)
   }
 
   const switchToPrevious = () => {
@@ -120,9 +118,7 @@ export const PlayerWrapper: React.FC<Props> = ({
   return (
     <div className="player-explorer-wrapper">
       {/* Because we love magic numbers */}
-      <Canvas
-        orthographic
-      >
+      <Canvas camera={{ position: [0.0, 0.0, 0.1], zoom: 1.3825 }}>
         <PlayerShader
           planeSubdivisions={planeSubdivisions}
           playerStatus={playerStatus}

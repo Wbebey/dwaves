@@ -2,7 +2,7 @@ import vertexShader from 'shaders/playerVertex.glsl'
 import fragmentShader from 'shaders/playerFragment.glsl'
 
 import { useMemo, useRef } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 interface Props {
@@ -15,14 +15,14 @@ export const PlayerShader: React.FC<Props> = ({
   playerStatus,
 }) => {
   const AMPLITUDES = {
-    playing: 0.06,
-    paused: 0.03,
+    playing: 0.012,
+    paused: 0.007,
     inactive: 0.0,
   }
-
-  // Subdivisions are only linked to the level of detail in the animation
-  // not the strength/amplitude
-  const subdivs = Math.max(planeSubdivisions, 4)
+  // 192 corresponds to the player component height
+  // -> see PlayerWrapper.scss
+  const subdivs = Math.max(planeSubdivisions, 20)
+  const ratio = 185 / window.innerWidth
 
   const meshRef = useRef<THREE.Mesh>(null!)
   const materialRef = useRef<THREE.ShaderMaterial>(null!)
@@ -35,8 +35,6 @@ export const PlayerShader: React.FC<Props> = ({
     [],
   )
 
-  const viewport = useThree((state) => state.viewport)
-
   useFrame((state) => {
     let amplitude = AMPLITUDES[playerStatus]
     amplitude = THREE.MathUtils.lerp(
@@ -45,18 +43,20 @@ export const PlayerShader: React.FC<Props> = ({
       amplitude,
       0.05,
     )
-
+    
     // @ts-ignore
     meshRef.current.material.uniforms.uTime.value =
       state.clock.elapsedTime / 4.0
     // @ts-ignore
-    meshRef.current.material.uniforms.uAmplitude.value = amplitude
+    meshRef.current.material.uniforms.uAmplitude.value =
+      amplitude
   })
 
-  const ratio = viewport.width / viewport.height
   return (
-    <mesh ref={meshRef} scale={[viewport.width, viewport.height, 1]}>
-      <planeGeometry args={[1.0, 1.0, subdivs * ratio, subdivs]} />
+    <mesh ref={meshRef}>
+      <planeGeometry
+        args={[1.0, ratio, subdivs * Math.round(1.0 / ratio), subdivs]}
+      />
       <shaderMaterial
         ref={materialRef}
         vertexShader={vertexShader}
