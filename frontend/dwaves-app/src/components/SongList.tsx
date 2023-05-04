@@ -1,10 +1,7 @@
-import {PlayPause} from "songs/listenMusic";
-import {AlbumDetail, responseRequest, Playlists} from "../models";
-import {Icon} from "./shared";
+import { PlayPause } from "songs/listenMusic";
+import { AlbumDetail } from "../models";
+import { Icon } from "./shared";
 import {useEffect, useState} from "react";
-import axios from "axios";
-import {IoAdd} from "react-icons/all";
-import {BsThreeDotsVertical} from "react-icons/bs";
 
 interface Props {
     songs: AlbumDetail
@@ -13,25 +10,18 @@ interface Props {
     audioElmt: React.RefObject<HTMLAudioElement>
     isPlaying: boolean
     setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
-    setArtist: React.Dispatch<React.SetStateAction<AlbumDetail | undefined>>
-    isPlaylistSong?: boolean
-    deleteMusicToThePlaylist?: any
-    setAlert?: React.Dispatch<React.SetStateAction<responseRequest | undefined>>;
+    setArtist : React.Dispatch<React.SetStateAction<AlbumDetail|undefined>>;
 }
 
-
 export const SongList: React.FC<Props> = ({
-                                              songs,
-                                              setCurrentSong,
-                                              setSongs,
-                                              audioElmt,
-                                              isPlaying,
-                                              setIsPlaying,
-                                              setArtist,
-                                              isPlaylistSong,
-                                              deleteMusicToThePlaylist,
-                                              setAlert
-                                          }) => {
+    songs,
+    setCurrentSong,
+    setSongs,
+    audioElmt,
+    isPlaying,
+    setIsPlaying,
+    setArtist
+}) => {
 
     const [allPlaylists, setAllPlaylists] = useState<Playlists>([])
     const [likedMusics, setLikedMusics] = useState<string[]>([])
@@ -112,15 +102,15 @@ export const SongList: React.FC<Props> = ({
     }, [])
 
     const displayAlert = (msg: string, status: number) => {
-        setAlert!({response: msg, status: status, visible: true})
+        setAlert({response: msg, status: status, visible: true})
         setTimeout(() => {
-            setAlert!({response: "", status: 0, visible: false})
+            setAlert({response: "", status: 0, visible: false})
         }, 3000)
     }
 
     const foundCidMusic = (musicUrl: string) => {
         const musicCIDArray = musicUrl.split("/")
-        return musicCIDArray[musicCIDArray.length - 1]
+        return musicCIDArray[musicCIDArray.length -1]
     }
 
     const isLikedMusics = (music: string) => {
@@ -161,74 +151,54 @@ export const SongList: React.FC<Props> = ({
         <div className='container-list'>
             <ul className="list-song">
                 {songs?.musics.map((music, i) => (
-                    <div key={i} className="flex flex-row hover:bg-teal-300">
-                        <li
-                            onClick={e => {
-                                setCurrentSong(music)
-                                setSongs(songs.musics)
-                                setArtist(songs)
-                                if (isPlaying) {
-                                    setTimeout(() => {
-                                        PlayPause(audioElmt, false, setIsPlaying)
-                                    }, 1000)
-                                } else {
-                                    PlayPause(audioElmt, isPlaying, setIsPlaying)
-                                }
-                            }}
-                            className="song-li cursor-pointer"
-                        >
-                            <div className="avatar placeholder">
-                                <div className="text-neutral-content rounded-full w-10">
-                                    <span className="text-xl">0{i + 1}</span>
-                                </div>
+                    <li
+                        onClick={e => {
+                            setCurrentSong(music)
+                            setSongs(songs.musics)
+                            setArtist(songs)
+                            if (isPlaying) {
+                                setTimeout(()=>{
+                                    PlayPause(audioElmt, false, setIsPlaying)
+                                },1000)
+                            } else {
+                                PlayPause(audioElmt, isPlaying, setIsPlaying)
+                            }
+                        }}
+                        key={i}
+                        className="song-li cursor-pointer"
+                    >
+                        <div className="avatar placeholder">
+                            <div className="text-neutral-content rounded-full w-10">
+                                <span className="text-xl">0{i + 1}</span>
                             </div>
-                            <div className="p-0 divider divider-horizontal"/>
-                            <div className="song-li-info">
-                                <h4 style={{}}>{music.name}</h4>
-                                <p>{songs.artist}</p>
-                            </div>
-                        </li>
-                        <div className="song-li-action w-56 flex flex-row items-end pb-5">
-                            <div>
-                                {isPlaylistSong ?
-                                    <div className="dropdown dropdown-left bg-transparent">
-                                        <div tabIndex={0}>
-                                            <BsThreeDotsVertical/>
-                                        </div>
-                                        <div tabIndex={0}
-                                             className="dropdown-content menu p-2 shadow bg-base-100 w-28 rounded-box hover:bg-white">
-                                            <button onClick={() => deleteMusicToThePlaylist(music.src!)}>
-                                                Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                    :
-                                    <>
-                                        <div className="dropdown dropdown-end">
-                                            <div tabIndex={0} className="pt-2 rounded-lg cursor-pointer">
-                                                <IoAdd/>
-                                            </div>
-                                            <ul tabIndex={0}
-                                                className="dropdown-content p-2 shadow bg-base-100 rounded-box w-52 hover:bg-white items-center">
-                                                {allPlaylists.map((thePlaylist, i) => (
-                                                    <button key={i} className="hover:bg-white self-center"
-                                                            onClick={() => addSongToThePlaylist(thePlaylist.id, music.src!)}
-                                                    >
-                                                        {thePlaylist.name}
-                                                    </button>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    </>
-                                }
-                            </div>
-                            <button className="pl-5" onClick={() => likeOrDislikeMusic(music.src!)}>
-                                <Icon icon="like" color={isLikedMusics(music.src!) ? "red" : "black"}
-                                      variant={isLikedMusics(music.src!) ? "Bold" : "Linear"}/>
-                            </button>
-                            <p className="pt-4 pl-5">2 : 30</p>
                         </div>
-                    </div>
+                        <div className="p-0 divider divider-horizontal" />
+                        <div className="song-li-info">
+                            <h4 style={{}}>{music.name}</h4>
+                            <p>{songs.artist}</p>
+                        </div>
+                        <div className="song-li-action">
+                            <div className="dropdown dropdown-end bg-transparent">
+                                <div tabIndex={0} className="btn m-1 bg-white hover:bg-white"><Icon icon="add"/></div>
+                                <ul tabIndex={0}
+                                    className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 hover:bg-white">
+                                    {allPlaylists.map((thePlaylist, i) => (
+                                        <button key={i} className="hover:bg-white self-center"
+                                                onClick={() => addSongToThePlaylist(thePlaylist.id, music.src!)}
+                                        >
+                                            {thePlaylist.name}
+                                        </button>
+                                    ))}
+                                </ul>
+                            </div>
+
+
+                            <button onClick={() => console.log('hey')}>
+                                <Icon icon="like"/>
+                            </button>
+                            <p className="pt-4">2 : 30</p>
+                        </div>
+                    </li>
                 ))}
             </ul>
         </div>
