@@ -7,7 +7,6 @@ import {
 import { TokenType } from '@@types/token.type'
 import { UserAddressAndMonthlyListenings, ViewUser } from '@@types/user.type'
 import { Album, Genre, Prisma, User } from '@prisma/client'
-import { Contract } from 'ethers'
 import { UploadedFile } from 'express-fileupload'
 import { JwtPayload, SignOptions } from 'jsonwebtoken'
 
@@ -56,10 +55,6 @@ export interface IPinataService extends IService {
     file: UploadedFile,
     metadata: CoverMetadata | MusicMetadata
   ) => Promise<string>
-}
-
-export interface INFTService extends IService {
-  mint: (artistAddress: string, musicCID: string) => Promise<string>
 }
 
 export interface ITokenService extends IService {

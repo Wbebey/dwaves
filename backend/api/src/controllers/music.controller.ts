@@ -8,7 +8,6 @@ import { CoverMetadata, FileType, MusicMetadata } from '@@types/pinata.type'
 import albumService from '@services/album.service'
 import { AlbumType } from '@prisma/client'
 import path from 'path'
-import nftService from '@services/nft.service'
 
 class MusicController implements IMusicController {
   uploadSingle: RequestHandler = async (req, res) => {
@@ -19,7 +18,7 @@ class MusicController implements IMusicController {
     logger.log(`cover: ${cover.name} - CID: ${coverCID}`)
 
     const music = req.files!.music as UploadedFile
-    const { id: artistId, address: artistAddress } = res.locals.user
+    const artistId = res.locals.user.id
     const genreId = req.body.genre.id
     const album = await albumService.create({
       name: path.parse(music.name).name,
@@ -42,9 +41,7 @@ class MusicController implements IMusicController {
     const coverUrl = `${env.pinataGatewayHost}/${coverCID}`
     const musicUrl = `${env.pinataGatewayHost}/${musicCID}`
 
-    const tokenId = await nftService.mint(artistAddress, musicCID)
-
-    res.json({ coverUrl, musicUrl, tokenId })
+    res.json({ coverUrl, musicUrl })
   }
 
   get: RequestHandler = async (req, res) => {
