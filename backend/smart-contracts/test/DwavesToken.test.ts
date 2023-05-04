@@ -5,7 +5,7 @@ import { DwavesToken, DwavesToken__factory } from '../typechain-types'
 describe('DwavesToken', () => {
   let dwavesTokenFactory: DwavesToken__factory
   let dwavesToken: DwavesToken
-  let recipientContract: DwavesToken
+  let signerContract: DwavesToken
   let decimals: number
   let ownerAddress: string
   let recipientAddress: string
@@ -16,16 +16,16 @@ describe('DwavesToken', () => {
 
   describe('When deploying the contract', () => {
     beforeEach(async () => {
-      const [owner, recipient] = await ethers.getSigners()
-      dwavesToken = await dwavesTokenFactory.deploy(owner.address)
+      dwavesToken = await dwavesTokenFactory.deploy()
       await dwavesToken.deployed()
 
-      decimals = await dwavesToken.decimals()
+      const [dec, signers] = await Promise.all([dwavesToken.decimals(), ethers.getSigners()])
+      decimals = dec
 
-      ownerAddress = owner.address
-      recipientAddress = recipient.address
+      ownerAddress = signers[0].address
+      recipientAddress = signers[1].address
 
-      recipientContract = dwavesToken.connect(recipient)
+      signerContract = dwavesToken.connect(signers[1])
     })
 
     it('Creates a token with a name', async () => {
@@ -66,44 +66,30 @@ describe('DwavesToken', () => {
     it("Emits a 'Transfer' event with the right arguments", async () => {
       const transferAmount = ethers.utils.parseUnits('100000', decimals)
       const transfer = dwavesToken.transfer(recipientAddress, transferAmount)
-      await expect(transfer)
-        .to.emit(dwavesToken, 'Transfer')
-        .withArgs(ownerAddress, recipientAddress, transferAmount)
+      await expect(transfer).to.emit(dwavesToken, 'Transfer').withArgs(ownerAddress, recipientAddress, transferAmount)
     })
 
     it('Allows for allowance approvals and queries', async () => {
       const approveAmount = ethers.utils.parseUnits('10000', decimals)
-      await recipientContract.approve(ownerAddress, approveAmount)
+      await signerContract.approve(ownerAddress, approveAmount)
 
-      const allowance = await dwavesToken.allowance(
-        recipientAddress,
-        ownerAddress
-      )
+      const allowance = await dwavesToken.allowance(recipientAddress, ownerAddress)
       expect(allowance).to.equal(approveAmount)
     })
 
     it("Emits an 'Approval' event with the right arguments", async () => {
       const approveAmount = ethers.utils.parseUnits('10000', decimals)
-      const approval = recipientContract.approve(ownerAddress, approveAmount)
-      await expect(approval)
-        .to.emit(dwavesToken, 'Approval')
-        .withArgs(recipientAddress, ownerAddress, approveAmount)
+      const approval = signerContract.approve(ownerAddress, approveAmount)
+      await expect(approval).to.emit(dwavesToken, 'Approval').withArgs(recipientAddress, ownerAddress, approveAmount)
     })
 
     it('Allows an approved spender to transfer from owner', async () => {
       const rawTransferAmount = 10_000
-      const transferAmount = ethers.utils.parseUnits(
-        rawTransferAmount.toString(),
-        decimals
-      )
+      const transferAmount = ethers.utils.parseUnits(rawTransferAmount.toString(), decimals)
       await dwavesToken.transfer(recipientAddress, transferAmount)
-      await recipientContract.approve(ownerAddress, transferAmount)
+      await signerContract.approve(ownerAddress, transferAmount)
 
-      const transferFrom = dwavesToken.transferFrom(
-        recipientAddress,
-        ownerAddress,
-        rawTransferAmount
-      )
+      const transferFrom = dwavesToken.transferFrom(recipientAddress, ownerAddress, rawTransferAmount)
       await expect(transferFrom).to.changeTokenBalances(
         dwavesToken,
         [ownerAddress, recipientAddress],
@@ -114,13 +100,9 @@ describe('DwavesToken', () => {
     it("Emits a 'Transfer' event with the right arguments when conducting an approved transfer", async () => {
       const transferAmount = ethers.utils.parseUnits('10000', decimals)
       await dwavesToken.transfer(recipientAddress, transferAmount)
-      await recipientContract.approve(ownerAddress, transferAmount)
+      await signerContract.approve(ownerAddress, transferAmount)
 
-      const transferFrom = dwavesToken.transferFrom(
-        recipientAddress,
-        ownerAddress,
-        transferAmount
-      )
+      const transferFrom = dwavesToken.transferFrom(recipientAddress, ownerAddress, transferAmount)
       await expect(transferFrom)
         .to.emit(dwavesToken, 'Transfer')
         .withArgs(recipientAddress, ownerAddress, transferAmount)
@@ -130,29 +112,18 @@ describe('DwavesToken', () => {
       const initialAmount = ethers.utils.parseUnits('100', decimals)
       const incrementAmount = ethers.utils.parseUnits('10000', decimals)
 
-      await recipientContract.approve(ownerAddress, initialAmount)
-      const previousAllowance = await dwavesToken.allowance(
-        recipientAddress,
-        ownerAddress
-      )
-      await recipientContract.increaseAllowance(ownerAddress, incrementAmount)
-      const expectedAllowance = ethers.BigNumber.from(previousAllowance).add(
-        ethers.BigNumber.from(incrementAmount)
-      )
+      await signerContract.approve(ownerAddress, initialAmount)
+      const previousAllowance = await dwavesToken.allowance(recipientAddress, ownerAddress)
+      await signerContract.increaseAllowance(ownerAddress, incrementAmount)
+      const expectedAllowance = ethers.BigNumber.from(previousAllowance).add(ethers.BigNumber.from(incrementAmount))
 
-      const allowance = await dwavesToken.allowance(
-        recipientAddress,
-        ownerAddress
-      )
+      const allowance = await dwavesToken.allowance(recipientAddress, ownerAddress)
       expect(allowance).to.equal(expectedAllowance)
     })
 
     it("Emits 'Approval' event when alllowance is increased", async () => {
       const incrementAmount = ethers.utils.parseUnits('10000', decimals)
-      const allowanceIncrease = recipientContract.increaseAllowance(
-        ownerAddress,
-        incrementAmount
-      )
+      const allowanceIncrease = signerContract.increaseAllowance(ownerAddress, incrementAmount)
       await expect(allowanceIncrease)
         .to.emit(dwavesToken, 'Approval')
         .withArgs(recipientAddress, ownerAddress, incrementAmount)
@@ -162,20 +133,12 @@ describe('DwavesToken', () => {
       const initialAmount = ethers.utils.parseUnits('100', decimals)
       const decrementAmount = ethers.utils.parseUnits('10', decimals)
 
-      await recipientContract.approve(ownerAddress, initialAmount)
-      const previousAllowance = await dwavesToken.allowance(
-        recipientAddress,
-        ownerAddress
-      )
-      await recipientContract.decreaseAllowance(ownerAddress, decrementAmount)
-      const expectedAllowance = ethers.BigNumber.from(previousAllowance).sub(
-        ethers.BigNumber.from(decrementAmount)
-      )
+      await signerContract.approve(ownerAddress, initialAmount)
+      const previousAllowance = await dwavesToken.allowance(recipientAddress, ownerAddress)
+      await signerContract.decreaseAllowance(ownerAddress, decrementAmount)
+      const expectedAllowance = ethers.BigNumber.from(previousAllowance).sub(ethers.BigNumber.from(decrementAmount))
 
-      const allowance = await dwavesToken.allowance(
-        recipientAddress,
-        ownerAddress
-      )
+      const allowance = await dwavesToken.allowance(recipientAddress, ownerAddress)
       expect(allowance).to.equal(expectedAllowance)
     })
 
@@ -183,15 +146,10 @@ describe('DwavesToken', () => {
       const initialAmount = ethers.utils.parseUnits('100', decimals)
       const decrementAmount = ethers.utils.parseUnits('10', decimals)
 
-      await recipientContract.approve(ownerAddress, initialAmount)
-      const expectedAllowance = ethers.BigNumber.from(initialAmount).sub(
-        ethers.BigNumber.from(decrementAmount)
-      )
+      await signerContract.approve(ownerAddress, initialAmount)
+      const expectedAllowance = ethers.BigNumber.from(initialAmount).sub(ethers.BigNumber.from(decrementAmount))
 
-      const allowanceDecrease = recipientContract.decreaseAllowance(
-        ownerAddress,
-        decrementAmount
-      )
+      const allowanceDecrease = signerContract.decreaseAllowance(ownerAddress, decrementAmount)
       await expect(allowanceDecrease)
         .to.emit(dwavesToken, 'Approval')
         .withArgs(recipientAddress, ownerAddress, expectedAllowance)
@@ -201,11 +159,7 @@ describe('DwavesToken', () => {
       const burnAmount = ethers.utils.parseUnits('1000', decimals)
       const burn = dwavesToken.burn(burnAmount)
       await expect(burn)
-        .to.changeTokenBalance(
-          dwavesToken,
-          ownerAddress,
-          ethers.BigNumber.from(`-${burnAmount}`)
-        )
+        .to.changeTokenBalance(dwavesToken, ownerAddress, ethers.BigNumber.from(`-${burnAmount}`))
         .and.to.emit(dwavesToken, 'Transfer')
         .withArgs(ownerAddress, ethers.constants.AddressZero, burnAmount)
     })
@@ -213,23 +167,17 @@ describe('DwavesToken', () => {
     it('Prevents burning if insufficient funds', async () => {
       const excessBurnAmount = ethers.utils.parseUnits('400000000', decimals)
       const exceedsBalanceBurn = dwavesToken.burn(excessBurnAmount)
-      await expect(exceedsBalanceBurn).to.be.revertedWith(
-        'ERC20: burn amount exceeds balance'
-      )
+      await expect(exceedsBalanceBurn).to.be.revertedWith('ERC20: burn amount exceeds balance')
     })
 
     it('Allows an approved spender to burn tokens', async () => {
       const burnAmount = ethers.utils.parseUnits('1000', decimals)
       await dwavesToken.transfer(recipientAddress, burnAmount)
-      await recipientContract.approve(ownerAddress, burnAmount)
+      await signerContract.approve(ownerAddress, burnAmount)
 
       const burnFrom = dwavesToken.burnFrom(recipientAddress, burnAmount)
       await expect(burnFrom)
-        .to.changeTokenBalance(
-          dwavesToken,
-          recipientAddress,
-          ethers.BigNumber.from(`-${burnAmount}`)
-        )
+        .to.changeTokenBalance(dwavesToken, recipientAddress, ethers.BigNumber.from(`-${burnAmount}`))
         .and.to.emit(dwavesToken, 'Transfer')
         .withArgs(recipientAddress, ethers.constants.AddressZero, burnAmount)
     })

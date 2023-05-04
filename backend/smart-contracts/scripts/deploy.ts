@@ -2,15 +2,15 @@ import { ethers } from 'hardhat'
 
 const main = async () => {
   const tokenName = 'Dwaves'
-  const [contractOwner] = await ethers.getSigners()
+  const contractOwner = await ethers.getSigners()
 
-  console.log(`Deploying contract from ${contractOwner.address}`)
+  console.log(`Deploying contract from ${contractOwner[0].address}`)
 
   const Token = await ethers.getContractFactory(`${tokenName}Token`)
 
   console.log(`Deploying ${tokenName}Token...`)
 
-  const token = await Token.deploy(contractOwner.address)
+  const token = await Token.deploy()
   await token.deployed()
 
   console.log(`${tokenName}Token deployed to: ${token.address}`)
