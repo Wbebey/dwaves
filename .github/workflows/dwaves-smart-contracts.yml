@@ -1,4 +1,4 @@
-name: Dwaves-smart-contracts
+name: Test & Analyse - Dwaves-smart-contracts
 
 on:
   push:
