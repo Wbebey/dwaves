@@ -31,7 +31,7 @@ export const PopularSongOfArtist = () => {
 
 
     return (
-        <div> Player profile </div>
+        <div> TKTTT </div>
     )
 
 }
