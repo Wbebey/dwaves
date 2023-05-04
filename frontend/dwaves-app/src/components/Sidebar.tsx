@@ -46,7 +46,7 @@ export const Sidebar: React.FC<Props> = ({
       <ul style={{ height: '100%', position: "relative" }} className="menu bg-white p-2">
         <li>
           {connected ? (
-            <Link to={'/profile'} className="py-0">
+            <Link to={'/profil'} className="py-0">
               <div className="avatar mx-auto">
                 <div className="w-12 rounded-full">
                   <img src="https://placeimg.com/192/192/people" alt="" />
