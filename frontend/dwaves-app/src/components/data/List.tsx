@@ -40,7 +40,7 @@ export const List = () => {
 
   return (
     <section className="contain-list-view">
-      {/* <header className="head">
+      <header className="head">
         <div style={{ width: '60%' }} className="relative z-0">
           <input
             type="text"
@@ -60,7 +60,7 @@ export const List = () => {
         <Button text="titres" size="Large" handleClick={() => {}} />
         <Button text="listes" size="Large" handleClick={() => {}} />
         <Button text="artistes" size="Large" handleClick={() => {}} />
-      </header> */}
+      </header>
       <div className="content-playlist">
         <div className="body">
           {/* modify flex with action button */}

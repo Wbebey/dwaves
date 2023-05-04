@@ -6,9 +6,9 @@ export const ContentPlaylist = () => {
       <div className="banner">
         <Banner />
       </div>
-      <div className="container-playlist">
+      <div className="container">
         <List />
-        {/* <Suggestions /> */}
+        <Suggestions />
       </div>
     </div>
   );
