@@ -1,5 +1,5 @@
 name: TAB - Dwaves-app 🚀 
-run-name: ${{ github.actor }} - ${{ github.workflow }} - ${{ github.ref_name }}
+run-name: ${{ github.actor }} - ${{ github.workflow }} - ${{ github.branch }}
 
 on:
   push:
@@ -9,12 +9,12 @@ on:
       - hotfix/*
     paths:
       - frontend/dwaves-app/**
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - staging
-    paths:
-      - frontend/dwaves-app/**
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #   branches:
+  #     - staging
+  #   paths:
+  #     - ${{ env.WORKING_DIRECTORY }}/**
 
 env:
   WORKING_DIRECTORY: "frontend/dwaves-app"
@@ -31,6 +31,12 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
+      # - name: Trigger Message 📥
+      #   run: |-
+      #     echo " The job was automatically triggered by a ${{ github.event_name }} event by ${{ github.actor }}."
+      #     echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      #     echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
       - name: Checkout 😇
         uses: actions/checkout@v3
 
@@ -40,10 +46,12 @@ jobs:
             node-version: ${{ matrix.node-version }}
 
       - name: Environment variables 🧪
+        # working-directory: ./frontend/dwaves-app
         run: |-
           sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
 
       - name: Integartion Tests 🏗
+        # working-directory: ./frontend/dwaves-app
         run: |-
           npm install
           echo "Running  integration tests..."
@@ -65,13 +73,16 @@ jobs:
             node-version: ${{ matrix.node-version }}
 
       - name: Environment variables 🧪
+        # working-directory: ./frontend/dwaves-app
         run: |-
           sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
 
       - name: Unit Test 🧪
+        # working-directory: ./frontend/dwaves-app
         run: |-
           npm install
           echo "Running  unit tests..."
+
 
   code-analysis:
     name: Code Analysis
@@ -88,13 +99,10 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_APP }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           projectBaseDir: frontend/dwaves-app/
           args: >
-            -Dsonar.projectKey=${{ secrets.DWAVES_APP_PROJECT_KEY }}
-            -Dsonar.organization=wbebey
-            -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
             -Dsonar.pullrequest.branch=${{ github.head_ref }}
             -Dsonar.pullrequest.base=${{ github.base_ref }}
@@ -119,6 +127,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Build 🏗
+        # working-directory: ./frontend/dwaves-app
         run: |-
           npm install
           CI='false' npm run build 
