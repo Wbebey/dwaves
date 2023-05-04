@@ -27,11 +27,11 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
-      # - name: Trigger Message 📥
-      #   run: |-
-      #     echo " The job was automatically triggered by a ${{ github.event_name }} event by ${{ github.actor }}."
-      #     echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      #     echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Trigger Message 📥
+        run: |-
+          echo " The job was automatically triggered by a ${{ github.event_name }} event by {{ github.actor }}."
+          echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+          echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
 
       - name: Checkout 😇
         uses: actions/checkout@v3
