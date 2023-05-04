@@ -11,7 +11,7 @@ runs:
         severity: info
         description:  "**${{ github.workflow }}** - **[workflow ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})**"
         details: |
-            **Team:** ${{ env.DISCORD_TEAM_ID }}
+            **Team:** <@&1016454304795730021>
             **Author :** ${{ github.actor }} 
             **Commit:** [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
             **Branch:** ${{ github.ref }}

@@ -9,27 +9,15 @@ on:
     paths:
       - frontend/dwaves-app/**
   pull_request:
-    # types: [opened, synchronize, reopened]
-    # branches:
-    #   - staging
-    #   - main
+    types: [opened, synchronize, reopened]
+    branches:
+      - staging
     paths:
       - frontend/dwaves-app/**
 
 
 env:
-  APP: dwaves-app
   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-  DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }} 
-  SONAR_PROJECT_BASE_DIR: frontend/dwaves-app/
-  SONAR_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_APP }}
-  SONAR_PROJECT_KEY: ${{ secrets.DWAVES_APP_PROJECT_KEY }}
-  NODE_VERSION: 16.x
-  GCP_SA_KEY: ${{ secrets.TF_SA }}
-  GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
-  DWAVES_STAGING_URL: ${{ secrets.STAGING_ADDRESS }}
-  DWAVES_PRODUCTION_URL: ${{ secrets.PROD_ADDRESS }}
 
 defaults:
   run:
@@ -38,25 +26,18 @@ defaults:
 jobs:
   integration-tests:
     name: Integretion Tests
-    # if: |
-    #   github.ref == 'refs/heads/feature/*' ||
-    #   github.ref == 'refs/heads/bugfix/*' ||
-    #   github.ref == 'refs/heads/hotfix/*' ||
-    #   github.ref == 'refs/pull/4/*' ||
-    #   github.ref == 'refs/heads/staging' ||
-    #   github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     node-version: [16.x]
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
       - name: Checkout 😇
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ env.NODE_VERSION }}
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-            node-version: ${{ env.NODE_VERSION }}
+            node-version: ${{ matrix.node-version }}
 
       - name: Environment variables 🧪
         run: |-
@@ -73,25 +54,19 @@ jobs:
 
   unit-test:
     name: Unit Test
-    # if: |
-    #   github.ref == 'refs/heads/feature/*' ||
-    #   github.ref == 'refs/heads/bugfix/*' ||
-    #   github.ref == 'refs/heads/hotfix/*' ||
-    #   github.ref == 'refs/heads/staging' ||
-    #   github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     node-version: [16.x]
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
 
       - name: Checkout 😇
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ env.NODE_VERSION }}
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-            node-version: ${{ env.NODE_VERSION }}
+            node-version: ${{ matrix.node-version }}
 
       - name: Environment variables 🧪
         run: |-
@@ -107,12 +82,6 @@ jobs:
 
   code-analysis:
     name: Code Analysis
-    # if: |
-    #   github.ref == 'refs/heads/feature/*' ||
-    #   github.ref == 'refs/heads/bugfix/*' ||
-    #   github.ref == 'refs/heads/hotfix/*' ||
-    #   github.ref == 'refs/heads/staging' ||
-    #   github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions: 
       contents: read
@@ -123,7 +92,23 @@ jobs:
         uses: actions/checkout@v3
 
       - name: SonarCloud Scan
-        uses: ./.github/actions/sonarcloud
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_APP }}
+        with:
+          projectBaseDir: frontend/dwaves-app/
+          args: >
+            -Dsonar.projectKey=${{ secrets.DWAVES_APP_PROJECT_KEY }}
+            -Dsonar.organization=wbebey
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+            -Dsonar.pullrequest.branch=${{ github.head_ref }}
+            -Dsonar.pullrequest.base=${{ github.base_ref }}
+            -Dsonar.pullrequest.provider=GitHub
+            -Dsonar.pullrequest.github.repository=${{ github.repository }}
+            -Dsonar.pullrequest.github.endpoint=https://api.github.com/
+            -Dsonar.verbose=true
 
       - name: Discord notification on failure
         if: failure()
@@ -131,42 +116,24 @@ jobs:
 
   build:
     name: Build
-    # if: |
-    #   contains('
-    #     refs/heads/feature/*
-    #     refs/heads/bugfix/*
-    #     refs/heads/hotfix/*
-    #     refs/heads/staging
-    #     refs/heads/main
-    #   ', github.ref)
     runs-on: ubuntu-latest
     needs: [code-analysis]
-    # strategy:
-    #   matrix:
-    #     node-version: [16.x]
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
       - name: Checkout 😇
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ env.NODE_VERSION }}
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: ${{ matrix.node-version }}
 
       - name: Build 🏗
         run: |-
           npm install
           CI='false' npm run build
-
-      - name: Caching Build folder
-        id: cache-build
-        uses: actions/cache@v3
-        with:
-          path: build/
-          key: ${{ runner.os }}-build
-          restore-keys: |
-            ${{ runner.os }}-build
-            ${{ runner.os }}-
 
       - name: Discord notification on success
         if: success()
@@ -176,54 +143,3 @@ jobs:
         if: failure()
         uses: ./.github/actions/notification-on-failure
         # uses: Wbebey/dwaves/.github/actions/notification-on-failure@feature/pipeline
-
-  deploy:
-    name: Deploy to GCP 
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/staging'  || github.ref == 'refs/heads/main'
-    needs: [build]
-    environment: 
-      name: |
-        if [ ${{ github.ref }} == 'refs/heads/staging' ]; then
-          return dwaves-app-staging
-        elif [ ${{ github.ref }} == 'refs/heads/main' ]; then
-          return dwaves-app-production
-        fi
-      url: |
-        if [ ${{ github.ref }} == 'refs/heads/staging' ]; then
-          return ${{ env.DWAVES_STAGING_URL }}
-        elif [ ${{ github.ref }} == 'refs/heads/main' ]; then
-          return ${{ env.DWAVES_PRODUCTION_URL }}
-        fi
-    steps:
-      - name: Checkout 😇
-        uses: actions/checkout@v3
-
-      - name: Deploy 🚀
-        uses: ./.github/actions/front-deployment
-
-      # - name: GCP authentification 🤑
-      #   uses: google-github-actions/setup-gcloud@v0
-      #   with:
-      #     service_account_key: ${{ env.GCP_SA_KEY }}
-      #     project_id: ${{ env.GCP_PROJECT_ID }}
-
-      # - name: Retreive Cached Build folder
-      #   id: cache-build
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: build/
-      #     key: ${{ runner.os }}-build
-
-      # - name: Deploy 🚀
-      #   run: |-
-      #     if [ ${{ github.ref }} == 'refs/heads/main' ]; then 
-      #       export environment=${{ env.APP }}-production
-      #       export deploy_url=${{ env.DWAVES_PRODUCTION_URL }}
-      #       gsutil rsync -R build/ gs://$deploy_url
-      #     elif [ ${{ github.ref }} == 'refs/heads/staging' ]; then
-      #       export environment=${{ env.APP }}-staging
-      #       export deploy_url=${{ env.DWAVES_STAGING_URL }}
-      #       gsutil rsync -R build/ gs://$deploy_url
-      #     fi
-      #     echo "Deployed to $environment environment: $url"
