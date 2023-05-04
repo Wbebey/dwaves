@@ -1,7 +1,10 @@
+import 'styles/player/PlayerShader.scss'
+// import { PlayerExplorer } from "components/player";
+
 import vertexShader from 'shaders/playerVertex.glsl'
 import fragmentShader from 'shaders/playerFragment.glsl'
 
-import { useMemo, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -11,14 +14,15 @@ interface Props {
 }
 
 const AMPLITUDES = {
-  playing: 0.006,
-  paused: 0.002,
+  playing: 0.005,
+  paused: 0.0005,
   inactive: 0.0,
 }
 
 export const PlayerShader: React.FC<Props> = ({
   planeSubdivisions,
   playerStatus,
+  ...props
 }) => {
   // 192 corresponds to the player component height
   // -> see PlayerWrapper.scss
@@ -28,31 +32,16 @@ export const PlayerShader: React.FC<Props> = ({
   const meshRef = useRef<THREE.Mesh>(null!)
   const materialRef = useRef<THREE.ShaderMaterial>(null!)
 
-  const uniforms = useMemo(
-    () => ({
-      uTime: { value: 0.0 },
-      uAmplitude: { value: AMPLITUDES[playerStatus] },
-    }),
-    [],
-  )
+  useEffect(() => {
+    materialRef.current.uniforms.uAmplitude.value = AMPLITUDES[playerStatus]
+  }, [playerStatus])
 
   useFrame((state) => {
-    let amplitude = AMPLITUDES[playerStatus]
-    amplitude = THREE.MathUtils.lerp(
-      meshRef.current.material.uniforms.uAmplitude.value,
-      amplitude,
-      0.05,
-    )
-
-    // Please, please, please ignore the TS warning here
-    meshRef.current.material.uniforms.uTime.value =
-      state.clock.elapsedTime / 4.0
-    meshRef.current.material.uniforms.uAmplitude.value =
-      amplitude
+    materialRef.current.uniforms.uTime.value = state.clock.elapsedTime / 4.0
   })
 
   return (
-    <mesh ref={meshRef}>
+    <mesh {...props} ref={meshRef}>
       <planeGeometry
         args={[1.0, ratio, subdivs * Math.round(1.0 / ratio), subdivs]}
       />
@@ -60,7 +49,7 @@ export const PlayerShader: React.FC<Props> = ({
         ref={materialRef}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
-        uniforms={uniforms}
+        uniforms={{ uTime: { value: 0.0 }, uAmplitude: { value: 0.0 } }}
       />
     </mesh>
   )
