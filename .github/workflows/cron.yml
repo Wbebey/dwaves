@@ -16,7 +16,7 @@ env:
   DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }}
 
 jobs:
-  setup-database:
+  database:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,6 +27,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
+
+      # - name: Retrieve environment for database
+      #   run: echo "${{ env.ULTIMATE_ENV }}" > .env
 
       - name: Install dependencies
         run: npm install
@@ -71,7 +74,8 @@ jobs:
         run: echo "prisma client not found" && exit 1
 
       - name: Retrieve environment for jobs
-        run: echo "${{ env.ULTIMATE_ENV }}" > .env
+        run:  |
+          echo "${{ env.ULTIMATE_ENV }}" > .env
 
       - name: Retrieve prisma client
         run: mv ${{ GITHUB.WORKSPACE }}/${{ env.DATABASE_DIRECTORY }}/client ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}
@@ -81,6 +85,17 @@ jobs:
 
       - name: Build script 
         run: npm run build
+
+      # - name: Retrieve prisma client
+      #   run: mv ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}/client ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}/build
+
+      - run: ls -al
+
+      - run: cat .env
+
+      - run: echo "${{ env.ULTIMATE_ENV }}" | sed -e 's/\(.\)/\1 /g'
+
+      - run: ls build/
 
       - name: Run script
         run: npm run start

@@ -1,0 +1,6 @@
+version: "3.9"  
+services:
+  dwaves:
+    build: .
+    ports:
+      - "80:80"
