@@ -3,17 +3,6 @@ description: "Build dwaves-api"
 runs:
     using: composite
     steps:
-      # - name: Use Node.js ${{ env.NODE_VERSION }}
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ env.NODE_VERSION }}
-
-      # - name: Retrieve environment variables 🌎
-      #   working-directory:  ${{ env.PROJECT_DIRECTORY }}
-      #   shell: bash
-      #   run: |-
-      #     source ${{ env.PROPERTIES_SCRIPT }} && doppler_setup
-
       - name: Build 🏗
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
