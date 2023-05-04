@@ -47,5 +47,5 @@ function export_commit_url () {
     echo "Setting commit url"
     get_environment_properties
     export GITHUB_COMMIT_URL="https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
-    sed -i -e "s|${APP_COMMIT_URL}=.*|${APP_COMMIT_URL}=$GITHUB_COMMIT_URL|g" .env
+    sed -i -e "s/${APP_COMMIT_URL}=.*/${APP_COMMIT_URL}=$GITHUB_COMMIT_URL/g" .env
 }

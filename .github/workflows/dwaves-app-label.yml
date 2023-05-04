@@ -17,7 +17,6 @@ env:
     PROJECT_DIRECTORY: frontend/dwaves-app
     TEST_URL: ${{ secrets.DWAVES_APP_TEST_URL }}
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    GITHUB_REPOSITORY: ${{ github.repository }}
     DOPPLER_TOKEN_TEST: ${{ secrets.DOPPLER_DWAVES_APP_TOKEN_TEST }}
     PROPERTIES_SCRIPT: ${{ GITHUB.WORKSPACE }}/.github/script/environment.sh
 
