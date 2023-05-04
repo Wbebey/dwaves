@@ -42,9 +42,9 @@ class MusicController implements IMusicController {
     const coverUrl = `${env.pinataGatewayHost}/${coverCID}`
     const musicUrl = `${env.pinataGatewayHost}/${musicCID}`
 
-    await nftService.mint(artistAddress, musicCID)
+    const tokenId = await nftService.mint(artistAddress, musicCID)
 
-    res.json({ coverUrl, musicUrl })
+    res.json({ coverUrl, musicUrl, tokenId })
   }
 
   get: RequestHandler = async (req, res) => {
