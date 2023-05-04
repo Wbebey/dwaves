@@ -66,9 +66,11 @@ export const PlayerWrapper: React.FC<Props> = ({
     (x: { name: string }) => x.name == currentSong?.name,
   )
 
-  const calculationProgressTime = (currentTime: number) => {
-    const minutes = Math.floor(currentTime / 60)
-    const seconds = Math.floor(currentTime % 60)
+  const calculationProgressTime = (progress: number) => {
+    console.log(progress)
+
+    const minutes = Math.floor(progress / 60)
+    const seconds = Math.floor(progress % 60)
     return `${minutes} : ${seconds < 10 ? '0' : ''}${seconds}`
   }
 
@@ -83,9 +85,9 @@ export const PlayerWrapper: React.FC<Props> = ({
     const width: number = clickRef.current?.clientWidth as number
     const offset = e.nativeEvent.offsetX
 
-    const divprogress = (offset / width) * width
+    const divprogress = (offset / width) * 100
     audioElmt.current.currentTime =
-      (divprogress / width) * (currentSong.length ?? 0)
+      (divprogress / 100) * (currentSong.length ?? 0)
   }
 
   const switchToPrevious = () => {
@@ -181,7 +183,7 @@ export const PlayerWrapper: React.FC<Props> = ({
             {songs && (
               <div className="widget-right-content">
                 <p>
-                  {calculationProgressTime(currentSong!.currentTime)} /{' '}
+                  {calculationProgressTime(currentSong!.progress)} /{' '}
                   {currentSong?.duration}
                 </p>
                 <button onClick={() => likeOrDislikeMusic(currentSong?.src!)}>

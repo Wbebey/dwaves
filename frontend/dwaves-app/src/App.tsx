@@ -82,7 +82,6 @@ function App() {
       setCurrentSong({
         ...currentSong!,
         progress: (ct / duration) * 100,
-        currentTime: ct,
         length: duration,
       })
     }
