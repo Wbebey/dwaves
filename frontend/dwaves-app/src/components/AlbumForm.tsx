@@ -8,17 +8,10 @@ interface Props {
   setCoverExist: React.Dispatch<React.SetStateAction<boolean>>
   setCover: React.Dispatch<React.SetStateAction<CoverFile>>
   setValue: UseFormSetValue<Album>
-  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
 }
-
-interface AlertProps {
-  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
-}
-
 
 interface AlbumProps {
   arraySong: SongData[]
-  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
 }
 
 type CoverFile = {
@@ -31,13 +24,7 @@ type Album = {
   src: any
 }
 
-type responseRequest = {
-  response:string
-  status:number
-  visible:boolean
-}
-
-const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue, setAlert }) => {
+const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue }) => {
   function handleFile(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) {
       return
@@ -72,7 +59,7 @@ const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue, setAler
   )
 }
 
-const AlbumCover: React.FC<AlbumProps> = ({ arraySong, setAlert }) => {
+const AlbumCover: React.FC<AlbumProps> = ({ arraySong }) => {
   const { register, setValue, getValues, handleSubmit } = useForm<Album>()
   const [cover, setCover] = useState<CoverFile>({ src: {} })
   const [coverExist, setCoverExist] = useState(false)
@@ -97,26 +84,10 @@ const AlbumCover: React.FC<AlbumProps> = ({ arraySong, setAlert }) => {
       })
       .then((res) => {
         console.log(res)
-        if (Array.isArray(res.data)) {
-          displayAlert(res.data[0].msg , res.status)
-        } else {
-          displayAlert(res.data.message , res.status)
-        }
       })
       .catch((err) => {
-        if (Array.isArray(err.response.data)) {
-          displayAlert(err.response.data[0].msg , err.response.status)
-        } else {
-          displayAlert(err.response.data.message , err.response.status)
-        }
+        console.log(err)
       })
-  }
-
-  const displayAlert = (msg:string , status:number) => {
-    setAlert({response : msg , status : status, visible: true })
-    setTimeout(()=>{
-      setAlert({response : "" , status : 0, visible: false })
-    }, 3000)
   }
 
   return (
@@ -132,7 +103,6 @@ const AlbumCover: React.FC<AlbumProps> = ({ arraySong, setAlert }) => {
             setCoverExist={setCoverExist}
             setCover={setCover}
             setValue={setValue}
-            setAlert={setAlert}
           />
         )}
       </div>
@@ -163,7 +133,7 @@ const AlbumCover: React.FC<AlbumProps> = ({ arraySong, setAlert }) => {
 
 type SongData = { title: string; src: File | null }
 
-export const AlbumForm: React.FC<AlertProps> = ({ setAlert }) => {
+export const AlbumForm = () => {
   const [arraySong, setArraySong] = useState<SongData[]>([
     { title: '', src: null },
   ])
@@ -198,7 +168,7 @@ export const AlbumForm: React.FC<AlertProps> = ({ setAlert }) => {
   return (
     <section className="contain-album-form">
       <div className="header">
-        <AlbumCover arraySong={arraySong} setAlert={setAlert} />
+        <AlbumCover arraySong={arraySong} />
       </div>
       <div className="content-form-album">
         <ul className="list-form-album">

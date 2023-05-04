@@ -3,16 +3,7 @@ import { SingleForm } from "components";
 import { AlbumForm } from "components";
 import { useState } from "react";
 
-type responseRequest = {
-  response:string
-  status:number
-  visible:boolean
-}
-interface Props {
-  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
-}
-
-export const Download : React.FC<Props> = ({ setAlert }) => {
+export const Download = () => {
   const [showForm, setShowForm]= useState(true)
   return (
     <div className="contain-download" style={{width: '100%', height: '100%', background: 'white'}}>
@@ -37,9 +28,9 @@ export const Download : React.FC<Props> = ({ setAlert }) => {
         </div>
       </div>
       { showForm ?
-        <SingleForm setAlert={setAlert} /> 
+        <SingleForm /> 
         :
-        <AlbumForm setAlert={setAlert} />
+        <AlbumForm />
       }   
     </div>
   )
