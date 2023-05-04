@@ -8,74 +8,71 @@ import "./DwavesToken.sol";
 contract ArtistPayer is AccessControl {
     using SafeMath for uint256;
 
+    DwavesToken token;
     bytes32 public constant PAYER_ROLE = keccak256("PAYER_ROLE");
-    uint256 public immutable rate;
-    DwavesToken public token;
+    uint256 public rate;
 
     event TokenPayments(address[] addresses, uint256[] amounts);
 
-    constructor(DwavesToken token_) {
-        require(
-            address(token_) != address(0),
-            "ArtistPayer: token is zero address"
-        );
+    constructor(DwavesToken _token) {
+        require(address(_token) != address(0));
+
+        token = _token;
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
         // 0.06 * token decimals
-        rate = 6 * 10**(token_.decimals() - 2);
-        token = token_;
-
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        rate = 6 * (10**_token.decimals() / 10**2);
     }
 
     function payArtists(
-        address[] calldata artistAddresses,
-        uint256[] calldata listenings
+        address[] calldata _artistAddresses,
+        uint256[] calldata _listenings
     ) external {
-        _preValidatePayments(artistAddresses, listenings);
+        _preValidatePayments(_artistAddresses, _listenings);
 
         uint256[] memory amounts = _calculateAmounts(
-            artistAddresses,
-            listenings
+            _artistAddresses,
+            _listenings
         );
 
-        _processPayments(artistAddresses, amounts);
-        emit TokenPayments(artistAddresses, amounts);
+        _processPayments(_artistAddresses, amounts);
+        emit TokenPayments(_artistAddresses, amounts);
     }
 
     function _preValidatePayments(
-        address[] calldata artistAddresses,
-        uint256[] calldata listenings
+        address[] calldata _artistAddresses,
+        uint256[] calldata _listenings
     ) internal view onlyRole(PAYER_ROLE) {
         require(
-            artistAddresses.length == listenings.length,
-            "ArtistPayer: addresses and listenings have different lengths"
+            _artistAddresses.length == _listenings.length,
+            "ArtistPayer: addresses and listenings do not have same length"
         );
     }
 
     function _calculateAmounts(
-        address[] calldata artistAddresses,
-        uint256[] calldata listenings
+        address[] calldata _artistAddresses,
+        uint256[] calldata _listenings
     ) internal view returns (uint256[] memory) {
-        uint256[] memory amounts = new uint256[](listenings.length);
-        for (uint256 i = 0; i < artistAddresses.length; i++) {
-            amounts[i] = _getTokenAmount(listenings[i]);
+        uint256[] memory amounts = new uint256[](_listenings.length);
+        for (uint256 i = 0; i < _artistAddresses.length; i++) {
+            amounts[i] = _getTokenAmount(_listenings[i]);
         }
 
         return amounts;
     }
 
-    function _getTokenAmount(uint256 listenings)
+    function _getTokenAmount(uint256 _listenings)
         internal
         view
         returns (uint256)
     {
-        return listenings.mul(rate);
+        return _listenings.mul(rate);
     }
 
     function _processPayments(
-        address[] calldata artistAddresses,
-        uint256[] memory amounts
+        address[] calldata _artistAddresses,
+        uint256[] memory _amounts
     ) internal {
-        token.batchMint(artistAddresses, amounts);
+        token.batchMint(_artistAddresses, _amounts);
     }
 }
