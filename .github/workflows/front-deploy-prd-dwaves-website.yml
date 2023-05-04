@@ -20,7 +20,7 @@ env:
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
-    PRODUCTION_URL: ${{ secrets.DWAVES_WEBSITE_PRODUCTION_URL }}
+    DWAVES_PRODUCTION_URL: ${{ secrets.PRODUCTION_ADDRESS }}
 
 defaults:
     run:
@@ -79,7 +79,7 @@ jobs:
         needs: [code-analysis]
         environment:
             name: dwaves-website-production
-            url: https://dwaves.tonfrere.fr
+            url: ${{ env.DWAVES_PRODUCTION_URL }}
         runs-on: ubuntu-latest
         steps:
             - name: Checkout 😇
@@ -110,7 +110,7 @@ jobs:
               if: ${{ github.ref }} == 'refs/heads/main'
               run: |-
                 export environment="${{ env.APP }}-${{ env.ENVIRONMENT }}"
-                export deploy_url=${{ env.PRODUCTION_URL }}
+                export deploy_url=${{ env.DWAVES_PRODUCTION_URL }}
                 gsutil rsync -R build/ gs://$deploy_url
                 echo "Deployed to $environment environment: $deploy_url"
 
