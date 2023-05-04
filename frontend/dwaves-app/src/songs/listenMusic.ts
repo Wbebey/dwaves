@@ -5,7 +5,6 @@ export const playPause = (
   playing: boolean,
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
-  if (!audio.current) return
   setIsPlaying(!playing)
   audio.current!.play()
 }
