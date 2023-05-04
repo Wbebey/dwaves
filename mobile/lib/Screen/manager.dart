@@ -9,6 +9,8 @@ class Manager extends StatefulWidget {
   @override
   _ManagerState createState() => _ManagerState();
 }
+
+// use GetIt or Provider rather than a global variable in a real project
 late final PageManager _pageManager;
 
 class _ManagerState extends State<Manager> {
@@ -95,6 +97,8 @@ class CurrentSongTitle extends StatelessWidget {
     );
   }
 }
+// create class for close player on other page
+
 class CurrentSongArtist extends StatelessWidget {
   const CurrentSongArtist({Key? key}) : super(key: key);
   @override

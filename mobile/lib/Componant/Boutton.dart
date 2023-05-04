@@ -5,10 +5,13 @@ import 'package:provider/provider.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+
+
 import '../Screen/Player.dart';
 
 
-
+// ignore: camel_case_types
 class Login_Page extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   const Login_Page({ Key? key }) : super(key: key);
@@ -17,6 +20,7 @@ class Login_Page extends StatefulWidget {
   State<Login_Page> createState() => _Login_PageState();
 }
 
+// ignore: camel_case_types
 class _Login_PageState extends State<Login_Page> {
     var connector = WalletConnect(
       bridge: 'https://bridge.walletconnect.org',
@@ -102,6 +106,31 @@ class _Login_PageState extends State<Login_Page> {
                 ),
               ],
             ),
+            // Row(
+            //   mainAxisAlignment : MainAxisAlignment.center,
+            //   mainAxisSize: MainAxisSize.max,
+            //   children: [
+            //     Container(
+            //       padding: const EdgeInsets.only(bottom: 250),
+            //       child: IconButton(
+            //           onPressed: () {
+            //         FlutterClipboard.copy('0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf').then(( value ) => print('copied'));
+            //       },
+            //       icon: const Icon(Icons.content_copy_rounded),
+            //       color: Colors.white60, 
+            //     ),
+            //     ),
+            //     const Text(
+            //       'Copy Address',
+            //       style: TextStyle(
+            //         color: Colors.black38,
+            //       ),
+            //     ),
+            //   ],
+            // )
+            Row(
+
+            )
           ],
         ),
       );
