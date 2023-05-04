@@ -61,9 +61,11 @@ musicRouter.post(
 )
 
 musicRouter.post('/incrementListenings',
-    body('musicCID')
+    body('musicUrl')
         .notEmpty()
-        .withMessage('musicCID is required'),
+        .withMessage('musicUrl is required')
+        .bail()
+        .customSanitizer(musicValidator.toValidMusicUrl),
     body('listeningsValue')
         .notEmpty()
         .withMessage('listeningsValue is required')
