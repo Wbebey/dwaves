@@ -51,8 +51,6 @@ export const PlaylistContent: React.FC<Props> = ({
       }`
       const thePlaylist = { ...resPlaylist, cover: coverUrl, playlistId: id }
 
-      console.log(resPlaylist)
-
       const musicsWithDuration = thePlaylist.musics.map((music: any) => {
         const audio = new Audio(music.src)
         let formattedDuration: string = ''
@@ -139,13 +137,36 @@ export const PlaylistContent: React.FC<Props> = ({
           withCredentials: true,
         },
       )
-      console.log(res.data)
-      setIsLikedMusicsPlaylist(true)
-      setPlaylist({
-        name: 'My liked musics',
-        cover: '/playlistLiked.webp',
-        musics: res.data,
+      const musicsWithDuration = res.data.map((likedMusic: any) => {
+        const likedAudio = new Audio(likedMusic.src)
+        let formattedDuration: string = ''
+        const promise = new Promise<void>((resolve) => {
+          likedAudio.addEventListener('loadedmetadata', () => {
+            const likedDuration = likedAudio.duration
+            const likedMinutes = Math.floor(likedDuration / 60)
+            const likedSeconds = Math.floor(likedDuration % 60)
+            formattedDuration = `${likedMinutes} : ${
+              likedSeconds < 10 ? '0' : ''
+            }${likedSeconds}`
+            resolve()
+          })
+        })
+        return promise.then(() => ({
+          ...likedMusic,
+          duration: formattedDuration,
+        }))
       })
+
+      Promise.all(musicsWithDuration)
+        .then((result) => {
+          setPlaylist({
+            name: 'My liked musics',
+            cover: '/playlistLiked.webp',
+            musics: [...result],
+          })
+        })
+        .catch((r) => console.log(r))
+      setIsLikedMusicsPlaylist(true)
     } catch (error) {
       console.log(error)
     }
