@@ -20,7 +20,7 @@ albumRouter.post(
     .notEmpty()
     .withMessage('Genre is required')
     .bail()
-    .customSanitizer(albumValidator.toValidGenre),
+    .custom(albumValidator.isValidGenre),
   albumValidator.validate,
   albumController.create
 )

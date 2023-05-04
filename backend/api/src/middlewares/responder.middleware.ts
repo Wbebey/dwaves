@@ -11,11 +11,7 @@ export const errorResponderMiddleware: ErrorRequestHandler = (
   const status = err.code || StatusCodes.INTERNAL_SERVER_ERROR
   res
     .status(status)
-    .json(
-      err instanceof ValidatorError
-        ? err.errors
-        : { ...err, message: err.message }
-    )
+    .json(err instanceof ValidatorError ? err.errors : err.message)
 }
 
 export const invalidPathResponderMiddleware: RequestHandler = (_, res) => {

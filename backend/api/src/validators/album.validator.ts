@@ -2,7 +2,7 @@ import AppError from '@errors/app.error'
 import { IAlbumValidator } from '@interfaces/validator.interface'
 import { AlbumType } from '@prisma/client'
 import genreService from '@services/genre.service'
-import { CustomSanitizer, CustomValidator } from 'express-validator'
+import { CustomValidator } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
 import { AppValidator } from './app.validator'
 
@@ -14,12 +14,12 @@ class AlbumValidator extends AppValidator implements IAlbumValidator {
     return true
   }
 
-  toValidGenre: CustomSanitizer = async (name: string) => {
+  isValidGenre: CustomValidator = async (name: string) => {
     const genre = await genreService.findUnique({ name })
     if (!genre) {
       throw new AppError('Invalid genre', StatusCodes.CONFLICT)
     }
-    return genre
+    return true
   }
 }
 

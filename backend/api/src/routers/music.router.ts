@@ -14,7 +14,7 @@ musicRouter.post(
     .notEmpty()
     .withMessage('Genre is required')
     .bail()
-    .customSanitizer(albumValidator.toValidGenre),
+    .custom(albumValidator.isValidGenre),
   body().custom(musicValidator.isFilePresent(FileType.COVER)),
   body().custom(musicValidator.isFilePresent(FileType.MUSIC)),
   musicValidator.validate,

@@ -19,19 +19,17 @@ class MusicController implements IMusicController {
 
     const music = req.files!.music as UploadedFile
     const artistId = res.locals.user.id
-    const genreId = req.body.genre.id
     const album = await albumService.create({
       name: path.parse(music.name).name,
       type: AlbumType.SINGLE,
       artist: { connect: { id: artistId } },
-      genre: { connect: { id: genreId } },
+      genre: { connect: { name: req.body.genre } },
     })
 
     const musicMetadata: MusicMetadata = {
       type: FileType.MUSIC,
       albumId: album.id,
       artistId,
-      genreId,
       listenings: 0,
     }
     const musicCID = await pinataService.pinFileToIPFS(music, musicMetadata)

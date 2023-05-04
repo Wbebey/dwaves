@@ -11,7 +11,6 @@ export type MusicMetadata = {
   type: FileType.MUSIC
   artistId: number
   albumId: number
-  genreId: number
   listenings: number
 }
 
