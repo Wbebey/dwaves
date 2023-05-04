@@ -1,7 +1,5 @@
 import { Path, useForm, UseFormRegister, SubmitHandler } from 'react-hook-form'
 
-import ticketTemplate from './../../public/ticketTemplate.png'
-
 interface IFormValues {
   'Event name': string
   Date: string
@@ -46,10 +44,8 @@ export const CreateConcert = () => {
         Create a Decentralized Concert 🤯!
       </h3>
       <div className="flex flex-row mx-10">
-        <div className="w-2/3 bg-red-100 self-center ml-5 mr-12">
-          <img src={ticketTemplate} alt="" />
-        </div>
-        <div className="w-1/3">
+        <div className="w-1/2 bg-red-100">HELLO</div>
+        <div className="w-1/2">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input label={'Event name'} register={register} required={true} />
             <Input
