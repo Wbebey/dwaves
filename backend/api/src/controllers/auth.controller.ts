@@ -25,8 +25,6 @@ const refreshTokenCookieOptions: CookieOptions = {
 if (process.env.NODE_ENV === 'production') {
   accessTokenCookieOptions.secure = true
   refreshTokenCookieOptions.secure = true
-  accessTokenCookieOptions.domain = '.tonfrere.fr'
-  refreshTokenCookieOptions.domain = '.tonfrere.fr'
 }
 
 class AuthController implements IAuthController {
