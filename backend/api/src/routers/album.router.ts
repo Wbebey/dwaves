@@ -10,7 +10,6 @@ albumRouter.get('/', albumController.get)
 albumRouter.post(
   '/',
   body('name').notEmpty().withMessage('Name is required'),
-  body('coverCID').notEmpty().withMessage('coverCID is required'),
   body('type')
     .notEmpty()
     .withMessage('Type is required')
