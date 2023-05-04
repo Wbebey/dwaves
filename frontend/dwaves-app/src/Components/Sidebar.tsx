@@ -1,13 +1,12 @@
 import { AddCircle, Home2, MusicFilter, Setting2 } from "iconsax-react"
-import { Link } from "react-router-dom"
-import datasongs from '../Musics/datasongs'
+
 
 export const Sidebar = () => {
     return (
-        <aside className="sidebar">
-            <ul style={{ height: '100%' }} className="menu bg-white p-2">
+        <div className="sidebar">
+            <ul className="menu bg-white p-2">
                 <li>
-                    <Link  to={""} className="py-0">
+                    <a className="py-0">
                         <div className="avatar">
                             <div className="w-10 rounded-full">
                                 <img src="https://placeimg.com/192/192/people" />
@@ -16,16 +15,16 @@ export const Sidebar = () => {
                         <p>
                             Item
                         </p>
-                    </Link>
+                    </a>
                 </li>
                 <div className="divider m-0" />
                 <li>
-                    <Link  to={"/"}>
+                    <a>
                         <Home2 className="w-10 h-10" />
                         <p>
                             Item
                         </p>
-                    </Link>
+                    </a>
                 </li>
                 <li>
                     <a>
@@ -36,35 +35,96 @@ export const Sidebar = () => {
                     </a>
                 </li>
                 <li>
-                    <Link  to={"/download"}>
+                    <a>
                         <AddCircle className="w-10 h-10" />
                         <p>
                             Item
                         </p>
-                    </Link>
+                    </a>
                 </li>
                 <div className="divider m-0" />
-                {datasongs.map(song =>
-                    <li>
-                        <Link to={"/album"}>
-                            <div className="avatar">
-                                <div className="w-10 rounded">
-                                    <img src={process.env.REACT_APP_URL + 'stamina1.jpg'} />
-                                </div>
+                <li>
+                    <a>
+                        <div className="avatar">
+                            <div className="w-10 rounded">
+                                <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>
                             </div>
-                            <p>
-                                Item
-                            </p>
-                        </Link>
-                    </li>
-                )}
-                <li style={{position: 'absolute', bottom: '4%'}}>
+                        </div>
+                        <p>
+                            Item
+                        </p>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <div className="avatar">
+                            <div className="w-10 rounded">
+                                <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>
+                            </div>
+                        </div>
+                        <p>
+                            Item
+                        </p>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <div className="avatar">
+                            <div className="w-10 rounded">
+                                <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>
+                            </div>
+                        </div>
+                        <p>
+                            Item
+                        </p>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <div className="avatar">
+                            <div className="w-10 rounded">
+                                <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>
+                            </div>
+                        </div>
+                        <p>
+                            Item
+                        </p>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <div className="avatar">
+                            <div className="w-10 rounded">
+                                <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>
+                            </div>
+                        </div>
+                        <p>
+                            Item
+                        </p>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <div className="avatar">
+                            <div className="w-10 rounded">
+{/*                                 <img src={process.env.REACT_APP_URL + 'stamina1.jpg'}/>*/}                            
+                            </div>
+                        </div>
+                        <p>
+                            Item
+                        </p>
+                    </a>
+                </li>
+                <div className="divider m-0" />
+                <li>
                     <a>
                         <Setting2 className="w-10 h-10" />
+                        <p>
+                            Item
+                        </p>
                     </a>
                 </li>
             </ul>
-
-        </aside>
+        </div>
     )
 }

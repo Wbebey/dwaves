@@ -13,7 +13,7 @@ type Single = {
     src: string
 }
 
-export const Input = () => {
+export const Download = () => {
 
     const { register, setValue, getValues, handleSubmit } = useForm<Single>()
     const [filesExist, setFilesExist] = useState({src: false , cover: false})
@@ -56,7 +56,7 @@ export const Input = () => {
         },[]) */
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%', height: window.innerHeight }}>
+        <form onSubmit={handleSubmit(onSubmit)} style={{ height: window.innerHeight }}>
             <section className="contain-download">
                 <div className="header">
                     <div id="contain-title" className="flex row nowrap">

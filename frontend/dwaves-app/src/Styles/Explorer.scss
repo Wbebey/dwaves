@@ -3,46 +3,36 @@
 
 .sidebar ul {
     border-radius: 5px;
-     li a p{
+    li a p{
         display: none;
     }
-     li a {
+    li a {
         padding: 5px;
     }
 }
-
 .container-app {
-    display: block;
-    height: 100%;
-    padding: 0 150px;
+    padding-left: 150px;
+    padding-right: 150px;
     margin: 0;
     .contain-explorer{
         @extend .flex-row-nowrap;
         margin-top: 16px;
-        height: 100%;
         .content{
-            display: block;
             width: 100%;
             height: 100%;
-            padding: 0 0 0 1.5%;
-            .banner{
-                position: relative;
-                width: 100%;
-                height: 35%;
-            }
-            .container{
-                @extend .flex-row-nowrap;
+            margin: 0 16px;
+            background-color: blue;
+            .body{
                 margin-top: 16px;
-                height: 62.5%;
-                width: 100%;
+                background-color: red;
+                height: 100%;
             }
         }
     }
 }
 
 #contain-top-player{
-    display: block;
-    height: 30%;
+    height: 256px;
     background-color: $primary;
     .player-bar{
         @extend .flex-row-nowrap;

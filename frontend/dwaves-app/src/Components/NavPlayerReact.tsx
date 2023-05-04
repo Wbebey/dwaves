@@ -13,7 +13,7 @@ interface Props {
 
 }
 
-export const PlayerReact: React.FC<Props> = ({ audioElmt, isPlaying, setIsPlaying, currentSong, setCurrentSong, songs, setSongs }) => {
+export const NavPlayerReact: React.FC<Props> = ({ audioElmt, isPlaying, setIsPlaying, currentSong, setCurrentSong, songs, setSongs }) => {
 
     const PlayPause = () => {
         setIsPlaying(!isPlaying)
