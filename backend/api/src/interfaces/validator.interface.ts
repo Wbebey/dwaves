@@ -7,9 +7,6 @@ interface IValidator {}
 
 export interface IAppValidator extends IValidator {
   validate: RequestHandler
-  hasOneFile: (filetype: FileType) => CustomValidator
-  hasFiles: (filetype: FileType) => CustomValidator
-  hasOneFileOptional: (filetype: FileType) => CustomValidator
 }
 
 export interface IUserValidator extends IAppValidator {
@@ -20,7 +17,10 @@ export interface IUserValidator extends IAppValidator {
   toValidUserId: CustomSanitizer
 }
 
-export interface IMusicValidator extends IAppValidator {}
+export interface IMusicValidator extends IAppValidator {
+  hasOneFile: (filetype: FileType) => CustomValidator
+  hasFiles: (filetype: FileType) => CustomValidator
+}
 
 export interface IAlbumValidator extends IAppValidator {
   isValidType: CustomValidator

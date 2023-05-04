@@ -1,10 +1,6 @@
-import { CoverMetadata, FileType } from '@@types/pinata.type'
-import { PlaylistCreateInput } from '@@types/playlist.type'
 import prisma from '@config/prisma.config'
 import { IPlaylistService } from '@interfaces/service.interface'
 import { Prisma, Playlist } from '@prisma/client'
-import { UploadedFile } from 'express-fileupload'
-import pinataService from './pinata.service'
 
 class PlaylistService implements IPlaylistService {
   findMany = (where: Prisma.PlaylistWhereInput = {}): Promise<Playlist[]> =>
@@ -14,45 +10,17 @@ class PlaylistService implements IPlaylistService {
     where: Prisma.PlaylistWhereUniqueInput
   ): Promise<Playlist | null> => prisma.playlist.findUnique({ where })
 
-  create = async (
-    playlist: PlaylistCreateInput,
-    cover?: UploadedFile
-  ): Promise<Playlist> => {
-    const data: Prisma.PlaylistCreateInput = { ...playlist, coverCID: '' }
+  create = (playlist: Prisma.PlaylistCreateInput): Promise<Playlist> =>
+    prisma.playlist.create({ data: playlist })
 
-    if (cover) {
-      const coverMetadata: CoverMetadata = { type: FileType.COVER }
-      data.coverCID = await pinataService.pinFileToIPFS(cover, coverMetadata)
-    }
-
-    return prisma.playlist.create({ data })
-  }
-
-  update = async (
+  update = (
     where: Prisma.PlaylistWhereUniqueInput,
-    playlistUpdate: Prisma.PlaylistUpdateInput,
-    cover?: UploadedFile
-  ): Promise<Playlist> => {
-    if (cover) {
-      const coverMetadata: CoverMetadata = { type: FileType.COVER }
-      playlistUpdate.coverCID = await pinataService.pinFileToIPFS(
-        cover,
-        coverMetadata
-      )
-    }
+    playlistUpdate: Prisma.PlaylistUpdateInput
+  ): Promise<Playlist> =>
+    prisma.playlist.update({ where, data: playlistUpdate })
 
-    return prisma.playlist.update({ where, data: playlistUpdate })
-  }
-
-  delete = async (
-    where: Prisma.PlaylistWhereUniqueInput
-  ): Promise<Playlist> => {
-    const playlist = await prisma.playlist.delete({ where })
-
-    await pinataService.unpinFileFromIPFS(playlist.coverCID)
-
-    return playlist
-  }
+  delete = (where: Prisma.PlaylistWhereUniqueInput): Promise<Playlist> =>
+    prisma.playlist.delete({ where })
 }
 
 const playlistService = new PlaylistService()
