@@ -1,9 +1,9 @@
 name: Cron scheduled
 
 on:
-  push:
-    paths:
-      - "backend/jobs/**"
+  # push:
+    # paths:
+      # - "backend/jobs/**"
   schedule:
     - cron: "0 0 1 * *" # Run at 00:00 on day-of-month 1
 
@@ -11,7 +11,7 @@ env:
   NODE_VERSION: 16.x
   JOBS_DIRECTORY: backend/jobs
   DATABASE_DIRECTORY: backend/db
-  ENV_VARS: ${{ secrets.DWAVES_JOBS_STAGING_ENV }}
+  ULTIMATE_ENV: ${{ secrets.ULTIMATE_ENV }}
   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
   DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }}
 
@@ -28,7 +28,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Retrieve environment for jobs
-        run: echo "${{ env.ENV_VARS }}" > .env
+        run: echo "${{ env.ULTIMATE_ENV }}" > .env
 
       - name: Install dependencies
         run: npm install

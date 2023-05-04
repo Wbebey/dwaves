@@ -13,7 +13,7 @@ env:
     NODE_VERSION: 16.x
     BACKEND_DIRECTORY: backend
     PROJECT_DIRECTORY: backend/api
-    ENV_VARS: ${{ secrets.DWAVES_API_STAGING_ENV }}
+    ULTIMATE_ENV: ${{ secrets.ULTIMATE_ENV }}
     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }} 
     SONAR_PROJECT_BASE_DIR: backend/api/
@@ -22,7 +22,7 @@ env:
     SONAR_PROJECT_KEY: ${{ secrets.DWAVES_API_PROJECT_KEY }}
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
-    # DOCKER_TAG: gcr.io/${{ secrets.DWAVES_PROJECT_ID }}/dwaves-api:${{ github.sha }}
+    DOCKER_TAG: gcr.io/${{ secrets.DWAVES_PROJECT_ID }}/dwaves-api:${{ github.sha }}
 
 defaults:
   run:
@@ -106,13 +106,13 @@ jobs:
       #     echo "$APP_ENV" > .env
 
       - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
-        run: echo "${{ env.ENV_VARS }}" > .env
+        run: echo "${{ env.ULTIMATE_ENV }}" > .env
 
       - name: Build 🏗
         run: |-
           docker build . \
             -f ${{ GITHUB.WORKSPACE }}/${{ env.PROJECT_DIRECTORY }}/Dockerfile \
-            -t gcr.io/${{ env.GCP_PROJECT_ID }}/{{ env.APP }}-{{ env.ENVIRONMENT }}:${{ github.sha }} \
+            -t ${{ env.DOCKER_TAG }} \
             --build-arg ENVIRONMENT=${{ env.ENVIRONMENT }} \
             --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
             --build-arg BUILD_NUMBER=${{ github.run_number }} \
@@ -121,14 +121,14 @@ jobs:
 
       - name: Publish to Container registry 🛫
         run: |-
-          echo "Pushing image to google cloud container registry..."
+          echo "Pushing image ${DOCKER_TAG} to google cloud container registry..."
           gcloud auth configure-docker --quiet
-          docker push gcr.io/${{ env.GCP_PROJECT_ID }}/{{ env.APP }}-{{ env.ENVIRONMENT }}:${{ github.sha }}
+          docker push ${{ env.DOCKER_TAG }}
 
       - name: Deploy to cloud run 🚀
         run: |-
           gcloud run deploy ${{ env.APP }}-${{ env.ENVIRONMENT }} \
-            --image gcr.io/${{ env.GCP_PROJECT_ID }}/{{ env.APP }}-{{ env.ENVIRONMENT }}:${{ github.sha }} \
+            --image ${{ env.DOCKER_TAG }} \
             --platform managed \
             --region europe-west1 \
             --allow-unauthenticated \

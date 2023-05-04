@@ -10,11 +10,14 @@ on:
 env:
     APP: dwaves-app
     ENVIRONMENT: test
+    DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }} 
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
     TEST_URL: ${{ secrets.DWAVES_APP_TEST_URL }}
-    ENV_VARS: ${{ secrets.DWAVES_APP_TEST_ENV }}
+    FRONT_ENV: ${{ secrets.FRONT_ENV }}
+
 
 defaults: 
     run:
@@ -23,7 +26,7 @@ defaults:
 jobs:
   remove-label:
     name: Remove Label
-    if: ${{ github.event.label.name == 'deploy-dwaves-front-test' }}
+    if: ${{ github.event.label.name == 'deploy-test' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -42,7 +45,7 @@ jobs:
 
   deploy:
     name: Deploy
-    if: ${{ github.event.label.name == 'deploy-dwaves-front-test' }}
+    if: ${{ github.event.label.name == 'deploy-test' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -66,7 +69,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       
       - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
-        run: echo "${{ env.ENV_VARS }}" > .env
+        run: echo "${{ env.FRONT_ENV }}" > .env
 
       - name: Install dependencies 📦
         run: npm install
@@ -74,7 +77,8 @@ jobs:
       - name: Build 🏗
         run: CI="false" npm run build
 
-      - name: Deploy to {{ env.ENVIRONMENT }} 🚀
+      - name: Deploy Production 🚀
+        if: ${{ github.ref }} == 'refs/heads/staging'
         run: |-
           export environment="${{ env.APP }}-${{ env.ENVIRONMENT }}"
           export deploy_url=${{ env.TEST_URL }}
