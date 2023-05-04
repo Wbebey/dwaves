@@ -23,6 +23,7 @@ app.disable('x-powered-by')
 app.use(
   cors({
     origin: env.frontHost,
+    preflightContinue: true,
     credentials: true,
   })
 )
