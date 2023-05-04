@@ -290,10 +290,6 @@ function App() {
                       setSongs={setSongs}
                       setAlert={setAlert}
                       currentUserData={currentUser}
-                      audioElmt={audioElmt}
-                      isPlaying={isPlaying}
-                      setIsPlaying={setIsPlaying}
-                      setArtist={setArtist}
                     />
                   }
                 />
@@ -308,10 +304,6 @@ function App() {
                       setCurrentSong={setCurrentSong}
                       setSongs={setSongs}
                       setAlert={setAlert}
-                      audioElmt={audioElmt}
-                      isPlaying={isPlaying}
-                      setIsPlaying={setIsPlaying}
-                      setArtist={setArtist}
                     />
                   }
                 />

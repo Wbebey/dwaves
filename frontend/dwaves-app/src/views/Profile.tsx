@@ -1,13 +1,7 @@
-import 'styles/Explorer.scss'
-import {
-  AlbumForm,
-  ArtistPopularSong,
-  AlbumOfArtist,
-  SingleForm,
-  SwitchTab,
-} from '../components'
-import React, { Dispatch, RefObject, useEffect, useRef, useState } from 'react'
-import { AlbumDetail, MostPopularSong, responseRequest } from '../models'
+import "styles/Explorer.scss";
+import { AlbumForm, ArtistPopularSong, AlbumOfArtist, SingleForm, SwitchTab } from "../components";
+import React, { useEffect, useRef, useState } from "react";
+import { MostPopularSong, responseRequest } from "../models";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,12 +11,12 @@ import {
   Title,
   Tooltip,
   Legend,
-  ArcElement,
-} from 'chart.js'
+  ArcElement
+} from 'chart.js';
 
-import { Line, Pie } from 'react-chartjs-2'
+import { Line, Pie } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker'
-import axios from 'axios'
+import axios from "axios";
 
 ChartJS.register(
   CategoryScale,
@@ -32,30 +26,18 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  ArcElement,
-)
+  ArcElement
+);
 
 interface Props {
   setCurrentSong: React.Dispatch<React.SetStateAction<any>>
   setSongs: React.Dispatch<React.SetStateAction<any>>
   setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
   currentUserData?: any
-  audioElmt: RefObject<HTMLAudioElement>
-  isPlaying: boolean
-  setIsPlaying: Dispatch<React.SetStateAction<boolean>>
-  setArtist: Dispatch<React.SetStateAction<AlbumDetail | undefined>>
 }
 
-export const Profile: React.FC<Props> = ({
-  setCurrentSong,
-  setSongs,
-  setAlert,
-  currentUserData,
-  audioElmt,
-  isPlaying,
-  setIsPlaying,
-  setArtist,
-}) => {
+export const Profile: React.FC<Props> = ({ setCurrentSong, setSongs, setAlert, currentUserData }) => {
+
   const [mostPopularSong, setMostPopularSong] = useState<MostPopularSong[]>([])
 
   const getMostPopularSong = async () => {
@@ -64,34 +46,9 @@ export const Profile: React.FC<Props> = ({
         `${import.meta.env.VITE_APP_BACK_URL}/users/me/popular?limit=10`,
         {
           withCredentials: true,
-        },
+        }
       )
-
-      const musicsWithDuration = res.data.map((playlistMusic: any) => {
-        const playlistAudio = new Audio(playlistMusic.src)
-        let formattedDuration: string = ''
-        const promise = new Promise<void>((resolve) => {
-          playlistAudio.addEventListener('loadedmetadata', () => {
-            const playlistDuration = playlistAudio.duration
-            const playlistMinutes = Math.floor(playlistDuration / 60)
-            const playlistSeconds = Math.floor(playlistDuration % 60)
-            formattedDuration = `${playlistMinutes} : ${
-              playlistSeconds < 10 ? '0' : ''
-            }${playlistSeconds}`
-            resolve()
-          })
-        })
-        return promise.then(() => ({
-          ...playlistMusic,
-          duration: formattedDuration,
-        }))
-      })
-
-      Promise.all(musicsWithDuration)
-        .then((result) => {
-          setMostPopularSong([ ...result ])
-        })
-        .catch((r) => console.log(r))
+      setMostPopularSong(res.data)
     } catch (error) {
       console.log(error)
     }
@@ -108,9 +65,9 @@ export const Profile: React.FC<Props> = ({
         text: 'Stats de mes musiques les plus écoutés',
       },
     },
-  }
+  };
 
-  const labels = ['January', 'February', 'March', 'April', 'May']
+  const labels = ['January', 'February', 'March', 'April', 'May'];
 
   const data = {
     labels,
@@ -144,8 +101,8 @@ export const Profile: React.FC<Props> = ({
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
     ],
-  }
-
+  };
+  
   const dataPie = {
     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
     datasets: [
@@ -171,7 +128,7 @@ export const Profile: React.FC<Props> = ({
         borderWidth: 1,
       },
     ],
-  }
+  };
 
   useEffect(() => {
     getMostPopularSong()
@@ -196,10 +153,6 @@ export const Profile: React.FC<Props> = ({
               setCurrentSong={setCurrentSong}
               setSongs={setSongs}
               mostPopularSong={mostPopularSong}
-              audioElmt={audioElmt}
-              isPlaying={isPlaying}
-              setIsPlaying={setIsPlaying}
-              setArtist={setArtist}
             />
           </div>
         </div>
@@ -215,9 +168,7 @@ export const Profile: React.FC<Props> = ({
             </div>
             <div className="w-4/5">
               <div>
-                <h3 className="text-7xl">
-                  {currentUserData && currentUserData.username}
-                </h3>
+                <h3 className="text-7xl">{currentUserData && currentUserData.username}</h3>
               </div>
             </div>
           </div>
@@ -233,4 +184,4 @@ export const Profile: React.FC<Props> = ({
       )}
     </div>
   )
-}
+};
