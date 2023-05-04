@@ -11,11 +11,13 @@ export const Login = () => {
   const { register, setValue, getValues, handleSubmit } = useForm<User>();
 
   const onSubmit = (data: any) => {
+    console.log(data)
     axios.post(`${import.meta.env.VITE_APP_BACK_URL}/api/v1/auth/login`, data, {withCredentials: true})
       .then(res => { 
+        console.log(res, 'worked') 
         window.location.reload()
       })
-      .catch()
+      .catch(err => { console.log(err) })
   }
 
   return (

@@ -15,8 +15,8 @@ interface Props {
 
 const disconect = () => {
     axios.post(`${import.meta.env.VITE_APP_BACK_URL}/api/v1/auth/logout`, null , {withCredentials: true})
-        .then()
-        .catch()
+        .then(res => { console.log(res, 'worked') })
+        .catch(err => { console.log(err) })
 }
 
 export const Sidebar: React.FC<Props> = ({ displayModal, connected, setConnected }) => {

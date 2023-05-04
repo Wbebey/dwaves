@@ -1,16 +1,29 @@
 
 declare const window: Window &
-    typeof globalThis & {
-        ethereum: any
-    }
+typeof globalThis & {
+  ethereum: any
+}
 
 export const ConnectMetamask = () => {
 
     const requestConnection = async () => {
+
+        console.log('Requesting an account')
+
         if (window.ethereum) {
-            const accounts = await window.ethereum.request({
-                method: "eth_requestAccounts",
-            })
+            console.log("detected")
+            
+            try {
+                const accounts = await window.ethereum.request({
+                    method: "eth_requestAccounts",
+                })
+                console.log(accounts)
+            } catch(error) {
+                console.log('Error connecting...')
+            }
+
+        } else {
+            console.log("MetaMask don't detected")
         }
     }
 

@@ -2,14 +2,15 @@ import "../styles/AlbumForm.scss"
 import { Icon } from "components/shared";
 import { ChangeEvent, useState } from "react";
 import { useForm, UseFormSetValue } from "react-hook-form";
+import axios from "axios";
 
 interface Props {
     setCoverExist: React.Dispatch<React.SetStateAction<boolean>>
-    setCover: React.Dispatch<React.SetStateAction<CoverFile>>
-    setValue: UseFormSetValue<CoverFile>
+    setCover: React.Dispatch<React.SetStateAction<File>>
+    setValue: UseFormSetValue<File>
 }
 
-type CoverFile = {
+type File = {
     src: any
 }
 
@@ -24,6 +25,7 @@ const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue }) => {
             const reader = new FileReader();
             reader.onload = (evt) => {
                 setCover({ src: { object: e.target.files![0], preview: evt.target!.result } })
+                console.log(evt.target!.result);
             };
             reader.readAsDataURL(e.target.files[0]);
         }
@@ -48,14 +50,16 @@ const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue }) => {
 }
 
 const AlbumCover = () => {
-    const { register, setValue, getValues, handleSubmit } = useForm<CoverFile>();
-    const [cover, setCover] = useState<CoverFile>({ src: {} })
+    const { register, setValue, getValues, handleSubmit } = useForm<File>();
+    const [cover, setCover] = useState<File>({ src: {} })
     const [coverExist, setCoverExist] = useState(false)
 
     const onSubmit = (data: any) => {
         const form = new FormData()
         form.append("cover", data.src)
-
+        /*         axios.post(`${import.meta.env.VITE_APP_BACK_URL}/api/v1/musics/pinSingleMusic`, form)
+                  .then(res => { console.log(res, 'worked') })
+                  .catch(err => { console.log(err) }) */
     }
 
     return (
@@ -81,32 +85,37 @@ const AlbumCover = () => {
     )
 }
 
-type SongData = { title: string, src: File | null }
 
 export const AlbumForm = () => {
-    const [arraySong, setArraySong] = useState<SongData[]>([{title: '', src: null}])
+    const [property, setProperty] = useState({ title: {}, src: "" })
+    const [arraySong, setArraySong] = useState(Array<any>)
 
-    const handleSong = (e: ChangeEvent<HTMLInputElement>, i: number) => {
-        setArraySong(arraySong.map((song, j) =>  {
-            if (i !== j) {
-                return song
-            }
-            const src = e.target.files === null ? null : e.target.files[0]
-            return {...song, src}
-        }))
+    const handleSong = (e: ChangeEvent<HTMLInputElement>) => {
+        setProperty({ title: e.target.files![0], src: "" })
     }
 
-    const handleTitle = (e: ChangeEvent<HTMLInputElement>, i: number) => {
-        setArraySong(arraySong.map((song, j) =>  {
-            if (i !== j) {
-                return song
-            }
-            return {...song, title: e.target.value}
-        }))
+    const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
+        setProperty({ title: property.title, src: e.target.value })
+    }
+
+    const validSong = () => {
+        if (arraySong.length == 1) {
+            setArraySong([property])
+        }
+        else {
+            setArraySong([...arraySong, property])
+        }
+        setProperty({ title: {}, src: "" })
+        console.log(arraySong, "validSong")
     }
 
     const addSong = () => {
-        setArraySong([...arraySong, {title: '', src: null}])
+        if (arraySong.length == 0) {
+            setArraySong([{ title: {}, src: "" }])
+        } else {
+            setArraySong([...arraySong, property])
+        }
+        console.log(arraySong, "addSong")
     }
 
     return (
@@ -128,7 +137,7 @@ export const AlbumForm = () => {
                                             <span className="label-text">Fichier</span>
                                             <span className="label-text-alt">*.mp3</span>
                                         </label>
-                                        <input type="file" onChange={(e) => { handleSong(e, i) }} className="file-input bg-white-900 file-input-bordered file-input-primary w-full" />
+                                        <input type="file" onChange={(e) => { handleSong(e) }} className="file-input bg-white-900 file-input-bordered file-input-primary w-full" />
                                     </div>
                                 </div>
                                 <div className="contain-input-audio">
@@ -136,7 +145,7 @@ export const AlbumForm = () => {
                                         <label className="label">
                                             <span className="label-text">Titre</span>
                                         </label>
-                                        <input type="text" onChange={(e) => { handleTitle(e, i) }} placeholder="Type here" className="input input-ghost w-full" />
+                                        <input type="text" onChange={(e) => { handleTitle(e) }} placeholder="Type here" className="input input-ghost w-full" />
                                     </div>
                                 </div>
                                 <div className="contain-star">
@@ -144,6 +153,7 @@ export const AlbumForm = () => {
                                 </div>
                                 <div className="contain-other-icon">
                                     <Icon color="red" icon="trash" size="Large" />
+                                    <Icon onClick={validSong} color="green" icon="save" size="Large" />
                                 </div>
                             </li>
                         ))

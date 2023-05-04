@@ -28,17 +28,23 @@ export const List = () => {
         <Button
           text="titres"
           size="Large"
-          handleClick={() => {}}
+          handleClick={() => {
+            console.log("Titres");
+          }}
         />
         <Button
           text="listes"
           size="Large"
-          handleClick={() => {}}
+          handleClick={() => {
+            console.log("Listes");
+          }}
         />
         <Button
           text="artistes"
           size="Large"
-          handleClick={() => {}}
+          handleClick={() => {
+            console.log("Artistes");
+          }}
         />
       </header>
       <div className="content-playlist">
