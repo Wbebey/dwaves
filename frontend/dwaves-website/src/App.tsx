@@ -12,7 +12,7 @@ const App = () => {
         <a className="btn btn-ghost normal-case text-xl">
           <img
             className="w-28"
-            src={`./../public/logo-dwaves-white.png`}
+            src={`./logo-dwaves-white.png`}
             alt=""
           />
         </a>
