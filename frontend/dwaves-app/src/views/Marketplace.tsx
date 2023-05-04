@@ -5,7 +5,6 @@ import { BrowserProvider, ethers } from 'ethers'
 
 import ConcertTicketNFT from '../abi/ConcertTicketNFT.json'
 import moment from 'moment'
-import axios from 'axios'
 
 declare const window: Window &
   typeof globalThis & {
@@ -21,7 +20,6 @@ export const Marketplace: React.FC<Props> = ({
   wallet,
   requestConnectionMetamask,
 }) => {
-  const [myUsername, setMyUsername] = useState('')
   const [showTickets, setShowTickets] = useState('Upcoming concerts')
   const [balance, setBalance] = useState('')
   const [chainName, setChainName] = useState('')
@@ -42,23 +40,6 @@ export const Marketplace: React.FC<Props> = ({
     },
   ])
 
-  const [myTickets, setMyTickets] = useState([
-    {
-      id: 0,
-      name: '',
-      date: '',
-      daysUntilConcert: 0,
-      place: '',
-      genre: '',
-      artist: '',
-      price: 0,
-    },
-  ])
-
-  useEffect(() => {
-    getConnectedUsername()
-  }, [])
-
   useEffect(() => {
     if (wallet) {
       const provider = new BrowserProvider(window.ethereum)
@@ -69,20 +50,6 @@ export const Marketplace: React.FC<Props> = ({
       fetchMyEvents(provider)
     }
   }, [wallet])
-
-  const getConnectedUsername = async () => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_APP_BACK_URL}/users/me`,
-        {
-          withCredentials: true,
-        },
-      )
-      setMyUsername(res.data.username)
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   const fetchNetworkDetailsAndBalance = (provider: any) => {
     provider.getBalance(wallet[0]).then((result: any) => {
@@ -103,6 +70,7 @@ export const Marketplace: React.FC<Props> = ({
       signer,
     )
     const ticketNFTContract = await concertTicketNFT.getAllTickets()
+    console.log(ticketNFTContract)
     setAllEvents(ticketNFTContract)
 
     const currentDate = new Date().getTime()
@@ -162,23 +130,8 @@ export const Marketplace: React.FC<Props> = ({
       signer,
     )
     const myTickets = await concertTicketNFT.getMyTickets()
-    console.log(myTickets)
-
-    const myTicketsFormatted = myTickets
-      .map((ticket: any) => ({
-        id: ticket[0],
-        name: ticket[2],
-        date: moment(Number(ticket[3])).format('MM/DD/YYYY'),
-        daysUntilConcert: moment(Number(ticket[3])).diff(moment(), 'days'),
-        place: ticket[4],
-        genre: ticket[5],
-        artist: ticket[6],
-        price: parseFloat(ticket[8]),
-      }))
-      .filter((ticket: any) => ticket.daysUntilConcert >= 0)
-    // .filter((ticket: any) => ticket.daysUntilConcert >= 0 && ticket.artist !== myUsername)
-    console.log(myTicketsFormatted)
-    setMyTickets(myTicketsFormatted)
+    // console.log(myTickets)
+    // console.log('hello')
   }
 
   const fetchMyEvents = async (provider: any) => {
@@ -188,8 +141,9 @@ export const Marketplace: React.FC<Props> = ({
       ConcertTicketNFT.abi,
       signer,
     )
-    const myEvents = await concertTicketNFT.getMyEvents()
-    // console.log(myEvents)
+    const myTickets = await concertTicketNFT.getMyEvents()
+    console.log(myTickets)
+    console.log('hello')
   }
 
   return (
@@ -224,7 +178,6 @@ export const Marketplace: React.FC<Props> = ({
                 chainName={chainName}
                 chainId={chainId}
                 formattedEvents={formattedEvents}
-                myTickets={myTickets}
               />
             ) : (
               <CreateConcert />
