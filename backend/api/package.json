@@ -5,7 +5,7 @@
   "main": "build/server.js",
   "scripts": {
     "build": "tsc",
-    "start": "TS_NODE_BASEURL=build node -r tsconfig-paths/register build/server.js",
+    "start": "node -r tsconfig-paths/register build/server.js",
     "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "prisma migrate deploy"
