@@ -1,15 +1,13 @@
-// Those will need to be replaced by buttons directly
-import { AddCircle, Home2, MusicFilter, Setting2, User } from "iconsax-react";
-import { Link } from "react-router-dom";
+import { AddCircle, Home2, MusicFilter, Setting2, User } from "iconsax-react"
+import { Link } from "react-router-dom"
+import datasongs from '../songs/datasongs'
 
-import datasongs from "songs/datasongs";
-
-// import { ConnectMetamask } from "./ConnectionMetamask"
+import { ConnectMetamask } from "./ConnectionMetamask"
 
 interface Props {
-  displayModal: (e: any) => void;
-  connected: boolean;
-  setConnected: React.Dispatch<React.SetStateAction<boolean>>;
+    displayModal: (e: any) => void,
+    connected: boolean,
+    setConnected: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const Sidebar: React.FC<Props> = ({ displayModal, connected, setConnected }) => {
