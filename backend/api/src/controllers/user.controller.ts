@@ -16,7 +16,7 @@ class UserController implements IUserController {
   addWallet: RequestHandler = async (req, res) => {
     const { address } = req.body
     const user = await userService.update(
-      { id: req.app.locals.user.id },
+      { id: res.locals.user.id },
       { address }
     )
 
