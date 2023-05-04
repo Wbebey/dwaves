@@ -9,12 +9,12 @@ on:
             - release/*
         paths:
             - frontend/dwaves-app/**
-    # pull_request:
-    #     types: [opened, synchronize, reopened]
-    #     branches:
-    #         - staging
-    #     paths:
-    #         - frontend/dwaves-app/**
+    pull_request:
+        types: [opened, synchronize, reopened]
+        branches:
+            - staging
+        paths:
+            - frontend/dwaves-app/**
 
 env:
     APP: dwaves-app
