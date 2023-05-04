@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import datasongs from 'songs/datasongs'
 
 import { ConnectMetamask } from './ConnectionMetamask'
+import { CurrentUser } from 'models'
 
 interface Props {
   toggleModal: () => void
@@ -21,6 +22,7 @@ interface Props {
   wallet: string
   setConnected: React.Dispatch<React.SetStateAction<boolean>>
   requestConnectionMetamask: () => Promise<void>
+  currentUser?: CurrentUser
 }
 
 export const Sidebar: React.FC<Props> = ({
@@ -29,6 +31,7 @@ export const Sidebar: React.FC<Props> = ({
   wallet,
   requestConnectionMetamask,
   setConnected,
+  currentUser,
 }) => {
   const disconect = () => {
     axios
@@ -56,7 +59,13 @@ export const Sidebar: React.FC<Props> = ({
             <Link to={'/profile'} className="py-0">
               <div className="avatar mx-auto">
                 <div className="w-12 rounded-full">
-                  <img src="https://placeimg.com/192/192/people" alt="" />
+                  <img
+                    src={
+                      currentUser?.avatar ||
+                      'https://placeimg.com/192/192/people'
+                    }
+                    alt=""
+                  />
                 </div>
               </div>
               <p>Item</p>

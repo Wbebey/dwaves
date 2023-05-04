@@ -48,7 +48,7 @@ export type Album = {
   musics: string[]
 }
 
-export type AlbumDetail = Album & {
+export type AlbumDetail = Omit<Album, 'musics'> & {
   musics: MusicDetail[]
 }
 

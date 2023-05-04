@@ -46,6 +46,7 @@ interface Props {
   isPlaying: boolean
   setIsPlaying: Dispatch<React.SetStateAction<boolean>>
   setArtist: Dispatch<React.SetStateAction<AlbumDetail | undefined>>
+  getCurrentUser: () => Promise<void>
 }
 
 export const Profile: React.FC<Props> = ({
@@ -57,6 +58,7 @@ export const Profile: React.FC<Props> = ({
   isPlaying,
   setIsPlaying,
   setArtist,
+  getCurrentUser,
 }) => {
   const [mostPopularSong, setMostPopularSong] = useState<MostPopularSong[]>([])
 
@@ -201,7 +203,7 @@ export const Profile: React.FC<Props> = ({
               audioElmt={audioElmt}
               isPlaying={isPlaying}
               setIsPlaying={setIsPlaying}
-              setArtist={setArtist}
+              setAlbum={setArtist}
             />
           </div>
         </div>
@@ -238,8 +240,15 @@ export const Profile: React.FC<Props> = ({
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 p-4 items-start">
-            <ProfileInfoForm currentUser={currentUserData} />
-            <ProfilePasswordForm currentUser={currentUserData} />
+            <ProfileInfoForm
+              currentUser={currentUserData}
+              setAlert={setAlert}
+              getCurrentUser={getCurrentUser}
+            />
+            <ProfilePasswordForm
+              setAlert={setAlert}
+              getCurrentUser={getCurrentUser}
+            />
           </div>
         </div>
       )}

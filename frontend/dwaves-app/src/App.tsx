@@ -72,7 +72,6 @@ function App() {
     if (document.cookie.includes('loggedIn=true')) {
       setConnected(true)
     }
-    getLikedMusics()
   }, [])
 
   const onPlaying = async () => {
@@ -190,6 +189,12 @@ function App() {
     connected && getCurrentUser()
   }, [connected])
 
+  useEffect(() => {
+    currentUser && getLikedMusics()
+  }, [currentUser])
+
+  console.log(currentUser)
+
   return loader ? (
     <Loader />
   ) : (
@@ -231,6 +236,7 @@ function App() {
                 setConnected={setConnected}
                 wallet={wallet}
                 requestConnectionMetamask={requestConnectionMetamask}
+                currentUser={currentUser}
               />
               {/* A <Routes> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
@@ -294,6 +300,7 @@ function App() {
                       isPlaying={isPlaying}
                       setIsPlaying={setIsPlaying}
                       setArtist={setArtist}
+                      getCurrentUser={getCurrentUser}
                     />
                   }
                 />
@@ -311,7 +318,7 @@ function App() {
                       audioElmt={audioElmt}
                       isPlaying={isPlaying}
                       setIsPlaying={setIsPlaying}
-                      setArtist={setArtist}
+                      setAlbum={setArtist}
                     />
                   }
                 />
