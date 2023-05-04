@@ -79,25 +79,16 @@ class PinataService implements IPinataService {
     musicCID: string,
     newListeningsValue: number
   ) => {
-    const getUrl = this._getPinataCIDUrl(musicCID);
-    const metadata = await axios.get<PinataPinListResponse>(getUrl, {
-      headers: {
-        pinata_api_key: env.pinataApiKey,
-        pinata_secret_api_key: env.pinataApiSecret,
-      },
-    });
-    const currentKeyValues = metadata.data.rows[0].metadata.keyvalues;
-    const updateUrl = `${env.pinataApiHost}/pinning/hashMetadata`;
+    const url = `${env.pinataApiHost}/pinning/hashMetadata`
 
     const data = {
       ipfsPinHash: musicCID,
       keyvalues: {
-        ...currentKeyValues,
         listenings: newListeningsValue,
       },
     }
 
-    const res = await axios.put(updateUrl, data, {
+    const res = await axios.put(url, data, {
       headers: {
         pinata_api_key: env.pinataApiKey,
         pinata_secret_api_key: env.pinataApiSecret,
