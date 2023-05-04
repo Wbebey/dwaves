@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:dwaves_mobile/Componant/Boutton.dart';
 import 'package:dwaves_mobile/Screen/Login_page.dart';
@@ -26,13 +25,8 @@ class Album extends StatefulWidget {
   final String genre;
   final String artist;
 
-  int get getarea {
-    return id;
-  }
 
-  void set setarea(int value) {
-    late int id = value;
-  }
+
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
@@ -51,6 +45,7 @@ class Album extends StatefulWidget {
   _ViewAlbumState createState() => _ViewAlbumState();
   
 }
+
 
 class _ViewAlbumState extends State<Album> {
   late final PageManager _pageManager;
@@ -74,7 +69,7 @@ class _ViewAlbumState extends State<Album> {
     _player.dispose();
     super.dispose();
   }
-
+  
   Future<String?> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
@@ -104,6 +99,9 @@ class _ViewAlbumState extends State<Album> {
     }
   }
   
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,10 +122,9 @@ class _ViewAlbumState extends State<Album> {
                       //Navigator.push(context,MaterialPageRoute(builder: (context) =>  Detail_Album(id:snapshot.data![index].id ,name:'', type: 'ALBUM', genre: '', artist: '' )));
                       Navigator.push(context, 
                       MaterialPageRoute(
-                        builder: (context) => Music(src: '', name: '',),
+                        builder: (context) => Music(src: '', name: ''),
                         settings: RouteSettings(
-                          arguments: snapshot.data![index].id,
-                        ),
+                          arguments: snapshot.data![index].id,                        )
                         ) 
                       );
                       
@@ -162,17 +159,9 @@ class _ViewAlbumState extends State<Album> {
       ),
     );
   }
+  
 }
-class MyClass {
-  late int _id = id;
-
-  int get id => _id;
-
-  set id(int value) {
-    _id = value;
-  }
-}
-
+    
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {

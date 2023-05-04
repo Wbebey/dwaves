@@ -1,10 +1,26 @@
+import 'dart:convert';
+
+import 'package:dwaves_mobile/Screen/View_Album.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:http/http.dart' as http;
+import 'View_detail_album.dart';
 import 'notifiers/play_button_notifier.dart';
 import 'notifiers/progress_notifier.dart';
 import 'notifiers/repeat_button_notifier.dart';
+
+class MusicTrack {
+  final String src;
+
+  MusicTrack({required this.src});
+
+  factory MusicTrack.fromJson(Map<String, dynamic> json) {
+    return MusicTrack(
+      src: json['src'],
+    );
+  }
+}
 
 class PageManager {
   final currentSongTitleNotifier = ValueNotifier<String>('');
@@ -19,10 +35,11 @@ class PageManager {
   late AudioPlayer _audioPlayer;
   late ConcatenatingAudioSource _playlist;
 
-
   PageManager() {
     _init();
   }
+
+  AudioPlayer get audioPlayer => _audioPlayer;
 
   void _init() async {
     _audioPlayer = AudioPlayer();
@@ -32,30 +49,63 @@ class PageManager {
     _listenForChangesInBufferedPosition();
     _listenForChangesInTotalDuration();
     _listenForChangesInSequenceState();
+
   }
 
-
-Future<String?> getToken() async {
+  Future<String?> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
 
+  Future<List<MusicTrack>> fetchMusicTracks() async {
+    String? token = await getToken();
+    MusicFetcher musicFetcher = MusicFetcher();
+    final id = musicFetcher.id;
+    print(id);
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
 
-  void songplaylist(String song) async {
-    final song1 = Uri.parse(song);
-    _playlist = ConcatenatingAudioSource(children: [
-      AudioSource.uri(song1, tag: 'Song 1'),
-    ]);
-    await _audioPlayer.setAudioSource(_playlist);
+    final response = await http.get(
+      Uri.parse('http://localhost:8080/api/v1/albums/$id'),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      // List<dynamic> body = jsonDecode(response.body)["musics"][0];
+      final musicData = jsonDecode(response.body)["musics"] as List<dynamic>;
+      //final src = musicData["src"] as String;
+
+      List<MusicTrack> musicTracks = musicData
+          .map(
+            (dynamic item) => MusicTrack.fromJson(item),
+          )
+          .toList();
+      return musicTracks;
+    } else {
+      throw Exception('Failed to load music tracks');
+    }
   }
 
-  void _setInitialPlaylist() async {
-    final song1 = Uri.parse('https://dwavesforever.mypinata.cloud/ipfs/QmYSwirKi5DE3vUzGeHe16uB7HsKkktGpWVw5pPQDRY37E');
-    _playlist = ConcatenatingAudioSource(children: [
-      AudioSource.uri(song1),
-    ]);
-    await _audioPlayer.setAudioSource(_playlist);
+void _setInitialPlaylist() async {
+  final songs = await fetchMusicTracks();
+  List<Uri> maListe = [];
+  for (var i = 0; i < songs.length; i++) {
+    maListe.add(Uri.parse(songs[i].src));
   }
+
+  List<AudioSource> audioSources = maListe.map((uri) {
+    return AudioSource.uri(uri);
+  }).toList();
+
+  _playlist = ConcatenatingAudioSource(children: audioSources);
+
+  await _audioPlayer.setAudioSource(_playlist);
+
+
+}
+
 
   void _listenForChangesInPlayerState() {
     _audioPlayer.playerStateStream.listen((playerState) {

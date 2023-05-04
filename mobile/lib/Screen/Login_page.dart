@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dwaves_mobile/Screen/register_page.dart';
 
+import 'View_Album.dart';
+
 var email = 'sofian32@gmail.com';
 var password = "12345678";
 
@@ -44,7 +46,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
       var res = response.headers['set-cookie']!.split(';')[0].split('=')[1];
       prefs.setString('token', res);
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Manager()));
+          context, MaterialPageRoute(builder: (_context) => Album(id: 0,name:'', type: 'ALBUM', genre: '', artist: '' )));
     } else {
       throw Exception('Failed USER is not created.');
     }

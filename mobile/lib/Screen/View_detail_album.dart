@@ -1,12 +1,12 @@
 import 'dart:io';
-import 'package:dwaves_mobile/Screen/view_Album.dart';
+import 'package:dwaves_mobile/Screen/View_Album.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Pagemanager.dart';
-import 'View_Album.dart';
+
 import 'manager.dart';
 import 'notifiers/play_button_notifier.dart';
 
@@ -15,6 +15,7 @@ class Music extends StatefulWidget {
       : super(key: key);
   final String name;
   final String src;
+
 
   factory Music.fromJson(Map<String, dynamic> json) {
     return Music(
@@ -27,13 +28,25 @@ class Music extends StatefulWidget {
   _ViewMusicState createState() => _ViewMusicState();
 }
 
+class MusicFetcher {
+  int _id = 33;
+
+  int get id => _id;
+
+  set id(int value) {
+    _id = value;
+  }
+}
+
 class _ViewMusicState extends State<Music> {
   late Future<List<Music>> futureMusic;
+  late BuildContext _context;
 
   @override
   void initState() {
     super.initState();
     futureMusic = fetchMusics();
+    _context = context;
   }
 
   Future<String?> getToken() async {
@@ -44,9 +57,9 @@ class _ViewMusicState extends State<Music> {
   Future<List<Music>> fetchMusics() async {
     String? token = await getToken();
 
-    // recupere l'id de l'aalbum
     final id = ModalRoute.of(context)!.settings.arguments as int;
-    print(id);
+
+    // faire un setter pour id
 
     final headers = {
       'Authorization': 'Bearer $token',
@@ -83,6 +96,11 @@ class _ViewMusicState extends State<Music> {
                   return ListTile(
                     title: Text(music.name),
                     subtitle: Text('${music.src} listenings'),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Manager()));
+                    },
+
                   );
                 },
               );

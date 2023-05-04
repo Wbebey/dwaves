@@ -1,6 +1,4 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:dwaves_mobile/Screen/Login_page.dart';
-import 'package:dwaves_mobile/Screen/View_Album.dart';
 import 'package:flutter/material.dart';
 import 'notifiers/play_button_notifier.dart';
 import 'notifiers/progress_notifier.dart';
@@ -13,27 +11,39 @@ import 'Pagemanager.dart';
 class Manager extends StatefulWidget {
   @override
   _ManagerState createState() => _ManagerState();
+  
 }
 
 late final PageManager _pageManager;
 
+
+
 class _ManagerState extends State<Manager> {
   @override
   void initState() {
-    super.initState();
+
+  
     _pageManager = PageManager();
+    
+
   }
 
   @override
-  void dispose() {
-    _pageManager.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context ) {
+    WidgetsFlutterBinding.ensureInitialized();
     return MaterialApp(
       home: Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(25, 26, 36, 1),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.close, color: Colors.red),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+      ),
         body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -42,15 +52,13 @@ class _ManagerState extends State<Manager> {
                 image: AssetImage("assets/images/Player-Background.png"),
                 fit: BoxFit.cover),
           ),
-          child: Column(
+          child:
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            
             children: [
-              IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  Navigator.push(context,
-                  MaterialPageRoute(builder: (context) =>  Album(id: 0,name:'', type: 'ALBUM', genre: '', artist: '' )));
-                },
+              const SizedBox(
+                height: 50,
               ),
               const AudioProgressBar(),
               Row(
@@ -294,3 +302,4 @@ class ShuffleButton extends StatelessWidget {
     );
   }
 }
+
