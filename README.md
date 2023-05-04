@@ -108,6 +108,3 @@ This project exists thanks to all the people who contribute.
 <a href="https://github.com/TharickABDUL">
   <img src="https://github.com/TharickABDUL.png?size=100">
 </a>
-
-const ALCHEMY_API_KEY = 'XURZZkpzFTF3Ts0p0jgkNZzco3OEpmVH'
-const GOERLI_PRIVATE_KEY = '1aae3a6caa93df9651b3f3020741a6aec7721cefc70aae0b45097231d56ff54e'
