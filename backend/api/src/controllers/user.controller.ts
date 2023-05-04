@@ -14,16 +14,6 @@ class UserController implements IUserController {
     res.json(res.locals.user)
   }
 
-  addWallet: RequestHandler = async (req, res) => {
-    const { address } = req.body
-    const user = await userService.update(
-      { id: res.locals.user.id },
-      { address }
-    )
-
-    res.json(user)
-  }
-
   getMonthlyListenings: RequestHandler = async (_, res) => {
     const now = new Date()
     now.setHours(0, 0, 0, 0)

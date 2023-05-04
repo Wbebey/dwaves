@@ -9,7 +9,6 @@ export interface IAppController extends IController {
 export interface IUserController extends IController {
   get: RequestHandler
   me: RequestHandler
-  addWallet: RequestHandler
   getMonthlyListenings: RequestHandler
 }
 
