@@ -12,14 +12,14 @@ const accessTokenCookieOptions: CookieOptions = {
   expires: new Date(Date.now() + env.accessTokenExp * 60 * 1000),
   maxAge: env.accessTokenExp * 60 * 1000,
   httpOnly: true,
-  sameSite: 'lax',
+  sameSite: 'none',
 }
 
 const refreshTokenCookieOptions: CookieOptions = {
   expires: new Date(Date.now() + env.refreshTokenExp * 60 * 1000),
   maxAge: env.refreshTokenExp * 60 * 1000,
   httpOnly: true,
-  sameSite: 'lax',
+  sameSite: 'none',
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -27,8 +27,6 @@ if (process.env.NODE_ENV === 'production') {
   refreshTokenCookieOptions.secure = true
   accessTokenCookieOptions.domain = '.tonfrere.fr'
   refreshTokenCookieOptions.domain = '.tonfrere.fr'
-  accessTokenCookieOptions.sameSite = 'none'
-  refreshTokenCookieOptions.sameSite = 'none'
 }
 
 class AuthController implements IAuthController {
