@@ -74,12 +74,13 @@ export const List = () => {
                     className="card hover:bg-teal-300"
                   >
                     <img src={album.cover} alt="" />
-                    <h3>{album.name.substring(0, 17 - 3)}...</h3>
+                    <h3>{album.name}</h3>
                     <p>{album.artist}</p>
                   </Link>
                 ))}
               </div>
             </div>
+            <div className="divider divider-vertical" />
           </div>
         </div>
       </div>

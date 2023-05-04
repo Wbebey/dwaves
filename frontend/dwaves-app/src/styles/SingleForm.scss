@@ -4,13 +4,6 @@
     margin-left: 10px;
     border-radius: 10px;
     height: 100%;
-    overflow: scroll;
-    overflow-x: scroll;
-    -ms-overflow-style: none;
-    overflow: -moz-scrollbars-none;
-    &::-webkit-scrollbar {
-        display: none;
-    }
     .section-download {
         padding-right: 1.5%;
         height: 100%;

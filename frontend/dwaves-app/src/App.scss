@@ -10,12 +10,6 @@ $primary : #333ce0;
 .App {
     background-color: $dark;
     position: relative;
-    overflow-x: scroll;
-    -ms-overflow-style: none;
-    overflow: -moz-scrollbars-none;
-    &::-webkit-scrollbar {
-        display: none;
-    }
 }
 
 .icon{

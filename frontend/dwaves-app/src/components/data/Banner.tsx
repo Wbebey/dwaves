@@ -1,13 +1,7 @@
 import axios from "axios";
-import { Playlists, Test } from "models";
+import { Playlists } from "models";
 import { useEffect, useState } from "react";
 import "styles/data/Banner.scss";
-
-const NumberWords = [
-  'one',
-  'two',
-  'three',
-]
 
 export const Banner = () => {
   const [playlists, setPlaylists] = useState<Playlists[]>([])
@@ -28,9 +22,19 @@ export const Banner = () => {
     }
   }
 
-  useEffect(()=>{
-    console.log(indexPlaylist)
-  },[indexPlaylist])
+  const getPlaylist = async (playlist:Playlists) => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_APP_BACK_URL}/playlists/`,
+        {
+          withCredentials: true,
+        }
+      )
+      setPlaylists(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   useEffect(() => {
     getPlaylists()
@@ -48,8 +52,12 @@ export const Banner = () => {
         setIndexPlaylist(indexPlaylist + 1)
       }
     }, 5000)
-  }, [playlists])
+  }, [playlist])
 
+
+  useEffect(()=>{
+    console.log(indexPlaylist)
+  },[indexPlaylist])
 
   return (
     <>
@@ -77,24 +85,26 @@ export const Banner = () => {
               </p>
             </div>
             <div className="right">
-              {
-                
-                playlists[indexPlaylist!].musics.map((music , i) => (
-                  (
-                    i < 3 &&
-                    <img
-                      alt=""
-                      className={`img ${NumberWords[i]}`}
-                      src={`${music.albumCover}`}
-                    />
-                  )
-                ))
-              }
+              <img
+                alt=""
+                className="img one"
+                src={`${import.meta.env.VITE_PINATA_GATEWAY_HOST}/${playlists[indexPlaylist!].coverCID}`}
+              />
+              <img
+                alt=""
+                className="img two"
+                src={`${import.meta.env.VITE_PINATA_GATEWAY_HOST}/${playlists[indexPlaylist!].coverCID}`}
+              />
+              <img
+                alt=""
+                className="img three"
+                src={`${import.meta.env.VITE_PINATA_GATEWAY_HOST}/${playlists[indexPlaylist!].coverCID}`}
+              />
             </div>
           </div>
           <div className="banner-pagination">
             <div
-              style={{ width: `${100 / playlists.length}%`, marginLeft: `${(100 / playlists.length) * indexPlaylist}%` }}
+              style={{ width: `${100 / playlists.length}%`, marginLeft: `${(100 / playlists.length) * indexPlaylist}%`}}
               className="step"
             />
           </div>
