@@ -7,17 +7,7 @@
     "strict": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "rootDir": "src",
     "outDir": "build",
-    "resolveJsonModule": true,
-    "baseUrl": "src",
-    "paths": {
-      "@abi/*": ["abi/*"]
-    }
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.spec.ts"],
-  "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "resolveJsonModule": true
   }
 }
