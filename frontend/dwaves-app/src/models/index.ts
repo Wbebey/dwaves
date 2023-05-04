@@ -12,6 +12,8 @@ export type Music = {
   progress: number;
   currentTime: number;
   length: number;
+  albumCover?: string
+  artist? : string
 };
 
 export type Test = {
