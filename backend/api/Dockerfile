@@ -61,4 +61,4 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
     CMD curl --fail http://localhost:8080/api/v1 || exit 1
 
-CMD ["npm", "deploy-start"]
+CMD ["npm", "start"]
