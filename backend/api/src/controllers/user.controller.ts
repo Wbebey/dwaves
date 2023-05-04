@@ -182,42 +182,6 @@ class UserController implements IUserController {
 
     res.json(user)
   }
-
-  likeAlbum: RequestHandler = async (req, res) => {
-    const { id } = req.app.locals.user
-    const { id: albumId } = req.params
-
-    const user = await userService.likeAlbum(id, +albumId)
-
-    res.json(user)
-  }
-
-  dislikeAlbum: RequestHandler = async (req, res) => {
-    const { id } = req.app.locals.user
-    const { id: albumId } = req.params
-
-    const user = await userService.dislikeAlbum(id, +albumId)
-
-    res.json(user)
-  }
-
-  likePlaylist: RequestHandler = async (req, res) => {
-    const { id } = req.app.locals.user
-    const { id: playlistId } = req.params
-
-    const user = await userService.likePlaylist(id, +playlistId)
-
-    res.json(user)
-  }
-
-  dislikePlaylist: RequestHandler = async (req, res) => {
-    const { id } = req.app.locals.user
-    const { id: playlistId } = req.params
-
-    const user = await userService.dislikePlaylist(id, +playlistId)
-
-    res.json(user)
-  }
 }
 
 const userController = new UserController()

@@ -50,14 +50,6 @@ class AlbumValidator extends AppValidator implements IAlbumValidator {
       throw error
     }
   }
-
-  toValidAlbumId: CustomSanitizer = async (albumId: string) => {
-    const album = await albumService.findUnique({ id: +albumId })
-    if (!album) {
-      throw new AppError('Album not found', StatusCodes.UNPROCESSABLE_ENTITY)
-    }
-    return +albumId
-  }
 }
 
 const albumValidator = new AlbumValidator()

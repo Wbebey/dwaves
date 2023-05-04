@@ -27,10 +27,6 @@ export interface IUserController extends IController {
   updateLikedMusics: RequestHandler
   followArtist: RequestHandler
   unfollowArtist: RequestHandler
-  likeAlbum: RequestHandler
-  dislikeAlbum: RequestHandler
-  likePlaylist: RequestHandler
-  dislikePlaylist: RequestHandler
 }
 
 export interface IAlbumController extends IController {
