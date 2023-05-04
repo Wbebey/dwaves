@@ -19,7 +19,7 @@ export type MusicMetadata = {
   listenings: number
 }
 
-export type ViewMusic = MusicMetadata & { src: string; cid: string }
+export type ViewMusic = MusicMetadata & { src: string }
 
 export type ViewMusicDetail = ViewMusic & {
   artist: string
