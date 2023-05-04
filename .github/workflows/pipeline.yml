@@ -43,11 +43,6 @@ jobs:
       with:
           node-version: ${{ matrix.node-version }}
 
-    - name: Environment variables 🧪
-      working-directory: ./frontend/dwaves-player
-      run: |-
-        sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
-
     - name: Build 🏗
       working-directory: ./frontend/dwaves-player
       run: |-
@@ -55,6 +50,9 @@ jobs:
         npm install
         CI='false' npm run build 
 
+    - name: Test 🧪
+      run: |-
+        echo "It is la rue bro, there is no test here. Just pass your way 😏"
 
     # Deploy
     # - name: Deploy 🛫
