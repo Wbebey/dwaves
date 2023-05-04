@@ -34,7 +34,6 @@ export interface IGenreController extends IController {
 
 export interface IMusicController extends IController {
   get: MusicListRequestHandler
-  getPopular: RequestHandler
   uploadSingle: RequestHandler
   uploadAlbum: RequestHandler
   incrementListeningsMetadata: RequestHandler

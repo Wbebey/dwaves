@@ -30,11 +30,6 @@ export type PinataPinResponse = {
 export type MusicFilter = {
   genre?: Genre
   albumId?: number
-  artistId?: number
-}
-
-export type PopularMusicFilter = MusicFilter & {
-  limit?: number
 }
 
 export type PinataPinListResponse = {

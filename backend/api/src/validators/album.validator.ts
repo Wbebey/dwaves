@@ -71,7 +71,7 @@ class AlbumValidator extends AppValidator implements IAlbumValidator {
       return undefined
     }
 
-    const user = await userService.findUnique({ id: +artistId })
+    const user = await userService.findFirst({ id: +artistId })
     if (!user) {
       throw new AppError('User not found', StatusCodes.UNPROCESSABLE_ENTITY)
     }

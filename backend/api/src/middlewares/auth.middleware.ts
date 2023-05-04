@@ -31,7 +31,7 @@ export const deserializeUser: RequestHandler = async (req, res, next) => {
     )
   }
 
-  const user = await userService.findUnique({ id: +decoded.sub })
+  const user = await userService.findFirst({ id: +decoded.sub })
   if (!user) {
     throw new AppError(
       'User with that token no longer exist',

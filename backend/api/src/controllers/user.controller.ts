@@ -63,7 +63,7 @@ class UserController implements IUserController {
     const { id } = req.app.locals.user
     const { oldPassword, password } = req.body
 
-    const user = (await userService.findUnique({ id }, true)) as User | null
+    const user = (await userService.findFirst({ id }, true)) as User | null
 
     if (
       !user ||

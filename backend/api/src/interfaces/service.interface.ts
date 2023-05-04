@@ -19,8 +19,8 @@ export interface IUserService extends IService {
     keys: Key[]
   ): Omit<User, Key>
   findMany: (where?: Prisma.UserWhereInput) => Promise<ViewUser[]>
-  findUnique: (
-    where: Prisma.UserWhereUniqueInput,
+  findFirst: (
+    where: Prisma.UserWhereInput,
     includePassword?: boolean
   ) => Promise<User | ViewUser | null>
   create: (user: Prisma.UserCreateInput) => Promise<ViewUser>

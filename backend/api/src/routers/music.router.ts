@@ -13,21 +13,8 @@ const musicRouter = Router()
 musicRouter.get(
   '/',
   query('genre').bail().customSanitizer(albumValidator.toValidGenreIfExist),
-  query('artistId').customSanitizer(albumValidator.toValidArtistIdIfExist),
   musicValidator.validate,
   musicController.get
-)
-
-musicRouter.get(
-  '/popular',
-  query('genre').bail().customSanitizer(albumValidator.toValidGenreIfExist),
-  query('artistId').customSanitizer(albumValidator.toValidArtistIdIfExist),
-  query('limit')
-    .if(query('limit').exists())
-    .isInt({ min: 1, max: 20 })
-    .withMessage('Limit must be an int between 1 and 20'),
-  musicValidator.validate,
-  musicController.getPopular
 )
 
 musicRouter.use(requireUserWallet)
@@ -73,15 +60,16 @@ musicRouter.post(
   musicController.uploadAlbum
 )
 
-musicRouter.post(
-  '/incrementListenings',
-  body('musicCID').notEmpty().withMessage('musicCID is required'),
-  body('listeningsValue')
-    .notEmpty()
-    .withMessage('listeningsValue is required')
-    .bail(),
-  musicValidator.validate,
-  musicController.incrementListeningsMetadata
-)
+musicRouter.post('/incrementListenings',
+    body('musicCID')
+        .notEmpty()
+        .withMessage('musicCID is required'),
+    body('listeningsValue')
+        .notEmpty()
+        .withMessage('listeningsValue is required')
+        .bail(),
+    musicValidator.validate,
+    musicController.incrementListeningsMetadata)
+
 
 export default musicRouter
