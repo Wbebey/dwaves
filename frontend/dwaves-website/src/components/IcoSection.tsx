@@ -16,7 +16,6 @@ declare const window: Window &
   };
 
 export const IcoSection = () => {
-  const testNet = "goerli";
   const [wallet, setWallet] = useState<string>("");
   const [balance, setBalance] = useState<string | undefined>();
   const [chainId, setChainId] = useState<number | undefined>();
@@ -29,7 +28,7 @@ export const IcoSection = () => {
   const [cap, setCap] = useState(null);
 
   const fetchContractInfo = async () => {
-    const provider = new AlchemyProvider(testNet, alchemyApiKey);
+    const provider = new AlchemyProvider("goerli", alchemyApiKey);
     const contract = new ethers.Contract(
       ContractICO.address,
       ContractICO.abi,
@@ -42,7 +41,7 @@ export const IcoSection = () => {
     const icoCap = await contract.cap();
     setOpeningTime(openingTime);
     setClosingTime(closingTime.toString());
-    setRate(Number(rate));
+    setRate(Number(rate))
     setRemainingTokens(remainingTokens.toString());
     setCap(icoCap);
   };
@@ -104,9 +103,7 @@ export const IcoSection = () => {
 
       <ul className="steps w-full mb-14">
         <li className="step step-primary">Login with Metamask</li>
-        <li className="step step-primary">
-          Choose the number of Ethers to change
-        </li>
+        <li className="step step-primary">Choose the number of Ethers to change</li>
         <li className="step step-primary">Confirm Transaction</li>
         <li className="step step-primary">Discover the power of Dwaves</li>
       </ul>
