@@ -2,11 +2,10 @@ import { RequestHandler } from 'express'
 
 import { IUserController } from '@interfaces/controller.interface'
 import prisma from '@config/prisma.config'
-import userService from 'services/user.service'
 
 class UserController implements IUserController {
   get: RequestHandler = async (_, res) => {
-    const users = await userService.findMany()
+    const users = await prisma.user.findMany()
 
     res.json(users)
   }
