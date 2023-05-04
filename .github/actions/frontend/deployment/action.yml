@@ -38,8 +38,6 @@ runs:
         working-directory:  ${{ env.PROJECT_DIRECTORY }}
         shell: bash
         run: |-
-          ls -la
-          cat .env
           npm install
 
       - name: Build 🏗

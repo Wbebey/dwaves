@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "doppler run -- vite",
     "build": "doppler run -- tsc && doppler run -- vite build",
-    "preview": "vite preview",
+    "preview": "doppler run -- vite preview",
     "deploy-build": "tsc && vite build"
   },
   "dependencies": {
