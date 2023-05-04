@@ -78,7 +78,7 @@ function App() {
             renders the first one that matches the current URL. */}
               <Routes>
                 <Route path="/" element={<Explorer />} />
-                <Route path="/album/:id" element={<Album />} />
+                <Route path="/album" element={<Album />} />
                 <Route path="/player" element={<Player />} />
                 <Route path="/download" element={<Download />} />
                 <Route path="/user" element={<div />} />
