@@ -54,7 +54,7 @@ export const Sidebar: React.FC<Props> = ({
     <aside className="sidebar">
       <ul
         style={{ height: '100%', position: 'relative' }}
-        className="menu bg-white p-2 gap-8"
+        className="menu bg-white p-2 gap-2"
       >
         <li>
           {connected ? (
@@ -123,17 +123,17 @@ export const Sidebar: React.FC<Props> = ({
           style={
             connected
               ? {
-                  position: 'absolute',
-                  bottom: '10%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                }
+                position: 'absolute',
+                bottom: '10%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+              }
               : {
-                  position: 'absolute',
-                  bottom: '1%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                }
+                position: 'absolute',
+                bottom: '1%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+              }
           }
         >
           <div>
