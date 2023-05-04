@@ -9,9 +9,6 @@ import { LimitRequestHandler } from '@@types/app.type'
 import albumService from '@services/album.service'
 import playlistService from '@services/playlist.service'
 import { UploadedFile } from 'express-fileupload'
-import { ParamsDictionary } from 'express-serve-static-core'
-import { ParsedQs } from 'qs'
-import pinataService from '@services/pinata.service'
 
 class UserController implements IUserController {
   get: RequestHandler = async (_, res) => {
@@ -81,32 +78,13 @@ class UserController implements IUserController {
     res.json(playlists)
   }
 
-  getMyLikedMusics: RequestHandler = async (req, res) => {
-    const { myLikedMusics } = req.app.locals.user as User
-
-    const musics = await Promise.all(
-      myLikedMusics.map(async (musicCID) => {
-        const ipfsMusics = await pinataService.getMusicFromIPFS({ musicCID })
-
-        if (!ipfsMusics.length) {
-          throw new AppError('Music not found', StatusCodes.NOT_FOUND)
-        }
-
-        return await musicService.toViewMusic(ipfsMusics[0])
-      })
-    )
-
-    res.json(musics)
-  }
-
   createPlaylist: RequestHandler = async (req, res) => {
     const { id } = req.app.locals.user
     const cover = req.files?.cover as UploadedFile | undefined
-    const { name, description } = req.body
+    const { name } = req.body
 
     const playlist = {
       name,
-      description,
       creator: { connect: { id } },
       likes: 0,
     }

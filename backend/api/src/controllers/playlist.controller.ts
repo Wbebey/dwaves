@@ -1,7 +1,6 @@
 import { PlaylistGetRequestHandler } from '@@types/app.type'
 import AppError from '@errors/app.error'
 import { IPlaylistController } from '@interfaces/controller.interface'
-import musicService from '@services/music.service'
 import pinataService from '@services/pinata.service'
 import playlistService from '@services/playlist.service'
 import { RequestHandler } from 'express'
@@ -26,7 +25,7 @@ class PlaylistController implements IPlaylistController {
           throw new AppError('Music not found', StatusCodes.NOT_FOUND)
         }
 
-        return await musicService.toViewMusic(ipfsMusics[0])
+        return ipfsMusics[0]
       })
     )
 

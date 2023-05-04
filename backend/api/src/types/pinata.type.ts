@@ -21,14 +21,6 @@ export type MusicMetadata = {
 
 export type ViewMusic = MusicMetadata & { src: string }
 
-export type ViewMusicDetail = ViewMusic & {
-  artist: string
-  genre: string
-  albumName: string
-  albumCover: string
-  albumDate: string | Date
-}
-
 export type PinataPinResponse = {
   IpfsHash: string
   PinSize: string

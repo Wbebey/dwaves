@@ -1,15 +1,15 @@
-import { MusicFilter, ViewMusic, ViewMusicDetail } from '@@types/pinata.type'
+import { MusicFilter, ViewMusic } from '@@types/pinata.type'
 import { IMusicService } from '@interfaces/service.interface'
 import genreService from './genre.service'
 import pinataService from './pinata.service'
 import userService from './user.service'
-import albumService from '@services/album.service'
+import albumService from "@services/album.service";
 
 class MusicService implements IMusicService {
   getPopularMusics = async (
     musicFilter: MusicFilter,
     limit?: number
-  ): Promise<ViewMusicDetail[]> => {
+  ): Promise<ViewMusic[]> => {
     const { genre, artistId } = musicFilter
     const musics = await pinataService.getMusicFromIPFS({ genre, artistId })
     const popularMusics = musics
@@ -18,14 +18,14 @@ class MusicService implements IMusicService {
 
     //* Don't parallelize promises to not instantiate too many db connections
     const viewMusics = []
-    for await (const music of popularMusics.map(this.toViewMusic)) {
+    for await (const music of popularMusics.map(this._toViewMusic)) {
       viewMusics.push(music)
     }
 
     return viewMusics
   }
 
-  toViewMusic = async (music: ViewMusic): Promise<ViewMusicDetail> => {
+  private _toViewMusic = async (music: ViewMusic) => {
     const [artist, genre, album] = await Promise.all([
       userService.findUnique({ id: music.artistId }),
       genreService.findUnique({ id: music.genreId }),
