@@ -9,7 +9,7 @@ export const Suggestions = () => {
             <div className="overflow-x">
                 {
                     datasongs.map(song =>
-                        <div key={song.Title} className="card-aside">
+                        <div className="card-aside">
                             <img src={song.Cover} alt={song.Cover} />
                             <div className="text">
                                 <h4>{song.Title}</h4>

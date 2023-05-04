@@ -35,7 +35,7 @@ export const Banner = () => {
                 </div>
             </div>
             <div className="banner-pagination">                
-                {playlists.map(playlist => <div key={playlist.title} style={{width : `${100 / playlists.length}%`}} className="step" />)}
+                {playlists.map(playlist => <div style={{width : `${100 / playlists.length}%`}} className="step" />)}
             </div>
         </section>
     )

@@ -25,10 +25,12 @@ export const Player = () => {
     },[audioElmt, isPlaying])
 
     const onPlaying = () => {
+
         const duration: number = audioElmt.current?.duration as number
         const ct: number = audioElmt.current?.currentTime as number
 
         setCurrentSong({...currentSong, "progress": ct / duration * 100 , "length": duration })
+
     }
 
     return (
