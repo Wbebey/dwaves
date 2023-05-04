@@ -67,8 +67,8 @@ export const PlayerWrapper: React.FC<Props> = ({
   )
 
   const calculationProgressTime = (currentTime: number) => {
-    const minutes = currentTime ? Math.floor(currentTime / 60) : 0
-    const seconds = currentTime ? Math.floor(currentTime % 60) : 0
+    const minutes = Math.floor(currentTime / 60)
+    const seconds = Math.floor(currentTime % 60)
     return `${minutes} : ${seconds < 10 ? '0' : ''}${seconds}`
   }
 
