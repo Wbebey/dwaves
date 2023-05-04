@@ -1,6 +1,6 @@
 // import { HttpFunction } from '@google-cloud/functions-framework'
 import { PrismaClient } from '../client'
-import ArtistPayer from '../abi/ArtistPayer.json'
+import ArtistPayer from '../../abi/ArtistPayer.json'
 import { Alchemy, Network } from 'alchemy-sdk'
 import * as ethers from 'ethers'
 import * as dotenv from 'dotenv'

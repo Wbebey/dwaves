@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "tsc",
-    "start": "node build/src/payArtists.js",
+    "start": "node build/payArtists.js",
     "dev": "concurrently \"tsc -b -w\" \"nodemon --watch ./build/ --exec npm run start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,4 +1,4 @@
-name: Cron scheduled
+name: Script on a schedule
 
 on:
   push:
@@ -13,14 +13,11 @@ env:
   DATABASE_DIRECTORY: backend/db
   ULTIMATE_ENV: ${{ secrets.ULTIMATE_ENV }}
   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-  DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }}
+  DISCORD_TEAM_ID: ${{ secrets.DISCORD_FRONT_TEAM_ID }}
 
 jobs:
   database:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ env.DATABASE_DIRECTORY }}
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ env.NODE_VERSION }}
@@ -28,20 +25,23 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      # - name: Retrieve environment for database
-      #   run: echo "${{ env.ULTIMATE_ENV }}" > .env
+      - name: Retrieve environment for database
+        run: echo "${{ env.ULTIMATE_ENV }}" > .env
+        working-directory: ${{ env.DATABASE_DIRECTORY }}
 
       - name: Install dependencies
         run: npm install
+        working-directory: ${{ env.DATABASE_DIRECTORY }}
 
       - name: Run script
         run: npm run generate
+        working-directory: ${{ env.DATABASE_DIRECTORY }}
 
       - name: Cache prisma client
         uses: actions/cache@v3
         with:
           path: ${{ env.DATABASE_DIRECTORY }}/client/
-          key: dwaves-prisma-client-${{ GITHUB.RUN_ID }}
+          key: dwaves-prisma-client-${{ github.run_id }}
           restore-keys: |
             dwaves-prisma-client-
 
@@ -51,9 +51,6 @@ jobs:
 
   cron:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ env.JOBS_DIRECTORY }}
     needs: database
     steps:
       - uses: actions/checkout@v3
@@ -66,34 +63,37 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.DATABASE_DIRECTORY }}/client/
-          key: dwaves-prisma-client-${{ GITHUB.RUN_ID }}
+          key: dwaves-prisma-client-${{ github.run_id }}
 
       - name: Cancel if prisma client is not cached
         if: ${{ steps.prisma-client.outputs.cache-hit != 'true' }}
         continue-on-error: false
         run: echo "prisma client not found" && exit 1
 
-      - name: Retrieve environment for jobs
-        run: echo "${{ env.ULTIMATE_ENV }}" > .env
+      - run: ls -al
+        working-directory: ${{ env.DATABASE_DIRECTORY }}
 
       - name: Retrieve prisma client
-        run: mv ${{ GITHUB.WORKSPACE }}/${{ env.DATABASE_DIRECTORY }}/client ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}
+        run: mv ${{ env.DATABASE_DIRECTORY }}/client ${{ env.JOBS_DIRECTORY }}
+
+      - name: Retrieve environment for jobs
+        run: echo "${{ env.ULTIMATE_ENV }}" > .env
+        working-directory: ${{ env.JOBS_DIRECTORY }}
 
       - name: Install dependencies
         run: npm install
+        working-directory: ${{ env.JOBS_DIRECTORY }}
 
       - name: Build script 
         run: npm run build
-
-      - name: Retrieve prisma client
-        run: mv ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}/client ${{ GITHUB.WORKSPACE }}/${{ env.JOBS_DIRECTORY }}/build
-
-      - run: ls -al
+        working-directory: ${{ env.JOBS_DIRECTORY }}
 
       - run: ls build/
+        working-directory: ${{ env.JOBS_DIRECTORY }}
 
       - name: Run script
-        run: npm run start
+        run: node build/payArtists.js
+        working-directory: ${{ env.JOBS_DIRECTORY }}
 
       - name: Discord notification on success
         if: success()
