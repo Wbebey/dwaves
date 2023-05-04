@@ -1,6 +1,6 @@
 import express from 'express'
-import 'express-async-errors'
 import fileUpload from 'express-fileupload'
+import bodyParser from 'body-parser'
 import cors from 'cors'
 
 import config from '@config/env.config'
@@ -22,8 +22,8 @@ app.disable('x-powered-by')
 
 app.use(cors({ origin: frontHost }))
 app.use(fileUpload({ createParentPath: true }))
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(requestLoggerMiddleware)
 
