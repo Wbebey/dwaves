@@ -14,7 +14,6 @@ import { PopularSongOfArtist} from "components/PopularSongOfArtist";
 import { AlbumOfArtist } from "components/AlbumOfArtist";
 import { SwitchTab } from "components/SwitchTab";
 import { SongList } from "components/SongList";
-import { CreatePlaylist } from "components/CreatePlaylist";
 import { Footer } from "components/Footer";
 
 export {
@@ -34,6 +33,5 @@ export {
   AlbumOfArtist,
   SwitchTab,
   SongList,
-  CreatePlaylist,
   Footer
 };
