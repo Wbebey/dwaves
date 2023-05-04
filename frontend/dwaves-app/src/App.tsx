@@ -38,7 +38,7 @@ function App() {
   }, [audioElmt, isPlaying])
 
   useEffect(() => {
-    if (document.cookie.includes('loggedIn=true')) {
+    if (document.cookie === 'loggedIn=true') {
       setConnected(true)
     }
   }, [])
@@ -57,6 +57,8 @@ function App() {
   const toggleModal = () => {
     setLoginDisplay(!loginDisplay)
   }
+
+  console.log(alert)
 
   return loader ? (
     <Loader />

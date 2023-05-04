@@ -15,15 +15,13 @@ interface Props {
 export const Login: React.FC<Props> = ({ toggleModal, setConnected }) => {
   const { register, setValue, getValues, handleSubmit } = useForm<User>()
 
-  console.log(document.cookie, 'document.cookie')
-
   const onSubmit = (data: any) => {
     axios
       .post(`${import.meta.env.VITE_APP_BACK_URL}/auth/login`, data, {
         withCredentials: true,
       })
       .then((res) => {
-        if (document.cookie.includes('loggedIn=true')) {
+        if (document.cookie === 'loggedIn=true') {
           setConnected(true)
           toggleModal()
         } else {
