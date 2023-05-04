@@ -1,21 +1,12 @@
 import { Router } from 'express'
 
 import musicController from '@controllers/music.controller'
-import { body, query } from 'express-validator'
+import { body } from 'express-validator'
 import musicValidator from '@validators/music.validator'
 import { FileType } from '@@types/pinata.type'
 import albumValidator from '@validators/album.validator'
 
 const musicRouter = Router()
-
-musicRouter.get(
-    '/get',
-    query('genre')
-        .bail()
-        .customSanitizer(albumValidator.toValidGenreIfExist),
-    musicValidator.validate,
-    musicController.get
-)
 
 musicRouter.post(
   '/pinSingle',
@@ -29,5 +20,7 @@ musicRouter.post(
   musicValidator.validate,
   musicController.uploadSingle
 )
+
+musicRouter.get('/get', musicController.get)
 
 export default musicRouter

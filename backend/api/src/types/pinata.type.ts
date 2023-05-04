@@ -31,25 +31,7 @@ export type PinataPinResponse = {
   Timestamp: string
 }
 
-export type MusicQuery = {
-  genre?: {
-    name: string,
-    id: number
-  } | null
-}
-
 
 export type PinataGetResponse = {
-    metadata: {
-      name: string
-      keyvalues: {
-        artistId: number
-        albumId: number
-        cover: string
-        listenings: number
-        genreId: number
-      }
-    },
-    ipfs_pin_hash: string,
-
+  rows: any
 }
