@@ -1,22 +1,22 @@
-import 'styles/player/PlayerWrapper.scss'
+import "styles/player/PlayerWrapper.scss";
 
-import { PlayerShader } from 'components/player'
-import { Icon } from 'components/shared'
+import { PlayerShader } from "components/player";
+import { Icon } from "components/shared";
 
-import { useRef } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { useRef } from "react";
+import { Canvas } from "@react-three/fiber";
 
 interface Props {
-  audioElmt: React.RefObject<HTMLAudioElement>
-  isPlaying: boolean
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
-  currentSong: any
-  setCurrentSong: React.Dispatch<React.SetStateAction<any>>
-  songs: any
-  setSongs: React.Dispatch<React.SetStateAction<any>>
+  audioElmt: React.RefObject<HTMLAudioElement>;
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  currentSong: any;
+  setCurrentSong: React.Dispatch<React.SetStateAction<any>>;
+  songs: any;
+  setSongs: React.Dispatch<React.SetStateAction<any>>;
   // Shader properties
-  planeSubdivisions: number
-  playerStatus: 'active' | 'paused' | 'inactive'
+  planeSubdivisions: number;
+  playerStatus: "active" | "paused" | "inactive";
 }
 
 export const PlayerWrapper: React.FC<Props> = ({
@@ -31,46 +31,46 @@ export const PlayerWrapper: React.FC<Props> = ({
   planeSubdivisions,
   playerStatus,
 }) => {
-  const clickRef = useRef<HTMLDivElement>(null)
+  const clickRef = useRef<HTMLDivElement>(null);
 
   let songIndex = songs?.musics.findIndex(
-    (x: { Title: string }) => x.Title == currentSong.Title,
-  )
+    (x: { Title: string }) => x.Title == currentSong.Title
+  );
 
   const togglePlayPlause = () => {
-    setIsPlaying(!isPlaying)
-    audioElmt.current!.play()
-  }
+    setIsPlaying(!isPlaying);
+    audioElmt.current!.play();
+  };
 
   const updateProgressWidth = (e: any) => {
-    const width: number = clickRef.current?.clientWidth as number
-    const offset = e.nativeEvent.offsetX
+    const width: number = clickRef.current?.clientWidth as number;
+    const offset = e.nativeEvent.offsetX;
 
-    const divprogress = (offset / width) * 100
-    audioElmt.current!.currentTime = (divprogress / 100) * currentSong.length
-  }
+    const divprogress = (offset / width) * 100;
+    audioElmt.current!.currentTime = (divprogress / 100) * currentSong.length;
+  };
 
   const switchToPrevious = () => {
     if (songIndex === 0) {
-      setCurrentSong(songs.musics[songs.musics.length - 1])
-      songIndex = songs.musics.length - 1
+      setCurrentSong(songs.musics[songs.musics.length - 1]);
+      songIndex = songs.musics.length - 1;
     } else {
-      setCurrentSong(songs.musics[songIndex - 1])
-      songIndex = songIndex - 1
+      setCurrentSong(songs.musics[songIndex - 1]);
+      songIndex = songIndex - 1;
     }
-    audioElmt.current!.currentTime = 0
-  }
+    audioElmt.current!.currentTime = 0;
+  };
 
   const switchToNext = () => {
     if (songIndex === songs.musics.length - 1) {
-      setCurrentSong(songs.musics[0])
-      songIndex = 0
+      setCurrentSong(songs.musics[0]);
+      songIndex = 0;
     } else {
-      setCurrentSong(songs.musics[songIndex + 1])
-      songIndex = songIndex + 1
+      setCurrentSong(songs.musics[songIndex + 1]);
+      songIndex = songIndex + 1;
     }
-    audioElmt.current!.currentTime = 0
-  }
+    audioElmt.current!.currentTime = 0;
+  };
 
   return (
     <div className="player-explorer-wrapper">
@@ -92,7 +92,7 @@ export const PlayerWrapper: React.FC<Props> = ({
               </p>
             </div>
           )}
-          <div id="nav-widget-player" className="widget-player">
+          <div id="nav-widget-player" className="flex row nowrap">
             <Icon icon="random" />
             <Icon icon="previous" onClick={switchToPrevious} />
             {isPlaying ? (
@@ -120,12 +120,12 @@ export const PlayerWrapper: React.FC<Props> = ({
             >
               <div
                 className="time"
-                style={{ width: `${currentSong.progress}%`, display: 'block' }}
+                style={{ width: `${currentSong.progress}%`, display: "block" }}
               />
             </div>
           )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

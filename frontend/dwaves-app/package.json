@@ -9,16 +9,6 @@
     "preview": "vite preview",
     "deploy-build": "tsc && vite build"
   },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "all",
-    "printWidth": 80,
-    "tabWidth": 2,
-    "semi": false,
-    "bracketSpacing": true,
-    "arrowParens": "always",
-    "endOfLine": "lf"
-  },
   "dependencies": {
     "@react-three/fiber": "^8.11.5",
     "axios": "^1.1.3",
