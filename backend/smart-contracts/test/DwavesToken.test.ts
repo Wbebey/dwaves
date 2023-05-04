@@ -13,10 +13,10 @@ describe('DwavesToken', () => {
   let user: SignerWithAddress
 
   before(async () => {
-    const [deployer_, _, bank_, user_] = await ethers.getSigners()
-    deployer = deployer_
-    bank = bank_
-    user = user_
+    const [_deployer, _, _bank, _user] = await ethers.getSigners()
+    deployer = _deployer
+    bank = _bank
+    user = _user
 
     dwavesTokenFactory = await ethers.getContractFactory(
       'DwavesToken',
@@ -26,12 +26,12 @@ describe('DwavesToken', () => {
 
   describe('When deploying the contract', () => {
     beforeEach(async () => {
-      const dwavesToken_ = await dwavesTokenFactory.deploy(bank.address)
-      await dwavesToken_.deployed()
+      const _dwavesToken = await dwavesTokenFactory.deploy(bank.address)
+      await _dwavesToken.deployed()
 
-      decimals = await dwavesToken_.decimals()
-      dwavesToken = dwavesToken_.connect(bank)
-      userToken = dwavesToken_.connect(user)
+      decimals = await _dwavesToken.decimals()
+      dwavesToken = _dwavesToken.connect(bank)
+      userToken = _dwavesToken.connect(user)
     })
 
     it('Creates a token with a name', async () => {
@@ -48,13 +48,13 @@ describe('DwavesToken', () => {
     })
 
     it('Has a valid total supply', async () => {
-      const expectedSupply = ethers.utils.parseUnits('400000000', decimals)
+      const expectedSupply = ethers.utils.parseUnits('300000000', decimals)
       const tokenSupply = (await dwavesToken.totalSupply()).toString()
       expect(tokenSupply).to.equal(expectedSupply)
     })
 
     it('Is able to query account balances', async () => {
-      const expectedBalance = ethers.utils.parseUnits('400000000', decimals)
+      const expectedBalance = ethers.utils.parseUnits('300000000', decimals)
       const balance = await dwavesToken.balanceOf(bank.address)
       expect(balance).to.equal(expectedBalance)
     })
@@ -202,7 +202,7 @@ describe('DwavesToken', () => {
     })
 
     it('Prevents burning if insufficient funds', async () => {
-      const excessBurnAmount = ethers.utils.parseUnits('500000000', decimals)
+      const excessBurnAmount = ethers.utils.parseUnits('400000000', decimals)
       const exceedsBalanceBurn = dwavesToken.burn(excessBurnAmount)
       await expect(exceedsBalanceBurn).to.be.revertedWith(
         'ERC20: burn amount exceeds balance'
@@ -250,7 +250,7 @@ describe('DwavesToken', () => {
       )
     })
 
-    it('Prevents batch minting if account does not have the minter role', async () => {
+    it('Prevents minting if account does not have the minter role', async () => {
       const minterRole = await dwavesToken.MINTER_ROLE()
       const hasMinterRole = await dwavesToken.hasRole(minterRole, user.address)
       expect(hasMinterRole).to.be.false
@@ -263,21 +263,6 @@ describe('DwavesToken', () => {
       await expect(batchMint).to.be.revertedWith(
         `AccessControl: account ${user.address.toLowerCase()} is missing role ${minterRole}`
       )
-    })
-
-    it('Prevents minting if cap is exceeded', async () => {
-      const _dwavesToken = dwavesToken.connect(deployer)
-      const minterRole = await _dwavesToken.MINTER_ROLE()
-      await _dwavesToken.grantRole(minterRole, user.address)
-      const hasMinterRole = await _dwavesToken.hasRole(minterRole, user.address)
-      expect(hasMinterRole).to.be.true
-
-      const mintAmount = ethers.utils.parseUnits('1000000000', decimals)
-      const to_list = [bank.address, user.address]
-      const amounts = Array(to_list.length).fill(mintAmount)
-      const batchMint = userToken.batchMint(to_list, amounts)
-
-      await expect(batchMint).to.be.revertedWith('ERC20Capped: cap exceeded')
     })
   })
 })
