@@ -1,6 +1,6 @@
 import authController from '@controllers/auth.controller'
 import { Router } from 'express'
-import { body, cookie } from 'express-validator'
+import { body } from 'express-validator'
 import userValidator from '@validators/user.validator'
 
 const authRouter = Router()
@@ -28,18 +28,6 @@ authRouter.post(
   body('password').notEmpty().withMessage('Password is required'),
   userValidator.validate,
   authController.login
-)
-authRouter.post(
-  '/logout',
-  cookie('loggedIn').notEmpty().withMessage('Already logged out'),
-  userValidator.validate,
-  authController.logout
-)
-authRouter.post(
-  '/refresh',
-  cookie('refreshToken').notEmpty().withMessage('Missing refresh token'),
-  userValidator.validate,
-  authController.refresh
 )
 
 export default authRouter

@@ -1,11 +1,9 @@
-import { TokenType } from '@@types/token.type'
 import config from '@config/env.config'
 import AppError from '@errors/app.error'
 import { IAuthController } from '@interfaces/controller.interface'
 import { User } from '@prisma/client'
 import { CookieOptions, RequestHandler } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import tokenService from 'services/token.service'
 import userService from 'services/user.service'
 
 const accessTokenCookieOptions: CookieOptions = {
@@ -15,16 +13,8 @@ const accessTokenCookieOptions: CookieOptions = {
   sameSite: 'lax',
 }
 
-const refreshTokenCookieOptions: CookieOptions = {
-  expires: new Date(Date.now() + config.refreshTokenExp * 60 * 1000),
-  maxAge: config.refreshTokenExp * 60 * 1000,
-  httpOnly: true,
-  sameSite: 'lax',
-}
-
 if (process.env.NODE_ENV === 'production') {
   accessTokenCookieOptions.secure = true
-  refreshTokenCookieOptions.secure = true
 }
 
 class AuthController implements IAuthController {
@@ -43,59 +33,15 @@ class AuthController implements IAuthController {
       throw new AppError('Invalid email or password', StatusCodes.UNAUTHORIZED)
     }
 
-    const { accessToken, refreshToken } = userService.signToken(user)
+    const accessToken = userService.signToken(user)
 
     res.cookie('accessToken', accessToken, accessTokenCookieOptions)
-    res.cookie('refreshToken', refreshToken, refreshTokenCookieOptions)
     res.cookie('loggedIn', true, {
       ...accessTokenCookieOptions,
       httpOnly: false,
     })
 
     res.json({ accessToken })
-  }
-
-  logout: RequestHandler = (_, res) => {
-    res.cookie('accessToken', '', { maxAge: 1 })
-    res.cookie('refreshToken', '', { maxAge: 1 })
-    res.cookie('loggedIn', '', { maxAge: 1 })
-
-    res.status(StatusCodes.NO_CONTENT).send()
-  }
-
-  refresh: RequestHandler = async (req, res) => {
-    const refreshToken = req.cookies.refreshToken
-
-    const decoded = tokenService.verifyJwt<{ sub: string }>(
-      refreshToken,
-      TokenType.REFRESH
-    )
-    if (!decoded) {
-      throw new AppError('Invalid refresh token', StatusCodes.UNAUTHORIZED)
-    }
-
-    const user = await userService.findFirst({ id: +decoded.sub })
-    if (!user) {
-      throw new AppError(
-        'User with that token no longer exist',
-        StatusCodes.UNAUTHORIZED
-      )
-    }
-
-    const refreshedAccessToken = tokenService.signJwt(
-      { sub: user.id.toString() },
-      TokenType.ACCESS,
-      { expiresIn: `${config.accessTokenExp}m` }
-    )
-
-    // Send the access token as cookie
-    res.cookie('accessToken', refreshedAccessToken, accessTokenCookieOptions)
-    res.cookie('loggedIn', true, {
-      ...accessTokenCookieOptions,
-      httpOnly: false,
-    })
-
-    res.json({ accessToken: refreshedAccessToken })
   }
 }
 
