@@ -69,19 +69,21 @@ export const List = () => {
             <div className="overflow-x">
               <div className="contain-card">
                 {albums.map((album) => (
-                  <div key={album.id} className="card hover:bg-teal-300">
-                    <Link to={`/album/${album.id}`}>
-                      <img src={album.cover} alt="" />
-                      <h3>{album.name.substring(0, 17 - 3)}...</h3>
-                    </Link>
+                  <Link
+                    key={album.id}
+                    to={`/album/${album.id}`}
+                    className="card hover:bg-teal-300"
+                  >
+                    <img src={album.cover} alt="" />
+                    <h3>{album.name.substring(0, 17 - 3)}...</h3>
                     <Link
-                      key={album.id}
-                      to={`/artist/${album.artistId}`}
-                      className="hover:underline underline-offset-2"
+                        key={album.id}
+                        to={`/artist/${album.artistId}`}
+                        className="hover:underline underline-offset-2"
                     >
                       <p>{album.artist}</p>
                     </Link>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
