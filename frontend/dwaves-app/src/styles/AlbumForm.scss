@@ -1,7 +1,7 @@
 .contain-album-form {
     .header {
         .contain-header {
-            @extend %_ds-flex-shared-row;
+            @extend %_ds-flex-shared-row-nocenter;
             justify-content: space-around;
             height: 20vh;
             width: 100%;
@@ -35,7 +35,7 @@
         .list-form-album{
             border-radius: 4px;
             .form-song-album {
-                @extend %_ds-flex-shared-row;
+                @extend %_ds-flex-shared-row-nocenter;
                 justify-content: space-around;
                 align-items: center;
                 background-color: $col-main-light;

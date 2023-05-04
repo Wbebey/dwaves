@@ -5,33 +5,5 @@
       height: 192px;
       // background-color: $col-accent-pos;
     }
-
-    &-content {
-      display: block;
-      height: 20%;
-      background: transparent;
-      .player-bar {
-        @extend %_ds-flex-shared-row;
-        width: 100%;
-        justify-content: space-between;
-        font-size: 24px;
-        #nav-widget-player > * {
-          margin: 20% 8px;
-          width: 32px;
-          height: 32px;
-        }
-        #contain-right-bar > * {
-          margin: 20% 8px;
-        }
-        #contain-left-bar > img {
-          width: 128px;
-          height: 128px;
-          margin: 8px;
-        }
-        #contain-left-bar > p {
-          margin: 15% 8px;
-        }
-      }
-    }
   }
 }
