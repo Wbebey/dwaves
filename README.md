@@ -80,6 +80,3 @@ This project exists thanks to all the people who contribute.
 <a href="https://github.com/TharickABDUL">
   <img src="https://github.com/TharickABDUL.png?size=100">
 </a>
-<a href="https://github.com/Bolrung">
-  <img src="https://github.com/Bolrung.png?size=100">
-</a>

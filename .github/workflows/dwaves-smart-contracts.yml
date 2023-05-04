@@ -11,12 +11,6 @@ on:
       - main
     paths:
       - backend/smart-contracts/**
-  workflow_dispatch:
-    inputs:
-      paths:
-        description: 'Paths to run the workflow on'
-        required: true
-        default: 'backend/smart-contracts/**'
 
 env:
     APP: dwaves-smart-contracts
