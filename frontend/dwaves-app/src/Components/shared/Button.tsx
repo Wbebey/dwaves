@@ -3,31 +3,22 @@ import { Icon } from "components/shared";
 
 interface Props {
   handleClick: Function;
-  size?: "Regular" | "Large";
-  color?: "Negative" | "Neutral" | "Positive";
+  size: "Regular" | "Large";
+  color: "Negative" | "Neutral" | "Positive";
   icon?: string;
   text?: string;
-  isDisabled?: boolean;
-  isDark?: boolean;
+  isDisabled: boolean;
+  isDark: boolean;
 }
 
-export const Button: React.FC<Props> = ({
+export const Button = ({
   handleClick = () => {},
   size = "Regular",
   color = "Neutral",
-  icon,
-  text,
+  // icon,
+  // text,
   isDisabled = false,
   isDark = false,
 }) => {
-  return (
-    <div className="ds-button" onClick={() => handleClick()}>
-      {icon ? (
-        <div>
-          <Icon {...{ icon, size }} />
-        </div>
-      ) : null}
-      {text ? <div>{text}</div> : null}
-    </div>
-  );
+  return <div className="ds-button" onClick={() => handleClick()} />;
 };

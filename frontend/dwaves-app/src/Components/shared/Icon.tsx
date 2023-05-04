@@ -1,11 +1,11 @@
 import * as IconSax from "iconsax-react";
-import styles from "styles/shared/styles.module.scss";
+import styles from "@/styles/shared/styles.module.scss";
 
 interface Props {
   icon: string;
-  variant?: "Linear" | "Outline" | "Broken" | "Bold" | "Bulk" | "TwoTone";
-  size?: "Small" | "Regular" | "Large";
-  color?: string;
+  variant: "Linear" | "Outline" | "Broken" | "Bold" | "Bulk" | "TwoTone";
+  size: "Small" | "Regular" | "Large";
+  color: string;
 }
 
 export const Icon: React.FC<Props> = ({

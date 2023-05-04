@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
@@ -17,6 +17,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["srcInit", "src/vite-env.d.ts", "**/*.tsx", "./src"],
+  "include": ["srcInit", "src/vite-env.d.ts", "**/*.tsx", "src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
