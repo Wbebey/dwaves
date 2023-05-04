@@ -49,7 +49,7 @@ export const Sidebar: React.FC<Props> = ({
     <aside className="sidebar">
       <ul
         style={{ height: '100%', position: 'relative' }}
-        className="menu bg-white p-2 gap-8"
+        className="menu bg-white p-2"
       >
         <li>
           {connected ? (

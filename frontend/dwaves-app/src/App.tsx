@@ -46,7 +46,7 @@ function App() {
   const [connected, setConnected] = useState(false) // Temporary this value will be stored in the token
   const [wallet, setWallet] = useState<string>('')
   const [likedMusics, setLikedMusics] = useState<string[]>([])
-  const [dataUser, setDataUser] = useState<any>()
+  const[dataUser, setDataUser]= useState<any>()
   const [currentUser, setCurrentUser] = useState<any>()
 
   const envName = import.meta.env.VITE_NODE_ENV
@@ -95,8 +95,7 @@ function App() {
   const endedSong = () => {
     setListenings(listenings! + 1)
     currentSong &&
-      listenings &&
-      incrementlisteningsMusic(currentSong, listenings)
+      listenings && incrementlisteningsMusic(currentSong, listenings)
     repeat && playPause(audioElmt, false, setIsPlaying)
     if (random) {
       setCurrentSong(playRandomSong(songs!))
@@ -178,7 +177,7 @@ function App() {
         `${import.meta.env.VITE_APP_BACK_URL}/users/me`,
         {
           withCredentials: true,
-        },
+        }
       )
       setCurrentUser(res.data)
     } catch (err) {
@@ -186,9 +185,9 @@ function App() {
     }
   }
 
-  useEffect(() => {
+  useEffect(()=>{
     connected && getCurrentUser()
-  }, [connected])
+  },[connected])
 
   return loader ? (
     <Loader />

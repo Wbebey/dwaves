@@ -13,10 +13,10 @@ export const ModalLogin: React.FC<Props> = ({ toggleModal, setConnected, setAler
   const [showLogin, setShowLogin] = useState(true)
 
   return (
-    <div onClick={toggleModal} id="contain-modal">
-      <div onClick={(e) => e.stopPropagation()} id="modal" className='grid grid-rows-[1fr_2fr]'>
-        <header className='gap-4'>
-          <img src="/logo-dwaves.png" alt="" />
+    <div id="contain-modal">
+      <div id="modal">
+        <header>
+          <img onClick={toggleModal} src="/logo-dwaves.png" alt="" />
           <div className="tabs">
             <div
               onClick={() => {
@@ -41,7 +41,7 @@ export const ModalLogin: React.FC<Props> = ({ toggleModal, setConnected, setAler
           </div>
           {showLogin ? <h1>Login</h1> : <h1>Register</h1>}
         </header>
-        <div className="self-start px-8">
+        <div className="content px-8">
           {showLogin ? (
             <Login setAlert={setAlert} toggleModal={toggleModal} setConnected={setConnected} />
           ) : (

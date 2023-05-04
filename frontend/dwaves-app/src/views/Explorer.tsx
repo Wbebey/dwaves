@@ -1,6 +1,6 @@
-import 'styles/Explorer.scss'
-import { ContentPlaylist } from 'components'
+import "styles/Explorer.scss";
+import { ContentPlaylist } from "components";
 
-export const Explorer: React.FC = () => {
-  return <ContentPlaylist />
-}
+export const Explorer = () => {
+  return <ContentPlaylist />;
+};

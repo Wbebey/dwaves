@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { responseRequest } from '../models'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { responseRequest } from "../models";
 
 interface Props {
-  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
+  setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>;
 }
 
 export const CreatePlaylist: React.FC<Props> = ({ setAlert }) => {
-  const [playlistName, setPlaylistName] = useState<string>('')
-  const [description, setDescription] = useState<string>('')
-  const [userId, setUserId] = useState<string>('')
-  const [image, setImage] = useState<any>([])
-  const [imageURL, setImageURL] = useState<string>()
+  const [playlistName, setPlaylistName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
+  const [image, setImage] = useState<any>([]);
+  const [imageURL, setImageURL] = useState<string>();
 
   useEffect(() => {
-    if (image.length < 1) return
+    if (image.length < 1) return;
 
-    setImageURL(URL.createObjectURL(image[0]))
-  }, [image])
+    setImageURL(URL.createObjectURL(image[0]));
+  }, [image]);
 
   function onImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setImage([...e.target.files!])
+    setImage([...e.target.files!]);
   }
 
   const confirmPlaylist = async () => {
-    const form = new FormData()
-    form.append('creatorId', userId)
-    form.append('name', playlistName!)
-    form.append('description', description!)
-    form.append('cover', image[0])
+    const form = new FormData();
+    form.append("creatorId", userId);
+    form.append("name", playlistName!);
+    form.append("description", description!);
+    form.append("cover", image[0]);
 
     try {
       const res = await axios.post(
@@ -36,28 +36,28 @@ export const CreatePlaylist: React.FC<Props> = ({ setAlert }) => {
         form,
         {
           withCredentials: true,
-        },
-      )
-      setPlaylistName('')
-      setDescription('')
-      setImage([])
-      setImageURL('')
+        }
+      );
+      setPlaylistName("");
+      setDescription("");
+      setImage([]);
+      setImageURL("");
       if (Array.isArray(res.data)) {
-        displayAlert(res.data[0].msg, res.status)
+        displayAlert(res.data[0].msg, res.status);
       } else {
-        displayAlert('Playlist created successfully', res.status)
+        displayAlert("Playlist created successfully", res.status);
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   const displayAlert = (msg: string, status: number) => {
-    setAlert({ response: msg, status: status, visible: true })
+    setAlert({ response: msg, status: status, visible: true });
     setTimeout(() => {
-      setAlert({ response: '', status: 0, visible: false })
-    }, 3000)
-  }
+      setAlert({ response: "", status: 0, visible: false });
+    }, 3000);
+  };
 
   return (
     <div>
@@ -75,12 +75,12 @@ export const CreatePlaylist: React.FC<Props> = ({ setAlert }) => {
                                file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
               />
             ) : (
-              <img src={imageURL} alt={''} />
+              <img src={imageURL} alt={""} />
             )}
           </div>
         </div>
         <div className="flex-col items-center w-80 pl-11">
-          <label className="flex flex-col items-center">
+          <label className="block flex flex-col items-center">
             <span className="block text-l font-medium">Name</span>
             <input
               type="email"
@@ -89,7 +89,7 @@ export const CreatePlaylist: React.FC<Props> = ({ setAlert }) => {
               onChange={(e) => setPlaylistName(e.target.value)}
             />
           </label>
-          <label className="flex flex-col items-center mt-4">
+          <label className="block flex flex-col items-center mt-4">
             <span className="block text-l font-medium">Description</span>
             <textarea
               className="bg-teal-100 resize-none w-full h-32 text-center pt-5 rounded-lg hover:bg-teal-200"
@@ -97,16 +97,16 @@ export const CreatePlaylist: React.FC<Props> = ({ setAlert }) => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </label>
-          <div
-            className="mt-6 bg-teal-200 w-50 h-16 rounded-lg flex justify-center hover:bg-teal-300 cursor-pointer"
-            onClick={confirmPlaylist}
-          >
-            <button disabled={image.length < 1 || playlistName === ''}>
+          <div className="mt-6 bg-teal-200 w-50 h-16 rounded-lg flex justify-center hover:bg-teal-300">
+            <button
+              onClick={confirmPlaylist}
+              disabled={image.length < 1 || playlistName === ""}
+            >
               Confirm
             </button>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
