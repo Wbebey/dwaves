@@ -71,7 +71,7 @@ export const List = () => {
                   <Link
                     key={album.id}
                     to={`/album/${album.id}`}
-                    className="card hover:bg-teal-300"
+                    className="card"
                   >
                     <img src={album.cover} alt="" />
                     <h3>{album.name}</h3>

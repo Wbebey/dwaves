@@ -43,12 +43,8 @@ function App() {
     if (document.cookie.includes('loggedIn=true')) {
       setConnected(true)
     }
-    // getLikedMusics();
-  }, [])
-
-  useEffect(()=> {
     getLikedMusics();
-  }, [connected])
+  }, [])
 
   const onPlaying = () => {
     const duration: number = audioElmt.current?.duration as number

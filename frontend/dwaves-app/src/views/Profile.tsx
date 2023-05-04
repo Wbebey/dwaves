@@ -11,12 +11,12 @@ interface Props {
 
 export const Profile: React.FC<Props> = ({setCurrentSong, setSongs, setAlert}) => {
 
-    const [showForm, setShowForm] = useState('Overview')
+    const [showForm, setShowForm] = useState(true)
 
     return (
         <div className="contain-download" style={{width: '100%', height: '100%', background: 'white'}}>
-            <SwitchTab values={['Overview', 'My Info']} showForm={showForm} setShowForm={setShowForm}/>
-            {showForm === 'Overview' ?
+            <SwitchTab FirstValue={'Overview'} SecondValue={'My Info'} showForm={showForm} setShowForm={setShowForm}/>
+            {showForm ?
                 <div className={'h-[97%] pt-[30px] pl-[20px]'}>
                     <div className={`w-full h-[90%] overflow-scroll`}>
                         <AlbumOfArtist setAlert={setAlert}/>
