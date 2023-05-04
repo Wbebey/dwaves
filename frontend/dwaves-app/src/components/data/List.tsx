@@ -81,23 +81,6 @@ export const List = () => {
                 </Link>
               </div>
             ))}
-            {
-              new Array(10).fill(0).map((x, i) => (
-                <div key={x.id} className="card hover:bg-teal-300">
-                  <Link to={`/x/`}>
-                    <img src={'http://via.placeholder.com/360x360'} alt="" />
-                    <h3>onvreiov</h3>
-                  </Link>
-                  <Link
-                    key={x.id}
-                    to={`/artist/`}
-                    className="hover:underline underline-offset-2"
-                  >
-                    <p>biuveiubv</p>
-                  </Link>
-                </div>
-              ))
-            }
           </div>
         </div>
       </div>
