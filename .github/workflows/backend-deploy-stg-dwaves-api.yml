@@ -14,7 +14,6 @@ env:
     NODE_VERSION: 16.x
     BACKEND_DIRECTORY: backend
     PROJECT_DIRECTORY: backend/api
-    ULTIMATE_ENV: ${{ secrets.ULTIMATE_ENV }}
     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     DISCORD_TEAM_ID: ${{ secrets.DISCORD_BACK_TEAM_ID }} 
     SONAR_PROJECT_BASE_DIR: backend/api/
@@ -72,6 +71,10 @@ jobs:
       - name: SonarCloud Scan
         uses: ./.github/actions/sonarcloud
 
+      - name: Discord notification on success
+        if: success()
+        uses: ./.github/actions/discord/notification-on-success
+
       - name: Discord notification on failure
         if: failure()
         uses: ./.github/actions/discord/notification-on-failure
@@ -98,18 +101,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-      
-      - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
-        run: echo "${{ env.ULTIMATE_ENV }}" > .env
-
-      - name: Retrieve environment for databases
-        run: echo "${{ env.ULTIMATE_ENV }}" > db/.env
-        working-directory: ${{ env.BACKEND_DIRECTORY }}
-
-      - run: ls -la
-      - run: cat .env
-      - run: cat db/.env
-        working-directory: ${{ env.BACKEND_DIRECTORY }}
 
       - name: Build 🏗
         run: |-
@@ -134,13 +125,10 @@ jobs:
             --cpu 1000m \
             --memory 512Mi \
             --timeout 300 \
-            --project ${{ env.GCP_PROJECT_ID }}
-
-      - name: Discord notification on success
-        if: success()
-        uses: ./.github/actions/discord/notification-on-success
-
-      - name: Discord notification on failure
-        if: failure()
-        uses: ./.github/actions/discord/notification-on-failure
+            --restart-on-failure \
+            --liveness-probe-type http \
+            --liveness-probe-http-path / \
+            --liveness-probe-interval 30s \
+            --liveness-probe-timeout 30s \
+            --project ${{ env.GCP_PROJECT_ID }} 
 
