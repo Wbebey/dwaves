@@ -68,7 +68,7 @@ class AlbumValidator extends AppValidator implements IAlbumValidator {
 
   toValidArtistIdIfExist: CustomSanitizer = async (artistId: string) => {
     if (!artistId) {
-      return undefined
+      return null
     }
 
     const user = await userService.findFirst({ id: +artistId })
