@@ -1,5 +1,4 @@
 import config from '@config/env.config'
-import logger from '@config/logger.config'
 import { ITokenService } from '@interfaces/service.interface'
 import jwt, { JwtPayload, SignOptions } from 'jsonwebtoken'
 
@@ -18,7 +17,6 @@ class TokenService implements ITokenService {
       )
       return jwt.verify(token, publicKey) as T
     } catch (error) {
-      logger.error(error as Error)
       return null
     }
   }
