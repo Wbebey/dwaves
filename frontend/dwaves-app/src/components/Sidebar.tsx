@@ -106,6 +106,19 @@ export const Sidebar: React.FC<Props> = ({
           <div />
         )}
         <div className="divider m-0" />
+        {/* 
+        {datasongs.map((song) => (
+          <li key={song.Title}>
+            <Link to={'/album'}>
+              <div className="avatar mx-auto">
+                <div className="w-12 rounded">
+                  <img src="/stamina1.jpg" alt="" />
+                </div>
+              </div>
+              <p>Item</p>
+            </Link>
+          </li>
+        ))} */}
         <li
           style={
             connected
