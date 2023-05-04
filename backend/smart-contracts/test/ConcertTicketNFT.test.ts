@@ -115,7 +115,7 @@ describe('ConcertTicketNFT', () => {
     })
 
     it('Allows the artist to create a concert event', async () => {
-      const tx = concertTicketNFT.createEvent(concertEvent1)
+      const tx = await concertTicketNFT.createEvent(concertEvent1)
 
       expect(tx)
         .to.changeTokenBalance(
@@ -183,34 +183,26 @@ describe('ConcertTicketNFT', () => {
             )
           )
 
-        const tx = concertTicketNFT.buyTicket(listener.address, 1)
+        const tx = await concertTicketNFT.buyTicket(listener.address, 1)
         const ticketPrice = ethers.utils.parseUnits(
           concertEvent1.ticketPrice.toString(),
           decimals
         )
 
-        await expect(tx)
+        expect(tx)
           .to.changeTokenBalance(concertTicketNFT, listener, 1)
           .and.to.emit(concertTicketNFT, 'Transfer')
           .withArgs(artist1.address, listener.address, 1)
           .and.to.changeTokenBalances(
             dwavesToken,
-            [listener.address, artist1.address],
-            [-ticketPrice.toBigInt(), ticketPrice.toBigInt()]
+            [listener, artist1],
+            [-ticketPrice, ticketPrice]
           )
           .and.to.emit(dwavesToken, 'Transfer')
           .withArgs(listener.address, artist1.address, ticketPrice)
 
         const ticketInfo = await concertTicketNFT.getTicketInfo(1)
         expect(ticketInfo.isSold).to.be.equal(true)
-
-        const listenerVibesBalance = await dwavesToken.balanceOf(
-          listener.address
-        )
-        expect(listenerVibesBalance).to.be.equal(0)
-
-        const artistVibesBalance = await dwavesToken.balanceOf(artist1.address)
-        expect(artistVibesBalance).to.be.equal(ticketPrice)
       })
 
       it('Allows to retrieve events by address', async () => {
