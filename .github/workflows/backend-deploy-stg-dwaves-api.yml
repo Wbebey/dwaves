@@ -3,7 +3,6 @@ name: Deploy - Dwaves-api
 on:
   push:
     branches: 
-      - feature/*
       - staging
     paths:
       - backend/api/**
@@ -102,11 +101,16 @@ jobs:
       - name: Retrieve environment for ${{ env.ENVIRONMENT }} 🌎
         run: echo "${{ env.ULTIMATE_ENV }}" > .env
 
+      - name: Retrieve environment for databases
+        run: echo "${{ env.ULTIMATE_ENV }}" > db/.env
+        working-directory: ${{ env.BACKEND_DIRECTORY }}
+
       - name: Build 🏗
         run: |-
           docker build . \
             -f ${{ GITHUB.WORKSPACE }}/${{ env.PROJECT_DIRECTORY }}/Dockerfile \
             -t ${{ env.DOCKER_TAG }}
+        working-directory: ${{ env.BACKEND_DIRECTORY }}
 
       - name: Publish to Container registry 🛫
         run: |-
