@@ -1,10 +1,12 @@
-name: Production Deployment
+name: web Deployment
 
 on:
   push:
     branches: 
-      - main
-
+      - staging
+      - feature/*
+  pull_request:
+    branches: [ staging ]
 
 env:
   PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
@@ -16,7 +18,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-    environment: production 
+    environment: staging 
     steps:
 
     - name: Trigger Message 📥
@@ -44,7 +46,7 @@ jobs:
     - name: Environment variables 🧪
       working-directory: ./frontend/dwaves-player
       run: |-
-        sed -i 's/localhost:3000/${{ secrets.PRODUCTION_ADDRESS }}/g' src/Pages/Player.tsx
+        sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
 
     - name: Build 🏗
       working-directory: ./frontend/dwaves-player
@@ -59,14 +61,14 @@ jobs:
     #   uses: 'google-github-actions/upload-cloud-storage@v0'
     #   with:
     #     path: '${{ github.workspace }}/out/'
-    #     destination: '${{secrets.DWAVES_PRODUCTION_BUCKET}}'
+    #     destination: '${{secrets.DWAVES_STAGING_BUCKET}}'
     #   run: |-
     #     gsutil rsync -R local-dir gs://www.cookingincloudhipster.com
 
     - name: deploy 🧪
       working-directory: ./frontend/dwaves-player
       run: |-
-        gsutil rsync -R build/ gs://${{ secrets.PRODUCTION_ADDRESS }}
+        gsutil rsync -R build/ gs://${{ secrets.STAGING_ADDRESS }}
 
     # Cleanup
     - name: Cleanup 🚿
