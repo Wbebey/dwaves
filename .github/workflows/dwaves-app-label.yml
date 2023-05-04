@@ -58,3 +58,7 @@ jobs:
 
       - name: Deploy to GCP 🚀
         uses: ./.github/actions/frontend/deployment
+
+      - name: Discord notification on failure
+        if: failure()
+        uses: ./.github/actions/discord/notification-on-failure

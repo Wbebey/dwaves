@@ -7,10 +7,9 @@ import datasong from "songs/datasongs";
 import logoDeep from "images/logo-deep.png";
 
 export const Player = () => {
-  // TODO : removed the fake data
   const [songs, setSongs] = useState(datasong);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentSong, setCurrentSong] = useState(datasong.musics[0]);
+  const [currentSong, setCurrentSong] = useState(datasong[0]);
 
   const audioElmt = useRef<HTMLAudioElement>(null) ?? someOtherData();
 
@@ -44,7 +43,7 @@ export const Player = () => {
     >
       <img className="logo-player" src={logoDeep} alt="" />
       <div className="blur-effect">
-        <audio src={currentSong.src} ref={audioElmt} onTimeUpdate={onPlaying} />
+        <audio src={currentSong.Src} ref={audioElmt} onTimeUpdate={onPlaying} />
         <PlayerReact
           audioElmt={audioElmt}
           isPlaying={isPlaying}
