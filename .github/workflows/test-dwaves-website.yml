@@ -1,14 +1,20 @@
-name: Staging Deployment Dwaves-website 🚀
+name: TAB - Dwaves-website 🚀 
+run-name: ${{ github.actor }} - ${{ github.workflow }} - ${{ github.ref_name }}
 
 on:
   push:
     branches: 
-      - staging
+      - feature/*
+      - bugfix/*
+      - hotfix/*
     paths:
       - "frontend/dwaves-website/**"
-
-env: 
-  STG_WEBSITE_URL: ${{ secrets. }}
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #   branches:
+  #     - staging
+  #   paths:
+  #     - "frontend/dwaves-website/**"
 
 defaults:
   run:
@@ -31,6 +37,7 @@ jobs:
       #       node-version: ${{ matrix.node-version }}
 
       # - name: Environment variables 🧪
+      #   working-directory: ./frontend/dwaves-landing
       #   run: |-
       #     sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
 
@@ -55,12 +62,14 @@ jobs:
       #       node-version: ${{ matrix.node-version }}
 
       # - name: Environment variables 🧪
+      #   working-directory: ./frontend/dwaves-landing
       #   run: |-
       #     sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
 
       - name: Unit Test 🧪
         run: |-
           echo "Running  unit tests..."
+
 
   code-analysis:
     name: Code Analysis
@@ -111,24 +120,3 @@ jobs:
   #       run: |-
   #         npm install
   #         CI='false' npm run build 
-
-  deploy:
-    name: Deploy to Staging 
-    runs-on: ubuntu-latest
-    needs: [build]
-    environment:
-      name: production-website
-      url:  
-    steps:
-      - name: Checkout 😇
-        uses: actions/checkout@v3
-
-      - name: GCLOUD authentification 🤑
-        uses: google-github-actions/setup-gcloud@v0
-        with:
-          service_account_key: ${{ secrets.TF_SA }}
-          project_id: ${{ secrets.DWAVES_PROJECT_ID }}
-
-      - name: Deploy 🚀
-        run: |-
-          gsutil rsync -R build/ gs://${{ secrets.STAGING_ADDRESS }}

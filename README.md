@@ -1,7 +1,4 @@
 # Dwaves 
-![staging](https://github.com/Wbebey/dwaves/workflows/stg-dwaves-website.yml/badge.svg?branch=staging)
-
-
 
 <p align="center">
     <table>

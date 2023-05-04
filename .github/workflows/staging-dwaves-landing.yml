@@ -1,24 +1,19 @@
-name: TAB - Dwaves-app 🚀 
-# run-name: ${{ github.actor }} - ${{ github.workflow }} - ${{ github.ref_name }}
+name: Staging Deployment dwaves-landing 🚀
 
 on:
   push:
     branches: 
-      - feature/*
-      - bugfix/*
-      - hotfix/*
-    paths:
-      - frontend/dwaves-app/**
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
       - staging
     paths:
-      - frontend/dwaves-app/**
+      - "frontend/dwaves-landing/**"
+
+env:
+  PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
+  WORKING_DIRECTORY: "./frontend/dwaves-landing"
 
 defaults:
   run:
-    working-directory: "frontend/dwaves-app"
+    working-directory: ${{ env.WORKING_DIRECTORY }}
 
 jobs:
   integration-tests:
@@ -28,6 +23,12 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
+      - name: Trigger Message 📥
+        run: |-
+          echo " The job was automatically triggered by a ${{ github.event_name }} event by {{ github.actor }}."
+          echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+          echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
       - name: Checkout 😇
         uses: actions/checkout@v3
 
@@ -37,11 +38,14 @@ jobs:
             node-version: ${{ matrix.node-version }}
 
       - name: Environment variables 🧪
+        # working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |-
           sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
 
       - name: Integartion Tests 🏗
+        # working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |-
+          npm install
           echo "Running  integration tests..."
 
   unit-test:
@@ -61,41 +65,29 @@ jobs:
             node-version: ${{ matrix.node-version }}
 
       - name: Environment variables 🧪
+        # working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |-
           sed -i 's/localhost:3000/${{ secrets.STAGING_ADDRESS }}/g' src/Pages/Player.tsx
 
       - name: Unit Test 🧪
+        # working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |-
+          npm install
           echo "Running  unit tests..."
 
   code-analysis:
     name: Code Analysis
     runs-on: ubuntu-latest
-    permissions: 
-      contents: read
-      pull-requests: write
     needs: [integration-tests, unit-test]
     steps:
       - name: Checkout 😇
         uses: actions/checkout@v3
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+      - name: SonarCloud Scan 📊
+        uses: SonarSource/sonarcloud-github-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_APP }}
-        with:
-          projectBaseDir: frontend/dwaves-app/
-          args: >
-            -Dsonar.projectKey=${{ secrets.DWAVES_APP_PROJECT_KEY }}
-            -Dsonar.organization=wbebey
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
-            -Dsonar.pullrequest.branch=${{ github.head_ref }}
-            -Dsonar.pullrequest.base=${{ github.base_ref }}
-            -Dsonar.pullrequest.provider=GitHub
-            -Dsonar.pullrequest.github.repository=${{ github.repository }}
-            -Dsonar.pullrequest.github.endpoint=https://api.github.com/
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build:
     name: Build
@@ -114,6 +106,26 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Build 🏗
+        # working-directory: ${{ env.WORKING_DIRECTORY }}
         run: |-
           npm install
           CI='false' npm run build 
+
+  deploy:
+    name: Deploy to Staging 
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      - name: GCLOUD authentification 🤑
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          service_account_key: ${{ secrets.TF_SA }}
+          project_id: ${{ secrets.DWAVES_PROJECT_ID }}
+
+      - name: Deploy 🚀
+        # working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |-
+          gsutil rsync -R build/ gs://${{ secrets.STAGING_ADDRESS }}
