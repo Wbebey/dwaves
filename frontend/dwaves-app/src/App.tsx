@@ -7,7 +7,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Icon } from "components/shared";
 import { responseRequest, Music, AlbumDetail } from 'models'
 import { PlayPause, PlayRandomSong } from 'songs/listenMusic'
-import axios from "axios";
 
 function App() {
   const [loader, setLoader] = useState(true)
@@ -20,7 +19,6 @@ function App() {
   const [loginDisplay, setLoginDisplay] = useState(false)
   const [alert, setAlert] = useState<responseRequest>()
   const [connected, setConnected] = useState(false) // Temporary this value will be stored in the token
-  const [likedMusics, setLikedMusics] = useState<string[]>([])
   const envName = import.meta.env.VITE_NODE_ENV
   const buildDate = import.meta.env.VITE_APP_BUILD_DATE
   const commitUrl = import.meta.env.VITE_APP_COMMIT_URL
@@ -43,7 +41,6 @@ function App() {
     if (document.cookie.includes('loggedIn=true')) {
       setConnected(true)
     }
-    getLikedMusics();
   }, [])
 
   const onPlaying = () => {
@@ -77,53 +74,6 @@ function App() {
     setLoginDisplay(!loginDisplay)
   }
 
-  const getLikedMusics = async () => {
-    try {
-      const res = await axios.get(
-          `${import.meta.env.VITE_APP_BACK_URL}/users/me`,
-          {
-            withCredentials: true,
-          }
-      )
-      setLikedMusics(res.data.myLikedMusics)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const foundCidMusic = (musicUrl: string) => {
-    const musicCIDArray = musicUrl.split("/")
-    return musicCIDArray[musicCIDArray.length - 1]
-  }
-
-  const updateLikedMusics = async (musics: string[]) => {
-    try {
-      const data = {musics: musics}
-      const res = await axios.put(`${import.meta.env.VITE_APP_BACK_URL}/users/me/updateLikedMusics`, data, {
-            withCredentials: true,
-          }
-      )
-      // console.log(res.status)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const likeOrDislikeMusic = (music: string) => {
-    const musicCID = foundCidMusic(music)
-    const listOfLickedMusics = [...likedMusics]
-
-    if (likedMusics.includes(musicCID)) {
-      const updatedLikedMusics = listOfLickedMusics.filter(element => element !== musicCID);
-      setLikedMusics(updatedLikedMusics)
-      updateLikedMusics(updatedLikedMusics)
-    } else {
-      listOfLickedMusics.push(musicCID)
-      setLikedMusics(listOfLickedMusics)
-      updateLikedMusics(listOfLickedMusics)
-    }
-  }
-
   return loader ? (
     <Loader />
   ) : (
@@ -148,8 +98,6 @@ function App() {
             random={random}
             setRandom={setRandom}
             PlayRandomSong={PlayRandomSong}
-            likedMusics={likedMusics}
-            likeOrDislikeMusic={likeOrDislikeMusic}
           />
           :
           <div id="contain-top-player">
@@ -181,14 +129,8 @@ function App() {
             renders the first one that matches the current URL. */}
               <Routes>
                 <Route path="/" element={<Explorer />} />
-                <Route path="/album/:id" element={<Album setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt}
-                                                         isPlaying={isPlaying} setIsPlaying={setIsPlaying} setArtist={setArtist}
-                                                         setAlert={setAlert} likedMusics={likedMusics} likeOrDislikeMusic={likeOrDislikeMusic} />}
-                />
-                <Route path="/playlist/:id" element={<Playlist setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt}
-                                                               isPlaying={isPlaying} setIsPlaying={setIsPlaying} setArtist={setArtist}
-                                                               setAlert={setAlert} />}
-                />
+                <Route path="/album/:id" element={<Album setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt} isPlaying={isPlaying} setIsPlaying={setIsPlaying} setArtist={setArtist} setAlert={setAlert} />} />
+                <Route path="/playlist/:id" element={<Playlist setCurrentSong={setCurrentSong} setSongs={setSongs} audioElmt={audioElmt} isPlaying={isPlaying} setIsPlaying={setIsPlaying} setArtist={setArtist} setAlert={setAlert} />} />
                 <Route path="/player" element={<Player />} />
                 <Route path="/download" element={<Download setAlert={setAlert} />} />
                 <Route path="/profile" element={<Profile setCurrentSong={setCurrentSong} setSongs={setSongs} setAlert={setAlert} />} />

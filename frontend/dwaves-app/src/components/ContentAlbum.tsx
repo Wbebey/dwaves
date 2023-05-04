@@ -14,8 +14,6 @@ interface Props {
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
   setArtist : React.Dispatch<React.SetStateAction<AlbumDetail|undefined>>
   setAlert: React.Dispatch<React.SetStateAction<responseRequest | undefined>>
-  likedMusics: string[];
-  likeOrDislikeMusic: (music: string)=> void
 }
 
 export const ContentAlbum: React.FC<Props> = ({
@@ -25,9 +23,7 @@ export const ContentAlbum: React.FC<Props> = ({
   isPlaying,
   setIsPlaying,
   setArtist,
-  setAlert,
-  likedMusics,
-  likeOrDislikeMusic
+  setAlert
 }) => {
   const { id } = useParams()
 
@@ -79,8 +75,6 @@ export const ContentAlbum: React.FC<Props> = ({
         setIsPlaying={setIsPlaying} 
         setArtist={setArtist}
         setAlert={setAlert}
-        likedMusics={likedMusics}
-        likeOrDislikeMusic={likeOrDislikeMusic}
       />
     </div>
   )

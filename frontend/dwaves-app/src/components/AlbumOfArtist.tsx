@@ -84,7 +84,7 @@ export const AlbumOfArtist: React.FC<Props> = ({setAlert}) => {
                         <div className={'pt-2 pl-2 flex flex-row items-center justify-between'}>
                             <h3 className={'font-semibold text-l'}>{album.name}</h3>
                             <div className={'relative flex dropdown dropdown-end'}>
-                                <div tabIndex={0} className="cursor-pointer">
+                                <div tabIndex={0}>
                                     <BsThreeDotsVertical/>
                                 </div>
                                 <ul tabIndex={0}
@@ -94,6 +94,17 @@ export const AlbumOfArtist: React.FC<Props> = ({setAlert}) => {
                                         Delete !
                                     </button>
                                 </ul>
+                                {/*{openDeleteOfAnAlbum === album.id &&*/}
+                                {/*    <div className='absolute text-center text-red-500 pt-5'>*/}
+                                {/*        <div className='bg-gray-100 p-1 rounded-lg w-16'*/}
+                                {/*             onClick={e => {*/}
+                                {/*                 deleteAlbum(e, album.id)*/}
+                                {/*             }}*/}
+                                {/*        >*/}
+                                {/*            <p>Delete !</p>*/}
+                                {/*        </div>*/}
+                                {/*    </div>*/}
+                                {/*}*/}
                             </div>
                         </div>
 

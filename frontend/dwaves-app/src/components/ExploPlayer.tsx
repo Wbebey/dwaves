@@ -2,10 +2,9 @@ import "styles/Explorer.scss";
 import { Icon } from "components/shared";
 import styles from "styles/global/styles.module.scss";
 
-import React, {useEffect, useRef, useState} from "react";
+import { useRef } from "react";
 import { PlayPause, PlayRandomSong } from "songs/listenMusic";
 import { AlbumDetail, Music } from "models";
-import axios from "axios";
 
 interface Props {
   audioElmt: React.RefObject<HTMLAudioElement>;
@@ -21,8 +20,6 @@ interface Props {
   setRandom: React.Dispatch<React.SetStateAction<boolean>>;
   random: boolean;
   PlayRandomSong: (songs: Music[]) => Music;
-  likedMusics: string[];
-  likeOrDislikeMusic: (music: string)=> void
 }
 
 export const ExploPlayer: React.FC<Props> = ({
@@ -38,20 +35,8 @@ export const ExploPlayer: React.FC<Props> = ({
   repeat,
   setRandom,
   random,
-  PlayRandomSong,
-  likedMusics,
-  likeOrDislikeMusic
+  PlayRandomSong
 }) => {
-
-  const foundCidMusic = (musicUrl: string) => {
-    const musicCIDArray = musicUrl.split("/")
-    return musicCIDArray[musicCIDArray.length - 1]
-  }
-
-  const isLikedMusics = (music: string) => {
-    const musicCID = foundCidMusic(music)
-    return likedMusics.includes(musicCID);
-  }
 
   let index = songs.findIndex(
     (x: { name: string }) => x.name == currentSong.name
@@ -135,13 +120,8 @@ export const ExploPlayer: React.FC<Props> = ({
           songs &&
           <div id="contain-right-bar" className="flex row nowrap">
             <p>01:21 / 02:03</p>
-            <button className="pb-5" onClick={() => likeOrDislikeMusic(currentSong.src!)}>
-              <Icon icon="like" color={isLikedMusics(currentSong.src!) ? "red" : "black"}
-                    variant={isLikedMusics(currentSong.src!) ? "Bold" : "Linear"}/>
-            </button>
-            <div className="pt-1.5 pr-5">
-                <Icon icon="close" />
-            </div>
+            <Icon icon="dislike" />
+            <Icon icon="close" />
           </div>
         }
       </div>
