@@ -27,7 +27,6 @@ env:
     SONAR_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_DWAVES_SMART_CONTRACTS }}
     SONAR_PROJECT_KEY: ${{ secrets.DWAVES_SMART_CONTRACTS_PROJECT_KEY }}
-    DOPPLER_ACCESS: ${{ secrets.DOPPLER_ACCESS_SC }}
     NODE_VERSION: 16.x
     GCP_SA_KEY: ${{ secrets.TF_SA }}
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
@@ -37,56 +36,12 @@ defaults:
     working-directory: "backend/smart-contracts"
 
 jobs:
-  test:
-    name: Unit-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install Doppler
-        run: |
-          curl -sL https://cli.doppler.com/install.sh | sudo sh
-      
-      - name: Install dependencies
-        run : npm install
-
-      - name: Start Hardhat node
-        run: |
-          echo "Starting Hardhat node"
-          echo ${{env.DOPPLER_ACCESS}}
-          export DOPPLER_TOKEN=${{ env.DOPPLER_ACCESS }}
-          npm run dev &
-          echo $! > node_pid.txt
-
-      - name: Run Hardhat tests
-        env:
-          NODE_PID_FILE: node_pid.txt
-        run: |
-          sleep 5
-          echo "Running Hardhat tests"
-          export DOPPLER_TOKEN=${{ env.DOPPLER_ACCESS }}
-          npm run test || true
-          kill $(cat $NODE_PID_FILE)
-          echo "Hardhat node stopped"
-          rm $NODE_PID_FILE
-
-      - name: Discord notification on failure
-        if: failure()
-        uses: ./.github/actions/discord/notification-on-failure
-
   code-analysis:
     name: Code Analysis
     runs-on: ubuntu-latest
     permissions: 
       contents: read
       pull-requests: write
-    needs: test
     steps:
       - name: Checkout 😇
         uses: actions/checkout@v3

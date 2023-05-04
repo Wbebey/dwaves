@@ -1,0 +1,63 @@
+name: Deploy Dwaves-app on Label
+
+on:
+  pull_request:
+    types: [labeled]
+    branches: [staging]
+    paths:
+      - frontend/dwaves-app/**
+
+env:
+    APP: dwaves-app
+    NODE_VERSION: 16.x
+    APP_COMMIT_URL: ${{ secrets.APP_COMMIT_URL_FRONT }}
+    APP_BUILD_DATE: ${{ secrets.APP_BUILD_DATE_FRONT }}
+    GCP_SA_KEY: ${{ secrets.TF_SA }}
+    GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
+    PROJECT_DIRECTORY: frontend/dwaves-app
+    TEST_URL: ${{ secrets.DWAVES_APP_TEST_URL }}
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GITHUB_REPOSITORY: ${{ github.repository }}
+    TOKEN_TEST_DOPPLER: ${{ secrets.DWAVES_APP_DOPPLER_TOKEN_TEST }}
+    PROPERTIES_SCRIPT: ${{ GITHUB.WORKSPACE }}/.github/script/environment.sh
+
+defaults: 
+    run:
+        working-directory: "frontend/dwaves-app"
+
+jobs:
+  remove-label:
+    name: Remove Label
+    if: ${{ github.event.label.name == 'deploy-dwaves-front-test' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Remove Label from PR
+        uses: actions-ecosystem/action-remove-labels@v1.3.0
+        with:
+          labels: ${{ github.event.label.name }}
+          github_token: ${{ env.GITHUB_TOKEN }}
+
+  deploy-test:
+    name: Deploy to Test environment 🚀
+    if: ${{ github.event.label.name == 'deploy-dwaves-front-test' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    environment:
+      name: dwaves-app-test
+      url: https://dwaves-app-test.tonfrere.fr
+    steps:
+      - name: Checkout 😇
+        uses: actions/checkout@v3
+
+      - name: Deploy to GCP 🚀
+        uses: ./.github/actions/frontend/deployment

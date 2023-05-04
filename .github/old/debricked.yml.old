@@ -1,0 +1,17 @@
+# https://debricked.com/app/
+
+name: Debricked scan
+
+on: [pull_request]
+
+env:
+  DEBRICKED_TOKEN: ${{ secrets.DEBRICKED_TOKEN }}
+
+jobs:
+  vulnerabilities-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: debricked/actions/scan@v1
+      env:
+        DEBRICKED_TOKEN: ${{ env.DEBRICKED_TOKEN }}

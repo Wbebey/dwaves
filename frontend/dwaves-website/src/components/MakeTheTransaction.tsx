@@ -156,7 +156,7 @@ const MakeTheTransaction = ({
             <p className="mr-4">Discover the power of </p>
             <img
               className="w-28"
-              src={`./logo-dwaves-white.png`}
+              src={`./../public/logo-dwaves-white.png`}
               alt=""
             />
             <p className="ml-3">now !</p>
