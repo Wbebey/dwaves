@@ -1,19 +1,14 @@
 import { HttpFunction } from '@google-cloud/functions-framework'
 import { PrismaClient } from '../../db/generated/client'
 import ArtistPayer from '../../abi/ArtistPayer.json'
-import { Alchemy, Network } from 'alchemy-sdk'
+import { Alchemy, Network, Wallet } from 'alchemy-sdk'
 import * as ethers from 'ethers'
 import * as dotenv from 'dotenv'
 
 dotenv.config()
 
-export const payArtists: HttpFunction = async (_, res) => {
+export const payArtists: HttpFunction = async (req, res) => {
   const { ALCHEMY_API_KEY, DWAVES_PAYER_PRIVATE_KEY } = process.env
-
-  if (!DWAVES_PAYER_PRIVATE_KEY || !ALCHEMY_API_KEY) {
-    console.error('💥 error loading env')
-    process.exit(1)
-  }
 
   const settings = {
     apiKey: ALCHEMY_API_KEY,
@@ -25,6 +20,8 @@ export const payArtists: HttpFunction = async (_, res) => {
     DWAVES_PAYER_PRIVATE_KEY as string,
     alchemyProvider
   )
+
+  console.log(`Connected as: ${signer.address}`)
 
   const artistPayer = new ethers.Contract(
     ArtistPayer.address,
@@ -76,16 +73,34 @@ export const payArtists: HttpFunction = async (_, res) => {
   )
   const artistAddresses = artists.map((a) => a.address)
 
-  const addressesListenings = artistAddresses.reduce((acc, el, i) => {
-    return { ...acc, [el]: `${listenings[i]} listenings` }
-  }, {})
-  console.log('Artists to pay: ', addressesListenings)
+  console.log({ listenings, artistAddresses })
 
   if (artistAddresses.length === 0) {
     return res.send('No artist to pay')
   }
 
-  const transaction = await artistPayer.payArtists(artistAddresses, listenings)
+  for (const addr of artistAddresses) {
+    const balance = await alchemy.core.getTokenBalances(addr, [
+      '0x130A63b84c4c472Ea3304f8bFE1439B400E7cA4c',
+    ])
+    console.log(
+      `Balance before transactions: ${addr}:`,
+      parseInt(balance.tokenBalances[0].tokenBalance as string, 16) / 1e18
+    )
+  }
 
-  res.json({ transaction })
+  const payments = await artistPayer.payArtists(artistAddresses, listenings)
+  console.log(payments)
+
+  for (const addr of artistAddresses) {
+    const balance = await alchemy.core.getTokenBalances(addr, [
+      '0x130A63b84c4c472Ea3304f8bFE1439B400E7cA4c',
+    ])
+    console.log(
+      `Balance after transactions: ${addr}:`,
+      parseInt(balance.tokenBalances[0].tokenBalance as string, 16) / 1e18
+    )
+  }
+
+  res.json({ payments })
 }
