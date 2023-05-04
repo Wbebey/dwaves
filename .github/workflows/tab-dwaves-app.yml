@@ -46,11 +46,7 @@ jobs:
 
       - name: Discord Notification
         if: ${{ always() }}
-        uses: Wbebey/dwaves/.github/actions/discord@feature/pipeline
-        # env: 
-        #   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        # with:
-        #   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: .github/actions/discord
 
   unit-test:
     name: Unit Test
@@ -76,9 +72,9 @@ jobs:
         run: |-
           echo "Running  unit tests..."
 
-      # - name: Discord Notification
-      #   if: ${{ always() }}
-      #   uses: .github/actions/discord
+      - name: Discord Notification
+        if: ${{ always() }}
+        uses: .github/actions/discord
 
   code-analysis:
     name: Code Analysis
@@ -108,7 +104,6 @@ jobs:
             -Dsonar.pullrequest.provider=GitHub
             -Dsonar.pullrequest.github.repository=${{ github.repository }}
             -Dsonar.pullrequest.github.endpoint=https://api.github.com/
-            -Dsonar.verbose=true
 
   build:
     name: Build
@@ -131,6 +126,6 @@ jobs:
           npm install
           CI='false' npm run build 
 
-      # - name: Discord Notification
-      #   if: ${{ always() }}
-      #   uses: .github/actions/discord
+      - name: Discord Notification
+        if: ${{ always() }}
+        uses: .github/actions/discord

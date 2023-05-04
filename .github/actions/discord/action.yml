@@ -1,17 +1,12 @@
 name: "Deploy data-sources"
 description: "Send a notification on Discord for each workflow"
 runs:
-  using: composite
   steps:
     - name: Discord - Notify on success
-      shell: bash
+      # shell: bash
       if: success()
-      # env:
-      #   DISCORD_WEBHOOK: ''
-      # with:
-      #   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       run: |
-        if [[ "${{ github.base_ref }}" == "staging" && "${{ github.job }}" == "Clean" ]] || [[ "${{ github.base_ref }}" != "staging" && "${{ github.base_ref }}" != "main" && "${{ github.job }}" == "code-analysis" ]] || [[ "${{ github.job }}" == "deploy" ]]
+        if [[ "${{ github.base_ref }}" == "staging" && "${{ github.action }}" == "Clean" ]] || [[ "${{ github.base_ref }}" != "staging" && "${{ github.base_ref }}" != "main" && "${{ github.action }}" == "code-analysis" ]] || [[ "${{ github.action }}" == "deploy" ]]
             then
               ARRAY=("alexandre-pinon":"268353717860827136"
                 "Bolrung":"278229917467148299"
@@ -23,7 +18,6 @@ runs:
 
               discord_user="github account"
               finduser=false
-              DISCORD_WEBHOOK="$(echo -n 'aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTAzMTYzMzM3NzkxNDI2MTU2NS9VX0dhNEl5OGZ3SFA1TEpqc3RhLVo0blNYaUxwSGxHSGRvTnpCMkZ0TU5vU3NTWC1KUVUxQnN4TGE0M2c0bmt6UnBEMQ==' | base64 --decode)"
               worflow_url= "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
               if [[ ! -z ${{ github.actor }} ]]
@@ -82,13 +76,11 @@ runs:
                 ]
               }
               '
-              curl -H "Content-Type: application/json" -X POST $DISCORD_WEBHOOK -d "$data"
+              curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} -d "$data"
             fi
     - name: Discord - Notify on fail
-      shell: bash
+      # shell: bash
       if: failure()
-      # env:
-      #   DISCORD_WEBHOOK: ""
       run: |
         ARRAY=("alexandre-pinon":"268353717860827136"
                 "Bolrung":"278229917467148299"
@@ -100,7 +92,6 @@ runs:
 
         discord_user="github account"
               finduser=false
-              DISCORD_WEBHOOK="$(echo -n 'aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTAzMTYzMzM3NzkxNDI2MTU2NS9VX0dhNEl5OGZ3SFA1TEpqc3RhLVo0blNYaUxwSGxHSGRvTnpCMkZ0TU5vU3NTWC1KUVUxQnN4TGE0M2c0bmt6UnBEMQ==' | base64 --decode)"
               worflow_url= "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
               if [[ ! -z ${{ github.actor }} ]]
@@ -124,9 +115,9 @@ runs:
               fi
               if [[ "$discord_user" == "github account" || "$finduser" == false ]]
               then
-                description="**[Build ${{ github.run_number }}](${worflow_url})** launched by **${discord_user}** on **${target_name}** ${type} was failed at step **${{ github.job }}**."
+                description="**[Build ${{ github.run_number }}](${worflow_url})** launched by **${discord_user}** on **${target_name}** ${type} was failed at step **${{ github.action }}**."
               else
-                description="**[Build ${{ github.run_number }}](${worflow_url})** launched by <@${discord_user}> on **${target_name}** ${type} was failed at step **${{ github.job }}**."
+                description="**[Build ${{ github.run_number }}](${worflow_url})** launched by <@${discord_user}> on **${target_name}** ${type} was failed at step **${{ github.action }}**."
               fi
               if [[ -f "error_output" ]]
               then
@@ -159,5 +150,5 @@ runs:
                 ]
               }
               '
-              curl -H "Content-Type: application/json" -X POST $DISCORD_WEBHOOK -d "$data"
+              curl -H "Content-Type: application/json" -X POST ${{ secrets.DISCORD_WEBHOOK }} -d "$data"
             fi
