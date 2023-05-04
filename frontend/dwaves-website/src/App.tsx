@@ -17,7 +17,7 @@ const App = () => {
           />
         </a>
         <div className="w-4/5">
-          <a className="" href="https://dwaves-app-staging.tonfrere.fr/">
+          <a className="" href={`${import.meta.env.VITE_APP_DWAVESAPURL}`}>
             App
           </a>
         </div>

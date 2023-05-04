@@ -149,7 +149,7 @@ const MakeTheTransaction = ({
           />
 
           <a
-            href="https://dwaves-app-staging.tonfrere.fr/"
+            href={`${import.meta.env.VITE_APP_DWAVESAPURL}`}
             target="_blank"
             className="btn btn-ghost normal-case text-xl flex flex-row items-center mt-5"
           >
