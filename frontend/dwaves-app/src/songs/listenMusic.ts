@@ -26,6 +26,4 @@ export const incrementlisteningsMusic = async (currentSong : Music, listenings:n
       withCredentials: true,
     }
   )
-      .then((res)=> console.log(res))
-      .catch((err)=>console.error(err))
 }

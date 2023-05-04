@@ -176,7 +176,6 @@ export const Marketplace: React.FC<Props> = ({
   }
 
   const fetchMyTickets = async (provider: any) => {
-    console.log('start fetch my tickets')
     const signer = await provider.getSigner()
     const concertTicketNFT = new ethers.Contract(
       ConcertTicketNFT.address,
@@ -200,7 +199,7 @@ export const Marketplace: React.FC<Props> = ({
         (ticket: any) =>
           ticket.daysUntilConcert >= 0 && ticket.artist !== myUsername,
       )
-    console.log(myTicketsFormatted)
+    // console.log(myTicketsFormatted)
     setMyTickets(myTicketsFormatted)
   }
 
@@ -260,19 +259,18 @@ export const Marketplace: React.FC<Props> = ({
           />
           <div className={'h-[97%] pt-[20px]'}>
             {showTickets === 'Ticket Counter' ? (
-              <TicketPurchase
+              <TicketPurchase formattedEvents={formattedEvents} />
+            ) : showTickets === 'Your NFT Tickets' ? (
+              <YourNftTickets
                 balance={balance}
                 chainName={chainName}
                 chainId={chainId}
-                formattedEvents={formattedEvents}
-                fetchMyTickets={fetchMyTickets}
+                myTickets={myTickets}
               />
-            ) : showTickets === 'Your NFT Tickets' ? (
-              <YourNftTickets myTickets={myTickets} />
             ) : showTickets === 'Your future shows' ? (
               <YourConcerts allMyEvents={allMyEvents} />
             ) : (
-              <CreateConcert fetchMyEvents={fetchMyEvents} />
+              <CreateConcert />
             )}
           </div>
         </>

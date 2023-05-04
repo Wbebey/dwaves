@@ -26,9 +26,9 @@ const TheEvent = ({ event }: any) => {
         <p className="pt-1 text-white text-xl">
           {event.ticketSold}/{event.totalTickets} tickets sold
         </p>
-        {/*<p className="pt-1 text-white text-2xl font-bold">*/}
-        {/*  {event.price} Vibes*/}
-        {/*</p>*/}
+        <p className="pt-1 text-white text-2xl font-bold">
+          {event.price} Vibes
+        </p>
       </div>
       <div>
         <img src="./../../concertTemplate.png" alt="" width={600} />

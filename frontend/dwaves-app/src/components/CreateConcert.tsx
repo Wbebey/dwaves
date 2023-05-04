@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import Datepicker from 'react-tailwindcss-datepicker'
 import axios from 'axios'
 import Confetti from 'react-confetti'
-import { BrowserProvider } from 'ethers'
 
 interface IFormValues {
   'Event name': string
@@ -22,11 +21,6 @@ type InputProps = {
   step?: number
   required: boolean
 }
-
-declare const window: Window &
-  typeof globalThis & {
-    ethereum: any
-  }
 
 type DatepickerDate = {
   startDate: Date
@@ -51,16 +45,12 @@ const Input = ({
   </div>
 )
 
-export const CreateConcert = ({
-  fetchMyEvents,
-}: {
-  fetchMyEvents: (provider: any) => Promise<void>
-}) => {
-  const chainName = 'sepolia'
+export const CreateConcert = () => {
+  const chainName = "sepolia"
   const [date, setDate] = useState<DatepickerDate>()
   const [transactionInProgress, setTransactionInProgress] = useState(false)
   const [transactionIsDone, setTransactionIsDone] = useState(false)
-  const [txnHash, setTxnHash] = useState('')
+  const [txnHash, setTxnHash] = useState("");
   const [genres, setGenres] = useState([{ id: 0, name: '' }])
 
   const handleValueChange = (newValue: any) => {
@@ -109,7 +99,6 @@ export const CreateConcert = ({
 
   const mintEventNft = async (eventsDetails: any) => {
     setTransactionInProgress(true)
-    const provider = new BrowserProvider(window.ethereum)
     try {
       const res: any = await axios.post(
         `${import.meta.env.VITE_APP_BACK_URL}/events`,
@@ -120,13 +109,11 @@ export const CreateConcert = ({
       )
       console.log(res)
       setTxnHash(res.data.transactionHash)
-      await fetchMyEvents(provider)
       setTransactionInProgress(false)
       setTransactionIsDone(true)
       reset()
       // @ts-ignore
-      setDate({ startDate: '' })
-      console.log('fetch hey hey')
+      setDate({startDate: ""})
     } catch (err) {
       console.log(err)
     }
@@ -268,9 +255,9 @@ export const CreateConcert = ({
           </p>
 
           <a
-            href={`https://${chainName}.etherscan.io/tx/${txnHash}`}
-            target="_blank"
-            className="btn btn-ghost normal-case text-xl flex flex-row items-center mt-5"
+              href={`https://${chainName}.etherscan.io/tx/${txnHash}`}
+              target="_blank"
+              className="btn btn-ghost normal-case text-xl flex flex-row items-center mt-5"
           >
             <p className="text-white">View Transaction on Etherscan</p>
           </a>
