@@ -3,7 +3,7 @@ import AppError from '@errors/app.error'
 import { IMusicValidator } from '@interfaces/validator.interface'
 import { CustomValidator } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
-import { AppValidator } from '@validators/app.validator'
+import { AppValidator } from './app.validator'
 
 class MusicValidator extends AppValidator implements IMusicValidator {
   isFilePresent =

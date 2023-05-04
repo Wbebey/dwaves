@@ -3,7 +3,7 @@ import { IUserValidator } from '@interfaces/validator.interface'
 import userService from '@services/user.service'
 import { CustomValidator } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
-import { AppValidator } from '@validators/app.validator'
+import { AppValidator } from './app.validator'
 
 class UserValidator extends AppValidator implements IUserValidator {
   isEmailTaken: CustomValidator = async (email: string) => {

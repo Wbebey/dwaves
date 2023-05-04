@@ -4,7 +4,7 @@ import { AlbumType } from '@prisma/client'
 import genreService from '@services/genre.service'
 import { CustomSanitizer, CustomValidator } from 'express-validator'
 import { StatusCodes } from 'http-status-codes'
-import { AppValidator } from '@validators/app.validator'
+import { AppValidator } from './app.validator'
 
 class AlbumValidator extends AppValidator implements IAlbumValidator {
   isValidType: CustomValidator = (type: string) => {

@@ -4,9 +4,9 @@ import userRouter from '@routers/user.router'
 import albumRouter from '@routers/album.router'
 import musicRouter from '@routers/music.router'
 import authRouter from '@routers/auth.router'
-import genreRouter from '@routers/genre.router'
 import appController from '@controllers/app.controller'
 import { deserializeUser, requireUser } from '@middlewares/auth.middleware'
+import genreRouter from './genre.router'
 
 const appRouter = Router()
 
