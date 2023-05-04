@@ -44,10 +44,6 @@ class UserService implements IUserService {
     where: Prisma.UserWhereUniqueInput,
     userUpdate: Prisma.UserUpdateInput
   ) => {
-    if (userUpdate.password) {
-      const hashedPassword = await argon2.hash(userUpdate.password as string)
-      userUpdate.password = hashedPassword
-    }
     const updatedUser = await prisma.user.update({ where, data: userUpdate })
     return this.exclude(updatedUser, ['password'])
   }

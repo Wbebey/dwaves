@@ -11,7 +11,6 @@ export interface IAppValidator extends IValidator {
 
 export interface IUserValidator extends IAppValidator {
   isEmailTaken: CustomValidator
-  isNewEmailTaken: CustomValidator
   toValidAddress: CustomSanitizer
   doesPasswordMatch: CustomValidator
 }
