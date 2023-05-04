@@ -13,7 +13,6 @@ const checkEnv = (variable: string): string => {
 const config = {
   appName: checkEnv('APP_NAME'),
   port: checkEnv('PORT'),
-  dns: checkEnv('DNS'),
   postgresUrl: checkEnv('POSTGRES_URL'),
   pinataApiKey: checkEnv('PINATA_API_KEY'),
   pinataApiSecret: checkEnv('PINATA_API_SECRET'),

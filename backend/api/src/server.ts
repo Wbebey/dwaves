@@ -7,15 +7,12 @@ import env from '@config/env.config'
 import appRouter from '@routers/app.router'
 import logger from '@config/logger.config'
 
-const { port, appName, dns } = env
+const { port, appName } = env
 
 const app = express()
 app.disable("x-powered-by")
 
-const corsOptions = {
-    origin: dns
-};
-app.use(cors(corsOptions))
+app.use(cors())
 // enable files upload
 app.use(fileUpload({
     createParentPath: true
