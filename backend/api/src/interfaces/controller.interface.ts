@@ -23,7 +23,6 @@ export interface IGenreController extends IController {
 }
 
 export interface IMusicController extends IController {
-  get: RequestHandler
   uploadSingle: RequestHandler
 }
 

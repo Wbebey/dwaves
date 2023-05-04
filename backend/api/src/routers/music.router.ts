@@ -21,6 +21,4 @@ musicRouter.post(
   musicController.uploadSingle
 )
 
-musicRouter.get('/get', musicController.get)
-
 export default musicRouter

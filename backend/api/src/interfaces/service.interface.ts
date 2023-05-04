@@ -1,4 +1,4 @@
-import { CoverMetadata, MusicMetadata, MusicWithMetadata } from '@@types/pinata.type'
+import { CoverMetadata, MusicMetadata } from '@@types/pinata.type'
 import { TokenType } from '@@types/token.type'
 import { UserAddressAndMonthlyListenings, ViewUser } from '@@types/user.type'
 import { Album, Genre, Prisma, User } from '@prisma/client'
@@ -41,8 +41,6 @@ export interface IGenreService extends IService {
 }
 
 export interface IPinataService extends IService {
-  getMusicFromIPFS: (
-  ) => Promise<MusicWithMetadata[]>
   pinFileToIPFS: (
     file: UploadedFile,
     metadata: CoverMetadata | MusicMetadata
