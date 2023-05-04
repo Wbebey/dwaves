@@ -12,8 +12,6 @@ contract ICO {
     uint256 rate;
     uint256 cap;
     uint256 weiRaised;
-    uint256 openingTime;
-    uint256 closingTime;
 
     event TokenPurchase(
         address indexed purchaser,
@@ -22,40 +20,27 @@ contract ICO {
         uint256 amount
     );
 
-    modifier onlyWhileOpen() {
-        require(
-            block.timestamp >= openingTime && block.timestamp <= closingTime
-        );
-        _;
-    }
-
     constructor(
         DwavesToken _token,
         address payable _wallet,
         uint256 _rate,
-        uint256 _cap,
-        uint256 _openingTime,
-        uint256 _closingTime
+        uint256 _cap
     ) {
         require(_wallet != address(0));
         require(_rate > 0);
         require(_cap > 0);
-        require(_openingTime >= block.timestamp);
-        require(_closingTime >= _openingTime);
 
         token = _token;
         wallet = _wallet;
         rate = _rate;
         cap = _cap;
-        openingTime = _openingTime;
-        closingTime = _closingTime;
     }
 
     receive() external payable {
         buyTokens(msg.sender);
     }
 
-    function buyTokens(address _investor) public payable onlyWhileOpen {
+    function buyTokens(address _investor) public payable {
         uint256 weiAmount = msg.value;
 
         require(_investor != address(0));
@@ -72,9 +57,5 @@ contract ICO {
 
     function capReached() external view returns (bool) {
         return weiRaised >= cap;
-    }
-
-    function hasClosed() external view returns (bool) {
-        return block.timestamp > closingTime;
     }
 }
