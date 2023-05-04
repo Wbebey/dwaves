@@ -10,34 +10,23 @@ import * as THREE from "three";
 
 interface Props {
   planeSubdivisions: number;
-  playerStatus: "active" | "paused" | "inactive";
-}
-
-const AMPLITUDES = {
-  "active": 0.005,
-  "paused": 0.0005,
-  "inactive": 0.0,
 }
 
 export const PlayerShader: React.FC<Props> = ({
   planeSubdivisions,
-  playerStatus,
   ...props
 }) => {
   // 192 corresponds to the player component height
   // -> see PlayerWrapper.scss
   const subdivs = Math.max(planeSubdivisions, 4);
   const ratio = 192 / window.innerWidth;
-  let amplitude = 0.005;
 
   const meshRef = useRef<THREE.Mesh>(null!);
   const materialRef = useRef<THREE.ShaderMaterial>(null!);
 
   useFrame(
-    (state) => {
-      materialRef.current.uniforms.uTime.value = state.clock.elapsedTime / 4.0;
-      materialRef.current.uniforms.uAmplitude.value = AMPLITUDES[playerStatus];
-    }
+    (state) =>
+      (materialRef.current.uniforms.uTime.value = state.clock.elapsedTime / 4.0)
   );
 
   return (
@@ -49,7 +38,7 @@ export const PlayerShader: React.FC<Props> = ({
         ref={materialRef}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
-        uniforms={{ uTime: { value: 0.0 }, uAmplitude: { value: 0.0 } }}
+        uniforms={{ uTime: { value: 0.0 }, uIsPaused: { value: false } }}
       />
     </mesh>
   );
