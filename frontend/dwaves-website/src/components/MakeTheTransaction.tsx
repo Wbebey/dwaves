@@ -9,7 +9,6 @@ type Props = {
   balance: string | undefined;
   chainName: string | undefined;
   chainId: number | undefined;
-  rate: bigint | undefined;
 };
 
 declare const window: Window &
@@ -23,17 +22,12 @@ const MakeTheTransaction = ({
   balance,
   chainName,
   chainId,
-  rate,
 }: Props) => {
-  const [inputValue, setInputValue] = useState<string>("");
-  const [vibesValue, setVibesValue] = useState<string>("")
+  const [inputValue, setInputValue] = useState("");
   const [transactionInProgress, setTransactionInProgress] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [txnHash, setTxnHash] = useState(
-    "0x03b430994b92557aa2a876e92a9973d91f9fc0547d1ef0855919900c01b7b5a4"
-  );
 
-  const purchaseButtonIsDisabled = wallet !== "" && parseFloat(inputValue) !== 0 && parseFloat(inputValue) < parseFloat(balance!)
+  const purchaseButtonIsDisabled = wallet !== "" && inputValue !== "";
 
   const transfer = async () => {
     if (!window.ethereum) return;
@@ -48,13 +42,10 @@ const MakeTheTransaction = ({
     );
 
     const res = await erc20.buyTokens(wallet, {
-      value: ethers.parseEther(inputValue!.toString()),
+      value: ethers.parseEther(inputValue),
     });
 
     await res.wait();
-    setTxnHash(
-      "0x03b430994b92557aa2a876e92a9973d91f9fc0547d1ef0855919900c01b7b5a4"
-    );
     setOpenModal(true);
     setTransactionInProgress(false);
     setInputValue("");
@@ -95,9 +86,9 @@ const MakeTheTransaction = ({
             type="number"
             placeholder="The value in VIBES"
             className="input input-primary w-full text-lg mr-5"
-            disabled={true}
+            disabled={wallet === ""}
             value={inputValue}
-            // onChange={(e) => changeInputValue(e.target.value)}
+            onChange={(e) => setInputValue(e.target.value)}
           />
           <p className="bg-cyan-800 p-3 rounded-lg w-48 text-center">VIBES</p>
         </div>
@@ -138,7 +129,6 @@ const MakeTheTransaction = ({
 
           <a
             href="https://dwaves-app-staging.tonfrere.fr/"
-            target="_blank"
             className="btn btn-ghost normal-case text-xl flex flex-row items-center mt-5"
           >
             <p className="mr-4">Discover the power of </p>
@@ -150,17 +140,9 @@ const MakeTheTransaction = ({
             <p className="ml-3">now !</p>
           </a>
 
-          <a
-            href={`https://${chainName}.etherscan.io/tx/${txnHash}`}
-            target="_blank"
-            className="btn btn-ghost normal-case text-xl flex flex-row items-center mt-5"
-          >
-            <p className="">View Transaction on Etherscan</p>
-          </a>
-
           <div className="modal-action">
             <label htmlFor="my-modal" className="btn">
-              PLUS ULTRA 💥 !
+              Yay!
             </label>
           </div>
         </div>

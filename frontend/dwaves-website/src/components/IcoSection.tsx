@@ -18,10 +18,8 @@ export const IcoSection = () => {
   const [balance, setBalance] = useState<string | undefined>();
   const [chainId, setChainId] = useState<number | undefined>();
   const [chainName, setChainName] = useState<string | undefined>();
-
   const [openingTime, setOpeningTime] = useState(null);
   const [closingTime, setClosingTime] = useState(null);
-  const [rate, setRate] = useState<bigint>(0n);
   const [remainingTokens, setRemainingTokens] = useState(null);
   const [cap, setCap] = useState(null);
 
@@ -34,12 +32,10 @@ export const IcoSection = () => {
     );
     const openingTime = await contract.openingTime();
     const closingTime = await contract.closingTime();
-    const rate = await contract.RATE();
     const remainingTokens = await contract.remainingTokens();
     const icoCap = await contract.cap();
     setOpeningTime(openingTime);
     setClosingTime(closingTime.toString());
-    setRate(rate);
     setRemainingTokens(remainingTokens.toString());
     setCap(icoCap);
   };
@@ -55,7 +51,7 @@ export const IcoSection = () => {
         setBalance(ethers.formatEther(result));
       });
       provider.getNetwork().then((result: any) => {
-        console.log(result);
+        console.log(result)
         setChainId(result.chainId);
         setChainName(result.name);
       });
@@ -96,6 +92,30 @@ export const IcoSection = () => {
       </div>
       <div id="timer" className="w-full">
         <ClosingTimeCounter closingTime={closingTime} />
+        {/*<div className="w-full flex flex-row justify-around">*/}
+        {/*  <ConnectWallet*/}
+        {/*    wallet={wallet}*/}
+        {/*    requestConnection={requestConnection}*/}
+        {/*  />*/}
+        {/*  <div className="card w-1/2 bg-base-100 shadow-xl mx-7">*/}
+        {/*    <div className="card-body">*/}
+        {/*      <h2 className="card-title text-3xl">Buy VIBES 🤑!</h2>*/}
+        {/*      <p>*/}
+        {/*        Now is the time to invest in the future of music and support*/}
+        {/*        this innovative platform by purchasing VIBE tokens during the*/}
+        {/*        ICO*/}
+        {/*      </p>*/}
+        {/*      <div className="card-actions justify-end pt-3">*/}
+        {/*        <button*/}
+        {/*          onClick={buyTokens}*/}
+        {/*          className="btn btn-primary w-64 btn-xs sm:btn-sm md:btn-md lg:btn-lg"*/}
+        {/*        >*/}
+        {/*          buy !!!!*/}
+        {/*        </button>*/}
+        {/*      </div>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </div>
       <div>
         <MakeTheTransaction
@@ -104,15 +124,27 @@ export const IcoSection = () => {
           balance={balance}
           chainName={chainName}
           chainId={chainId}
-          rate={rate!}
         />
       </div>
       <div className="flex flex-row nowrap items-center">
-        <progress
-          className="progress progress-primary w-full"
-          value="80"
-          max="100"
-        />
+        <div className="w-1/5">
+          <p className="text-xl">
+            Lorem ipsum{" "}
+            <span className="uppercase font-bold">1 eth = 1341 usd </span>
+          </p>
+          <p className="text-xl">
+            Lorem ipsum{" "}
+            <span className="uppercase font-bold"> 13 416 usd </span>
+          </p>
+        </div>
+        <div className="w-4/5">
+          <h1 className="text-5xl">Raised</h1>
+          <progress
+            className="progress progress-primary w-full"
+            value="80"
+            max="100"
+          />
+        </div>
       </div>
       <div className="w-full mt-8">
         <div className="mt-8 none grid sm:grid-rows-1 lg:grid-cols-4">
