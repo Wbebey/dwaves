@@ -6,23 +6,12 @@ import { useForm, UseFormSetValue } from "react-hook-form";
 interface Props {
     setCoverExist: React.Dispatch<React.SetStateAction<boolean>>
     setCover: React.Dispatch<React.SetStateAction<CoverFile>>
-    setValue: UseFormSetValue<Album>
-}
-
-interface AlbumProps {
-    arraySong: SongData[]
+    setValue: UseFormSetValue<CoverFile>
 }
 
 type CoverFile = {
     src: any
 }
-
-type Album = {
-    name: string
-    genre: string
-    src: any
-}
-
 
 const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue }) => {
 
@@ -58,32 +47,15 @@ const FormCover: React.FC<Props> = ({ setCoverExist, setCover, setValue }) => {
     )
 }
 
-const AlbumCover: React.FC<AlbumProps> = ({ arraySong }) => {
-    const { register, setValue, getValues, handleSubmit } = useForm<Album>();
+const AlbumCover = () => {
+    const { register, setValue, getValues, handleSubmit } = useForm<CoverFile>();
     const [cover, setCover] = useState<CoverFile>({ src: {} })
     const [coverExist, setCoverExist] = useState(false)
-
-    const title: Array<string> = []
-    const musics: Array<File | null> = []
-
-    arraySong.forEach((song) => {
-        title.push(song.title)
-        musics.push(song.src)
-    })
 
     const onSubmit = (data: any) => {
         const form = new FormData()
         form.append("cover", data.src)
-        musics.forEach((item) => {
-            if (item) {
-                form.append("musics", item!)
-            }
-        })
-        title.forEach((item) => {
-            form.append("musicNames", item)
-        })
-        form.append("albumName", data.name)
-        form.append("genre", data.genre)
+
     }
 
     return (
@@ -99,13 +71,8 @@ const AlbumCover: React.FC<AlbumProps> = ({ arraySong }) => {
                         <FormCover setCoverExist={setCoverExist} setCover={setCover} setValue={setValue} />
                 }
             </div>
-            <div className="w-3/4">
-                <div className="contain-input">
-                    <input {...register("name")} type="text" placeholder="Album name" className="input input-ghost w-full " />
-                </div>
-                <div className="contain-input">
-                    <input {...register("genre")} type="text" placeholder="Genre" className="input input-ghost w-full " />
-                </div>
+            <div className="contain-input">
+                <input type="text" placeholder="Type here" className="input input-ghost w-full " />
             </div>
             <div className="contain-button">
                 <button className="btn btn-active btn-primary">Save</button>
@@ -117,35 +84,35 @@ const AlbumCover: React.FC<AlbumProps> = ({ arraySong }) => {
 type SongData = { title: string, src: File | null }
 
 export const AlbumForm = () => {
-    const [arraySong, setArraySong] = useState<SongData[]>([{ title: '', src: null }])
+    const [arraySong, setArraySong] = useState<SongData[]>([{title: '', src: null}])
 
     const handleSong = (e: ChangeEvent<HTMLInputElement>, i: number) => {
-        setArraySong(arraySong.map((song, j) => {
+        setArraySong(arraySong.map((song, j) =>  {
             if (i !== j) {
                 return song
             }
             const src = e.target.files === null ? null : e.target.files[0]
-            return { ...song, src }
+            return {...song, src}
         }))
     }
 
     const handleTitle = (e: ChangeEvent<HTMLInputElement>, i: number) => {
-        setArraySong(arraySong.map((song, j) => {
+        setArraySong(arraySong.map((song, j) =>  {
             if (i !== j) {
                 return song
             }
-            return { ...song, title: e.target.value }
+            return {...song, title: e.target.value}
         }))
     }
 
     const addSong = () => {
-        setArraySong([...arraySong, { title: '', src: null }])
+        setArraySong([...arraySong, {title: '', src: null}])
     }
 
     return (
         <section className="contain-album-form">
             <div className="header">
-                <AlbumCover arraySong={arraySong} />
+                <AlbumCover />
             </div>
             <div className="content-form-album">
                 <ul className="list-form-album">
