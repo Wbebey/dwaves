@@ -85,6 +85,10 @@ contract ICO is AccessControl {
         return block.timestamp > closingTime;
     }
 
+    function setUserCap(address investor) external onlyRole(LIMITER_ROLE) {
+        caps[investor] = individual_cap;
+    }
+
     function setGroupCap(address[] calldata investors)
         external
         onlyRole(LIMITER_ROLE)
@@ -122,10 +126,6 @@ contract ICO is AccessControl {
         _forwardFunds();
     }
 
-    function _setUserCap(address investor) internal {
-        caps[investor] = individual_cap;
-    }
-
     function _getTokenAmount(uint256 weiAmount)
         internal
         pure
@@ -136,16 +136,12 @@ contract ICO is AccessControl {
 
     function _preValidatePurchase(address investor, uint256 weiAmount)
         internal
+        view
         onlyWhileOpen
     {
         require(investor != address(0), "ICO: investor is the zero address");
         require(weiAmount != 0, "ICO: wei amount is 0");
         require(weiRaised.add(weiAmount) <= cap, "ICO: cap exceeded");
-
-        if (caps[investor] == 0) {
-            _setUserCap(investor);
-        }
-
         require(
             contributions[investor].add(weiAmount) <= caps[investor],
             "ICO: investor's cap exceeded"
