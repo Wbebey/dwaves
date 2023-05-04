@@ -137,29 +137,3 @@ resource "google_storage_bucket_access_control" "dwaves_buckets_acl" {
     google_storage_bucket.dwaves_buckets
   ]
 }
-
-resource "google_storage_bucket" "dwaves-profile-picture" {
-  name          = "dwaves-profile-picture"
-  project       = google_project.dwaves.project_id
-  location      = var.gcp-region
-  storage_class = "REGIONAL"
-  force_destroy = true
-
-  uniform_bucket_level_access = false
-
-  versioning {
-    enabled = true
-  }
-
-  logging {
-    log_bucket        = google_storage_bucket.dwaves-logging-bucket.name
-    log_object_prefix = "dwaves-profile-picture/"
-  }
-
-  labels = {
-    "id"         = "dwaves"
-    "managed-by" = "terraform"
-    "department" = "epitech"
-    "purpose"    = "profile-picture"
-  }
-}
