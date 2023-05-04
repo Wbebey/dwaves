@@ -7,13 +7,13 @@ on:
       - bugfix/*
       - hotfix/*
     paths:
-      - ${{ env.WORKING_DIRECTORY }}/**
-  # pull_request:
-  #   types: [opened, synchronize, reopened]
-  #   branches:
-  #     - staging
-  #   paths:
-  #     - "frontend/dwaves-landing/**"
+      - "frontend/dwaves-landing/**"
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - staging
+    paths:
+      - "frontend/dwaves-landing/**"
 
 
 jobs:
