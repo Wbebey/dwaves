@@ -4,11 +4,13 @@ on:
   push:
     paths:
       - backend/api/**
-  pull_request:
-    types: [labeled]
-    branches: [staging]
-    paths:
-      - backend/api/**
+  # pull_request:
+  #   types: [opened, synchronize, reopened]
+  #   branches:
+  #     - staging
+  #     - main
+  #   paths:
+  #     - backend/api/**
 
 env:
     APP: dwaves-api
@@ -16,7 +18,6 @@ env:
     GITHUB_REF: ${{ github.ref }}
     GITHUB_SHA: ${{ github.sha }}
     GITHUB_REPOSITORY: ${{ github.repository }}
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     PROJECT_DIRECTORY: backend/api
     APP_COMMIT_URL: ${{ secrets.APP_COMMIT_URL_BACK }}
     APP_BUILD_DATE: ${{ secrets.APP_BUILD_DATE_BACK }}
@@ -30,7 +31,6 @@ env:
     GCP_PROJECT_ID: ${{ secrets.DWAVES_PROJECT_ID }}
     DOPPLER_TOKEN_STG: ${{ secrets.DOPPLER_DWAVES_API_TOKEN_STG }}
     DOPPLER_TOKEN_PRD: ${{ secrets.DOPPLER_DWAVES_API_TOKEN_PRD }}
-    DOPPLER_TOKEN_TEST: ${{ secrets.DOPPLER_DWAVES_API_TOKEN_TEST }}
     PROPERTIES_SCRIPT: ${{ GITHUB.WORKSPACE }}/.github/script/environment.sh
 
 defaults:
@@ -38,42 +38,6 @@ defaults:
     working-directory: "backend/api"
 
 jobs:
-  remove-label:
-    name: Remove Label
-    if: ${{ github.event.label.name == 'deploy-dwaves-api-test' }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Remove Label from PR
-        uses: actions-ecosystem/action-remove-labels@v1.3.0
-        with:
-          labels: ${{ github.event.label.name }}
-          github_token: ${{ env.GITHUB_TOKEN }}
-
-  deploy-test:
-    name: Deploy to test environment 🚀
-    if: ${{ github.event.label.name == 'deploy-dwaves-api-test' }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    environment:
-      name: dwaves-api-test
-      url: https://dwaves-api-test.tonfrere.fr
-    steps:
-      - name: Checkout 😇
-        uses: actions/checkout@v3
-
-      - name: Deploy to GCP 🚀
-        uses: ./.github/actions/backend/deployment
-
   integration-test:
     name: Integretion Test
     if: github.ref == 'refs/heads/main' || 
@@ -137,6 +101,9 @@ jobs:
 
   deploy:
     name: Deployment
+    # if:         (github.event.label.name == 'deploy-dwaves-api-test' &&
+    #     github.event_name == 'pull_request' && 
+    #     github.event.pull_request.head.ref == 'staging')
     if: github.ref == 'refs/heads/main' ||
         github.ref == 'refs/heads/staging' 
     needs: [code-analysis]
