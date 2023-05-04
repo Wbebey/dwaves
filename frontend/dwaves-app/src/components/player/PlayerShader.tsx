@@ -16,7 +16,7 @@ export const PlayerShader: React.FC<Props> = ({
 }) => {
   const AMPLITUDES = {
     playing: 0.06,
-    paused: 0.02,
+    paused: 0.03,
     inactive: 0.0,
   }
 
