@@ -44,4 +44,5 @@ runs:
             --cpu 1000m \
             --memory 512Mi \
             --timeout 300 \
+            --max-instances 1 \
             --project ${{ env.GCP_PROJECT_ID }}
