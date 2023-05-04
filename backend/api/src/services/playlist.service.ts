@@ -49,6 +49,8 @@ class PlaylistService implements IPlaylistService {
   ): Promise<Playlist> => {
     const playlist = await prisma.playlist.delete({ where })
 
+    await pinataService.unpinFileFromIPFS(playlist.coverCID)
+
     return playlist
   }
 }
