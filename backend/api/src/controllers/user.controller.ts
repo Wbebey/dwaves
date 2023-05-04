@@ -9,9 +9,9 @@ import { LimitRequestHandler } from '@@types/app.type'
 import albumService from '@services/album.service'
 import playlistService from '@services/playlist.service'
 import { UploadedFile } from 'express-fileupload'
+import { ParamsDictionary } from 'express-serve-static-core'
+import { ParsedQs } from 'qs'
 import pinataService from '@services/pinata.service'
-import { ConcertEvent } from '@@types/event.type'
-import nftService from '@services/nft.service'
 
 class UserController implements IUserController {
   get: RequestHandler = async (_, res) => {
@@ -113,35 +113,6 @@ class UserController implements IUserController {
     const createdPlaylist = await playlistService.create(playlist, cover)
 
     res.json(createdPlaylist)
-  }
-
-  createConcertEvent: RequestHandler = async (req, res) => {
-    const { address, username } = req.app.locals.user
-    const { name, date, location, genre, ticketCount, ticketPrice } = req.body
-
-    const concertEvent = {
-      artistAddress: address,
-      name,
-      date: Date.parse(date),
-      location,
-      genre,
-      artistName: username,
-      ticketCount,
-      ticketPrice,
-      ticketSold: 0,
-    } satisfies ConcertEvent
-
-    const tx = await nftService.createConcertEvent(
-      concertEvent
-    )
-
-    console.log({ tx })
-
-    const r = await tx.wait()
-
-    console.log({ r })
-
-    res.json(r)
   }
 
   updateInfo: RequestHandler = async (req, res) => {

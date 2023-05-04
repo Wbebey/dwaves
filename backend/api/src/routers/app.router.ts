@@ -7,7 +7,7 @@ import musicRouter from '@routers/music.router'
 import authRouter from '@routers/auth.router'
 import genreRouter from '@routers/genre.router'
 import appController from '@controllers/app.controller'
-import playlistRouter from '@routers/playlist.router'
+import playlistRouter from './playlist.router'
 
 const appRouter = Router()
 
