@@ -70,7 +70,12 @@ export const List = () => {
               <div key={album.id} className="card hover:bg-teal-300">
                 <Link to={`/album/${album.id}`}>
                   <img src={album.cover} alt="" />
-                  <h3>{album.name.substring(0, 17 - 3)}...</h3>
+                    {
+                      album.name.length > 10  ?
+                      <h3>{album.name.substring(0, 17 - 3)}...</h3>
+                      :
+                      <h3>{album.name}</h3>
+                    }
                 </Link>
                 <Link
                   key={album.id}
