@@ -1,3 +1,122 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+$dark : #191A24;
+$primary : #33E0D6;
+
+.App {
+  background-color: $dark;
+  position: relative;
+}
+
+.flex-row-nowrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.icon{
+  width: 58px;
+  height: 58px;
+}
+
+img {
+  border-radius: 4px;
+}
+
+.sidebar ul {
+  border-radius: 5px;
+  li a p{
+    display: none;
+  }
+  li a {
+    padding: 5px;
+  }
+}
+
+.container-app {
+  display: block;
+  height: 100%;
+  padding: 0 150px;
+  margin: 0;
+  .contain-explorer{
+    @extend .flex-row-nowrap;
+    margin-top: 16px;
+    height: 100%;
+    .content{
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0 0 0 1.5%;
+      .banner{
+        position: relative;
+        width: 100%;
+        height: 35%;
+      }
+      .container{
+        @extend .flex-row-nowrap;
+        margin-top: 16px;
+        height: 62.5%;
+        width: 100%;
+      }
+    }
+  }
+}
+
+#contain-top-player{
+  display: block;
+  height: 20%;
+  background-color: $primary;
+  .player-bar{
+    @extend .flex-row-nowrap;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 24px;
+    #nav-widget-player > * {
+      margin: 20% 8px;
+      width: 32px;
+      height: 32px;
+    }
+    #contain-right-bar > * {
+      margin: 20% 8px;
+    }
+    #contain-left-bar > img {
+      width: 128px;
+      height: 128px;
+      margin: 8px;
+    }
+    #contain-left-bar > p {
+      margin: 15% 8px;
+    }
+  }
+}
+
+.seekbar{
+  @extend .seekbar;
+  .time{
+    @extend .time;
+    width: 0;
+  }
+}
+
+#close-effect{
+  position: absolute;
+  background-color: #191a24a6;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#close-modal{
+  position: absolute;
+  background-color: #241919a6;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
