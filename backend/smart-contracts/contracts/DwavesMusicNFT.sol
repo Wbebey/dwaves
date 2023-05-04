@@ -25,17 +25,18 @@ contract DwavesMusicNFT is
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
-    function batch_mint(address artistAddress, string[] calldata musicCIDs)
+    function mint(address artistAddress, string calldata musicCID)
         external
         onlyRole(MINTER_ROLE)
-        returns (uint256[] memory)
+        returns (uint256)
     {
-        uint256[] memory tokenIds = new uint256[](musicCIDs.length);
-        for (uint256 i = 0; i < musicCIDs.length; i++) {
-            tokenIds[i] = mint(artistAddress, musicCIDs[i]);
-        }
+        _tokenIds.increment(); // NFT IDs start at 1
 
-        return tokenIds;
+        uint256 tokenId = _tokenIds.current();
+        _safeMint(artistAddress, tokenId);
+        _setTokenURI(tokenId, musicCID);
+
+        return tokenId;
     }
 
     function getAllTokens() external view returns (string[] memory) {
@@ -66,20 +67,6 @@ contract DwavesMusicNFT is
         }
 
         return NFTList;
-    }
-
-    function mint(address artistAddress, string calldata musicCID)
-        public
-        onlyRole(MINTER_ROLE)
-        returns (uint256)
-    {
-        _tokenIds.increment(); // NFT IDs start at 1
-
-        uint256 tokenId = _tokenIds.current();
-        _safeMint(artistAddress, tokenId);
-        _setTokenURI(tokenId, musicCID);
-
-        return tokenId;
     }
 
     function tokenURI(uint256 tokenId)
