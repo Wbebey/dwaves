@@ -15,7 +15,6 @@ import { AlbumOfArtist } from "components/AlbumOfArtist";
 import { SwitchTab } from "components/SwitchTab";
 import { SongList } from "components/SongList";
 import { CreatePlaylist } from "components/CreatePlaylist";
-import { PlaylistsOfUser } from "./PlaylistsOfUser";
 import { Footer } from "components/Footer";
 
 export {
@@ -36,6 +35,5 @@ export {
   SwitchTab,
   SongList,
   CreatePlaylist,
-  PlaylistsOfUser,
   Footer
 };
