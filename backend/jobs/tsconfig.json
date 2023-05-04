@@ -9,8 +9,6 @@
     "moduleResolution": "node",
     "rootDir": "src",
     "outDir": "build",
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.spec.ts"]
 }
