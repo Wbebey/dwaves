@@ -50,9 +50,6 @@ export const ExploPlayer: React.FC<Props> = ({
       index = index - 1;
     }
     audioElmt.current!.currentTime = 0;
-    setTimeout(()=>{
-      PlayPause(audioElmt, false, setIsPlaying)
-    }, 1000)
   };
 
   const handleNext = () => {
@@ -65,9 +62,6 @@ export const ExploPlayer: React.FC<Props> = ({
       index = index + 1;
     }
     audioElmt.current!.currentTime = 0;
-    setTimeout(()=>{
-      PlayPause(audioElmt, false, setIsPlaying)
-    },1000)
   };
 
   return (
