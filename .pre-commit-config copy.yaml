@@ -3,9 +3,8 @@ repos:
     rev: v1.14.2
     hooks:
       - id: ggshield
+        language_version: python3
         stages: [commit]
-        language: python
-        entry: ggshield
         verbose: true
-
-
+        files: ^backend/smart-contracts/
+        types_or: [javascript, jsx, ts, tsx]
