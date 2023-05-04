@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "outDir": "build",
+    "resolveJsonModule": true,
+    "composite": true
+  },
+  "include": [
+    "abi/*.json"
+  ]
+}
