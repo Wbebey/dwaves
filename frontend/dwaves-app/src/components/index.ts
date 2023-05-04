@@ -16,7 +16,6 @@ import { CreatePlaylist } from "components/CreatePlaylist";
 import { UserPlaylists } from "./UserPlaylists";
 import { PlaylistContent } from "./PlaylistContent";
 import { CreateConcert } from "./CreateConcert";
-import { NftTickets } from './NftTickets'
 import { Kitsune } from "./Kitsune";
 import { Footer } from "components/Footer";
 
@@ -39,7 +38,6 @@ export {
   UserPlaylists,
   PlaylistContent,
   CreateConcert,
-  NftTickets,
   Kitsune,
   Footer
 };

@@ -37,15 +37,3 @@ export type Playlists = {
   id: number;
   name: string;
 }[];
-
-export type FormattedEvents = {
-  id: number
-  name: string
-  date: string
-  place: string
-  genre: string
-  artist: string
-  price: number
-  availableTickets: number
-  ticketIdToBuy: ''
-}[];

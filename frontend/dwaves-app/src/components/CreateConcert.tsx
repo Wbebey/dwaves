@@ -46,11 +46,9 @@ const Input = ({
 )
 
 export const CreateConcert = () => {
-  const chainName = "sepolia"
   const [date, setDate] = useState<DatepickerDate>()
   const [transactionInProgress, setTransactionInProgress] = useState(false)
   const [transactionIsDone, setTransactionIsDone] = useState(false)
-  const [txnHash, setTxnHash] = useState("");
   const [genres, setGenres] = useState([{ id: 0, name: '' }])
 
   const handleValueChange = (newValue: any) => {
@@ -100,7 +98,7 @@ export const CreateConcert = () => {
   const mintEventNft = async (eventsDetails: any) => {
     setTransactionInProgress(true)
     try {
-      const res: any = await axios.post(
+      const res = await axios.post(
         `${import.meta.env.VITE_APP_BACK_URL}/events`,
         eventsDetails,
         {
@@ -108,7 +106,6 @@ export const CreateConcert = () => {
         },
       )
       console.log(res)
-      setTxnHash(res.data.transactionHash)
       setTransactionInProgress(false)
       setTransactionIsDone(true)
       reset()
@@ -253,14 +250,6 @@ export const CreateConcert = () => {
             minted. Get ready for an unforgettable experience featuring Dwaves.
             These NFT tickets are now available for purchase!
           </p>
-
-          <a
-              href={`https://${chainName}.etherscan.io/tx/${txnHash}`}
-              target="_blank"
-              className="btn btn-ghost normal-case text-xl flex flex-row items-center mt-5"
-          >
-            <p className="text-white">View Transaction on Etherscan</p>
-          </a>
 
           <div className="modal-action">
             <label htmlFor="my-modal" className="btn">
