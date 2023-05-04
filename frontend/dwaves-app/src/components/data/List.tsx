@@ -64,28 +64,40 @@ export const List = () => {
         <span className='font-bold text-4xl'>Featured albums</span>
       </header>
       <div className="content-playlist">
-        <div className="body">
-          {/* modify flex with action button */}
-          <div className="row">
-            <div className="overflow-x">
-              <div className="contain-card">
-                {albums.map((album) => (
-                  <div key={album.id} className="card hover:bg-teal-300">
-                    <Link to={`/album/${album.id}`}>
-                      <img src={album.cover} alt="" />
-                      <h3>{album.name.substring(0, 17 - 3)}...</h3>
-                    </Link>
-                    <Link
-                      key={album.id}
-                      to={`/artist/${album.artistId}`}
-                      className="hover:underline underline-offset-2"
-                    >
-                      <p>{album.artist}</p>
-                    </Link>
-                  </div>
-                ))}
+        <div className="overflow-x">
+          <div className="contain-card">
+            {albums.map((album) => (
+              <div key={album.id} className="card hover:bg-teal-300">
+                <Link to={`/album/${album.id}`}>
+                  <img src={album.cover} alt="" />
+                  <h3>{album.name.substring(0, 17 - 3)}...</h3>
+                </Link>
+                <Link
+                  key={album.id}
+                  to={`/artist/${album.artistId}`}
+                  className="hover:underline underline-offset-2"
+                >
+                  <p>{album.artist}</p>
+                </Link>
               </div>
-            </div>
+            ))}
+            {
+              new Array(10).fill(0).map((x, i) => (
+                <div key={x.id} className="card hover:bg-teal-300">
+                  <Link to={`/x/`}>
+                    <img src={'http://via.placeholder.com/360x360'} alt="" />
+                    <h3>onvreiov</h3>
+                  </Link>
+                  <Link
+                    key={x.id}
+                    to={`/artist/`}
+                    className="hover:underline underline-offset-2"
+                  >
+                    <p>biuveiubv</p>
+                  </Link>
+                </div>
+              ))
+            }
           </div>
         </div>
       </div>
