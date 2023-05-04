@@ -10,7 +10,7 @@ import { requireUserWallet } from '@middlewares/auth.middleware'
 const musicRouter = Router()
 
 musicRouter.get(
-    '/',
+    '/get',
     query('genre')
         .bail()
         .customSanitizer(albumValidator.toValidGenreIfExist),
@@ -27,13 +27,8 @@ musicRouter.post(
     .withMessage('Genre is required')
     .bail()
     .customSanitizer(albumValidator.toValidGenre),
-  body('musicName')
-    .notEmpty()
-    .withMessage('musicName is required')
-    .bail()
-    .custom(albumValidator.isNotSingleMusicWithThisName),
-  body().custom(musicValidator.hasOneFile(FileType.COVER)),
-  body().custom(musicValidator.hasOneFile(FileType.MUSIC)),
+  body().custom(musicValidator.isFilePresent(FileType.COVER)),
+  body().custom(musicValidator.isFilePresent(FileType.MUSIC)),
   musicValidator.validate,
   musicController.uploadSingle
 )
@@ -45,18 +40,6 @@ musicRouter.post(
         .withMessage('Genre is required')
         .bail()
         .customSanitizer(albumValidator.toValidGenre),
-    body('albumName')
-        .notEmpty()
-        .withMessage('albumName is required')
-        .bail()
-        .custom(albumValidator.isValidAlbumName),
-    body('musicsName')
-        .notEmpty()
-        .withMessage('musicsName is required')
-        .bail(),
-    body().custom(musicValidator.hasOneFile(FileType.COVER)),
-    body().custom(musicValidator.hasFiles(FileType.MUSICS)),
-    musicValidator.validate,
     musicController.uploadAllMusicOfAnAlbum
 )
 

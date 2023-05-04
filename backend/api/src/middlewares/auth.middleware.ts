@@ -6,7 +6,6 @@ import { RequestHandler, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import tokenService from 'services/token.service'
 import userService from 'services/user.service'
-import { Request } from 'express'
 
 export const deserializeUser: RequestHandler = async (req, res, next) => {
   let accessToken
@@ -39,17 +38,17 @@ export const deserializeUser: RequestHandler = async (req, res, next) => {
     )
   }
 
-  req.app.locals.user = user
+  res.locals.user = user
   next()
 }
 
-export const requireUser: RequestHandler = (req, res, next) => {
-  _requireUser(req)
+export const requireUser: RequestHandler = (_, res, next) => {
+  _requireUser(res)
   next()
 }
 
-export const requireUserWallet: RequestHandler = (req, res, next) => {
-  const user = _requireUser(req)
+export const requireUserWallet: RequestHandler = (_, res, next) => {
+  const user = _requireUser(res)
   if (user.address === ethers.constants.AddressZero) {
     throw new AppError(
       'Current user does not have any wallet registered',
@@ -59,8 +58,8 @@ export const requireUserWallet: RequestHandler = (req, res, next) => {
   next()
 }
 
-const _requireUser = (req: Request): User => {
-  const user = req.app.locals.user
+const _requireUser = (res: Response): User => {
+  const user = res.locals.user
   if (!user) {
     throw new AppError(
       'Invalid token or session has expired',

@@ -1,7 +1,7 @@
+import { RequestHandler } from 'express'
 
 import { IUserController } from '@interfaces/controller.interface'
 import userService from 'services/user.service'
-import {RequestHandler} from "express";
 
 class UserController implements IUserController {
   get: RequestHandler = async (_, res) => {
@@ -10,8 +10,8 @@ class UserController implements IUserController {
     res.json(users)
   }
 
-  me: RequestHandler = (req, res) => {
-    res.json(req.app.locals.user)
+  me: RequestHandler = (_, res) => {
+    res.json(res.locals.user)
   }
 
   addWallet: RequestHandler = async (req, res) => {

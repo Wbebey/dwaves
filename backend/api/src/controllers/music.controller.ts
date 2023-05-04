@@ -15,21 +15,21 @@ class MusicController implements IMusicController {
   get: RequestHandler = async (req, res) => {
     const allMusics = await pinataService.getMusicFromIPFS(req.query)
     res.json(allMusics)
+
   }
 
   uploadSingle: RequestHandler = async (req, res) => {
     const cover = req.files!.cover as UploadedFile
     const coverMetadata: CoverMetadata = { type: FileType.COVER }
-    const coverCID = await pinataService.pinFileToIPFS(cover, cover.name, coverMetadata)
+    const coverCID = await pinataService.pinFileToIPFS(cover, coverMetadata)
 
     logger.log(`cover: ${cover.name} - CID: ${coverCID}`)
 
     const music = req.files!.music as UploadedFile
-    const { id: artistId, address: artistAddress } = req.app.locals.user.id
-    const musicName = req.body.musicName
+    const { id: artistId, address: artistAddress } = res.locals.user
     const genreId = req.body.genre.id
     const album = await albumService.create({
-      name: musicName,
+      name: path.parse(music.name).name,
       type: AlbumType.SINGLE,
       artist: { connect: { id: artistId } },
       genre: { connect: { id: genreId } },
@@ -43,7 +43,7 @@ class MusicController implements IMusicController {
       genreId,
       listenings: 0,
     }
-    const musicCID = await pinataService.pinFileToIPFS(music, musicName, musicMetadata)
+    const musicCID = await pinataService.pinFileToIPFS(music, musicMetadata)
 
     logger.log(`music: ${music.name} - CID: ${musicCID}`)
 
@@ -59,15 +59,13 @@ class MusicController implements IMusicController {
 
     const cover = req.files!.cover as UploadedFile
     const musics = req.files!.musics as UploadedFile[]
-    const artistId = req.app.locals.user.id
+    const artistId = res.locals.user.id
     const genreId = req.body.genre.id
     const albumName = req.body.albumName
-    const musicsName = req.body.musicsName.replace('[','').replace(']','')
-    const musicsNameArray = musicsName.split(',');
 
     //pin Cover on Pinata
     const coverMetadata: CoverMetadata = { type: FileType.COVER }
-    const coverCID = await pinataService.pinFileToIPFS(cover, cover.name, coverMetadata)
+    const coverCID = await pinataService.pinFileToIPFS(cover, coverMetadata)
     logger.log(`cover: ${cover.name} - CID: ${coverCID}`)
     const coverUrl = `${env.pinataGatewayHost}/${coverCID}`
 
@@ -90,7 +88,7 @@ class MusicController implements IMusicController {
         listenings: 0,
       }
 
-      const musicCID = await pinataService.pinFileToIPFS(music, musicsNameArray[index], musicMetadata)
+      const musicCID = await pinataService.pinFileToIPFS(music, musicMetadata)
       logger.log(`music: ${music.name} - CID: ${musicCID}`)
 
       return `musicCID - ${index+1} : ${env.pinataGatewayHost}/${musicCID}`

@@ -14,7 +14,7 @@ class AlbumController implements IAlbumController {
     const createdAlbum = await albumService.create({
       name,
       type,
-      artist: { connect: { id: req.app.locals.user.id } },
+      artist: { connect: { id: res.locals.user.id } },
       genre: { connect: { id: genre.id } },
       coverCID,
     })
