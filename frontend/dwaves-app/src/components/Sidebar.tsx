@@ -126,10 +126,7 @@ export const Sidebar: React.FC<Props> = ({
           }
         >
           <div>
-            <Link to={'/settings'}>
-              <Setting2 className="w-10 h-10" />
-              <p>Item</p>
-            </Link>
+            <Setting2 className="w-10 h-10" />
           </div>
         </li>
         {connected ? (
