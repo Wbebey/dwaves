@@ -1,3 +1,5 @@
+import {useEffect, useState} from "react";
+import axios from "axios";
 import { MostPopularSong } from "models";
 
 interface Props {
@@ -12,7 +14,7 @@ function convertDateToYearUTC(dateStr: Date) {
     return year.toString();
 }
 
-export const ArtistPopularSong: React.FC<Props> = ({ setCurrentSong, setSongs, mostPopularSong }) => {
+export const ArtistPopularSong: React.FC<Props> = ({setCurrentSong, setSongs, mostPopularSong}) => {
     return (
         <div>
             <div>
@@ -21,14 +23,14 @@ export const ArtistPopularSong: React.FC<Props> = ({ setCurrentSong, setSongs, m
                     mostPopularSong.map((song, index) => (
                         <div key={song.name}>
                             <div key={index} className={'flex flex-row mb-5 cursor-pointerno hover:bg-teal-300'}
-                                onClick={e => {
-                                    // setCurrentSong(song)
-                                    // setSongs(mostPopularSong)
-                                }}>
+                                 onClick={e => {
+                                     //setCurrentSong(song)
+                                     //setSongs(mostPopularSong)
+                                 }}>
                                 <div className={'text-2xl align-baseline flex self-center pl-2 w-24'}>{index + 1}</div>
                                 <div className={'flex justify-between  items-center w-full'}>
                                     <div className={'w-12 pt-2 pb-2'}>
-                                        <img src={song?.albumCover} alt="" />
+                                        <img src={song?.albumCover} alt=""/>
                                     </div>
                                     <div>
                                         <div className={'text-center'}>{song.name}</div>

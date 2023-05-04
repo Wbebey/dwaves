@@ -76,6 +76,7 @@ function App() {
   const onPlaying = async () => {
     const duration: number = audioElmt.current?.duration as number
     const ct: number = audioElmt.current?.currentTime as number
+    console.log(currentSong, 'currentSong')
     if (songs) {
       setCurrentSong({
         ...currentSong!,
@@ -89,10 +90,12 @@ function App() {
     setListenings(currentSong?.listenings)
   }, [songs])
 
+  useEffect(() => {
+    currentSong && incrementlisteningsMusic(currentSong, listenings)
+  }, [listenings])
+
   const endedSong = () => {
-    setListenings(listenings! + 1)
-    currentSong &&
-      listenings && incrementlisteningsMusic(currentSong, listenings)
+    listenings && setListenings(listenings + 1)
     repeat && playPause(audioElmt, false, setIsPlaying)
     if (random) {
       setCurrentSong(playRandomSong(songs!))

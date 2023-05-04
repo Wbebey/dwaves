@@ -118,6 +118,10 @@ export const Profile: React.FC<Props> = ({ setCurrentSong, setSongs, setAlert, c
     getMostPopularSong()
 }, [])
 
+useEffect(()=>{
+  console.log(mostPopularSong, 'mostPopularSong')
+},[mostPopularSong])
+
   const [showForm, setShowForm] = useState('Overview')
   return (
     <div
