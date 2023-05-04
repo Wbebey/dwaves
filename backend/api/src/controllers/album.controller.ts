@@ -10,8 +10,7 @@ import { AlbumGetRequestHandler } from '@@types/app.type'
 
 class AlbumController implements IAlbumController {
   list: AlbumGetRequestHandler = async (req, res) => {
-    const { genre, artistId } = req.query
-    const albums = await albumService.findMany({ genreId: genre?.id, artistId })
+    const albums = await albumService.findMany({ genreId: req.query.genre?.id })
 
     res.json(albums)
   }

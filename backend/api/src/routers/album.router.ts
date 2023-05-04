@@ -11,13 +11,12 @@ const albumRouter = Router()
 albumRouter.get(
   '/',
   query('genre').bail().customSanitizer(albumValidator.toValidGenreIfExist),
-  query('artistId').customSanitizer(albumValidator.toValidArtistIdIfExist),
   albumValidator.validate,
   albumController.list
 )
 albumRouter.get(
   '/:id',
-  param('id').isInt({ min: 0 }).withMessage('Album id must be a positive int'),
+  param('id').isInt({ min: 0 }).withMessage('Invalid id'),
   albumValidator.validate,
   albumController.show
 )
