@@ -27,7 +27,7 @@ COPY prisma/schema.prisma /usr/src/app/api/prisma/
 
 RUN npm ci --only=production
 
-#USER node
+USER node
 
 # COPY --chown=node:node --from=build /usr/src/app/api/node_modules /usr/src/app/api/node_modules
 
