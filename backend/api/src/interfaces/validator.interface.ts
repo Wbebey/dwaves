@@ -35,5 +35,3 @@ export interface IGenreValidator extends IAppValidator {
 }
 
 export interface IPlaylistValidator extends IAppValidator {}
-
-export interface IEventValidator extends IAppValidator {}

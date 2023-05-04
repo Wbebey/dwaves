@@ -17,9 +17,9 @@ class NFTService implements INFTService {
 
   mintDwavesMusicNFT = async (artistAddress: string, musicCID: string) => {
     const dwavesMusicNFT = await this._getContract(NFTType.DWAVES_MUSIC)
-    const tx = await dwavesMusicNFT.mint(artistAddress, musicCID)
+    const tokenId = await dwavesMusicNFT.mint(artistAddress, musicCID)
 
-    return await tx.wait()
+    return tokenId
   }
 
   batchMintDwavesMusicNFT = async (
@@ -27,23 +27,16 @@ class NFTService implements INFTService {
     musicCIDs: string[]
   ) => {
     const dwavesMusicNFT = await this._getContract(NFTType.DWAVES_MUSIC)
-    const tx = await dwavesMusicNFT.batch_mint(artistAddress, musicCIDs)
+    const tokenId = await dwavesMusicNFT.batch_mint(artistAddress, musicCIDs)
 
-    return await tx.wait()
+    return tokenId
   }
 
   createConcertEvent = async (event: ConcertEvent) => {
     const concertTicketNFT = await this._getContract(NFTType.CONCERT_TICKET)
-    const tx = await concertTicketNFT.createEvent(event)
+    const tokenIds = await concertTicketNFT.createEvent(event)
 
-    return await tx.wait()
-  }
-
-  buyTicket = async (buyerAddress: string, ticketId: number) => {
-    const concertTicketNFT = await this._getContract(NFTType.CONCERT_TICKET)
-    const tx = await concertTicketNFT.buyTicket(buyerAddress, ticketId)
-
-    return await tx.wait()
+    return tokenIds
   }
 
   private _getContract = async (type: NFTType) => {

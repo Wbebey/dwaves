@@ -22,6 +22,7 @@ export interface IUserController extends IController {
   getMyPlaylists: RequestHandler
   getMyLikedMusics: RequestHandler
   createPlaylist: RequestHandler
+  createConcertEvent: RequestHandler
   updateInfo: RequestHandler
   updatePassword: RequestHandler
   updateLikedMusics: RequestHandler
@@ -60,9 +61,4 @@ export interface IPlaylistController extends IController {
   create: RequestHandler
   update: RequestHandler
   delete: RequestHandler
-}
-
-export interface IEventController extends IController {
-  createConcertEvent: RequestHandler
-  buyTicket: RequestHandler
 }

@@ -8,7 +8,6 @@ import authRouter from '@routers/auth.router'
 import genreRouter from '@routers/genre.router'
 import appController from '@controllers/app.controller'
 import playlistRouter from '@routers/playlist.router'
-import eventRouter from '@routers/event.router'
 
 const appRouter = Router()
 
@@ -22,6 +21,5 @@ appRouter.use('/albums', albumRouter)
 appRouter.use('/musics', musicRouter)
 appRouter.use('/genres', genreRouter)
 appRouter.use('/playlists', playlistRouter)
-appRouter.use('/events', eventRouter)
 
 export default appRouter

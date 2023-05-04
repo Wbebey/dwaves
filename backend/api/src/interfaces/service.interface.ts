@@ -76,8 +76,7 @@ export interface INFTService extends IService {
     artistAddress: string,
     musicCIDs: string[]
   ) => Promise<string[]>
-  createConcertEvent: (event: ConcertEvent) => Promise<any>
-  buyTicket: (buyerAddress: string, ticketId: number) => Promise<string>
+  createConcertEvent: (event: ConcertEvent) => Promise<number[]>
 }
 
 export interface ITokenService extends IService {

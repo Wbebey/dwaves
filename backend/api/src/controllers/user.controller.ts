@@ -115,6 +115,35 @@ class UserController implements IUserController {
     res.json(createdPlaylist)
   }
 
+  createConcertEvent: RequestHandler = async (req, res) => {
+    const { address, username } = req.app.locals.user
+    const { name, date, location, genre, ticketCount, ticketPrice } = req.body
+
+    const concertEvent = {
+      artistAddress: address,
+      name,
+      date: Date.parse(date),
+      location,
+      genre,
+      artistName: username,
+      ticketCount,
+      ticketPrice,
+      ticketSold: 0,
+    } satisfies ConcertEvent
+
+    const tx = await nftService.createConcertEvent(
+      concertEvent
+    )
+
+    console.log({ tx })
+
+    const r = await tx.wait()
+
+    console.log({ r })
+
+    res.json(r)
+  }
+
   updateInfo: RequestHandler = async (req, res) => {
     const { username, email } = req.body
 
